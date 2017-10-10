@@ -32,22 +32,22 @@ module Geet
 
         pr = repository.create_pr(title, description)
 
-        puts 'Assigning authenticated user to PR...'
+        puts 'Assigning authenticated user...'
 
         pr.assign_user(repository.authenticated_user)
 
         if selected_labels
-          puts 'Adding labels to PR...'
+          puts 'Adding labels...'
 
           pr.add_labels(selected_labels)
 
-          puts '- labels assigned: ' + selected_labels.join(', ')
+          puts '- labels added: ' + selected_labels.join(', ')
         end
 
         if reviewers
-          puts 'Requesting PR reviews...'
+          puts 'Requesting review...'
 
-          pr.request_reviews(reviewers)
+          pr.request_review(reviewers)
 
           puts '- review requested to: ' + reviewers.join(', ')
         end

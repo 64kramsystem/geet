@@ -33,11 +33,11 @@ module Geet
         issue = repository.create_issue(title, description)
 
         if selected_labels
-          puts 'Adding labels to the issue...'
+          puts 'Adding labels...'
 
           issue.add_labels(selected_labels)
 
-          puts '- labels assigned: ' + selected_labels.join(', ')
+          puts '- labels added: ' + selected_labels.join(', ')
         end
 
         if assignees

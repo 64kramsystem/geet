@@ -20,7 +20,7 @@ module Geet
         "https://github.com/#{@repository.owner}/#{@repository.repo}/pull/#{@issue_number}"
       end
 
-      def request_reviews(reviewers)
+      def request_review(reviewers)
         request_data = { reviewers: reviewers }
         request_address = "#{@api_helper.repo_link}/pulls/#{@issue_number}/requested_reviewers"
 
