@@ -1,0 +1,18 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative 'lib/geet/helpers/configuration_helper.rb'
+require_relative 'lib/geet/git/repository.rb'
+
+if $PROGRAM_NAME == __FILE__
+  configuration_helper = Geet::Helpers::ConfigurationHelper.new
+
+  options = configuration_helper.decode_argv[1]
+  api_token = configuration_helper.api_token
+
+  title, description = options.values_at(:title, :description)
+
+  repository = Geet::Git::Repository.new(api_token)
+  Geet::Services::CreatePr.new.execute(repository, title, description, options)
+
+end
