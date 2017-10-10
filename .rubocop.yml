@@ -11,3 +11,6 @@ Style/DoubleNegation:
 
 Style/NegatedIf:
   Enabled: false
+
+Style/TrailingCommaInArguments:
+  Enabled: false

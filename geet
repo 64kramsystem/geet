@@ -7,12 +7,20 @@ require_relative 'lib/geet/git/repository.rb'
 if $PROGRAM_NAME == __FILE__
   configuration_helper = Geet::Helpers::ConfigurationHelper.new
 
-  options = configuration_helper.decode_argv[1]
+  command, options = configuration_helper.decode_argv
   api_token = configuration_helper.api_token
 
   title, description = options.values_at(:title, :description)
 
   repository = Geet::Git::Repository.new(api_token)
-  Geet::Services::CreatePr.new.execute(repository, title, description, options)
+
+  case command
+  when 'issue'
+    Geet::Services::CreateIssue.new.execute(repository, title, description, options)
+  when 'pr'
+    Geet::Services::CreatePr.new.execute(repository, title, description, options)
+  else
+    raise 'Internal error'
+  end
 
 end

@@ -14,7 +14,8 @@ module Geet
     class Repository
       extend Forwardable
 
-      def_delegators :@remote_repository, :collaborators, :labels, :create_pr
+      def_delegators :@remote_repository, :collaborators, :labels
+      def_delegators :@remote_repository, :create_issue, :create_pr
       def_delegators :@account, :authenticated_user
 
       DOMAIN_PROVIDERS_MAPPING = {

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'api_helper.rb'
+require_relative 'issue'
 require_relative 'pr.rb'
 
 module Geet
@@ -23,6 +24,10 @@ module Geet
         response = @api_helper.send_request(url, multipage: true)
 
         response.map { |label_entry| label_entry['name'] }
+      end
+
+      def create_issue(title, description)
+        Geet::GitHub::Issue.create(@local_repository, title, description, @api_helper)
       end
 
       def create_pr(title, description, head: @local_repository.current_head)
