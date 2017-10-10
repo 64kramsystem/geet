@@ -26,7 +26,7 @@ module Geet
       end
 
       def create_pr(title, description, head: @local_repository.current_head)
-        Geet::GitHub::PR.create(title, description, head, @api_helper)
+        Geet::GitHub::PR.create(@local_repository, title, description, head, @api_helper)
       end
     end
   end

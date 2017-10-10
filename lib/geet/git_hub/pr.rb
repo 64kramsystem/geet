@@ -3,24 +3,27 @@
 module Geet
   module GitHub
     class PR
-      attr_reader :issue_number, :link
+      attr_reader :issue_number
 
-      def self.create(title, description, head, api_helper)
+      def self.create(repository, title, description, head, api_helper)
         request_address = "#{api_helper.repo_link}/pulls"
         request_data = { title: title, body: description, head: head, base: 'master' }
 
         response = api_helper.send_request(request_address, data: request_data)
 
         issue_number = response.fetch('number')
-        issue_link = response['_links']['html']['href']
 
-        new(issue_number, issue_link, api_helper)
+        new(repository, issue_number, api_helper)
       end
 
-      def initialize(issue_number, link, api_helper)
+      def initialize(repository, issue_number, api_helper)
+        @repository = repository
         @issue_number = issue_number
-        @link = link
         @api_helper = api_helper
+      end
+
+      def link
+        "https://github.com/#{@repository.owner}/#{@repository.repo}/pull/#{@issue_number}"
       end
 
       def assign_user(user)
