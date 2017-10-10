@@ -6,10 +6,16 @@ The current version supports creating a PR, but the whole project is a work in p
 
 ## Samples
 
-Create a PR, assigning the labels matching `code review`, and requesting reviews from the collaborators matching `john`, `tom`, `adrian`:
+Create an issue, adding the label matching `bug`, and assigning it to the collaborators matching `john`, `tom`, `kevin`:
 
-    geet pr 'PR Title' 'PR Description' --label-patterns "code review" --reviewer-patterns john,tom,adrian
+    $ geet issue 'Issue Title' 'Issue Description' --label-patterns "code review" --assignee-patterns john,tom,kevin
+
+Create a PR, adding the label matching `code review`, and requesting reviews from the collaborators matching `john`, `tom`, `adrian`:
+
+    $ geet pr 'PR Title' 'PR Description
+    > 
+    > Closes #1' --label-patterns "code review" --reviewer-patterns john,tom,adrian
 
 For the help:
 
-    geet pr --help
+    $ geet --help
