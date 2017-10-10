@@ -22,7 +22,7 @@ module Geet
       }.freeze
 
       # For simplicity, we match any character except the ones the separators.
-      REMOTE_ORIGIN_REGEX = %r{\Agit@([^:]+):([^/]+)/(.*?)\.git\Z}
+      REMOTE_ORIGIN_REGEX = %r{\Agit@([^:]+):([^/]+)/(.*?)(\.git)?\Z}
 
       def initialize(api_token)
         the_provider_domain = provider_domain
