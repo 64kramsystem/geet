@@ -2,9 +2,18 @@
 
 Command line interface for performing Git hosting service operations.
 
-The current version supports creating a PR, but the whole project is a work in progress (currently, no help, and no testing suite).
+The current version supports only creating PRs/issues.
+
+This tool is very similar to [Hub](https://github.com/github/hub), but it supports more complex operations, fully specified via command line.
 
 ## Samples
+
+Basic creation of an issue and a PR (both actions will open the pages with the result in the browser):
+
+    $ geet issue 'Issue Title' 'Issue Description'
+    $ geet pr 'PR Title' 'PR Description
+    > 
+    > Closes #1' --label-patterns "code review" --reviewer-patterns john,tom,adrian
 
 Create an issue, adding the label matching `bug`, and assigning it to the collaborators matching `john`, `tom`, `kevin`:
 
