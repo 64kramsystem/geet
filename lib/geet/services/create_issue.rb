@@ -5,13 +5,13 @@ require_relative '../git/repository.rb'
 
 module Geet
   module Services
-    class CreatePr
+    class CreateIssue
       include Geet::Helpers::OsHelper
 
       # options:
       #   :label_patterns
-      #   :reviewer_patterns
-      #   :no_open_pr
+      #   :assignee_patterns
+      #   :no_open_issue
       #
       def execute(repository, title, description, options = {})
         if options[:label_patterns]
@@ -21,41 +21,39 @@ module Geet
           selected_labels = select_entries(all_labels, options[:label_patterns], type: 'labels')
         end
 
-        if options[:reviewer_patterns]
+        if options[:assignee_patterns]
           puts 'Finding collaborators...'
 
           all_collaborators = repository.collaborators
-          reviewers = select_entries(all_collaborators, options[:reviewer_patterns], type: 'collaborators')
+          assignees = select_entries(all_collaborators, options[:assignee_patterns], type: 'collaborators')
         end
 
-        puts 'Creating PR...'
+        puts 'Creating the issue...'
 
-        pr = repository.create_pr(title, description)
-
-        puts 'Assigning authenticated user...'
-
-        pr.assign_user(repository.authenticated_user)
+        issue = repository.create_issue(title, description)
 
         if selected_labels
           puts 'Adding labels...'
 
-          pr.add_labels(selected_labels)
+          issue.add_labels(selected_labels)
 
           puts '- labels added: ' + selected_labels.join(', ')
         end
 
-        if reviewers
-          puts 'Requesting review...'
+        if assignees
+          puts 'Assigning users...'
 
-          pr.request_review(reviewers)
+          issue.assign_user(assignees)
 
-          puts '- review requested to: ' + reviewers.join(', ')
+          puts '- assigned: ' + assignees.join(', ')
+        else
+          issue.assign_user(repository.authenticated_user)
         end
 
         if options[:no_open_pr]
-          puts "PR address: #{pr.link}"
+          puts "Issue address: #{issue.link}"
         else
-          os_open(pr.link)
+          os_open(issue.link)
         end
       end
 

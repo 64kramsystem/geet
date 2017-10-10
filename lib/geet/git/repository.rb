@@ -14,12 +14,16 @@ module Geet
     class Repository
       extend Forwardable
 
-      def_delegators :@remote_repository, :collaborators, :labels, :create_pr
+      def_delegators :@remote_repository, :collaborators, :labels
+      def_delegators :@remote_repository, :create_issue, :create_pr
       def_delegators :@account, :authenticated_user
 
       DOMAIN_PROVIDERS_MAPPING = {
         'github.com' => Geet::GitHub
       }.freeze
+
+      # For simplicity, we match any character except the ones the separators.
+      REMOTE_ORIGIN_REGEX = %r{\Agit@([^:]+):([^/]+)/(.*?)(\.git)?\Z}
 
       def initialize(api_token)
         the_provider_domain = provider_domain
@@ -38,15 +42,15 @@ module Geet
       end
 
       def provider_domain
-        remote_origin[/^git@(\S+):/, 1]
+        remote_origin[REMOTE_ORIGIN_REGEX, 1]
       end
 
       def owner
-        remote_origin[%r{git@\S+:(\w+)/}, 1] || raise('Internal error')
+        remote_origin[REMOTE_ORIGIN_REGEX, 2]
       end
 
       def repo
-        remote_origin[%r{/(\w+)\.git$}, 1] || raise('Internal error')
+        remote_origin[REMOTE_ORIGIN_REGEX, 3]
       end
 
       # DATA
@@ -64,7 +68,7 @@ module Geet
       def remote_origin
         origin = `git ls-remote --get-url origin`.strip
 
-        if origin !~ %r{\Agit@\S+:\w+/\w+\.git\Z}
+        if origin !~ REMOTE_ORIGIN_REGEX
           raise("Unexpected remote reference format: #{origin.inspect}")
         end
 
