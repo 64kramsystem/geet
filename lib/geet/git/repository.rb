@@ -2,7 +2,7 @@
 
 require 'forwardable'
 
-Dir[File.join(__dir__, '../**/repository.rb')].each { |repository_file| require repository_file }
+Dir[File.join(__dir__, '../**/remote_repository.rb')].each { |repository_file| require repository_file }
 Dir[File.join(__dir__, '../**/account.rb')].each { |account_file| require account_file }
 Dir[File.join(__dir__, '../**/api_helper.rb')].each { |helper_file| require helper_file }
 Dir[File.join(__dir__, '../services/*.rb')].each { |helper_file| require helper_file }
@@ -27,7 +27,7 @@ module Geet
 
         api_helper = provider_module::ApiHelper.new(api_token, user, owner, repo)
 
-        @remote_repository = provider_module::Repository.new(self, api_helper)
+        @remote_repository = provider_module::RemoteRepository.new(self, api_helper)
         @account = provider_module::Account.new(api_helper)
       end
 

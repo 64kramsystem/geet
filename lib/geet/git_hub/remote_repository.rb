@@ -5,7 +5,7 @@ require_relative 'pr.rb'
 
 module Geet
   module GitHub
-    class Repository
+    class RemoteRepository
       def initialize(local_repository, api_helper)
         @local_repository = local_repository
         @api_helper = api_helper
