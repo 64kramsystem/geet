@@ -7,7 +7,7 @@ require_relative 'lib/geet/git/repository.rb'
 if $PROGRAM_NAME == __FILE__
   configuration_helper = Geet::Helpers::ConfigurationHelper.new
 
-  command, options = configuration_helper.decode_argv
+  command, options = configuration_helper.decode_argv || exit
   api_token = configuration_helper.api_token
 
   title, description = options.values_at(:title, :description)
