@@ -1,0 +1,15 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    parseconfig (1.0.8)
+    simple_scripting (0.9.2)
+      parseconfig (~> 1.0)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  simple_scripting (~> 0.9.2)
+
+BUNDLED WITH
+   1.16.0.pre.3
