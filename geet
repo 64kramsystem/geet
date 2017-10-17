@@ -15,12 +15,12 @@ if $PROGRAM_NAME == __FILE__
   repository = Geet::Git::Repository.new(api_token)
 
   case command
-  when 'issue'
+  when Geet::Helpers::ConfigurationHelper::ISSUE_CREATE_COMMAND
     Geet::Services::CreateIssue.new.execute(repository, title, description, options)
-  when 'pr'
+  when Geet::Helpers::ConfigurationHelper::PR_CREATE_COMMAND
     Geet::Services::CreatePr.new.execute(repository, title, description, options)
   else
-    raise 'Internal error'
+    raise "Internal error - Unrecognized command #{command.inspect}"
   end
 
 end
