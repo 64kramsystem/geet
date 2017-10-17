@@ -5,20 +5,22 @@ require_relative 'lib/geet/helpers/configuration_helper.rb'
 require_relative 'lib/geet/git/repository.rb'
 
 if $PROGRAM_NAME == __FILE__
-  configuration_helper = Geet::Helpers::ConfigurationHelper.new
+  include Geet
+
+  configuration_helper = Helpers::ConfigurationHelper.new
 
   command, options = configuration_helper.decode_argv || exit
   api_token = configuration_helper.api_token
 
   title, description = options.values_at(:title, :description)
 
-  repository = Geet::Git::Repository.new(api_token)
+  repository = Git::Repository.new(api_token)
 
   case command
-  when Geet::Helpers::ConfigurationHelper::ISSUE_CREATE_COMMAND
-    Geet::Services::CreateIssue.new.execute(repository, title, description, options)
-  when Geet::Helpers::ConfigurationHelper::PR_CREATE_COMMAND
-    Geet::Services::CreatePr.new.execute(repository, title, description, options)
+  when Helpers::ConfigurationHelper::ISSUE_CREATE_COMMAND
+    Services::CreateIssue.new.execute(repository, title, description, options)
+  when Helpers::ConfigurationHelper::PR_CREATE_COMMAND
+    Services::CreatePr.new.execute(repository, title, description, options)
   else
     raise "Internal error - Unrecognized command #{command.inspect}"
   end
