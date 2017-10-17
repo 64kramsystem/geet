@@ -5,7 +5,14 @@ require 'simple_scripting/argv'
 module Geet
   module Helpers
     class ConfigurationHelper
-      ISSUE_OPTIONS = [
+      # Commands
+
+      ISSUE_CREATE_COMMAND = 'issue.create'
+      PR_CREATE_COMMAND = 'pr.create'
+
+      # Command options
+
+      ISSUE_CREATE_OPTIONS = [
         ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],
         ['-l', '--label-patterns "bug,help wanted"',        'Label patterns'],
         ['-a', '--assignee-patterns john,tom,adrian,kevin', 'Assignee login patterns. Defaults to authenticated user'],
@@ -13,7 +20,7 @@ module Geet
         'description'
       ].freeze
 
-      PR_OPTIONS = [
+      PR_CREATE_OPTIONS = [
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
         ['-l', '--label-patterns "legacy,code review"',     'Label patterns'],
         ['-r', '--reviewer-patterns john,tom,adrian,kevin', 'Reviewer login patterns'],
@@ -21,10 +28,16 @@ module Geet
         'description'
       ].freeze
 
+      # Public interface
+
       def decode_argv
         SimpleScripting::Argv.decode(
-          'issue' => ISSUE_OPTIONS,
-          'pr' => PR_OPTIONS,
+          'issue' => {
+            'create' => ISSUE_CREATE_OPTIONS,
+          },
+          'pr' => {
+            'create' => PR_CREATE_OPTIONS,
+          },
         )
       end
 
