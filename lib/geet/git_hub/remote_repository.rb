@@ -30,6 +30,10 @@ module Geet
         Geet::GitHub::Issue.create(@local_repository, title, description, @api_helper)
       end
 
+      def list_issues
+        Geet::GitHub::Issue.list(@local_repository, @api_helper)
+      end
+
       def create_pr(title, description, head: @local_repository.current_head)
         Geet::GitHub::PR.create(@local_repository, title, description, head, @api_helper)
       end
