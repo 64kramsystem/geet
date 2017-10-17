@@ -8,6 +8,7 @@ module Geet
       # Commands
 
       ISSUE_CREATE_COMMAND = 'issue.create'
+      ISSUE_LIST_COMMAND = 'issue.list'
       PR_CREATE_COMMAND = 'pr.create'
 
       # Command options
@@ -18,6 +19,9 @@ module Geet
         ['-a', '--assignee-patterns john,tom,adrian,kevin', 'Assignee login patterns. Defaults to authenticated user'],
         'title',
         'description'
+      ].freeze
+
+      ISSUE_LIST_OPTIONS = [
       ].freeze
 
       PR_CREATE_OPTIONS = [
@@ -34,6 +38,7 @@ module Geet
         SimpleScripting::Argv.decode(
           'issue' => {
             'create' => ISSUE_CREATE_OPTIONS,
+            'list' => ISSUE_LIST_OPTIONS,
           },
           'pr' => {
             'create' => PR_CREATE_OPTIONS,
