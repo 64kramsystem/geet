@@ -60,7 +60,7 @@ module Geet
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           if data
             request = Net::HTTP::Post.new(uri)
-            request.set_form_data(data)
+            request.body = data.to_json
           else
             request = Net::HTTP::Get.new(uri)
           end
@@ -73,7 +73,7 @@ module Geet
       end
 
       def error?(response)
-        !response['Status'].start_with?('200')
+        !response['Status'].start_with?('2')
       end
 
       def decode_and_format_error(parsed_response)
