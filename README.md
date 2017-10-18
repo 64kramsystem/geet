@@ -26,6 +26,15 @@ Create a PR, adding the label matching `code review`, and requesting reviews fro
     > 
     > Closes #1' --label-patterns "code review" --reviewer-patterns john,tom,adrian
 
+List the open issues, in default order (inverse creation date):
+
+    $ geet issue list
+    > 16. Implement issue opening (https://github.com/saveriomiroddi/geet/issues/16)
+    > 14. Update README (https://github.com/saveriomiroddi/geet/issues/14)
+    > 8. Implement milestones listing/show (https://github.com/saveriomiroddi/geet/issues/8)
+    > 4. Allow writing description in an editor (https://github.com/saveriomiroddi/geet/issues/4)
+    > 2. Support opening PR into other repositories (https://github.com/saveriomiroddi/geet/issues/2)
+
 For the help:
 
     $ geet --help
