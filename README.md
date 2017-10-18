@@ -12,19 +12,17 @@ Basic creation of an issue and a PR (both actions will open the pages with the r
 
     $ geet issue create 'Issue Title' 'Issue Description'
     
-    $ geet pr create 'PR Title' 'PR Description
+    $ geet pr create 'PR Title' 'Multi-line
     > 
-    > Closes #1' --label-patterns "code review" --reviewer-patterns john,tom,adrian
+    > description'
 
-Create an issue, adding the label matching `bug`, and assigning it to the collaborators matching `john`, `tom`, `kevin`:
+More advanced issue/PR creation, with label, reviewers and assignees:
 
-    $ geet issue create 'Issue Title' 'Issue Description' --label-patterns "code review" --assignee-patterns john,tom,kevin
+    $ geet issue create 'Issue Title' 'Issue Description' --label-patterns bug,wip --assignee-patterns john
+    
+    $ geet pr create 'PR Title' 'Closes #1' --label-patterns "code review" --reviewer-patterns kevin,tom,adrian
 
-Create a PR, adding the label matching `code review`, and requesting reviews from the collaborators matching `john`, `tom`, `adrian`:
-
-    $ geet pr create 'PR Title' 'PR Description
-    > 
-    > Closes #1' --label-patterns "code review" --reviewer-patterns john,tom,adrian
+patterns are partial matches, so, for example, `johncarmack` will be matched as assignee in the first case.
 
 List the open issues, in default order (inverse creation date):
 
