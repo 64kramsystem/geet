@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
+require 'uri'
+require 'net/http'
 require 'json'
-require 'open3'
 require 'shellwords'
 
 module Geet
@@ -28,34 +29,15 @@ module Geet
       #                 return an array, with the concatenated (parsed) responses
       #
       def send_request(address, data: nil, multipage: false)
-        # `--data` implies `-X POST`
-        #
-        if data
-          escaped_request_body = JSON.generate(data).shellescape
-          data_option = "--data #{escaped_request_body}"
-        end
-
         # filled only on :multipage
         parsed_responses = []
 
         loop do
-          command = %(curl --verbose --silent --user "#{@user}:#{@api_token}" #{data_option} #{address})
-          response_metadata, response_body = nil
+          response = send_http_request(address, data: data)
 
-          Open3.popen3(command) do |_, stdout, stderr, wait_thread|
-            response_metadata = stderr.readlines.join
-            response_body = stdout.readlines.join
+          parsed_response = JSON.parse(response.body)
 
-            if !wait_thread.value.success?
-              puts response_metadata
-              puts "Error! Command: #{command}"
-              exit
-            end
-          end
-
-          parsed_response = JSON.parse(response_body)
-
-          if error?(response_metadata)
+          if error?(response)
             formatted_error = decode_and_format_error(parsed_response)
             raise(formatted_error)
           end
@@ -64,7 +46,7 @@ module Geet
 
           parsed_responses.concat(parsed_response)
 
-          address = link_next_page(response_metadata)
+          address = link_next_page(response.to_hash)
 
           return parsed_responses if address.nil?
         end
@@ -72,13 +54,35 @@ module Geet
 
       private
 
-      def decode_and_format_error(response)
-        message = response['message']
+      def send_http_request(address, data: nil)
+        uri = URI(address)
 
-        if response.key?('errors')
+        Net::HTTP.start(uri.host, use_ssl: true) do |http|
+          if data
+            request = Net::HTTP::Post.new(uri)
+            request.set_form_data(data)
+          else
+            request = Net::HTTP::Get.new(uri)
+          end
+
+          request.basic_auth @user, @api_token
+          request['Accept'] = 'application/vnd.github.v3+json'
+
+          http.request(request)
+        end
+      end
+
+      def error?(response)
+        !response['Status'].start_with?('200')
+      end
+
+      def decode_and_format_error(parsed_response)
+        message = parsed_response['message']
+
+        if parsed_response.key?('errors')
           message += ':'
 
-          error_details = response['errors'].map do |error_data|
+          error_details = parsed_response['errors'].map do |error_data|
             error_code = error_data.fetch('code')
 
             if error_code == 'custom'
@@ -94,26 +98,12 @@ module Geet
         message
       end
 
-      def error?(response_metadata)
-        status_header = find_header_content(response_metadata, 'Status')
-
-        !!(status_header =~ /^4\d\d/)
-      end
-
-      def link_next_page(response_metadata)
-        link_header = find_header_content(response_metadata, 'Link')
+      def link_next_page(response_headers)
+        link_header = response_headers['Link']
 
         return nil if link_header.nil?
 
         link_header[/<(\S+)>; rel="next"/, 1]
-      end
-
-      def find_header_content(response_metadata, header_name)
-        response_metadata.split("\n").each do |header|
-          return Regexp.last_match(1) if header =~ /^< #{header_name}: (.*)/
-        end
-
-        nil
       end
     end
   end
