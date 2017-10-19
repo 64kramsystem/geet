@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
-require_relative 'api_helper.rb'
+require_relative 'api_helper'
 require_relative 'gist'
 require_relative 'issue'
-require_relative 'pr.rb'
+require_relative 'pr'
 
 module Geet
   module GitHub
