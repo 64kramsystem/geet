@@ -15,6 +15,7 @@ module Geet
       extend Forwardable
 
       def_delegators :@remote_repository, :collaborators, :labels
+      def_delegators :@remote_repository, :create_gist
       def_delegators :@remote_repository, :create_issue, :list_issues
       def_delegators :@remote_repository, :create_pr
       def_delegators :@account, :authenticated_user

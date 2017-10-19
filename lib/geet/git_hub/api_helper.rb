@@ -15,8 +15,12 @@ module Geet
         @repo = repo
       end
 
+      def base_link
+        "https://api.github.com"
+      end
+
       def repo_link
-        "https://api.github.com/repos/#{@owner}/#{@repo}"
+        "#{base_link}/repos/#{@owner}/#{@repo}"
       end
 
       # Send a request.
