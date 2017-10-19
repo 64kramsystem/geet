@@ -7,11 +7,19 @@ module Geet
     class ConfigurationHelper
       # Commands
 
+      GIST_CREATE_COMMAND = 'gist.create'
       ISSUE_CREATE_COMMAND = 'issue.create'
       ISSUE_LIST_COMMAND = 'issue.list'
       PR_CREATE_COMMAND = 'pr.create'
 
       # Command options
+
+      GIST_CREATE_OPTIONS = [
+        ['-p', '--public'],
+        ['-B', '--no-browse', "Don't open the gist link in the browser after creation"],
+        'filename',
+        '[description]'
+      ]
 
       ISSUE_CREATE_OPTIONS = [
         ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],
@@ -36,6 +44,9 @@ module Geet
 
       def decode_argv
         SimpleScripting::Argv.decode(
+          'gist' => {
+            'create' => GIST_CREATE_OPTIONS,
+          },
           'issue' => {
             'create' => ISSUE_CREATE_OPTIONS,
             'list' => ISSUE_LIST_OPTIONS,
