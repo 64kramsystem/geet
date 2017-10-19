@@ -27,12 +27,14 @@ module Geet
         response = api_helper.send_request(request_address, multipage: true)
         issue_class = Struct.new(:number, :title, :link)
 
-        response.map do |issue_data|
-          number = issue_data.fetch('number')
-          title = issue_data.fetch('title')
-          link = issue_data.fetch('html_url')
+        response.each_with_object([]) do |issue_data, result|
+          if ! issue_data.key?('pull_request')
+            number = issue_data.fetch('number')
+            title = issue_data.fetch('title')
+            link = issue_data.fetch('html_url')
 
-          issue_class.new(number, title, link)
+            result << issue_class.new(number, title, link)
+          end
         end
       end
 
