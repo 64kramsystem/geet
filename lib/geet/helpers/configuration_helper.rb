@@ -11,6 +11,7 @@ module Geet
       ISSUE_CREATE_COMMAND = 'issue.create'
       ISSUE_LIST_COMMAND = 'issue.list'
       PR_CREATE_COMMAND = 'pr.create'
+      PR_LIST_COMMAND = 'pr.list'
 
       # Command options
 
@@ -40,6 +41,9 @@ module Geet
         'description'
       ].freeze
 
+      PR_LIST_OPTIONS = [
+      ].freeze
+
       # Public interface
 
       def decode_argv
@@ -53,6 +57,7 @@ module Geet
           },
           'pr' => {
             'create' => PR_CREATE_OPTIONS,
+            'list' => PR_LIST_OPTIONS,
           },
         )
       end
