@@ -33,6 +33,11 @@ List the open issues, in default order (inverse creation date):
     > 4. Allow writing description in an editor (https://github.com/saveriomiroddi/geet/issues/4)
     > 2. Support opening PR into other repositories (https://github.com/saveriomiroddi/geet/issues/2)
 
+List the open PRs, in default order (inverse creation date):
+
+    $ geet pr list
+    > 21. Add PRs listing support (https://github.com/saveriomiroddi/geet/pull/21)
+
 For the help:
 
     $ geet --help
