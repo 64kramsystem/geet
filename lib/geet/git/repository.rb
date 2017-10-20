@@ -25,7 +25,15 @@ module Geet
       }.freeze
 
       # For simplicity, we match any character except the ones the separators.
-      REMOTE_ORIGIN_REGEX = %r{\Agit@([^:]+):([^/]+)/(.*?)(\.git)?\Z}
+      REMOTE_ORIGIN_REGEX = %r{
+        \A
+        (?:https://(.+?)/|git@(.+?):)
+        ([^/]+)
+        /
+        (.*?)
+        (?:\.git)?
+        \Z
+      }x
 
       def initialize(api_token)
         the_provider_domain = provider_domain
@@ -44,15 +52,15 @@ module Geet
       end
 
       def provider_domain
-        remote_origin[REMOTE_ORIGIN_REGEX, 1]
+        remote_origin[REMOTE_ORIGIN_REGEX, 1] || remote_origin[REMOTE_ORIGIN_REGEX, 2]
       end
 
       def owner
-        remote_origin[REMOTE_ORIGIN_REGEX, 2]
+        remote_origin[REMOTE_ORIGIN_REGEX, 3]
       end
 
       def repo
-        remote_origin[REMOTE_ORIGIN_REGEX, 3]
+        remote_origin[REMOTE_ORIGIN_REGEX, 4]
       end
 
       # DATA
