@@ -50,7 +50,7 @@ module Geet
           issue.assign_user(repository.authenticated_user)
         end
 
-        if options[:no_open_pr]
+        if options[:no_open_issue]
           puts "Issue address: #{issue.link}"
         else
           os_open(issue.link)
