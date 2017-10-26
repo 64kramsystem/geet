@@ -73,7 +73,7 @@ module Geet
           when 0
             raise "No #{type} found for pattern: #{pattern.inspect}"
           else
-            raise "Multiple #{type} found for pattern #{pattern.inspect}: #{labels_found}"
+            raise "Multiple #{type} found for pattern #{pattern.inspect}: #{entries_found}"
           end
         end
       end
