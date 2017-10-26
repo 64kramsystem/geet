@@ -103,11 +103,12 @@ module Geet
       end
 
       def link_next_page(response_headers)
-        link_header = response_headers['Link']
+        # An array (or nil) is returned.
+        link_header = Array(response_headers['link'])
 
-        return nil if link_header.nil?
+        return nil if link_header.empty?
 
-        link_header[/<(\S+)>; rel="next"/, 1]
+        link_header[0][/<(\S+)>; rel="next"/, 1]
       end
     end
   end
