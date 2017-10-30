@@ -26,22 +26,26 @@ module Geet
         ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],
         ['-l', '--label-patterns "bug,help wanted"',        'Label patterns'],
         ['-a', '--assignee-patterns john,tom,adrian,kevin', 'Assignee login patterns. Defaults to authenticated user'],
+        ['-u', '--upstream',                                'Create on the upstream repository'],
         'title',
         'description'
       ].freeze
 
       ISSUE_LIST_OPTIONS = [
+        ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
       PR_CREATE_OPTIONS = [
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
         ['-l', '--label-patterns "legacy,code review"',     'Label patterns'],
         ['-r', '--reviewer-patterns john,tom,adrian,kevin', 'Reviewer login patterns'],
+        ['-u', '--upstream',                                'Create on the upstream repository'],
         'title',
         'description'
       ].freeze
 
       PR_LIST_OPTIONS = [
+        ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
       # Public interface

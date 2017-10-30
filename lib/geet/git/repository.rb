@@ -28,18 +28,19 @@ module Geet
       REMOTE_ORIGIN_REGEX = %r{
         \A
         (?:https://(.+?)/|git@(.+?):)
-        ([^/]+)
-        /
-        (.*?)
+        ([^/]+/.*?)
         (?:\.git)?
         \Z
       }x
 
-      def initialize(api_token)
+      ORIGIN_NAME   = 'origin'
+      UPSTREAM_NAME = 'upstream'
+
+      def initialize(api_token, upstream: false)
         the_provider_domain = provider_domain
         provider_module = DOMAIN_PROVIDERS_MAPPING[the_provider_domain] || raise("Provider not supported for domain: #{provider_domain}")
 
-        api_helper = provider_module::ApiHelper.new(api_token, user, owner, repo)
+        api_helper = provider_module::ApiHelper.new(api_token, user, path(upstream: upstream), upstream)
 
         @remote_repository = provider_module::RemoteRepository.new(self, api_helper)
         @account = provider_module::Account.new(api_helper)
@@ -52,15 +53,17 @@ module Geet
       end
 
       def provider_domain
-        remote_origin[REMOTE_ORIGIN_REGEX, 1] || remote_origin[REMOTE_ORIGIN_REGEX, 2]
+        # We assume that it's not possible to have origin and upstream on different providers.
+        #
+        remote_url = remote(ORIGIN_NAME)
+
+        remote_url[REMOTE_ORIGIN_REGEX, 1] || remote_url[REMOTE_ORIGIN_REGEX, 2]
       end
 
-      def owner
-        remote_origin[REMOTE_ORIGIN_REGEX, 3]
-      end
+      def path(upstream: false)
+        remote_name = upstream ? UPSTREAM_NAME : ORIGIN_NAME
 
-      def repo
-        remote_origin[REMOTE_ORIGIN_REGEX, 4]
+        remote(remote_name)[REMOTE_ORIGIN_REGEX, 3]
       end
 
       # DATA
@@ -75,14 +78,16 @@ module Geet
 
       # The result is in the format `git@github.com:saveriomiroddi/geet.git`
       #
-      def remote_origin
-        origin = `git ls-remote --get-url origin`.strip
+      def remote(name)
+        remote_url = `git ls-remote --get-url #{name}`.strip
 
-        if origin !~ REMOTE_ORIGIN_REGEX
-          raise("Unexpected remote reference format: #{origin.inspect}")
+        if remote_url == name
+          raise "Remote #{name.inspect} not found!"
+        elsif remote_url !~ REMOTE_ORIGIN_REGEX
+          raise "Unexpected remote reference format: #{remote_url.inspect}"
         end
 
-        origin
+        remote_url
       end
     end
   end

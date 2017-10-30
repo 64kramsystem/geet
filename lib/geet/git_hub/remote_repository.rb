@@ -14,14 +14,14 @@ module Geet
       end
 
       def collaborators
-        url = "https://api.github.com/repos/#{@local_repository.owner}/#{@local_repository.repo}/collaborators"
+        url = "#{@api_helper.api_repo_link}/collaborators"
         response = @api_helper.send_request(url, multipage: true)
 
         response.map { |user_entry| user_entry.fetch('login') }
       end
 
       def labels
-        url = "https://api.github.com/repos/#{@local_repository.owner}/#{@local_repository.repo}/labels"
+        url = "#{@api_helper.api_repo_link}/labels"
         response = @api_helper.send_request(url, multipage: true)
 
         response.map { |label_entry| label_entry['name'] }
@@ -36,15 +36,15 @@ module Geet
       end
 
       def list_issues
-        Geet::GitHub::AbstractIssue.list(@local_repository, @api_helper, filter: :issue)
+        Geet::GitHub::AbstractIssue.list(@api_helper, filter: :issue)
       end
 
-      def create_pr(title, description, head: @local_repository.current_head)
+      def create_pr(title, description, head)
         Geet::GitHub::PR.create(@local_repository, title, description, head, @api_helper)
       end
 
       def list_prs
-        Geet::GitHub::AbstractIssue.list(@local_repository, @api_helper, filter: :pr)
+        Geet::GitHub::AbstractIssue.list(@api_helper, filter: :pr)
       end
     end
   end

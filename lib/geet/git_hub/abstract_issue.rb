@@ -15,8 +15,8 @@ module Geet
       # options:
       #   filter: :pr, :issue, or nil
       #
-      def self.list(repository, api_helper, filter: nil)
-        request_address = "#{api_helper.repo_link}/issues"
+      def self.list(api_helper, filter: nil)
+        request_address = "#{api_helper.api_repo_link}/issues"
 
         response = api_helper.send_request(request_address, multipage: true)
         issue_class = Struct.new(:number, :title, :link)
@@ -37,8 +37,7 @@ module Geet
         end
       end
 
-      def initialize(repository, issue_number, api_helper)
-        @repository = repository
+      def initialize(issue_number, api_helper)
         @issue_number = issue_number
         @api_helper = api_helper
       end
@@ -48,14 +47,14 @@ module Geet
       #
       def assign_user(users)
         request_data = { assignees: Array(users) }
-        request_address = "#{@api_helper.repo_link}/issues/#{@issue_number}/assignees"
+        request_address = "#{@api_helper.api_repo_link}/issues/#{@issue_number}/assignees"
 
         @api_helper.send_request(request_address, data: request_data)
       end
 
       def add_labels(labels)
         request_data = labels
-        request_address = "#{@api_helper.repo_link}/issues/#{@issue_number}/labels"
+        request_address = "#{@api_helper.api_repo_link}/issues/#{@issue_number}/labels"
 
         @api_helper.send_request(request_address, data: request_data)
       end

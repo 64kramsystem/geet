@@ -30,7 +30,7 @@ module Geet
 
         puts 'Creating PR...'
 
-        pr = repository.create_pr(title, description)
+        pr = repository.create_pr(title, description, repository.current_head)
 
         puts 'Assigning authenticated user...'
 
