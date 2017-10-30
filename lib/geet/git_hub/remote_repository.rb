@@ -32,7 +32,7 @@ module Geet
       end
 
       def create_issue(title, description)
-        Geet::GitHub::Issue.create(@local_repository, title, description, @api_helper)
+        Geet::GitHub::Issue.create(title, description, @api_helper)
       end
 
       def list_issues
