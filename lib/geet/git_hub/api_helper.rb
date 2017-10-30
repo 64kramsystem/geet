@@ -14,12 +14,16 @@ module Geet
         @repository_path = repository_path
       end
 
-      def base_link
+      def api_base_link
         "https://api.github.com"
       end
 
+      def api_repo_link
+        "#{api_base_link}/repos/#{@repository_path}"
+      end
+
       def repo_link
-        "#{base_link}/repos/#{@repository_path}"
+        "https://github.com/#{@repository.path}"
       end
 
       # Send a request.
