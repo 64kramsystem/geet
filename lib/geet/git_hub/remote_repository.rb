@@ -39,7 +39,7 @@ module Geet
         Geet::GitHub::AbstractIssue.list(@api_helper, filter: :issue)
       end
 
-      def create_pr(title, description, head: @local_repository.current_head)
+      def create_pr(title, description, head)
         Geet::GitHub::PR.create(@local_repository, title, description, head, @api_helper)
       end
 
