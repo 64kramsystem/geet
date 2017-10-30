@@ -28,9 +28,7 @@ module Geet
       REMOTE_ORIGIN_REGEX = %r{
         \A
         (?:https://(.+?)/|git@(.+?):)
-        ([^/]+)
-        /
-        (.*?)
+        ([^/]+/.*?)
         (?:\.git)?
         \Z
       }x
@@ -39,7 +37,7 @@ module Geet
         the_provider_domain = provider_domain
         provider_module = DOMAIN_PROVIDERS_MAPPING[the_provider_domain] || raise("Provider not supported for domain: #{provider_domain}")
 
-        api_helper = provider_module::ApiHelper.new(api_token, user, owner, repo)
+        api_helper = provider_module::ApiHelper.new(api_token, user, path)
 
         @remote_repository = provider_module::RemoteRepository.new(self, api_helper)
         @account = provider_module::Account.new(api_helper)
@@ -55,12 +53,8 @@ module Geet
         remote_origin[REMOTE_ORIGIN_REGEX, 1] || remote_origin[REMOTE_ORIGIN_REGEX, 2]
       end
 
-      def owner
+      def path
         remote_origin[REMOTE_ORIGIN_REGEX, 3]
-      end
-
-      def repo
-        remote_origin[REMOTE_ORIGIN_REGEX, 4]
       end
 
       # DATA

@@ -17,7 +17,7 @@ module Geet
       end
 
       def link
-        "https://github.com/#{@repository.owner}/#{@repository.repo}/issues/#{@issue_number}"
+        "https://github.com/#{@repository.path}/issues/#{@issue_number}"
       end
     end
   end

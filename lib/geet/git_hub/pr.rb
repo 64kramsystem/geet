@@ -17,7 +17,7 @@ module Geet
       end
 
       def link
-        "https://github.com/#{@repository.owner}/#{@repository.repo}/pull/#{@issue_number}"
+        "https://github.com/#{@repository.path}/pull/#{@issue_number}"
       end
 
       def request_review(reviewers)
