@@ -11,7 +11,8 @@ configuration_helper = Helpers::ConfigurationHelper.new
 command, options = configuration_helper.decode_argv || exit
 api_token = configuration_helper.api_token
 
-repository = Git::Repository.new(api_token)
+# `:upstream` is always false in the gist command case.
+repository = Git::Repository.new(api_token, upstream: !!options[:upstream])
 
 case command
 when Helpers::ConfigurationHelper::GIST_CREATE_COMMAND

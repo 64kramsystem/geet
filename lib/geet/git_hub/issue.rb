@@ -13,7 +13,7 @@ module Geet
 
         issue_number = response.fetch('number')
 
-        new(repository, issue_number, api_helper)
+        new(issue_number, api_helper)
       end
 
       def link

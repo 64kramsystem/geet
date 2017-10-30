@@ -8,10 +8,11 @@ require 'shellwords'
 module Geet
   module GitHub
     class ApiHelper
-      def initialize(api_token, user, repository_path)
+      def initialize(api_token, user, repository_path, upstream)
         @api_token = api_token
         @user = user
         @repository_path = repository_path
+        @upstream = upstream
       end
 
       def api_base_link
@@ -23,7 +24,11 @@ module Geet
       end
 
       def repo_link
-        "https://github.com/#{@repository.path}"
+        "https://github.com/#{@repository_path}"
+      end
+
+      def upstream?
+        @upstream
       end
 
       # Send a request.
