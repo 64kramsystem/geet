@@ -14,14 +14,14 @@ module Geet
       end
 
       def collaborators
-        url = "https://api.github.com/repos/#{@local_repository.path}/collaborators"
+        url = "#{@api_helper.repo_link}/collaborators"
         response = @api_helper.send_request(url, multipage: true)
 
         response.map { |user_entry| user_entry.fetch('login') }
       end
 
       def labels
-        url = "https://api.github.com/repos/#{@local_repository.path}/labels"
+        url = "#{@api_helper.repo_link}/labels"
         response = @api_helper.send_request(url, multipage: true)
 
         response.map { |label_entry| label_entry['name'] }
