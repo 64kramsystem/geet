@@ -13,11 +13,12 @@ module Geet
       #   :publik:      defaults to false
       #   :no_browse    defaults to false
       #
-      def execute(repository, filename, description: nil, publik: false, no_browse: false)
-        content = IO.read(filename)
+      def execute(repository, full_filename, description: nil, publik: false, no_browse: false)
+        content = IO.read(full_filename)
 
         puts 'Creating the gist...'
 
+        filename = File.basename(full_filename)
         gist = repository.create_gist(filename, content, description: description, publik: publik)
 
         if no_browse
