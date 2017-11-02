@@ -5,8 +5,9 @@ require_relative 'abstract_issue'
 module Geet
   module GitHub
     class Gist
-      def self.create(repository, filename, content, api_helper, description: nil, publik: false)
+      def self.create(filename, content, api_helper, description: nil, publik: false)
         request_address = "#{api_helper.api_base_link}/gists"
+
         request_data = prepare_request_data(filename, content, description, publik)
 
         response = api_helper.send_request(request_address, data: request_data)
@@ -24,21 +25,23 @@ module Geet
         "https://gist.github.com/#{@id}"
       end
 
-      private
+      class << self
+        private
 
-      def self.prepare_request_data(filename, content, description, publik)
-        request_data = {
-          "public" => publik,
-          "files" => {
-            filename => {
-              "content" => content
+        def prepare_request_data(filename, content, description, publik)
+          request_data = {
+            'public' => publik,
+            'files' => {
+              filename => {
+                'content' => content
+              }
             }
           }
-        }
 
-        request_data['description'] = description if description
+          request_data['description'] = description if description
 
-        request_data
+          request_data
+        end
       end
     end
   end

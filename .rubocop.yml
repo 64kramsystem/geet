@@ -1,15 +1,40 @@
 inherit_from: .rubocop_todo.yml
-
 AllCops:
   TargetRubyVersion: 2.3
+
+Layout/ExtraSpacing:
+  Enabled: false
+
+Layout/SpaceAroundOperators:
+  Enabled: false
+
+Metrics/AbcSize:
+  Max: 32
 
 Metrics/LineLength:
   Max: 160
 
+Metrics/MethodLength:
+  Max: 29
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - 'lib/geet/services/create_issue.rb'
+
+Style/Documentation:
+  Enabled: false
+
 Style/DoubleNegation:
   Enabled: false
 
+Style/GuardClause:
+  Exclude:
+    - 'lib/geet/git/repository.rb'
+
 Style/NegatedIf:
+  Enabled: false
+
+Style/Next:
   Enabled: false
 
 Style/TrailingCommaInArguments:

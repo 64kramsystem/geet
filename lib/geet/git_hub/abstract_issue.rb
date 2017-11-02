@@ -25,7 +25,7 @@ module Geet
           include_issue = \
             filter.nil? ||
             filter == :pr && issue_data.key?('pull_request') ||
-            filter == :issue && ! issue_data.key?('pull_request')
+            filter == :issue && !issue_data.key?('pull_request')
 
           if include_issue
             number = issue_data.fetch('number')
