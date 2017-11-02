@@ -28,7 +28,7 @@ module Geet
       end
 
       def create_gist(filename, content, description: nil, publik: false)
-        Geet::GitHub::Gist.create(@local_repository, filename, content, @api_helper, description: description, publik: publik)
+        Geet::GitHub::Gist.create(filename, content, @api_helper, description: description, publik: publik)
       end
 
       def create_issue(title, description)

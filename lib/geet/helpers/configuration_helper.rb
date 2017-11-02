@@ -20,7 +20,7 @@ module Geet
         ['-B', '--no-browse', "Don't open the gist link in the browser after creation"],
         'filename',
         '[description]'
-      ]
+      ].freeze
 
       ISSUE_CREATE_OPTIONS = [
         ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],

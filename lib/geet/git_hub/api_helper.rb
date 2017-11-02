@@ -16,7 +16,7 @@ module Geet
       end
 
       def api_base_link
-        "https://api.github.com"
+        'https://api.github.com'
       end
 
       def api_repo_link
