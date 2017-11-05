@@ -13,46 +13,17 @@ module Geet
       #   :reviewer_patterns
       #   :no_open_pr
       #
-      def execute(repository, title, description, options = {})
-        if options[:label_patterns]
-          puts 'Finding labels...'
+      def execute(repository, title, description, label_patterns: nil, reviewer_patterns: nil, no_open_pr: nil, **)
+        selected_labels = select_labels(repository, label_patterns]) if label_patterns
+        reviewers = select_reviewers(repository, reviewer_patterns]) if reviewer_patterns
 
-          all_labels = repository.labels
-          selected_labels = select_entries(all_labels, options[:label_patterns], type: 'labels')
-        end
+        pr = create_pr(repository, title, description)
 
-        if options[:reviewer_patterns]
-          puts 'Finding collaborators...'
+        assign_user(pr, repository)
+        add_labels(pr, selected_labels) if selected_labels
+        request_review(pr, reviewers) if reviewers
 
-          all_collaborators = repository.collaborators
-          reviewers = select_entries(all_collaborators, options[:reviewer_patterns], type: 'collaborators')
-        end
-
-        puts 'Creating PR...'
-
-        pr = repository.create_pr(title, description, repository.current_head)
-
-        puts 'Assigning authenticated user...'
-
-        pr.assign_user(repository.authenticated_user)
-
-        if selected_labels
-          puts 'Adding labels...'
-
-          pr.add_labels(selected_labels)
-
-          puts '- labels added: ' + selected_labels.join(', ')
-        end
-
-        if reviewers
-          puts 'Requesting review...'
-
-          pr.request_review(reviewers)
-
-          puts '- review requested to: ' + reviewers.join(', ')
-        end
-
-        if options[:no_open_pr]
+        if no_open_pr
           puts "PR address: #{pr.link}"
         else
           os_open(pr.link)
@@ -60,6 +31,54 @@ module Geet
       end
 
       private
+
+      # Internal actions
+
+      def select_labels(repository, label_patterns)
+        puts 'Finding labels...'
+
+        all_labels = repository.labels
+
+        select_entries(all_labels, label_patterns, type: 'labels')
+      end
+
+      def select_reviewers(repository, reviewer_patterns)
+        puts 'Finding collaborators...'
+
+        all_collaborators = repository.collaborators
+
+        select_entries(all_collaborators, reviewer_patterns, type: 'collaborators')
+      end
+
+      def create_pr(repository, title, description)
+        puts 'Creating PR...'
+
+        pr = repository.create_pr(title, description, repository.current_head)
+      end
+
+      def assign_user(pr, repository)
+        puts 'Assigning authenticated user...'
+
+        pr.assign_user(repository.authenticated_user)
+      end
+
+      def add_labels(pr, selected_labels)
+        puts 'Adding labels...'
+
+        pr.add_labels(selected_labels)
+
+        puts '- labels added: ' + selected_labels.join(', ')
+      end
+
+      def request_review(pr, reviewers)
+        puts 'Requesting review...'
+
+        pr.request_review(reviewers)
+
+        puts '- review requested to: ' + reviewers.join(', ')
+      end
+
+      # Generic helpers
 
       def select_entries(entries, raw_patterns, type: 'entries')
         patterns = raw_patterns.split(',')
