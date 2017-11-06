@@ -3,8 +3,6 @@
 require_relative '../helpers/os_helper.rb'
 require_relative '../git/repository.rb'
 
-require 'thread'
-
 module Geet
   module Services
     class CreatePr
@@ -66,7 +64,7 @@ module Geet
       def create_pr(repository, title, description)
         puts 'Creating PR...'
 
-        pr = repository.create_pr(title, description, repository.current_head)
+        repository.create_pr(title, description, repository.current_head)
       end
 
       def assign_authenticated_user(pr, repository)
