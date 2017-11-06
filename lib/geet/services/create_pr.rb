@@ -24,7 +24,7 @@ module Geet
 
         pr = create_pr(repository, title, description)
 
-        assign_user_thread = assign_user(pr, repository)
+        assign_user_thread = assign_authenticated_user(pr, repository)
         add_labels_thread = add_labels(pr, selected_labels) if selected_labels
         request_review_thread = request_review(pr, reviewers) if reviewers
 
@@ -69,7 +69,7 @@ module Geet
         pr = repository.create_pr(title, description, repository.current_head)
       end
 
-      def assign_users(pr, repository)
+      def assign_authenticated_user(pr, repository)
         puts 'Assigning authenticated user...'
 
         Thread.new do
