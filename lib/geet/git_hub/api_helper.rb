@@ -36,16 +36,17 @@ module Geet
       # Returns the parsed response, or an Array, in case of multipage.
       #
       # params:
+      #   :params:      (Hash)
       #   :data:        (Hash) if present, will generate a POST request
       #   :multipage:   set true for paged GitHub responses (eg. issues); it will make the method
       #                 return an array, with the concatenated (parsed) responses
       #
-      def send_request(address, data: nil, multipage: false)
+      def send_request(address, params: nil, data: nil, multipage: false)
         # filled only on :multipage
         parsed_responses = []
 
         loop do
-          response = send_http_request(address, data: data)
+          response = send_http_request(address, params: params, data: data)
 
           parsed_response = JSON.parse(response.body)
 
@@ -66,8 +67,8 @@ module Geet
 
       private
 
-      def send_http_request(address, data: nil)
-        uri = URI(address)
+      def send_http_request(address, params: nil, data: nil)
+        uri = encode_uri(address, params)
 
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           if data
@@ -82,6 +83,12 @@ module Geet
 
           http.request(request)
         end
+      end
+
+      def encode_uri(address, params)
+        address += '?' + URI.encode_www_form(params) if params
+
+        URI(address)
       end
 
       def error?(response)
