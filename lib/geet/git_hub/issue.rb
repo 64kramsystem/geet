@@ -11,21 +11,17 @@ module Geet
 
         response = api_helper.send_request(request_address, data: request_data)
 
-        issue_number = response.fetch('number')
+        issue_number, title, link = response.fetch_values('number', 'title', 'html_url')
 
-        new(issue_number, api_helper)
+        new(issue_number, api_helper, title, link)
       end
 
-      # Returns an array of Struct(:number, :title); once this workflow is extended,
-      # the struct will likely be converted to a standard class.
-      #
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
       def self.list(api_helper)
         request_address = "#{api_helper.api_repo_link}/issues"
 
         response = api_helper.send_request(request_address, multipage: true)
-        issue_class = Struct.new(:number, :title, :link)
 
         response.each_with_object([]) do |issue_data, result|
           if !issue_data.key?('pull_request')
@@ -33,13 +29,9 @@ module Geet
             title = issue_data.fetch('title')
             link = issue_data.fetch('html_url')
 
-            result << issue_class.new(number, title, link)
+            result << new(number, api_helper, title, link)
           end
         end
-      end
-
-      def link
-        "#{@api_helper.repo_link}/issues/#{@issue_number}"
       end
     end
   end

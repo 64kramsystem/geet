@@ -5,6 +5,8 @@ require_relative 'abstract_issue'
 module Geet
   module GitHub
     class PR < AbstractIssue
+      # See https://developer.github.com/v3/pulls/#create-a-pull-request
+      #
       def self.create(repository, title, description, head, api_helper)
         request_address = "#{api_helper.api_repo_link}/pulls"
 
@@ -13,33 +15,25 @@ module Geet
 
         response = api_helper.send_request(request_address, data: request_data)
 
-        issue_number = response.fetch('number')
+        issue_number, title, link = response.fetch_values('number', 'title', 'html_url')
 
-        new(issue_number, api_helper)
+        new(issue_number, api_helper, title, link)
       end
 
-      # Returns an array of Struct(:number, :title); once this workflow is extended,
-      # the struct will likely be converted to a standard class.
-      #
       # See https://developer.github.com/v3/pulls/#list-pull-requests
       #
       def self.list(api_helper)
         request_address = "#{api_helper.api_repo_link}/pulls"
 
         response = api_helper.send_request(request_address, multipage: true)
-        issue_class = Struct.new(:number, :title, :link)
 
         response.map do |issue_data|
           number = issue_data.fetch('number')
           title = issue_data.fetch('title')
           link = issue_data.fetch('html_url')
 
-          issue_class.new(number, title, link)
+          new(number, api_helper, title, link)
         end
-      end
-
-      def link
-        "#{@api_helper.repo_link}/pull/#{@issue_number}"
       end
 
       def request_review(reviewers)
