@@ -14,20 +14,26 @@ module Geet
       #   :no_open_issue
       #
       def execute(repository, title, description, label_patterns: nil, assignee_patterns: nil, no_open_issue: nil, **)
-        selected_labels = select_labels(repository, label_patterns) if label_patterns
-        assignees = select_assignees(repository, assignee_patterns) if assignee_patterns
+        labels_thread = select_labels(repository, label_patterns) if label_patterns
+        assignees_thread = select_assignees(repository, assignee_patterns) if assignee_patterns
+
+        selected_labels = labels_thread&.join&.value
+        assignees = assignees_thread&.join&.value
 
         puts 'Creating the issue...'
 
         issue = repository.create_issue(title, description)
 
-        add_labels(issue, selected_labels) if selected_labels
+        add_labels_thread = add_labels(issue, selected_labels) if selected_labels
 
         if assignees
-          assign_users(issue, assignees)
+          assign_users_thread = assign_users(issue, assignees)
         else
-          assign_authenticated_user(repository, issue)
+          assign_users_thread = assign_authenticated_user(repository, issue)
         end
+
+        add_labels_thread&.join
+        assign_users_thread.join
 
         if no_open_issue
           puts "Issue address: #{issue.link}"
@@ -43,39 +49,45 @@ module Geet
       def select_labels(repository, label_patterns)
         puts 'Finding labels...'
 
-        all_labels = repository.labels
+        Thread.new do
+          all_labels = repository.labels
 
-        select_entries(all_labels, label_patterns, type: 'labels')
+          select_entries(all_labels, label_patterns, type: 'labels')
+        end
       end
 
       def select_assignees(repository, assignee_patterns)
         puts 'Finding collaborators...'
 
-        all_collaborators = repository.collaborators
+        Thread.new do
+          all_collaborators = repository.collaborators
 
-        select_entries(all_collaborators, assignee_patterns, type: 'collaborators')
+          select_entries(all_collaborators, assignee_patterns, type: 'collaborators')
+        end
       end
 
       def add_labels(issue, selected_labels)
-        puts 'Adding labels...'
+        puts "Adding labels #{selected_labels.join(', ')}..."
 
-        issue.add_labels(selected_labels)
-
-        puts '- labels added: ' + selected_labels.join(', ')
+        Thread.new do
+          issue.add_labels(selected_labels)
+        end
       end
 
       def assign_users(issue, users)
-        puts 'Assigning users...'
+        puts "Assigning users #{users.join(', ')}..."
 
-        issue.assign_users(users)
-
-        puts '- assigned: ' + users.join(', ')
+        Thread.new do
+          issue.assign_users(users)
+        end
       end
 
       def assign_authenticated_user(repository, issue)
         puts 'Assigning authenticated user...'
 
-        issue.assign_users(repository.authenticated_user)
+        Thread.new do
+          issue.assign_users(repository.authenticated_user)
+        end
       end
 
       # Generic helpers
