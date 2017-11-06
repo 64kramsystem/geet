@@ -45,7 +45,7 @@ module Geet
       # params:
       #   users:   String, or Array of strings.
       #
-      def assign_user(users)
+      def assign_users(users)
         request_data = { assignees: Array(users) }
         request_address = "#{@api_helper.api_repo_link}/issues/#{@issue_number}/assignees"
 

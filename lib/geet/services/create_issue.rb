@@ -67,7 +67,7 @@ module Geet
       def assign_users(issue, users)
         puts 'Assigning users...'
 
-        issue.assign_user(users)
+        issue.assign_users(users)
 
         puts '- assigned: ' + users.join(', ')
       end
@@ -75,7 +75,7 @@ module Geet
       def assign_authenticated_user(repository, issue)
         puts 'Assigning authenticated user...'
 
-        issue.assign_user(repository.authenticated_user)
+        issue.assign_users(repository.authenticated_user)
       end
 
       # Generic helpers
