@@ -3,8 +3,6 @@
 require_relative '../helpers/os_helper.rb'
 require_relative '../git/repository.rb'
 
-require 'thread'
-
 module Geet
   module Services
     class CreatePr
@@ -19,7 +17,7 @@ module Geet
         labels_thread = select_labels(repository, label_patterns) if label_patterns
         reviewers_thread = select_reviewers(repository, reviewer_patterns) if reviewer_patterns
 
-        selected_labels = selected_labels&.join&.value
+        selected_labels = labels_thread&.join&.value
         reviewers = reviewers_thread&.join&.value
 
         pr = create_pr(repository, title, description)
@@ -66,7 +64,7 @@ module Geet
       def create_pr(repository, title, description)
         puts 'Creating PR...'
 
-        pr = repository.create_pr(title, description, repository.current_head)
+        repository.create_pr(title, description, repository.current_head)
       end
 
       def assign_authenticated_user(pr, repository)
