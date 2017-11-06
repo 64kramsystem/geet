@@ -12,6 +12,7 @@ module Geet
       ISSUE_LIST_COMMAND = 'issue.list'
       PR_CREATE_COMMAND = 'pr.create'
       PR_LIST_COMMAND = 'pr.list'
+      PR_MERGE_COMMAND = 'pr.merge'
 
       # Command options
 
@@ -48,6 +49,11 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
+      # rubocop:disable Style/MutableConstant
+      PR_MERGE_OPTIONS = [
+        long_help: 'Merge the PR for the current branch'
+      ]
+
       # Public interface
 
       def decode_argv
@@ -62,6 +68,7 @@ module Geet
           'pr' => {
             'create' => PR_CREATE_OPTIONS,
             'list' => PR_LIST_OPTIONS,
+            'merge' => PR_MERGE_OPTIONS,
           },
         )
       end

@@ -32,6 +32,8 @@ when Helpers::ConfigurationHelper::PR_CREATE_COMMAND
   Services::CreatePr.new.execute(repository, title, description, options)
 when Helpers::ConfigurationHelper::PR_LIST_COMMAND
   Services::ListPrs.new.execute(repository)
+when Helpers::ConfigurationHelper::PR_MERGE_COMMAND
+  Services::MergePr.new.execute(repository)
 else
   raise "Internal error - Unrecognized command #{command.inspect}"
 end

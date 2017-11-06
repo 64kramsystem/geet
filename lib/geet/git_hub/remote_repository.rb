@@ -43,8 +43,8 @@ module Geet
         Geet::GitHub::PR.create(@local_repository, title, description, head, @api_helper)
       end
 
-      def list_prs
-        Geet::GitHub::PR.list(@api_helper)
+      def list_prs(head: nil)
+        Geet::GitHub::PR.list(@api_helper, head: head)
       end
     end
   end
