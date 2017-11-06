@@ -19,7 +19,7 @@ module Geet
         labels_thread = select_labels(repository, label_patterns) if label_patterns
         reviewers_thread = select_reviewers(repository, reviewer_patterns) if reviewer_patterns
 
-        selected_labels = selected_labels&.join&.value
+        selected_labels = labels_thread&.join&.value
         reviewers = reviewers_thread&.join&.value
 
         pr = create_pr(repository, title, description)
