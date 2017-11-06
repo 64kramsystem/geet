@@ -69,11 +69,11 @@ module Geet
         pr = repository.create_pr(title, description, repository.current_head)
       end
 
-      def assign_user(pr, repository)
+      def assign_users(pr, repository)
         puts 'Assigning authenticated user...'
 
         Thread.new do
-          pr.assign_user(repository.authenticated_user)
+          pr.assign_users(repository.authenticated_user)
         end
       end
 

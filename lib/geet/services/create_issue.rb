@@ -13,44 +13,29 @@ module Geet
       #   :assignee_patterns
       #   :no_open_issue
       #
-      def execute(repository, title, description, options = {})
-        if options[:label_patterns]
-          puts 'Finding labels...'
+      def execute(repository, title, description, label_patterns: nil, assignee_patterns: nil, no_open_issue: nil, **)
+        labels_thread = select_labels(repository, label_patterns) if label_patterns
+        assignees_thread = select_assignees(repository, assignee_patterns) if assignee_patterns
 
-          all_labels = repository.labels
-          selected_labels = select_entries(all_labels, options[:label_patterns], type: 'labels')
-        end
-
-        if options[:assignee_patterns]
-          puts 'Finding collaborators...'
-
-          all_collaborators = repository.collaborators
-          assignees = select_entries(all_collaborators, options[:assignee_patterns], type: 'collaborators')
-        end
+        selected_labels = labels_thread&.join&.value
+        assignees = assignees_thread&.join&.value
 
         puts 'Creating the issue...'
 
         issue = repository.create_issue(title, description)
 
-        if selected_labels
-          puts 'Adding labels...'
-
-          issue.add_labels(selected_labels)
-
-          puts '- labels added: ' + selected_labels.join(', ')
-        end
+        add_labels_thread = add_labels(issue, selected_labels) if selected_labels
 
         if assignees
-          puts 'Assigning users...'
-
-          issue.assign_user(assignees)
-
-          puts '- assigned: ' + assignees.join(', ')
+          assign_users_thread = assign_users(issue, assignees)
         else
-          issue.assign_user(repository.authenticated_user)
+          assign_users_thread = assign_authenticated_user(repository, issue)
         end
 
-        if options[:no_open_issue]
+        add_labels_thread&.join
+        assign_users_thread.join
+
+        if no_open_issue
           puts "Issue address: #{issue.link}"
         else
           os_open(issue.link)
@@ -58,6 +43,54 @@ module Geet
       end
 
       private
+
+      # Internal actions
+
+      def select_labels(repository, label_patterns)
+        puts 'Finding labels...'
+
+        Thread.new do
+          all_labels = repository.labels
+
+          select_entries(all_labels, label_patterns, type: 'labels')
+        end
+      end
+
+      def select_assignees(repository, assignee_patterns)
+        puts 'Finding collaborators...'
+
+        Thread.new do
+          all_collaborators = repository.collaborators
+
+          select_entries(all_collaborators, assignee_patterns, type: 'collaborators')
+        end
+      end
+
+      def add_labels(issue, selected_labels)
+        puts "Adding labels #{selected_labels.join(', ')}..."
+
+        Thread.new do
+          issue.add_labels(selected_labels)
+        end
+      end
+
+      def assign_users(issue, users)
+        puts "Assigning users #{users.join(', ')}..."
+
+        Thread.new do
+          issue.assign_users(users)
+        end
+      end
+
+      def assign_authenticated_user(repository, issue)
+        puts 'Assigning authenticated user...'
+
+        Thread.new do
+          issue.assign_users(repository.authenticated_user)
+        end
+      end
+
+      # Generic helpers
 
       def select_entries(entries, raw_patterns, type: 'entries')
         patterns = raw_patterns.split(',')
