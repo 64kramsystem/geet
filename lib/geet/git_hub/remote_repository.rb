@@ -36,7 +36,7 @@ module Geet
       end
 
       def list_issues
-        Geet::GitHub::AbstractIssue.list(@api_helper, filter: :issue)
+        Geet::GitHub::Issue.list(@api_helper)
       end
 
       def create_pr(title, description, head)
@@ -44,7 +44,7 @@ module Geet
       end
 
       def list_prs
-        Geet::GitHub::AbstractIssue.list(@api_helper, filter: :pr)
+        Geet::GitHub::PR.list(@api_helper)
       end
     end
   end
