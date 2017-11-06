@@ -64,7 +64,7 @@ module Geet
       def create_pr(repository, title, description)
         puts 'Creating PR...'
 
-        repository.create_pr(title, description, repository.current_head)
+        repository.create_pr(title, description, repository.current_branch)
       end
 
       def assign_authenticated_user(pr, repository)
