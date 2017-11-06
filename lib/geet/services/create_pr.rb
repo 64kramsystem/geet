@@ -3,6 +3,8 @@
 require_relative '../helpers/os_helper.rb'
 require_relative '../git/repository.rb'
 
+require 'thread'
+
 module Geet
   module Services
     class CreatePr
@@ -14,14 +16,21 @@ module Geet
       #   :no_open_pr
       #
       def execute(repository, title, description, label_patterns: nil, reviewer_patterns: nil, no_open_pr: nil, **)
-        selected_labels = select_labels(repository, label_patterns]) if label_patterns
-        reviewers = select_reviewers(repository, reviewer_patterns]) if reviewer_patterns
+        labels_thread = select_labels(repository, label_patterns) if label_patterns
+        reviewers_thread = select_reviewers(repository, reviewer_patterns) if reviewer_patterns
+
+        selected_labels = selected_labels&.join&.value
+        reviewers = reviewers_thread&.join&.value
 
         pr = create_pr(repository, title, description)
 
-        assign_user(pr, repository)
-        add_labels(pr, selected_labels) if selected_labels
-        request_review(pr, reviewers) if reviewers
+        assign_user_thread = assign_user(pr, repository)
+        add_labels_thread = add_labels(pr, selected_labels) if selected_labels
+        request_review_thread = request_review(pr, reviewers) if reviewers
+
+        assign_user_thread.join
+        add_labels_thread&.join
+        request_review_thread&.join
 
         if no_open_pr
           puts "PR address: #{pr.link}"
@@ -37,17 +46,21 @@ module Geet
       def select_labels(repository, label_patterns)
         puts 'Finding labels...'
 
-        all_labels = repository.labels
+        Thread.new do
+          all_labels = repository.labels
 
-        select_entries(all_labels, label_patterns, type: 'labels')
+          select_entries(all_labels, label_patterns, type: 'labels')
+        end
       end
 
       def select_reviewers(repository, reviewer_patterns)
         puts 'Finding collaborators...'
 
-        all_collaborators = repository.collaborators
+        Thread.new do
+          all_collaborators = repository.collaborators
 
-        select_entries(all_collaborators, reviewer_patterns, type: 'collaborators')
+          select_entries(all_collaborators, reviewer_patterns, type: 'collaborators')
+        end
       end
 
       def create_pr(repository, title, description)
@@ -59,23 +72,25 @@ module Geet
       def assign_user(pr, repository)
         puts 'Assigning authenticated user...'
 
-        pr.assign_user(repository.authenticated_user)
+        Thread.new do
+          pr.assign_user(repository.authenticated_user)
+        end
       end
 
       def add_labels(pr, selected_labels)
-        puts 'Adding labels...'
+        puts "Adding labels #{selected_labels.join(', ')}..."
 
-        pr.add_labels(selected_labels)
-
-        puts '- labels added: ' + selected_labels.join(', ')
+        Thread.new do
+          pr.add_labels(selected_labels)
+        end
       end
 
       def request_review(pr, reviewers)
-        puts 'Requesting review...'
+        puts "Requesting review from #{reviewers.join(', ')}..."
 
-        pr.request_review(reviewers)
-
-        puts '- review requested to: ' + reviewers.join(', ')
+        Thread.new do
+          pr.request_review(reviewers)
+        end
       end
 
       # Generic helpers
