@@ -6,7 +6,17 @@ The current version supports only creating PRs/issues.
 
 This tool is very similar to [Hub](https://github.com/github/hub), but it supports more complex operations, fully specified via command line.
 
+Please see the [development status](#development-status) section for informations about the current development.
+
 ## Samples
+
+### Prerequisite(s)
+
+Geet requires the `GITHUB_API_TOKEN` environment variable to be set, eg:
+
+    export GITHUB_API_TOKEN=0123456789abcdef0123456789abcdef
+
+All the commands need to be run from the git repository.
 
 ### Create an issue (with label and assignees)
 
@@ -69,3 +79,11 @@ Examples:
     $ geet --help
     $ geet pr --help
     $ geet pr create --help
+
+## Development status
+
+Geet is in alpha status. Although I use it daily, lots of features are being implemented, and internal/external APIs are frequently changed.
+
+The public release will be 1.0, and is expected to be released in January 2018 or earlier.
+
+The test suite is planned for v0.3.0. In case the project should have any user/developer besides me before that version, I will put any feature on hold, and build the full test suite.
