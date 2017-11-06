@@ -72,7 +72,7 @@ Create a public gist, with description:
 
 Display the help:
 
-    $ geet [command [subcommand]]--help
+    $ geet [command [subcommand]] --help
 
 Examples:
 
