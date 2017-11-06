@@ -36,16 +36,19 @@ module Geet
       # Returns the parsed response, or an Array, in case of multipage.
       #
       # params:
-      #   :data:        (Hash) if present, will generate a POST request
+      #   :params:      (Hash)
+      #   :data:        (Hash) if present, will generate a POST request, otherwise, a GET
       #   :multipage:   set true for paged GitHub responses (eg. issues); it will make the method
       #                 return an array, with the concatenated (parsed) responses
+      #   :http_method: :get, :post and :put are accepted, but only :put is meaningful, since the
+      #                 others are automatically inferred by :data.
       #
-      def send_request(address, data: nil, multipage: false)
+      def send_request(address, params: nil, data: nil, multipage: false, http_method: nil)
         # filled only on :multipage
         parsed_responses = []
 
         loop do
-          response = send_http_request(address, data: data)
+          response = send_http_request(address, params: params, data: data, http_method: http_method)
 
           parsed_response = JSON.parse(response.body)
 
@@ -66,22 +69,25 @@ module Geet
 
       private
 
-      def send_http_request(address, data: nil)
-        uri = URI(address)
+      def send_http_request(address, params: nil, data: nil, http_method: nil)
+        uri = encode_uri(address, params)
+        http_class = find_http_class(http_method, data)
 
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
-          if data
-            request = Net::HTTP::Post.new(uri)
-            request.body = data.to_json
-          else
-            request = Net::HTTP::Get.new(uri)
-          end
+          request = http_class.new(uri)
 
+          request.body = data.to_json if data
           request.basic_auth @user, @api_token
           request['Accept'] = 'application/vnd.github.v3+json'
 
           http.request(request)
         end
+      end
+
+      def encode_uri(address, params)
+        address += '?' + URI.encode_www_form(params) if params
+
+        URI(address)
       end
 
       def error?(response)
@@ -117,6 +123,21 @@ module Geet
         return nil if link_header.empty?
 
         link_header[0][/<(\S+)>; rel="next"/, 1]
+      end
+
+      def find_http_class(http_method, data)
+        http_method ||= data ? :post : :get
+
+        case http_method
+        when :get
+          Net::HTTP::Get
+        when :put
+          Net::HTTP::Put
+        when :post
+          Net::HTTP::Post
+        else
+          raise "Unsupported HTTP method: #{http_method.inspect}"
+        end
       end
     end
   end

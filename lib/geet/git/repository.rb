@@ -68,8 +68,12 @@ module Geet
 
       # DATA
 
-      def current_head
-        `git rev-parse --abbrev-ref HEAD`.strip
+      def current_branch
+        branch = `git rev-parse --abbrev-ref HEAD`.strip
+
+        raise "Couldn't find current branch" if branch == 'HEAD'
+
+        branch
       end
 
       # OTHER
