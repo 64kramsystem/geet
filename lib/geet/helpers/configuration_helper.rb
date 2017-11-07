@@ -10,6 +10,7 @@ module Geet
       GIST_CREATE_COMMAND = 'gist.create'
       ISSUE_CREATE_COMMAND = 'issue.create'
       ISSUE_LIST_COMMAND = 'issue.list'
+      LABEL_LIST_COMMAND = 'label.list'
       PR_CREATE_COMMAND = 'pr.create'
       PR_LIST_COMMAND = 'pr.list'
       PR_MERGE_COMMAND = 'pr.merge'
@@ -34,6 +35,9 @@ module Geet
 
       ISSUE_LIST_OPTIONS = [
         ['-u', '--upstream',                                'List on the upstream repository'],
+      ].freeze
+
+      LABEL_LIST_OPTIONS = [
       ].freeze
 
       PR_CREATE_OPTIONS = [
@@ -64,6 +68,9 @@ module Geet
           'issue' => {
             'create' => ISSUE_CREATE_OPTIONS,
             'list' => ISSUE_LIST_OPTIONS,
+          },
+          'label' => {
+            'list' => LABEL_LIST_OPTIONS,
           },
           'pr' => {
             'create' => PR_CREATE_OPTIONS,

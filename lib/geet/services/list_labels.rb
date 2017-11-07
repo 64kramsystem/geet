@@ -2,12 +2,12 @@
 
 module Geet
   module Services
-    class ListPrs
+    class ListLabels
       def execute(repository)
-        prs = repository.prs
+        labels = repository.labels
 
-        prs.each do |pr|
-          puts "#{pr.number}. #{pr.title} (#{pr.link})"
+        labels.each do |label|
+          puts "- #{label}"
         end
       end
     end

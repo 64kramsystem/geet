@@ -19,7 +19,7 @@ module Geet
       def checked_find_branch_pr(repository, head)
         puts "Finding PR with head (#{head})..."
 
-        prs = repository.list_prs(head: head)
+        prs = repository.prs(head: head)
 
         raise "Expected to find only one PR for the current branch; found: #{prs.size}" if prs.size != 1
 

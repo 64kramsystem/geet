@@ -35,7 +35,7 @@ module Geet
         Geet::GitHub::Issue.create(title, description, @api_helper)
       end
 
-      def list_issues
+      def issues
         Geet::GitHub::Issue.list(@api_helper)
       end
 
@@ -43,7 +43,7 @@ module Geet
         Geet::GitHub::PR.create(@local_repository, title, description, head, @api_helper)
       end
 
-      def list_prs(head: nil)
+      def prs(head: nil)
         Geet::GitHub::PR.list(@api_helper, head: head)
       end
     end
