@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'abstract_issue'
-
 module Geet
   module GitHub
-    class Issue < AbstractIssue
+    # See AbstractIssue for the circular dependency issue notes.
+    autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
+
+    class Issue < Geet::GitHub::AbstractIssue
       def self.create(title, description, api_helper)
         request_address = "#{api_helper.api_repo_link}/issues"
         request_data = { title: title, body: description, base: 'master' }
