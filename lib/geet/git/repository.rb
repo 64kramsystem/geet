@@ -14,10 +14,12 @@ module Geet
     class Repository
       extend Forwardable
 
+      def_delegators :@remote_repository, :abstract_issues
       def_delegators :@remote_repository, :collaborators, :labels
       def_delegators :@remote_repository, :create_gist
       def_delegators :@remote_repository, :create_issue, :issues
       def_delegators :@remote_repository, :labels
+      def_delegators :@remote_repository, :milestones
       def_delegators :@remote_repository, :create_pr, :prs
       def_delegators :@account, :authenticated_user
 

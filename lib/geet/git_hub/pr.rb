@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require_relative 'abstract_issue'
-
 module Geet
   module GitHub
     class PR < AbstractIssue
+      # See AbstractIssue for the circular dependency issue notes.
+      autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
+
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
       def self.create(repository, title, description, head, api_helper)

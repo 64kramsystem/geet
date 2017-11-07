@@ -11,6 +11,7 @@ module Geet
       ISSUE_CREATE_COMMAND = 'issue.create'
       ISSUE_LIST_COMMAND = 'issue.list'
       LABEL_LIST_COMMAND = 'label.list'
+      MILESTONE_LIST_COMMAND = 'milestone.list'
       PR_CREATE_COMMAND = 'pr.create'
       PR_LIST_COMMAND = 'pr.list'
       PR_MERGE_COMMAND = 'pr.merge'
@@ -38,6 +39,9 @@ module Geet
       ].freeze
 
       LABEL_LIST_OPTIONS = [
+      ].freeze
+
+      MILESTONE_LIST_OPTIONS = [
       ].freeze
 
       PR_CREATE_OPTIONS = [
@@ -71,6 +75,9 @@ module Geet
           },
           'label' => {
             'list' => LABEL_LIST_OPTIONS,
+          },
+          'milestone' => {
+            'list' => MILESTONE_LIST_OPTIONS,
           },
           'pr' => {
             'create' => PR_CREATE_OPTIONS,

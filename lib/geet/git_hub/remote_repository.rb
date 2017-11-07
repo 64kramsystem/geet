@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
+require_relative 'abstract_issue'
 require_relative 'api_helper'
 require_relative 'gist'
 require_relative 'issue'
+require_relative 'milestone'
 require_relative 'pr'
 
 module Geet
@@ -35,8 +37,16 @@ module Geet
         Geet::GitHub::Issue.create(title, description, @api_helper)
       end
 
+      def abstract_issues(milestone: nil)
+        Geet::GitHub::AbstractIssue.list(@api_helper, milestone: milestone)
+      end
+
       def issues
         Geet::GitHub::Issue.list(@api_helper)
+      end
+
+      def milestones
+        Geet::GitHub::Milestone.list(@api_helper)
       end
 
       def create_pr(title, description, head)
