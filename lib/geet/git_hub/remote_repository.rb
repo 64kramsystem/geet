@@ -45,6 +45,10 @@ module Geet
         Geet::GitHub::Issue.list(@api_helper)
       end
 
+      def milestone(number)
+        Geet::GitHub::Milestone.find(number, @api_helper)
+      end
+
       def milestones
         Geet::GitHub::Milestone.list(@api_helper)
       end

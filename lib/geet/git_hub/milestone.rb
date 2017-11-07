@@ -15,6 +15,20 @@ module Geet
         @api_helper = api_helper
       end
 
+      # See https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
+      #
+      def self.find(number, api_helper)
+        request_address = "#{api_helper.api_repo_link}/milestones/#{number}"
+
+        response = api_helper.send_request(request_address)
+
+        number = response.fetch('number')
+        title = response.fetch('title')
+        due_on = parse_due_on(response.fetch('due_on'))
+
+        new(number, title, due_on, api_helper)
+      end
+
       # See https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
       #
       def self.list(api_helper)

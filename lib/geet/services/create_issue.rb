@@ -10,21 +10,25 @@ module Geet
 
       # options:
       #   :label_patterns
+      #   :milestone_pattern:     number or description pattern.
       #   :assignee_patterns
       #   :no_open_issue
       #
-      def execute(repository, title, description, label_patterns: nil, assignee_patterns: nil, no_open_issue: nil, **)
+      def execute(repository, title, description, label_patterns: nil, milestone_pattern: nil, assignee_patterns: nil, no_open_issue: nil, **)
         labels_thread = select_labels(repository, label_patterns) if label_patterns
+        milestone_thread = find_milestone(milestone_pattern) if milestone_pattern
         assignees_thread = select_assignees(repository, assignee_patterns) if assignee_patterns
 
         selected_labels = labels_thread&.join&.value
         assignees = assignees_thread&.join&.value
+        milestone = milestone_thread&.join&.value
 
         puts 'Creating the issue...'
 
         issue = repository.create_issue(title, description)
 
         add_labels_thread = add_labels(issue, selected_labels) if selected_labels
+        set_milestone_thread = set_milestone(issue, milestone) if milestone
 
         if assignees
           assign_users_thread = assign_users(issue, assignees)
@@ -33,6 +37,7 @@ module Geet
         end
 
         add_labels_thread&.join
+        set_milestone_thread&.join
         assign_users_thread.join
 
         if no_open_issue
@@ -56,6 +61,20 @@ module Geet
         end
       end
 
+      def find_milestone(milestone_param)
+        puts 'Finding milestone...'
+
+        Thread.new do
+          if milestone =~ /\A\d+\Z/
+            repository.milestone(milestone_param)
+          else
+            all_milestones = repository.milestones
+
+            select_entries(all_milestones, milestone_param, type: 'milestones', instance_method: :title).first
+          end
+        end
+      end
+
       def select_assignees(repository, assignee_patterns)
         puts 'Finding collaborators...'
 
@@ -71,6 +90,14 @@ module Geet
 
         Thread.new do
           issue.add_labels(selected_labels)
+        end
+      end
+
+      def set_milestone(issue, milestone)
+        puts "Setting milestone #{milestone.title}..."
+
+        Thread.new do
+          issue.assign_users(users)
         end
       end
 
@@ -92,11 +119,14 @@ module Geet
 
       # Generic helpers
 
-      def select_entries(entries, raw_patterns, type: 'entries')
+      def select_entries(entries, raw_patterns, type: 'entries', instance_method: nil)
         patterns = raw_patterns.split(',')
 
         patterns.map do |pattern|
-          entries_found = entries.select { |label| label =~ /#{pattern}/i }
+          entries_found = entries.select do |entry|
+            entry = entry.send(instance_method) if instance_method
+            entry =~ /#{pattern}/i
+          end
 
           case entries_found.size
           when 1

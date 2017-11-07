@@ -55,6 +55,10 @@ module Geet
 
         @api_helper.send_request(request_address, data: request_data)
       end
+
+      def set_milestone(milestone)
+        WRITEME
+      end
     end
   end
 end

@@ -13,21 +13,25 @@ module Geet
       #   :reviewer_patterns
       #   :no_open_pr
       #
-      def execute(repository, title, description, label_patterns: nil, reviewer_patterns: nil, no_open_pr: nil, **)
+      def execute(repository, title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil, no_open_pr: nil, **)
         labels_thread = select_labels(repository, label_patterns) if label_patterns
+        milestone_thread = find_milestone(milestone_pattern) if milestone_pattern
         reviewers_thread = select_reviewers(repository, reviewer_patterns) if reviewer_patterns
 
         selected_labels = labels_thread&.join&.value
         reviewers = reviewers_thread&.join&.value
+        milestone = milestone_thread&.join&.value
 
         pr = create_pr(repository, title, description)
 
         assign_user_thread = assign_authenticated_user(pr, repository)
         add_labels_thread = add_labels(pr, selected_labels) if selected_labels
+        set_milestone_thread = set_milestone(issue, milestone) if milestone
         request_review_thread = request_review(pr, reviewers) if reviewers
 
         assign_user_thread.join
         add_labels_thread&.join
+        set_milestone_thread&.join
         request_review_thread&.join
 
         if no_open_pr
@@ -48,6 +52,20 @@ module Geet
           all_labels = repository.labels
 
           select_entries(all_labels, label_patterns, type: 'labels')
+        end
+      end
+
+      def find_milestone(milestone_param)
+        puts 'Finding milestone...'
+
+        Thread.new do
+          if milestone =~ /\A\d+\Z/
+            repository.milestone(milestone_param)
+          else
+            all_milestones = repository.milestones
+
+            select_entries(all_milestones, milestone_param, type: 'milestones', instance_method: :title).first
+          end
         end
       end
 
@@ -83,6 +101,14 @@ module Geet
         end
       end
 
+      def set_milestone(issue, milestone)
+        puts "Setting milestone #{milestone.title}..."
+
+        Thread.new do
+          issue.assign_users(users)
+        end
+      end
+
       def request_review(pr, reviewers)
         puts "Requesting review from #{reviewers.join(', ')}..."
 
@@ -93,11 +119,14 @@ module Geet
 
       # Generic helpers
 
-      def select_entries(entries, raw_patterns, type: 'entries')
+      def select_entries(entries, raw_patterns, type: 'entries', instance_method: nil)
         patterns = raw_patterns.split(',')
 
         patterns.map do |pattern|
-          entries_found = entries.select { |label| label =~ /#{pattern}/i }
+          entries_found = entries.select do |entry|
+            entry = entry.send(instance_method) if instance_method
+            entry =~ /#{pattern}/i
+          end
 
           case entries_found.size
           when 1

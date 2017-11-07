@@ -28,6 +28,7 @@ module Geet
       ISSUE_CREATE_OPTIONS = [
         ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],
         ['-l', '--label-patterns "bug,help wanted"',        'Label patterns'],
+        ['-m', '--milestone number_or_pattern',             'Milestone number or description pattern'],
         ['-a', '--assignee-patterns john,tom,adrian,kevin', 'Assignee login patterns. Defaults to authenticated user'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
         'title',
@@ -47,6 +48,7 @@ module Geet
       PR_CREATE_OPTIONS = [
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
         ['-l', '--label-patterns "legacy,code review"',     'Label patterns'],
+        ['-m', '--milestone number_or_pattern',             'Milestone number or description pattern'],
         ['-r', '--reviewer-patterns john,tom,adrian,kevin', 'Reviewer login patterns'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
         'title',
