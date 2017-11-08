@@ -22,6 +22,7 @@ when Helpers::ConfigurationHelper::GIST_CREATE_COMMAND
   Services::CreateGist.new.execute(repository, filename, options)
 when Helpers::ConfigurationHelper::ISSUE_CREATE_COMMAND
   title, description = options.values_at(:title, :description)
+  options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
   Services::CreateIssue.new.execute(repository, title, description, options)
 when Helpers::ConfigurationHelper::ISSUE_LIST_COMMAND
@@ -32,6 +33,7 @@ when Helpers::ConfigurationHelper::MILESTONE_LIST_COMMAND
   Services::ListMilestones.new.execute(repository)
 when Helpers::ConfigurationHelper::PR_CREATE_COMMAND
   title, description = options.values_at(:title, :description)
+  options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
   Services::CreatePr.new.execute(repository, title, description, options)
 when Helpers::ConfigurationHelper::PR_LIST_COMMAND

@@ -40,8 +40,8 @@ module Geet
       #   :data:        (Hash) if present, will generate a POST request, otherwise, a GET
       #   :multipage:   set true for paged GitHub responses (eg. issues); it will make the method
       #                 return an array, with the concatenated (parsed) responses
-      #   :http_method: :get, :post and :put are accepted, but only :put is meaningful, since the
-      #                 others are automatically inferred by :data.
+      #   :http_method: :get, :patch, :post and :put are accepted, but only :patch/:put are meaningful,
+      #                 since the others are automatically inferred by :data.
       #
       def send_request(address, params: nil, data: nil, multipage: false, http_method: nil)
         # filled only on :multipage
@@ -131,6 +131,8 @@ module Geet
         case http_method
         when :get
           Net::HTTP::Get
+        when :patch
+          Net::HTTP::Patch
         when :put
           Net::HTTP::Put
         when :post

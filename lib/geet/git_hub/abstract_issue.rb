@@ -55,6 +55,15 @@ module Geet
 
         @api_helper.send_request(request_address, data: request_data)
       end
+
+      # See https://developer.github.com/v3/issues/#edit-an-issue
+      #
+      def edit(milestone:)
+        request_address = "#{@api_helper.api_repo_link}/issues/#{@number}"
+        request_data = { milestone: milestone }
+
+        @api_helper.send_request(request_address, data: request_data, http_method: :patch)
+      end
     end
   end
 end
