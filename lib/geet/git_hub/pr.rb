@@ -8,10 +8,14 @@ module Geet
 
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
-      def self.create(repository, title, description, head, api_helper)
+      def self.create(title, description, head, api_helper)
         request_address = "#{api_helper.api_repo_link}/pulls"
 
-        head = "#{repository.authenticated_user}:#{head}" if api_helper.upstream?
+        if api_helper.upstream?
+          account = Geet::GitHub::Account.new(api_helper)
+          head = "#{account.authenticated_user}:#{head}"
+        end
+
         request_data = { title: title, body: description, head: head, base: 'master' }
 
         response = api_helper.send_request(request_address, data: request_data)

@@ -10,8 +10,7 @@ require_relative 'pr'
 module Geet
   module GitHub
     class RemoteRepository
-      def initialize(local_repository, api_helper)
-        @local_repository = local_repository
+      def initialize(api_helper)
         @api_helper = api_helper
       end
 
@@ -54,7 +53,7 @@ module Geet
       end
 
       def create_pr(title, description, head)
-        Geet::GitHub::PR.create(@local_repository, title, description, head, @api_helper)
+        Geet::GitHub::PR.create(title, description, head, @api_helper)
       end
 
       def prs(head: nil)

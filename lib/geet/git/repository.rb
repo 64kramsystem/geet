@@ -45,7 +45,7 @@ module Geet
 
         api_helper = provider_module::ApiHelper.new(api_token, user, path(upstream: upstream), upstream)
 
-        @remote_repository = provider_module::RemoteRepository.new(self, api_helper)
+        @remote_repository = provider_module::RemoteRepository.new(api_helper)
         @account = provider_module::Account.new(api_helper)
       end
 
