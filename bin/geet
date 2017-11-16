@@ -1,44 +1,46 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative '../lib/geet/helpers/configuration_helper.rb'
+require_relative '../lib/geet/commandline/configuration.rb'
+require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/git/repository.rb'
 
 include Geet
+include Geet::Commandline::Commands
 
-configuration_helper = Helpers::ConfigurationHelper.new
+commandline_configuration = Commandline::Configuration.new
 
-command, options = configuration_helper.decode_argv || exit
-api_token = configuration_helper.api_token
+command, options = commandline_configuration.decode_argv || exit
+api_token = commandline_configuration.api_token
 
 # `:upstream` is always false in the gist command case.
 repository = Git::Repository.new(api_token, upstream: !!options[:upstream])
 
 case command
-when Helpers::ConfigurationHelper::GIST_CREATE_COMMAND
+when GIST_CREATE_COMMAND
   filename = options.delete(:filename)
   options[:publik] = options.delete(:public) if options.key?(:public)
 
   Services::CreateGist.new.execute(repository, filename, options)
-when Helpers::ConfigurationHelper::ISSUE_CREATE_COMMAND
+when ISSUE_CREATE_COMMAND
   title, description = options.values_at(:title, :description)
   options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
   Services::CreateIssue.new.execute(repository, title, description, options)
-when Helpers::ConfigurationHelper::ISSUE_LIST_COMMAND
+when ISSUE_LIST_COMMAND
   Services::ListIssues.new.execute(repository)
-when Helpers::ConfigurationHelper::LABEL_LIST_COMMAND
+when LABEL_LIST_COMMAND
   Services::ListLabels.new.execute(repository)
-when Helpers::ConfigurationHelper::MILESTONE_LIST_COMMAND
+when MILESTONE_LIST_COMMAND
   Services::ListMilestones.new.execute(repository)
-when Helpers::ConfigurationHelper::PR_CREATE_COMMAND
+when PR_CREATE_COMMAND
   title, description = options.values_at(:title, :description)
   options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
   Services::CreatePr.new.execute(repository, title, description, options)
-when Helpers::ConfigurationHelper::PR_LIST_COMMAND
+when PR_LIST_COMMAND
   Services::ListPrs.new.execute(repository)
-when Helpers::ConfigurationHelper::PR_MERGE_COMMAND
+when PR_MERGE_COMMAND
   Services::MergePr.new.execute(repository)
 else
   raise "Internal error - Unrecognized command #{command.inspect}"
