@@ -3,7 +3,7 @@
 require_relative 'abstract_issue'
 
 module Geet
-  module GitHub
+  module Github
     class Gist
       def self.create(filename, content, api_helper, description: nil, publik: false)
         api_path = "/gists"

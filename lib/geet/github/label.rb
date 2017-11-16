@@ -3,7 +3,7 @@
 require 'date'
 
 module Geet
-  module GitHub
+  module Github
     class Label
       # Returns a flat list of names in string form.
       def self.list(api_helper)

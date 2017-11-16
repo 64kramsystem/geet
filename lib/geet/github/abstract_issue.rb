@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Geet
-  module GitHub
+  module Github
     # It seems that autoloading will be deprecated, but it's currently the cleanest solution
     # to the legitimate problem of AbstractIssue needing Issue/PR to be loaded (due to :list),
     # and viceversa (due to class definition).

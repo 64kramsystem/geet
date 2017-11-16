@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Geet
-  module GitHub
+  module Github
     class Account
       def initialize(api_helper)
         @api_helper = api_helper

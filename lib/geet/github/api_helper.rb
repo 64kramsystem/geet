@@ -6,7 +6,7 @@ require 'json'
 require 'shellwords'
 
 module Geet
-  module GitHub
+  module Github
     class ApiHelper
       API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
       API_BASE_URL = 'https://api.github.com'
@@ -33,7 +33,7 @@ module Geet
       #                 - use `issues` for `https://api.github.com/myowner/myproject/repos/issues`
       #   :params:      (Hash)
       #   :data:        (Hash) if present, will generate a POST request, otherwise, a GET
-      #   :multipage:   set true for paged GitHub responses (eg. issues); it will make the method
+      #   :multipage:   set true for paged Github responses (eg. issues); it will make the method
       #                 return an array, with the concatenated (parsed) responses
       #   :http_method: :get, :patch, :post and :put are accepted, but only :patch/:put are meaningful,
       #                 since the others are automatically inferred by :data.

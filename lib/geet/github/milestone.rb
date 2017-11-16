@@ -3,7 +3,7 @@
 require 'date'
 
 module Geet
-  module GitHub
+  module Github
     class Milestone
       attr_reader :number, :title, :due_on
 

@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
 module Geet
-  module GitHub
-    class PR < AbstractIssue
-      # See AbstractIssue for the circular dependency issue notes.
-      autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
+  module Github
+    # See AbstractIssue for the circular dependency issue notes.
+    autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
 
+    class PR < AbstractIssue
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
       def self.create(title, description, head, api_helper)
         api_path = 'pulls'
 
         if api_helper.upstream?
-          account = Geet::GitHub::Account.new(api_helper)
+          account = Geet::Github::Account.new(api_helper)
           head = "#{account.authenticated_user}:#{head}"
         end
 
