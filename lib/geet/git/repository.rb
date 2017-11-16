@@ -43,17 +43,13 @@ module Geet
         the_provider_domain = provider_domain
         provider_module = DOMAIN_PROVIDERS_MAPPING[the_provider_domain] || raise("Provider not supported for domain: #{provider_domain}")
 
-        api_helper = provider_module::ApiHelper.new(api_token, user, path(upstream: upstream), upstream)
+        api_helper = provider_module::ApiHelper.new(api_token, path(upstream: upstream), upstream)
 
         @remote_repository = provider_module::RemoteRepository.new(api_helper)
         @account = provider_module::Account.new(api_helper)
       end
 
       # METADATA
-
-      def user
-        `git config --get user.email`.strip
-      end
 
       def provider_domain
         # We assume that it's not possible to have origin and upstream on different providers.

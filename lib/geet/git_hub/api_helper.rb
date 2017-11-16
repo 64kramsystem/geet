@@ -8,11 +8,11 @@ require 'shellwords'
 module Geet
   module GitHub
     class ApiHelper
+      API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
       API_BASE_URL = 'https://api.github.com'
 
-      def initialize(api_token, user, repository_path, upstream)
+      def initialize(api_token, repository_path, upstream)
         @api_token = api_token
-        @user = user
         @repository_path = repository_path
         @upstream = upstream
       end
@@ -78,8 +78,8 @@ module Geet
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           request = http_class.new(uri)
 
+          request.basic_auth API_AUTH_USER, @api_token
           request.body = data.to_json if data
-          request.basic_auth @user, @api_token
           request['Accept'] = 'application/vnd.github.v3+json'
 
           http.request(request)
