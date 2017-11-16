@@ -2,8 +2,10 @@
 
 require_relative 'abstract_issue'
 require_relative 'api_helper'
+require_relative 'collaborator'
 require_relative 'gist'
 require_relative 'issue'
+require_relative 'label'
 require_relative 'milestone'
 require_relative 'pr'
 
@@ -15,17 +17,11 @@ module Geet
       end
 
       def collaborators
-        api_path = 'collaborators'
-        response = @api_helper.send_request(api_path, multipage: true)
-
-        response.map { |user_entry| user_entry.fetch('login') }
+        Geet::GitHub::Collaborator.list(@api_helper)
       end
 
       def labels
-        api_path = 'labels'
-        response = @api_helper.send_request(api_path, multipage: true)
-
-        response.map { |label_entry| label_entry['name'] }
+        Geet::GitHub::Label.list(@api_helper)
       end
 
       def create_gist(filename, content, description: nil, publik: false)
