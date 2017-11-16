@@ -8,19 +8,13 @@ require 'shellwords'
 module Geet
   module GitHub
     class ApiHelper
+      API_BASE_URL = 'https://api.github.com'
+
       def initialize(api_token, user, repository_path, upstream)
         @api_token = api_token
         @user = user
         @repository_path = repository_path
         @upstream = upstream
-      end
-
-      def api_base_link
-        'https://api.github.com'
-      end
-
-      def api_repo_link
-        "#{api_base_link}/repos/#{@repository_path}"
       end
 
       def upstream?
@@ -32,6 +26,11 @@ module Geet
       # Returns the parsed response, or an Array, in case of multipage.
       #
       # params:
+      #   :api_path:    api path, will be appended to the API URL.
+      #                 for root path, prepend a `/`:
+      #                 - use `/gists` for `https://api.github.com/gists`
+      #                 when owner/project/repos is included, don't prepend `/`:
+      #                 - use `issues` for `https://api.github.com/myowner/myproject/repos/issues`
       #   :params:      (Hash)
       #   :data:        (Hash) if present, will generate a POST request, otherwise, a GET
       #   :multipage:   set true for paged GitHub responses (eg. issues); it will make the method
@@ -39,7 +38,8 @@ module Geet
       #   :http_method: :get, :patch, :post and :put are accepted, but only :patch/:put are meaningful,
       #                 since the others are automatically inferred by :data.
       #
-      def send_request(address, params: nil, data: nil, multipage: false, http_method: nil)
+      def send_request(api_path, params: nil, data: nil, multipage: false, http_method: nil)
+        address = api_url(api_path)
         # filled only on :multipage
         parsed_responses = []
 
@@ -64,6 +64,12 @@ module Geet
       end
 
       private
+
+      def api_url(api_path)
+        url = API_BASE_URL
+        url += "/repos/#{@repository_path}/" if !api_path.start_with?('/')
+        url + api_path
+      end
 
       def send_http_request(address, params: nil, data: nil, http_method: nil)
         uri = encode_uri(address, params)

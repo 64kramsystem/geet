@@ -18,9 +18,9 @@ module Geet
       # See https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
       #
       def self.find(number, api_helper)
-        request_address = "#{api_helper.api_repo_link}/milestones/#{number}"
+        api_path = "milestones/#{number}"
 
-        response = api_helper.send_request(request_address)
+        response = api_helper.send_request(api_path)
 
         number = response.fetch('number')
         title = response.fetch('title')
@@ -32,9 +32,9 @@ module Geet
       # See https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
       #
       def self.list(api_helper)
-        request_address = "#{api_helper.api_repo_link}/milestones"
+        api_path = 'milestones'
 
-        response = api_helper.send_request(request_address, multipage: true)
+        response = api_helper.send_request(api_path, multipage: true)
 
         response.map do |milestone_data|
           number = milestone_data.fetch('number')

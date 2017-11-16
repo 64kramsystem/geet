@@ -23,10 +23,10 @@ module Geet
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
       def self.list(api_helper, milestone: nil)
-        request_address = "#{api_helper.api_repo_link}/issues"
+        api_path = 'issues'
         request_params = { milestone: milestone } if milestone
 
-        response = api_helper.send_request(request_address, params: request_params, multipage: true)
+        response = api_helper.send_request(api_path, params: request_params, multipage: true)
 
         response.map do |issue_data|
           number = issue_data.fetch('number')
@@ -43,26 +43,26 @@ module Geet
       #   users:   String, or Array of strings.
       #
       def assign_users(users)
+        api_path = "issues/#{@number}/assignees"
         request_data = { assignees: Array(users) }
-        request_address = "#{@api_helper.api_repo_link}/issues/#{@number}/assignees"
 
-        @api_helper.send_request(request_address, data: request_data)
+        @api_helper.send_request(api_path, data: request_data)
       end
 
       def add_labels(labels)
+        api_path = "issues/#{@number}/labels"
         request_data = labels
-        request_address = "#{@api_helper.api_repo_link}/issues/#{@number}/labels"
 
-        @api_helper.send_request(request_address, data: request_data)
+        @api_helper.send_request(api_path, data: request_data)
       end
 
       # See https://developer.github.com/v3/issues/#edit-an-issue
       #
       def edit(milestone:)
-        request_address = "#{@api_helper.api_repo_link}/issues/#{@number}"
         request_data = { milestone: milestone }
+        api_path = "issues/#{@number}"
 
-        @api_helper.send_request(request_address, data: request_data, http_method: :patch)
+        @api_helper.send_request(api_path, data: request_data, http_method: :patch)
       end
     end
   end

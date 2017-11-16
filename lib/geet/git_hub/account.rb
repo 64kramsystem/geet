@@ -8,9 +8,9 @@ module Geet
       end
 
       def authenticated_user
-        request_address = 'https://api.github.com/user'
+        api_path = '/user'
 
-        response = @api_helper.send_request(request_address)
+        response = @api_helper.send_request(api_path)
 
         response.fetch('login')
       end

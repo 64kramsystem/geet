@@ -9,7 +9,7 @@ module Geet
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
       def self.create(title, description, head, api_helper)
-        request_address = "#{api_helper.api_repo_link}/pulls"
+        api_path = 'pulls'
 
         if api_helper.upstream?
           account = Geet::GitHub::Account.new(api_helper)
@@ -18,7 +18,7 @@ module Geet
 
         request_data = { title: title, body: description, head: head, base: 'master' }
 
-        response = api_helper.send_request(request_address, data: request_data)
+        response = api_helper.send_request(api_path, data: request_data)
 
         number, title, link = response.fetch_values('number', 'title', 'html_url')
 
@@ -28,10 +28,10 @@ module Geet
       # See https://developer.github.com/v3/pulls/#list-pull-requests
       #
       def self.list(api_helper, head: nil)
-        request_address = "#{api_helper.api_repo_link}/pulls"
+        api_path = 'pulls'
         request_params = { head: head } if head
 
-        response = api_helper.send_request(request_address, params: request_params, multipage: true)
+        response = api_helper.send_request(api_path, params: request_params, multipage: true)
 
         response.map do |issue_data|
           number = issue_data.fetch('number')
@@ -45,16 +45,16 @@ module Geet
       # See https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-button
       #
       def merge
-        request_address = "#{@api_helper.api_repo_link}/pulls/#{number}/merge"
+        api_path = "pulls/#{number}/merge"
 
-        @api_helper.send_request(request_address, http_method: :put)
+        @api_helper.send_request(api_path, http_method: :put)
       end
 
       def request_review(reviewers)
+        api_path = "pulls/#{number}/requested_reviewers"
         request_data = { reviewers: reviewers }
-        request_address = "#{@api_helper.api_repo_link}/pulls/#{number}/requested_reviewers"
 
-        @api_helper.send_request(request_address, data: request_data)
+        @api_helper.send_request(api_path, data: request_data)
       end
     end
   end

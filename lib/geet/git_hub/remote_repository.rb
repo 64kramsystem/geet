@@ -15,15 +15,15 @@ module Geet
       end
 
       def collaborators
-        url = "#{@api_helper.api_repo_link}/collaborators"
-        response = @api_helper.send_request(url, multipage: true)
+        api_path = 'collaborators'
+        response = @api_helper.send_request(api_path, multipage: true)
 
         response.map { |user_entry| user_entry.fetch('login') }
       end
 
       def labels
-        url = "#{@api_helper.api_repo_link}/labels"
-        response = @api_helper.send_request(url, multipage: true)
+        api_path = 'labels'
+        response = @api_helper.send_request(api_path, multipage: true)
 
         response.map { |label_entry| label_entry['name'] }
       end
