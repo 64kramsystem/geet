@@ -49,7 +49,15 @@ module Geet
         @account = provider_module::Account.new(api_helper)
       end
 
-      # METADATA
+      def current_branch
+        branch = `git rev-parse --abbrev-ref HEAD`.strip
+
+        raise "Couldn't find current branch" if branch == 'HEAD'
+
+        branch
+      end
+
+      private
 
       def provider_domain
         # We assume that it's not possible to have origin and upstream on different providers.
@@ -59,25 +67,13 @@ module Geet
         remote_url[REMOTE_ORIGIN_REGEX, 1] || remote_url[REMOTE_ORIGIN_REGEX, 2]
       end
 
+      # Example: `saveriomiroddi/geet`
+      #
       def path(upstream: false)
         remote_name = upstream ? UPSTREAM_NAME : ORIGIN_NAME
 
         remote(remote_name)[REMOTE_ORIGIN_REGEX, 3]
       end
-
-      # DATA
-
-      def current_branch
-        branch = `git rev-parse --abbrev-ref HEAD`.strip
-
-        raise "Couldn't find current branch" if branch == 'HEAD'
-
-        branch
-      end
-
-      # OTHER
-
-      private
 
       # The result is in the format `git@github.com:saveriomiroddi/geet.git`
       #
