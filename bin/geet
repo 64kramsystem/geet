@@ -5,43 +5,51 @@ require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/git/repository.rb'
 
-include Geet
-include Geet::Commandline::Commands
+class GeetLauncher
+  include Geet
+  include Geet::Commandline::Commands
 
-commandline_configuration = Commandline::Configuration.new
+  def launch
+    commandline_configuration = Commandline::Configuration.new
 
-command, options = commandline_configuration.decode_argv || exit
-api_token = commandline_configuration.api_token
+    command, options = commandline_configuration.decode_argv || exit
+    api_token = commandline_configuration.api_token
 
-# `:upstream` is always false in the gist command case.
-repository = Git::Repository.new(api_token, upstream: !!options[:upstream])
+    # `:upstream` is always false in the gist command case.
+    repository = Git::Repository.new(api_token, upstream: !!options[:upstream])
 
-case command
-when GIST_CREATE_COMMAND
-  filename = options.delete(:filename)
-  options[:publik] = options.delete(:public) if options.key?(:public)
+    case command
+    when GIST_CREATE_COMMAND
+      filename = options.delete(:filename)
+      options[:publik] = options.delete(:public) if options.key?(:public)
 
-  Services::CreateGist.new.execute(repository, filename, options)
-when ISSUE_CREATE_COMMAND
-  title, description = options.values_at(:title, :description)
-  options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
+      Services::CreateGist.new.execute(repository, filename, options)
+    when ISSUE_CREATE_COMMAND
+      title, description = options.values_at(:title, :description)
+      options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
-  Services::CreateIssue.new.execute(repository, title, description, options)
-when ISSUE_LIST_COMMAND
-  Services::ListIssues.new.execute(repository)
-when LABEL_LIST_COMMAND
-  Services::ListLabels.new.execute(repository)
-when MILESTONE_LIST_COMMAND
-  Services::ListMilestones.new.execute(repository)
-when PR_CREATE_COMMAND
-  title, description = options.values_at(:title, :description)
-  options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
+      Services::CreateIssue.new.execute(repository, title, description, options)
+    when ISSUE_LIST_COMMAND
+      Services::ListIssues.new.execute(repository)
+    when LABEL_LIST_COMMAND
+      Services::ListLabels.new.execute(repository)
+    when MILESTONE_LIST_COMMAND
+      Services::ListMilestones.new.execute(repository)
+    when PR_CREATE_COMMAND
+      title, description = options.values_at(:title, :description)
+      options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
-  Services::CreatePr.new.execute(repository, title, description, options)
-when PR_LIST_COMMAND
-  Services::ListPrs.new.execute(repository)
-when PR_MERGE_COMMAND
-  Services::MergePr.new.execute(repository)
-else
-  raise "Internal error - Unrecognized command #{command.inspect}"
+      Services::CreatePr.new.execute(repository, title, description, options)
+    when PR_LIST_COMMAND
+      Services::ListPrs.new.execute(repository)
+    when PR_MERGE_COMMAND
+      Services::MergePr.new.execute(repository)
+    else
+      raise "Internal error - Unrecognized command #{command.inspect}"
+    end
+  end
+end
+
+if __FILE__ == $0
+  GeetLauncher.new.launch
 end
