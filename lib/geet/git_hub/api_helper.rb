@@ -23,10 +23,6 @@ module Geet
         "#{api_base_link}/repos/#{@repository_path}"
       end
 
-      def repo_link
-        "https://github.com/#{@repository_path}"
-      end
-
       def upstream?
         @upstream
       end
