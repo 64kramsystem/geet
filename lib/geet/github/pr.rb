@@ -8,37 +8,37 @@ module Geet
     class PR < AbstractIssue
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
-      def self.create(title, description, head, api_helper)
+      def self.create(title, description, head, api_interface)
         api_path = 'pulls'
 
-        if api_helper.upstream?
-          account = Geet::Github::Account.new(api_helper)
+        if api_interface.upstream?
+          account = Geet::Github::Account.new(api_interface)
           head = "#{account.authenticated_user}:#{head}"
         end
 
         request_data = { title: title, body: description, head: head, base: 'master' }
 
-        response = api_helper.send_request(api_path, data: request_data)
+        response = api_interface.send_request(api_path, data: request_data)
 
         number, title, link = response.fetch_values('number', 'title', 'html_url')
 
-        new(number, api_helper, title, link)
+        new(number, api_interface, title, link)
       end
 
       # See https://developer.github.com/v3/pulls/#list-pull-requests
       #
-      def self.list(api_helper, head: nil)
+      def self.list(api_interface, head: nil)
         api_path = 'pulls'
         request_params = { head: head } if head
 
-        response = api_helper.send_request(api_path, params: request_params, multipage: true)
+        response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
         response.map do |issue_data|
           number = issue_data.fetch('number')
           title = issue_data.fetch('title')
           link = issue_data.fetch('html_url')
 
-          new(number, api_helper, title, link)
+          new(number, api_interface, title, link)
         end
       end
 
@@ -47,14 +47,14 @@ module Geet
       def merge
         api_path = "pulls/#{number}/merge"
 
-        @api_helper.send_request(api_path, http_method: :put)
+        @api_interface.send_request(api_path, http_method: :put)
       end
 
       def request_review(reviewers)
         api_path = "pulls/#{number}/requested_reviewers"
         request_data = { reviewers: reviewers }
 
-        @api_helper.send_request(api_path, data: request_data)
+        @api_interface.send_request(api_path, data: request_data)
       end
     end
   end

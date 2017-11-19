@@ -6,9 +6,9 @@ module Geet
   module Github
     class Label
       # Returns a flat list of names in string form.
-      def self.list(api_helper)
+      def self.list(api_interface)
         api_path = 'labels'
-        response = api_helper.send_request(api_path, multipage: true)
+        response = api_interface.send_request(api_path, multipage: true)
 
         response.map { |label_entry| label_entry['name'] }
       end

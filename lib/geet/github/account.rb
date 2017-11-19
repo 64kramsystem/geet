@@ -3,14 +3,14 @@
 module Geet
   module Github
     class Account
-      def initialize(api_helper)
-        @api_helper = api_helper
+      def initialize(api_interface)
+        @api_interface = api_interface
       end
 
       def authenticated_user
         api_path = '/user'
 
-        response = @api_helper.send_request(api_path)
+        response = @api_interface.send_request(api_path)
 
         response.fetch('login')
       end

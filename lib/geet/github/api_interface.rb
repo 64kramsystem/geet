@@ -7,7 +7,7 @@ require 'shellwords'
 
 module Geet
   module Github
-    class ApiHelper
+    class ApiInterface
       API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
       API_BASE_URL = 'https://api.github.com'
 

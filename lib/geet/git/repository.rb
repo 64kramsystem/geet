@@ -25,49 +25,49 @@ module Geet
       # REMOTE FUNCTIONALITIES (REPOSITORY)
 
       def collaborators
-        provider_module::Collaborator.list(api_helper)
+        provider_module::Collaborator.list(api_interface)
       end
 
       def labels
-        provider_module::Label.list(api_helper)
+        provider_module::Label.list(api_interface)
       end
 
       def create_gist(filename, content, description: nil, publik: false)
-        provider_module::Gist.create(filename, content, api_helper, description: description, publik: publik)
+        provider_module::Gist.create(filename, content, api_interface, description: description, publik: publik)
       end
 
       def create_issue(title, description)
-        provider_module::Issue.create(title, description, api_helper)
+        provider_module::Issue.create(title, description, api_interface)
       end
 
       def abstract_issues(milestone: nil)
-        provider_module::AbstractIssue.list(api_helper, milestone: milestone)
+        provider_module::AbstractIssue.list(api_interface, milestone: milestone)
       end
 
       def issues
-        provider_module::Issue.list(api_helper)
+        provider_module::Issue.list(api_interface)
       end
 
       def milestone(number)
-        provider_module::Milestone.find(number, api_helper)
+        provider_module::Milestone.find(number, api_interface)
       end
 
       def milestones
-        provider_module::Milestone.list(api_helper)
+        provider_module::Milestone.list(api_interface)
       end
 
       def create_pr(title, description, head)
-        provider_module::PR.create(title, description, head, api_helper)
+        provider_module::PR.create(title, description, head, api_interface)
       end
 
       def prs(head: nil)
-        provider_module::PR.list(api_helper, head: head)
+        provider_module::PR.list(api_interface, head: head)
       end
 
       # REMOTE FUNCTIONALITIES (ACCOUNT)
 
       def authenticated_user
-        provider_module::Account.new(api_helper).authenticated_user
+        provider_module::Account.new(api_interface).authenticated_user
       end
 
       # OTHER/CONVENIENCE FUNCTIONALITIES
@@ -129,8 +129,8 @@ module Geet
 
       # OTHER HELPERS
 
-      def api_helper
-        provider_module::ApiHelper.new(@api_token, path(upstream: @upstream), @upstream)
+      def api_interface
+        provider_module::ApiInterface.new(@api_token, path(upstream: @upstream), @upstream)
       end
 
       # Example: `saveriomiroddi/geet`

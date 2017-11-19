@@ -13,20 +13,20 @@ module Geet
     class AbstractIssue
       attr_reader :number, :title, :link
 
-      def initialize(number, api_helper, title, link)
+      def initialize(number, api_interface, title, link)
         @number = number
-        @api_helper = api_helper
+        @api_interface = api_interface
         @title = title
         @link = link
       end
 
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
-      def self.list(api_helper, milestone: nil)
+      def self.list(api_interface, milestone: nil)
         api_path = 'issues'
         request_params = { milestone: milestone } if milestone
 
-        response = api_helper.send_request(api_path, params: request_params, multipage: true)
+        response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
         response.map do |issue_data|
           number = issue_data.fetch('number')
@@ -35,7 +35,7 @@ module Geet
 
           klazz = issue_data.key?('pull_request') ? PR : Issue
 
-          klazz.new(number, api_helper, title, link)
+          klazz.new(number, api_interface, title, link)
         end
       end
 
@@ -46,14 +46,14 @@ module Geet
         api_path = "issues/#{@number}/assignees"
         request_data = { assignees: Array(users) }
 
-        @api_helper.send_request(api_path, data: request_data)
+        @api_interface.send_request(api_path, data: request_data)
       end
 
       def add_labels(labels)
         api_path = "issues/#{@number}/labels"
         request_data = labels
 
-        @api_helper.send_request(api_path, data: request_data)
+        @api_interface.send_request(api_path, data: request_data)
       end
 
       # See https://developer.github.com/v3/issues/#edit-an-issue
@@ -62,7 +62,7 @@ module Geet
         request_data = { milestone: milestone }
         api_path = "issues/#{@number}"
 
-        @api_helper.send_request(api_path, data: request_data, http_method: :patch)
+        @api_interface.send_request(api_path, data: request_data, http_method: :patch)
       end
     end
   end
