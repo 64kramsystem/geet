@@ -13,26 +13,30 @@ module Geet
       #   :assignee_patterns
       #   :no_open_issue
       #
-      def execute(repository, title, description, label_patterns: nil, milestone_pattern: nil, assignee_patterns: nil, no_open_issue: nil, **)
-        labels_thread = select_labels(repository, label_patterns) if label_patterns
-        milestone_thread = find_milestone(repository, milestone_pattern) if milestone_pattern
-        assignees_thread = select_assignees(repository, assignee_patterns) if assignee_patterns
+      def execute(
+          repository, title, description,
+          label_patterns: nil, milestone_pattern: nil, assignee_patterns: nil, no_open_issue: nil,
+          output: $stdout, **
+      )
+        labels_thread = select_labels(repository, label_patterns, output) if label_patterns
+        milestone_thread = find_milestone(repository, milestone_pattern, output) if milestone_pattern
+        assignees_thread = select_assignees(repository, assignee_patterns, output) if assignee_patterns
 
         selected_labels = labels_thread&.join&.value
         assignees = assignees_thread&.join&.value
         milestone = milestone_thread&.join&.value
 
-        puts 'Creating the issue...'
+        output.puts 'Creating the issue...'
 
         issue = repository.create_issue(title, description)
 
-        add_labels_thread = add_labels(issue, selected_labels) if selected_labels
-        set_milestone_thread = set_milestone(issue, milestone) if milestone
+        add_labels_thread = add_labels(issue, selected_labels, output) if selected_labels
+        set_milestone_thread = set_milestone(issue, milestone, output) if milestone
 
         if assignees
-          assign_users_thread = assign_users(issue, assignees)
+          assign_users_thread = assign_users(issue, assignees, output)
         else
-          assign_users_thread = assign_authenticated_user(repository, issue)
+          assign_users_thread = assign_authenticated_user(repository, issue, output)
         end
 
         add_labels_thread&.join
@@ -40,7 +44,7 @@ module Geet
         assign_users_thread.join
 
         if no_open_issue
-          puts "Issue address: #{issue.link}"
+          output.puts "Issue address: #{issue.link}"
         else
           os_open(issue.link)
         end
@@ -52,8 +56,8 @@ module Geet
 
       # Internal actions
 
-      def select_labels(repository, label_patterns)
-        puts 'Finding labels...'
+      def select_labels(repository, label_patterns, output)
+        output.puts 'Finding labels...'
 
         Thread.new do
           all_labels = repository.labels
@@ -62,8 +66,8 @@ module Geet
         end
       end
 
-      def find_milestone(repository, milestone_pattern)
-        puts 'Finding milestone...'
+      def find_milestone(repository, milestone_pattern, output)
+        output.puts 'Finding milestone...'
 
         Thread.new do
           if milestone_pattern =~ /\A\d+\Z/
@@ -76,8 +80,8 @@ module Geet
         end
       end
 
-      def select_assignees(repository, assignee_patterns)
-        puts 'Finding collaborators...'
+      def select_assignees(repository, assignee_patterns, output)
+        output.puts 'Finding collaborators...'
 
         Thread.new do
           all_collaborators = repository.collaborators
@@ -86,32 +90,32 @@ module Geet
         end
       end
 
-      def add_labels(issue, selected_labels)
-        puts "Adding labels #{selected_labels.join(', ')}..."
+      def add_labels(issue, selected_labels, output)
+        output.puts "Adding labels #{selected_labels.join(', ')}..."
 
         Thread.new do
           issue.add_labels(selected_labels)
         end
       end
 
-      def set_milestone(issue, milestone)
-        puts "Setting milestone #{milestone.title}..."
+      def set_milestone(issue, milestone, output)
+        output.puts "Setting milestone #{milestone.title}..."
 
         Thread.new do
           issue.edit(milestone: milestone.number)
         end
       end
 
-      def assign_users(issue, users)
-        puts "Assigning users #{users.join(', ')}..."
+      def assign_users(issue, users, output)
+        output.puts "Assigning users #{users.join(', ')}..."
 
         Thread.new do
           issue.assign_users(users)
         end
       end
 
-      def assign_authenticated_user(repository, issue)
-        puts 'Assigning authenticated user...'
+      def assign_authenticated_user(repository, issue, output)
+        output.puts 'Assigning authenticated user...'
 
         Thread.new do
           issue.assign_users(repository.authenticated_user)

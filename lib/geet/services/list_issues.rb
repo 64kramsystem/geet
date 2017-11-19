@@ -3,11 +3,11 @@
 module Geet
   module Services
     class ListIssues
-      def execute(repository)
+      def execute(repository, output: $stdout)
         issues = repository.issues
 
         issues.each do |issue|
-          puts "#{issue.number}. #{issue.title} (#{issue.link})"
+          output.puts "#{issue.number}. #{issue.title} (#{issue.link})"
         end
       end
     end
