@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/os_helper.rb'
-require_relative '../git/repository.rb'
 
 module Geet
   module Services

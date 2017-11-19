@@ -1,20 +1,12 @@
 # frozen_string_literal: true
 
 require 'simple_scripting/argv'
+require_relative 'commands'
 
 module Geet
-  module Helpers
-    class ConfigurationHelper
-      # Commands
-
-      GIST_CREATE_COMMAND = 'gist.create'
-      ISSUE_CREATE_COMMAND = 'issue.create'
-      ISSUE_LIST_COMMAND = 'issue.list'
-      LABEL_LIST_COMMAND = 'label.list'
-      MILESTONE_LIST_COMMAND = 'milestone.list'
-      PR_CREATE_COMMAND = 'pr.create'
-      PR_LIST_COMMAND = 'pr.list'
-      PR_MERGE_COMMAND = 'pr.merge'
+  module Commandline
+    class Configuration
+      include Commands
 
       # Command options
 

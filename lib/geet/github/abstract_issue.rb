@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Geet
-  module GitHub
+  module Github
     # It seems that autoloading will be deprecated, but it's currently the cleanest solution
     # to the legitimate problem of AbstractIssue needing Issue/PR to be loaded (due to :list),
     # and viceversa (due to class definition).
@@ -13,20 +13,20 @@ module Geet
     class AbstractIssue
       attr_reader :number, :title, :link
 
-      def initialize(number, api_helper, title, link)
+      def initialize(number, api_interface, title, link)
         @number = number
-        @api_helper = api_helper
+        @api_interface = api_interface
         @title = title
         @link = link
       end
 
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
-      def self.list(api_helper, milestone: nil)
-        request_address = "#{api_helper.api_repo_link}/issues"
+      def self.list(api_interface, milestone: nil)
+        api_path = 'issues'
         request_params = { milestone: milestone } if milestone
 
-        response = api_helper.send_request(request_address, params: request_params, multipage: true)
+        response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
         response.map do |issue_data|
           number = issue_data.fetch('number')
@@ -35,7 +35,7 @@ module Geet
 
           klazz = issue_data.key?('pull_request') ? PR : Issue
 
-          klazz.new(number, api_helper, title, link)
+          klazz.new(number, api_interface, title, link)
         end
       end
 
@@ -43,26 +43,26 @@ module Geet
       #   users:   String, or Array of strings.
       #
       def assign_users(users)
+        api_path = "issues/#{@number}/assignees"
         request_data = { assignees: Array(users) }
-        request_address = "#{@api_helper.api_repo_link}/issues/#{@number}/assignees"
 
-        @api_helper.send_request(request_address, data: request_data)
+        @api_interface.send_request(api_path, data: request_data)
       end
 
       def add_labels(labels)
+        api_path = "issues/#{@number}/labels"
         request_data = labels
-        request_address = "#{@api_helper.api_repo_link}/issues/#{@number}/labels"
 
-        @api_helper.send_request(request_address, data: request_data)
+        @api_interface.send_request(api_path, data: request_data)
       end
 
       # See https://developer.github.com/v3/issues/#edit-an-issue
       #
       def edit(milestone:)
-        request_address = "#{@api_helper.api_repo_link}/issues/#{@number}"
         request_data = { milestone: milestone }
+        api_path = "issues/#{@number}"
 
-        @api_helper.send_request(request_address, data: request_data, http_method: :patch)
+        @api_interface.send_request(api_path, data: request_data, http_method: :patch)
       end
     end
   end

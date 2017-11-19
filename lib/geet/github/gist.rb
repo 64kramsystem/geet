@@ -3,14 +3,14 @@
 require_relative 'abstract_issue'
 
 module Geet
-  module GitHub
+  module Github
     class Gist
-      def self.create(filename, content, api_helper, description: nil, publik: false)
-        request_address = "#{api_helper.api_base_link}/gists"
+      def self.create(filename, content, api_interface, description: nil, publik: false)
+        api_path = "/gists"
 
         request_data = prepare_request_data(filename, content, description, publik)
 
-        response = api_helper.send_request(request_address, data: request_data)
+        response = api_interface.send_request(api_path, data: request_data)
 
         id = response.fetch('id')
 
