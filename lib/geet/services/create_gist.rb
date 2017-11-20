@@ -15,7 +15,8 @@ module Geet
       def execute(repository, full_filename, description: nil, publik: false, no_browse: false, output: $stdout)
         content = IO.read(full_filename)
 
-        output.puts 'Creating the gist...'
+        gist_access = publik ? 'public' : 'private'
+        output.puts "Creating a #{gist_access} gist..."
 
         filename = File.basename(full_filename)
         gist = repository.create_gist(filename, content, description: description, publik: publik)
