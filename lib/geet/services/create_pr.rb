@@ -38,6 +38,8 @@ module Geet
         else
           os_open(pr.link)
         end
+
+        pr
       end
 
       private

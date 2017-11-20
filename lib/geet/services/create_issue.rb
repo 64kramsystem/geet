@@ -44,6 +44,8 @@ module Geet
         else
           os_open(issue.link)
         end
+
+        issue
       end
 
       private

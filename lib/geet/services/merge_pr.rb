@@ -7,6 +7,7 @@ module Geet
         merge_head = find_merge_head(repository)
         pr = checked_find_branch_pr(repository, merge_head)
         merge_pr(pr)
+        pr
       end
 
       private
