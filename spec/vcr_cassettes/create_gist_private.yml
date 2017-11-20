@@ -1,0 +1,80 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.github.com/gists
+    body:
+      encoding: UTF-8
+      string: '{"public":false,"files":{"geet_gist20171120-21351-1voyg7d":{"content":"testcontent"}},"description":"testdescription"}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 20 Nov 2017 19:49:52 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '3296'
+      Status:
+      - 201 Created
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4995'
+      X-Ratelimit-Reset:
+      - '1511208417'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - '"0b40ee11ec02481c8d1ec1b78eb0a8fd"'
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Location:
+      - https://api.github.com/gists/deadbeef
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '1.220669'
+      X-Github-Request-Id:
+      - EDF2:2E340:1203894:22EE1C4:5A1331DE
+    body:
+      encoding: UTF-8
+      string: '{"url":"https://api.github.com/gists/deadbeef","forks_url":"https://api.github.com/gists/deadbeef/forks","commits_url":"https://api.github.com/gists/deadbeef/commits","id":"deadbeef","git_pull_url":"https://gist.github.com/deadbeef.git","git_push_url":"https://gist.github.com/deadbeef.git","html_url":"https://gist.github.com/deadbeef","files":{"geet_gist20171120-21351-1voyg7d":{"filename":"geet_gist20171120-21351-1voyg7d","type":"text/plain","language":null,"raw_url":"https://gist.githubusercontent.com/donaldduck/deadbeef/raw/otherhex1/geet_gist20171120-21351-1voyg7d","size":11,"truncated":false,"content":"testcontent"}},"public":false,"created_at":"2017-11-20T19:49:52Z","updated_at":"2017-11-20T19:49:52Z","description":"testdescription","comments":0,"user":null,"comments_url":"https://api.github.com/gists/deadbeef/comments","owner":{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"forks":[],"history":[{"user":{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"version":"otherhex2","committed_at":"2017-11-20T19:49:51Z","change_status":{"total":1,"additions":1,"deletions":0},"url":"https://api.github.com/gists/deadbeef/otherhex2"}],"truncated":false}'
+    http_version: 
+  recorded_at: Mon, 20 Nov 2017 19:49:52 GMT
+recorded_with: VCR 3.0.3
