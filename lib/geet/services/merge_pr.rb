@@ -3,10 +3,11 @@
 module Geet
   module Services
     class MergePr
-      def execute(repository)
+      def execute(repository, output: $stdout)
         merge_head = find_merge_head(repository)
-        pr = checked_find_branch_pr(repository, merge_head)
-        merge_pr(pr)
+        pr = checked_find_branch_pr(repository, merge_head, output)
+        merge_pr(pr, output)
+        pr
       end
 
       private
@@ -16,8 +17,8 @@ module Geet
       end
 
       # Expect to find only one.
-      def checked_find_branch_pr(repository, head)
-        puts "Finding PR with head (#{head})..."
+      def checked_find_branch_pr(repository, head, output)
+        output.puts "Finding PR with head (#{head})..."
 
         prs = repository.prs(head: head)
 
@@ -26,8 +27,8 @@ module Geet
         prs[0]
       end
 
-      def merge_pr(pr)
-        puts "Merging PR ##{pr.number}..."
+      def merge_pr(pr, output)
+        output.puts "Merging PR ##{pr.number}..."
 
         pr.merge
       end

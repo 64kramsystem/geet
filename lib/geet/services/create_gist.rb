@@ -12,16 +12,17 @@ module Geet
       #   :publik:      defaults to false
       #   :no_browse    defaults to false
       #
-      def execute(repository, full_filename, description: nil, publik: false, no_browse: false)
+      def execute(repository, full_filename, description: nil, publik: false, no_browse: false, output: $stdout)
         content = IO.read(full_filename)
 
-        puts 'Creating the gist...'
+        gist_access = publik ? 'public' : 'private'
+        output.puts "Creating a #{gist_access} gist..."
 
         filename = File.basename(full_filename)
         gist = repository.create_gist(filename, content, description: description, publik: publik)
 
         if no_browse
-          puts "Gist address: #{gist.link}"
+          output.puts "Gist address: #{gist.link}"
         else
           os_open(gist.link)
         end

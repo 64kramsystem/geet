@@ -1,0 +1,78 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/donaldduck/geet/labels
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 20 Nov 2017 17:07:12 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4996'
+      X-Ratelimit-Reset:
+      - '1511201123'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"1219cd7dcd76dc4179f679c9086bbd95"
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.032182'
+      X-Github-Request-Id:
+      - C452:6CD5:406361:950EFA:5A130BC0
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"id":715980057,"url":"https://api.github.com/repos/donaldduck/geet/labels/bug","name":"bug","color":"ee0701","default":true},{"id":715980059,"url":"https://api.github.com/repos/donaldduck/geet/labels/enhancement","name":"enhancement","color":"84b6eb","default":true},{"id":735752330,"url":"https://api.github.com/repos/donaldduck/geet/labels/technical_debt","name":"technical_debt","color":"ee0701","default":false},{"id":740440448,"url":"https://api.github.com/repos/donaldduck/geet/labels/top_priority","name":"top_priority","color":"d93f0b","default":false}]'
+    http_version: 
+  recorded_at: Mon, 20 Nov 2017 17:07:12 GMT
+recorded_with: VCR 3.0.3

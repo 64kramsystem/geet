@@ -3,11 +3,11 @@
 module Geet
   module Services
     class ListPrs
-      def execute(repository)
+      def execute(repository, output: $stdout)
         prs = repository.prs
 
         prs.each do |pr|
-          puts "#{pr.number}. #{pr.title} (#{pr.link})"
+          output.puts "#{pr.number}. #{pr.title} (#{pr.link})"
         end
       end
     end

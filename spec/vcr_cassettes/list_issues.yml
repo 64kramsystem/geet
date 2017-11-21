@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/donaldduck/testrepo/issues
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Tue, 21 Nov 2017 09:11:19 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4981'
+      X-Ratelimit-Reset:
+      - '1511255955'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"831f1ec1c48c58ae86333231ed69c60c"
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.083407'
+      X-Github-Request-Id:
+      - D3D0:2B82:D0BDB:1D3F79:5A13EDB6
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"url":"https://api.github.com/repos/donaldduck/testrepo/issues/5","repository_url":"https://api.github.com/repos/donaldduck/testrepo","labels_url":"https://api.github.com/repos/donaldduck/testrepo/issues/5/labels{/name}","comments_url":"https://api.github.com/repos/donaldduck/testrepo/issues/5/comments","events_url":"https://api.github.com/repos/donaldduck/testrepo/issues/5/events","html_url":"https://github.com/donaldduck/testrepo/issues/5","id":275635290,"number":5,"title":"Title
+        2","user":{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"assignees":[],"milestone":null,"comments":0,"created_at":"2017-11-21T09:10:43Z","updated_at":"2017-11-21T09:10:43Z","closed_at":null,"author_association":"OWNER","body":"Description
+        2"},{"url":"https://api.github.com/repos/donaldduck/testrepo/issues/4","repository_url":"https://api.github.com/repos/donaldduck/testrepo","labels_url":"https://api.github.com/repos/donaldduck/testrepo/issues/4/labels{/name}","comments_url":"https://api.github.com/repos/donaldduck/testrepo/issues/4/comments","events_url":"https://api.github.com/repos/donaldduck/testrepo/issues/4/events","html_url":"https://github.com/donaldduck/testrepo/issues/4","id":275635214,"number":4,"title":"Title
+        1","user":{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"assignees":[],"milestone":null,"comments":0,"created_at":"2017-11-21T09:10:28Z","updated_at":"2017-11-21T09:10:28Z","closed_at":null,"author_association":"OWNER","body":"Description
+        1"},{"url":"https://api.github.com/repos/donaldduck/testrepo/issues/3","repository_url":"https://api.github.com/repos/donaldduck/testrepo","labels_url":"https://api.github.com/repos/donaldduck/testrepo/issues/3/labels{/name}","comments_url":"https://api.github.com/repos/donaldduck/testrepo/issues/3/comments","events_url":"https://api.github.com/repos/donaldduck/testrepo/issues/3/events","html_url":"https://github.com/donaldduck/testrepo/pull/3","id":275517766,"number":3,"title":"Title","user":{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"labels":[{"id":756320386,"url":"https://api.github.com/repos/donaldduck/testrepo/labels/invalid","name":"invalid","color":"e6e6e6","default":true},{"id":756335109,"url":"https://api.github.com/repos/donaldduck/testrepo/labels/other_bug","name":"other_bug","color":"c2e0c6","default":false}],"state":"open","locked":false,"assignee":{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"assignees":[{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false}],"milestone":{"url":"https://api.github.com/repos/donaldduck/testrepo/milestones/1","html_url":"https://github.com/donaldduck/testrepo/milestone/1","labels_url":"https://api.github.com/repos/donaldduck/testrepo/milestones/1/labels","id":2927045,"number":1,"title":"0.0.1","description":"","creator":{"login":"donaldduck","id":1595356,"avatar_url":"https://avatars2.githubusercontent.com/u/1595356?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"open_issues":1,"closed_issues":1,"state":"open","created_at":"2017-11-20T22:06:17Z","updated_at":"2017-11-20T22:16:06Z","due_on":null,"closed_at":null},"comments":0,"created_at":"2017-11-20T22:16:05Z","updated_at":"2017-11-20T22:16:07Z","closed_at":null,"author_association":"OWNER","pull_request":{"url":"https://api.github.com/repos/donaldduck/testrepo/pulls/3","html_url":"https://github.com/donaldduck/testrepo/pull/3","diff_url":"https://github.com/donaldduck/testrepo/pull/3.diff","patch_url":"https://github.com/donaldduck/testrepo/pull/3.patch"},"body":"Description"}]'
+    http_version: 
+  recorded_at: Tue, 21 Nov 2017 09:11:19 GMT
+recorded_with: VCR 3.0.3

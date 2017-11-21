@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'shellwords'
+
 module Geet
   module Git
     # This class represents, for convenience, both the local and the remote repository, but the
@@ -17,9 +19,10 @@ module Geet
       ORIGIN_NAME   = 'origin'
       UPSTREAM_NAME = 'upstream'
 
-      def initialize(api_token, upstream: false)
+      def initialize(api_token, upstream: false, location: nil)
         @api_token = api_token
         @upstream = upstream
+        @location = location
       end
 
       # REMOTE FUNCTIONALITIES (REPOSITORY)
@@ -73,7 +76,8 @@ module Geet
       # OTHER/CONVENIENCE FUNCTIONALITIES
 
       def current_branch
-        branch = `git rev-parse --abbrev-ref HEAD`.strip
+        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
+        branch = `git #{gitdir_option} rev-parse --abbrev-ref HEAD`.strip
 
         raise "Couldn't find current branch" if branch == 'HEAD'
 
@@ -84,10 +88,11 @@ module Geet
 
       # REPOSITORY METADATA
 
-      # The result is in the format `git@github.com:saveriomiroddi/geet.git`
+      # The result is in the format `git@github.com:donaldduck/geet.git`
       #
       def remote(name)
-        remote_url = `git ls-remote --get-url #{name}`.strip
+        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
+        remote_url = `git #{gitdir_option} ls-remote --get-url #{name}`.strip
 
         if remote_url == name
           raise "Remote #{name.inspect} not found!"
@@ -133,7 +138,7 @@ module Geet
         provider_module::ApiInterface.new(@api_token, path(upstream: @upstream), @upstream)
       end
 
-      # Example: `saveriomiroddi/geet`
+      # Example: `donaldduck/geet`
       #
       def path(upstream: false)
         remote_name = upstream ? UPSTREAM_NAME : ORIGIN_NAME

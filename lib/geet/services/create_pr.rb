@@ -12,21 +12,21 @@ module Geet
       #   :reviewer_patterns
       #   :no_open_pr
       #
-      def execute(repository, title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil, no_open_pr: nil, **)
-        labels_thread = select_labels(repository, label_patterns) if label_patterns
-        milestone_thread = find_milestone(repository, milestone_pattern) if milestone_pattern
-        reviewers_thread = select_reviewers(repository, reviewer_patterns) if reviewer_patterns
+      def execute(repository, title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil, no_open_pr: nil, output: $stdout, **)
+        labels_thread = select_labels(repository, label_patterns, output) if label_patterns
+        milestone_thread = find_milestone(repository, milestone_pattern, output) if milestone_pattern
+        reviewers_thread = select_reviewers(repository, reviewer_patterns, output) if reviewer_patterns
 
         selected_labels = labels_thread&.join&.value
         reviewers = reviewers_thread&.join&.value
         milestone = milestone_thread&.join&.value
 
-        pr = create_pr(repository, title, description)
+        pr = create_pr(repository, title, description, output)
 
-        assign_user_thread = assign_authenticated_user(pr, repository)
-        add_labels_thread = add_labels(pr, selected_labels) if selected_labels
-        set_milestone_thread = set_milestone(pr, milestone) if milestone
-        request_review_thread = request_review(pr, reviewers) if reviewers
+        assign_user_thread = assign_authenticated_user(pr, repository, output)
+        add_labels_thread = add_labels(pr, selected_labels, output) if selected_labels
+        set_milestone_thread = set_milestone(pr, milestone, output) if milestone
+        request_review_thread = request_review(pr, reviewers, output) if reviewers
 
         assign_user_thread.join
         add_labels_thread&.join
@@ -34,18 +34,20 @@ module Geet
         request_review_thread&.join
 
         if no_open_pr
-          puts "PR address: #{pr.link}"
+          output.puts "PR address: #{pr.link}"
         else
           os_open(pr.link)
         end
+
+        pr
       end
 
       private
 
       # Internal actions
 
-      def select_labels(repository, label_patterns)
-        puts 'Finding labels...'
+      def select_labels(repository, label_patterns, output)
+        output.puts 'Finding labels...'
 
         Thread.new do
           all_labels = repository.labels
@@ -54,8 +56,8 @@ module Geet
         end
       end
 
-      def find_milestone(repository, milestone_pattern)
-        puts 'Finding milestone...'
+      def find_milestone(repository, milestone_pattern, output)
+        output.puts 'Finding milestone...'
 
         Thread.new do
           if milestone_pattern =~ /\A\d+\Z/
@@ -68,8 +70,8 @@ module Geet
         end
       end
 
-      def select_reviewers(repository, reviewer_patterns)
-        puts 'Finding collaborators...'
+      def select_reviewers(repository, reviewer_patterns, output)
+        output.puts 'Finding collaborators...'
 
         Thread.new do
           all_collaborators = repository.collaborators
@@ -78,38 +80,38 @@ module Geet
         end
       end
 
-      def create_pr(repository, title, description)
-        puts 'Creating PR...'
+      def create_pr(repository, title, description, output)
+        output.puts 'Creating PR...'
 
         repository.create_pr(title, description, repository.current_branch)
       end
 
-      def assign_authenticated_user(pr, repository)
-        puts 'Assigning authenticated user...'
+      def assign_authenticated_user(pr, repository, output)
+        output.puts 'Assigning authenticated user...'
 
         Thread.new do
           pr.assign_users(repository.authenticated_user)
         end
       end
 
-      def add_labels(pr, selected_labels)
-        puts "Adding labels #{selected_labels.join(', ')}..."
+      def add_labels(pr, selected_labels, output)
+        output.puts "Adding labels #{selected_labels.join(', ')}..."
 
         Thread.new do
           pr.add_labels(selected_labels)
         end
       end
 
-      def set_milestone(pr, milestone)
-        puts "Setting milestone #{milestone.title}..."
+      def set_milestone(pr, milestone, output)
+        output.puts "Setting milestone #{milestone.title}..."
 
         Thread.new do
           pr.edit(milestone: milestone.number)
         end
       end
 
-      def request_review(pr, reviewers)
-        puts "Requesting review from #{reviewers.join(', ')}..."
+      def request_review(pr, reviewers, output)
+        output.puts "Requesting review from #{reviewers.join(', ')}..."
 
         Thread.new do
           pr.request_review(reviewers)

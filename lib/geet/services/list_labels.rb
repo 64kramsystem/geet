@@ -3,11 +3,11 @@
 module Geet
   module Services
     class ListLabels
-      def execute(repository)
+      def execute(repository, output: $stdout)
         labels = repository.labels
 
         labels.each do |label|
-          puts "- #{label}"
+          output.puts "- #{label}"
         end
       end
     end
