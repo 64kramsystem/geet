@@ -85,5 +85,3 @@ Examples:
 Geet is in alpha status. Although I use it daily, lots of features are being implemented, and internal/external APIs are frequently changed.
 
 The public release will be 1.0, and is expected to be released in January 2018 or earlier.
-
-The test suite is planned for v0.3.0. In case the project should have any user/developer besides me before that version, I will put any feature on hold, and build the full test suite.
