@@ -84,7 +84,7 @@ module Geet
 
       # REPOSITORY METADATA
 
-      # The result is in the format `git@github.com:saveriomiroddi/geet.git`
+      # The result is in the format `git@github.com:donaldduck/geet.git`
       #
       def remote(name)
         remote_url = `git ls-remote --get-url #{name}`.strip
@@ -133,7 +133,7 @@ module Geet
         provider_module::ApiInterface.new(@api_token, path(upstream: @upstream), @upstream)
       end
 
-      # Example: `saveriomiroddi/geet`
+      # Example: `donaldduck/geet`
       #
       def path(upstream: false)
         remote_name = upstream ? UPSTREAM_NAME : ORIGIN_NAME
