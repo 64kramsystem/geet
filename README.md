@@ -8,13 +8,18 @@ This tool is very similar to [Hub](https://github.com/github/hub), but it suppor
 
 Please see the [development status](#development-status) section for informations about the current development.
 
+## Providers support
+
+Currently, there are many functionalities implemented for GitHub (see help), and only issues listing for GitLab.
+
 ## Samples
 
 ### Prerequisite(s)
 
-Geet requires the `GITHUB_API_TOKEN` environment variable to be set, eg:
+Geet requires the API token environment variable to be set, eg:
 
-    export GITHUB_API_TOKEN=0123456789abcdef0123456789abcdef
+    export GITHUB_API_TOKEN=0123456789abcdef0123456789abcdef    # for GitHub
+    export GITLAB_API_TOKEN=0123456789abcd-ef0-1                # for GitLab
 
 All the commands need to be run from the git repository.
 
