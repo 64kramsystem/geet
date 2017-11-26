@@ -4,8 +4,8 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/create_issue'
 
 describe Geet::Services::CreateIssue do
-  let(:repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN')) }
-  let(:upstream_repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN'), upstream: true) }
+  let(:repository) { Geet::Git::Repository.new }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true) }
 
   context 'with labels, assignees and milestones' do
     it 'should create an issue' do

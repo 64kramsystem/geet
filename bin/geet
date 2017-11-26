@@ -14,10 +14,9 @@ class GeetLauncher
     commandline_configuration = Commandline::Configuration.new
 
     command, options = commandline_configuration.decode_argv || exit
-    api_token = commandline_configuration.api_token
 
     # `:upstream` is always false in the gist command case.
-    repository = Git::Repository.new(api_token, upstream: !!options[:upstream])
+    repository = Git::Repository.new(upstream: !!options[:upstream])
 
     case command
     when GIST_CREATE_COMMAND

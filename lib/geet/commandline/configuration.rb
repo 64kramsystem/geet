@@ -80,10 +80,6 @@ module Geet
           },
         )
       end
-
-      def api_token
-        ENV['GITHUB_API_TOKEN'] || raise('Missing $GITHUB_API_TOKEN')
-      end
     end
   end
 end

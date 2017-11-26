@@ -5,7 +5,7 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/create_gist'
 
 describe Geet::Services::CreateGist do
-  let(:repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN')) }
+  let(:repository) { Geet::Git::Repository.new }
   let(:tempfile) { Tempfile.open('geet_gist') { |file| file << "testcontent" } }
 
   it 'should create a public gist' do

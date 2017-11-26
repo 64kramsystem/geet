@@ -4,7 +4,7 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/merge_pr'
 
 describe Geet::Services::MergePr do
-  let(:repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN')) }
+  let(:repository) { Geet::Git::Repository.new() }
 
   it 'should merge the PR for the current branch' do
     allow(repository).to receive(:current_branch).and_return('mybranch1')

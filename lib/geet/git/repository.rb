@@ -19,10 +19,10 @@ module Geet
       ORIGIN_NAME   = 'origin'
       UPSTREAM_NAME = 'upstream'
 
-      def initialize(api_token, upstream: false, location: nil)
-        @api_token = api_token
+      def initialize(upstream: false, location: nil)
         @upstream = upstream
         @location = location
+        @api_token = extract_env_api_token
       end
 
       # REMOTE FUNCTIONALITIES (REPOSITORY)
@@ -104,6 +104,12 @@ module Geet
       end
 
       # PROVIDER
+
+      def extract_env_api_token
+        env_variable_name = "#{provider_domain[/(.*)\.\w+/, 1].upcase}_API_TOKEN"
+
+        ENV[env_variable_name] || raise("#{env_variable_name} not set!")
+      end
 
       def provider_domain
         # We assume that it's not possible to have origin and upstream on different providers.

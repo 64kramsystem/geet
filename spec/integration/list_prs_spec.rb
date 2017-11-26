@@ -4,8 +4,8 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/list_prs'
 
 describe Geet::Services::ListPrs do
-  let(:repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN')) }
-  let(:upstream_repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN'), upstream: true) }
+  let(:repository) { Geet::Git::Repository.new() }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true) }
 
   it 'should list the PRs' do
     allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')

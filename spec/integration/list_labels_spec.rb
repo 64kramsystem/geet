@@ -4,7 +4,7 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/list_labels'
 
 describe Geet::Services::ListLabels do
-  let(:repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN')) }
+  let(:repository) { Geet::Git::Repository.new() }
 
   it 'should list the labels' do
     allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
