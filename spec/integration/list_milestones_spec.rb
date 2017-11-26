@@ -4,7 +4,7 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/list_milestones'
 
 describe Geet::Services::ListMilestones do
-  let(:repository) { Geet::Git::Repository.new(ENV.fetch('GITHUB_API_TOKEN')) }
+  let(:repository) { Geet::Git::Repository.new() }
 
   it 'should list the milestones' do
     allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')

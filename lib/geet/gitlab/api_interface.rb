@@ -1,24 +1,28 @@
 # frozen_string_literal: true
 
+require 'cgi'
 require 'uri'
 require 'net/http'
 require 'json'
 require 'shellwords'
 
 module Geet
-  module Github
+  module Gitlab
     class ApiInterface
-      API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
-      API_BASE_URL = 'https://api.github.com'
+      API_BASE_URL = 'https://gitlab.com/api/v4'
 
-      def initialize(api_token, repository_path, upstream)
+      def initialize(api_token, path_with_namespace, upstream)
         @api_token = api_token
-        @repository_path = repository_path
+        @path_with_namespace = path_with_namespace
         @upstream = upstream
       end
 
       def upstream?
         @upstream
+      end
+
+      def path_with_namespace(encoded: false)
+        encoded ? CGI.escape(@path_with_namespace) : @path_with_namespace
       end
 
       # Send a request.
@@ -60,15 +64,17 @@ module Geet
           address = link_next_page(response.to_hash)
 
           return parsed_responses if address.nil?
+
+          # Gitlab's next link address already includes all the params, so we remove
+          # the passed ones (if there's any).
+          params = nil
         end
       end
 
       private
 
       def api_url(api_path)
-        url = API_BASE_URL
-        url += "/repos/#{@repository_path}/" if !api_path.start_with?('/')
-        url + api_path
+        "#{API_BASE_URL}/#{api_path}"
       end
 
       def send_http_request(address, params: nil, data: nil, http_method: nil)
@@ -78,9 +84,8 @@ module Geet
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           request = http_class.new(uri)
 
-          request.basic_auth API_AUTH_USER, @api_token
+          request['Private-Token'] = @api_token
           request.body = data.to_json if data
-          request['Accept'] = 'application/vnd.github.v3+json'
 
           http.request(request)
         end
@@ -97,25 +102,7 @@ module Geet
       end
 
       def decode_and_format_error(parsed_response)
-        message = parsed_response['message']
-
-        if parsed_response.key?('errors')
-          message += ':'
-
-          error_details = parsed_response['errors'].map do |error_data|
-            error_code = error_data.fetch('code')
-
-            if error_code == 'custom'
-              " #{error_data.fetch('message')}"
-            else
-              " #{error_code} (#{error_data.fetch('field')})"
-            end
-          end
-
-          message += error_details.join(', ')
-        end
-
-        message
+        parsed_response.fetch('error')
       end
 
       def link_next_page(response_headers)
