@@ -93,7 +93,7 @@ module Geet
       end
 
       def error?(response)
-        !response['Status'].start_with?('2')
+        !response.code.start_with?('2')
       end
 
       def decode_and_format_error(parsed_response)
