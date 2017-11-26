@@ -28,49 +28,49 @@ module Geet
       # REMOTE FUNCTIONALITIES (REPOSITORY)
 
       def collaborators
-        provider_module::Collaborator.list(api_interface)
+        attempt_provider_call(:Collaborator, :list, api_interface)
       end
 
       def labels
-        provider_module::Label.list(api_interface)
+        attempt_provider_call(:Label, :list, api_interface)
       end
 
       def create_gist(filename, content, description: nil, publik: false)
-        provider_module::Gist.create(filename, content, api_interface, description: description, publik: publik)
+        attempt_provider_call(:Gist, :create, filename, content, api_interface, description: description, publik: publik)
       end
 
       def create_issue(title, description)
-        provider_module::Issue.create(title, description, api_interface)
+        attempt_provider_call(:Issue, :create, title, description, api_interface)
       end
 
       def abstract_issues(milestone: nil)
-        provider_module::AbstractIssue.list(api_interface, milestone: milestone)
+        attempt_provider_call(:AbstractIssue, :list, api_interface, milestone: milestone)
       end
 
       def issues
-        provider_module::Issue.list(api_interface)
+        attempt_provider_call(:Issue, :list, api_interface)
       end
 
       def milestone(number)
-        provider_module::Milestone.find(number, api_interface)
+        attempt_provider_call(:Milestone, :find, number, api_interface)
       end
 
       def milestones
-        provider_module::Milestone.list(api_interface)
+        attempt_provider_call(:Milestone, :list, api_interface)
       end
 
       def create_pr(title, description, head)
-        provider_module::PR.create(title, description, head, api_interface)
+        attempt_provider_call(:PR, :create, title, description, head, api_interface)
       end
 
       def prs(head: nil)
-        provider_module::PR.list(api_interface, head: head)
+        attempt_provider_call(:PR, :list, api_interface, head: head)
       end
 
       # REMOTE FUNCTIONALITIES (ACCOUNT)
 
       def authenticated_user
-        provider_module::Account.new(api_interface).authenticated_user
+        attempt_provider_call(:Account, :new, api_interface).authenticated_user
       end
 
       # OTHER/CONVENIENCE FUNCTIONALITIES
@@ -123,12 +123,26 @@ module Geet
         domain
       end
 
-      def provider_module
+      # Attempt to find the provider class and send the specified method, returning a friendly
+      # error (functionality X [Y] is missing) when a class/method is missing.
+      def attempt_provider_call(class_name, meth, *args)
         module_name = provider_domain[/(.*)\.\w+/, 1].capitalize
 
         require_provider_modules
 
-        Kernel.const_get("Geet::#{module_name}")
+        full_class_name = "Geet::#{module_name}::#{class_name}"
+
+        if Kernel.const_defined?(full_class_name)
+          klass = Kernel.const_get(full_class_name)
+
+          if ! klass.respond_to?(meth)
+            raise "The functionality invoked (#{class_name} #{meth}) is not currently supported!"
+          end
+
+          klass.send(meth, *args)
+        else
+          raise "The functionality (#{class_name}) invoked is not currently supported!"
+        end
       end
 
       def require_provider_modules
@@ -141,7 +155,7 @@ module Geet
       # OTHER HELPERS
 
       def api_interface
-        provider_module::ApiInterface.new(@api_token, path(upstream: @upstream), @upstream)
+        attempt_provider_call(:ApiInterface, :new, @api_token, path(upstream: @upstream), @upstream)
       end
 
       # Example: `donaldduck/geet`
