@@ -4,13 +4,26 @@ Command line interface for performing Git hosting service operations.
 
 The current version supports only creating PRs/issues.
 
-This tool is very similar to [Hub](https://github.com/github/hub), but it supports more complex operations, fully specified via command line.
+This tool is very similar to [Hub](https://github.com/github/hub), but it supports a different set of operations, fully specified via command line.
 
 Please see the [development status](#development-status) section for informations about the current development.
 
 ## Providers support
 
-Currently, there are many functionalities implemented for GitHub (see help), and only issues listing for GitLab.
+The functionalities currently supported are:
+
+- Github:
+  - create gist
+  - create issue
+  - create PR
+  - list issues
+  - list labels
+  - list milestones
+  - list PRs
+  - merge PR
+- Gitlab:
+  - list issues
+  - list labels
 
 ## Samples
 
@@ -87,6 +100,6 @@ Examples:
 
 ## Development status
 
-Geet is in alpha status. Although I use it daily, lots of features are being implemented, and internal/external APIs are frequently changed.
+Geet is in alpha status. Although I use it daily, new features are frequently added, and internal/external APIs/workflows may change.
 
-The public release will be 1.0, and is expected to be released in January 2018 or earlier.
+The public release will be 1.0, and is expected to be released in February 2018 or earlier.
