@@ -10,7 +10,7 @@ module Geet
         api_path = 'labels'
         response = api_interface.send_request(api_path, multipage: true)
 
-        response.map { |label_entry| label_entry['name'] }
+        response.map { |label_entry| label_entry.fetch('name') }
       end
     end
   end
