@@ -27,4 +27,30 @@ describe Geet::Services::ListLabels do
       expect(actual_labels).to eql(expected_labels)
     end
   end
+
+  context 'with gitlab.com' do
+    it 'should list the labels' do
+      allow(repository).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+
+      expected_output = <<~STR
+        - bug
+        - confirmed
+        - critical
+        - discussion
+        - documentation
+        - enhancement
+        - suggestion
+        - support
+      STR
+      expected_labels = %w[bug confirmed critical discussion documentation enhancement suggestion support]
+
+      actual_output = StringIO.new
+      actual_labels = VCR.use_cassette("gitlab.com/list_labels") do
+        described_class.new.execute(repository, output: actual_output)
+      end
+
+      expect(actual_output.string).to eql(expected_output)
+      expect(actual_labels).to eql(expected_labels)
+    end
+  end
 end
