@@ -1,0 +1,80 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/labels
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - <GITLAB_CREDENTIALS>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Mon, 27 Nov 2017 19:57:22 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1456'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"f1657db8486bd268ddde16fe1c342d0a"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/labels?id=donaldduck%2Ftestproject&page=1&per_page=20>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/labels?id=donaldduck%2Ftestproject&page=1&per_page=20>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 0ea3d7c7-7fdf-4042-a4e8-67f7a48b4987
+      X-Runtime:
+      - '0.930769'
+      X-Total:
+      - '8'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '1'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1511812702'
+      Ratelimit-Resettime:
+      - Tue, 27 Nov 2017 19:58:22 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":3081606,"name":"bug","color":"#d9534f","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false},{"id":3081608,"name":"confirmed","color":"#d9534f","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false},{"id":3081607,"name":"critical","color":"#d9534f","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false},{"id":3081611,"name":"discussion","color":"#428bca","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false},{"id":3081609,"name":"documentation","color":"#f0ad4e","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false},{"id":3081613,"name":"enhancement","color":"#5cb85c","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false},{"id":3081612,"name":"suggestion","color":"#428bca","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false},{"id":3081610,"name":"support","color":"#f0ad4e","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false}]'
+    http_version: 
+  recorded_at: Mon, 27 Nov 2017 19:57:22 GMT
+recorded_with: VCR 3.0.3

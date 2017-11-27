@@ -102,7 +102,13 @@ module Geet
       end
 
       def decode_and_format_error(parsed_response)
-        parsed_response.fetch('error')
+        if parsed_response.key?('error')
+          parsed_response.fetch('error')
+        elsif parsed_response.key?('message')
+          parsed_response.fetch('message')
+        else
+          "Unrecognized response: #{parsed_response}"
+        end
       end
 
       def link_next_page(response_headers)

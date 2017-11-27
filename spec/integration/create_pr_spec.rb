@@ -4,7 +4,7 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/create_pr'
 
 describe Geet::Services::CreatePr do
-  let(:repository) { Geet::Git::Repository.new() }
+  let(:repository) { Geet::Git::Repository.new }
   let(:upstream_repository) { Geet::Git::Repository.new(upstream: true) }
 
   context 'with labels, reviewers and milestones' do
