@@ -24,6 +24,7 @@ module Geet
       # Send a request.
       #
       # Returns the parsed response, or an Array, in case of multipage.
+      # Where no body is present in the response, nil is returned.
       #
       # params:
       #   :api_path:    api path, will be appended to the API URL.
@@ -35,8 +36,8 @@ module Geet
       #   :data:        (Hash) if present, will generate a POST request, otherwise, a GET
       #   :multipage:   set true for paged Github responses (eg. issues); it will make the method
       #                 return an array, with the concatenated (parsed) responses
-      #   :http_method: :get, :patch, :post and :put are accepted, but only :patch/:put are meaningful,
-      #                 since the others are automatically inferred by :data.
+      #   :http_method: :get, :patch, :post, :put and :delete are accepted, but only :patch/:put/:delete
+      #                 are meaningful, since the others are automatically inferred by :data.
       #
       def send_request(api_path, params: nil, data: nil, multipage: false, http_method: nil)
         address = api_url(api_path)
@@ -46,7 +47,7 @@ module Geet
         loop do
           response = send_http_request(address, params: params, data: data, http_method: http_method)
 
-          parsed_response = JSON.parse(response.body)
+          parsed_response = JSON.parse(response.body) if response.body
 
           if error?(response)
             formatted_error = decode_and_format_error(parsed_response)
@@ -139,6 +140,8 @@ module Geet
           Net::HTTP::Put
         when :post
           Net::HTTP::Post
+        when :delete
+          Net::HTTP::Delete
         else
           raise "Unsupported HTTP method: #{http_method.inspect}"
         end

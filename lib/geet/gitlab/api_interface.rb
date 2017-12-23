@@ -28,6 +28,7 @@ module Geet
       # Send a request.
       #
       # Returns the parsed response, or an Array, in case of multipage.
+      # Where no body is present in the response, nil is returned.
       #
       # params:
       #   :api_path:    api path, will be appended to the API URL.
@@ -50,7 +51,7 @@ module Geet
         loop do
           response = send_http_request(address, params: params, data: data, http_method: http_method)
 
-          parsed_response = JSON.parse(response.body)
+          parsed_response = JSON.parse(response.body) if response.body
 
           if error?(response)
             formatted_error = decode_and_format_error(parsed_response)
@@ -132,6 +133,8 @@ module Geet
           Net::HTTP::Put
         when :post
           Net::HTTP::Post
+        when :delete
+          Net::HTTP::Delete
         else
           raise "Unsupported HTTP method: #{http_method.inspect}"
         end
