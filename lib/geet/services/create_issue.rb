@@ -62,7 +62,7 @@ module Geet
         Thread.new do
           all_labels = repository.labels
 
-          select_entries(all_labels, label_patterns, type: 'labels')
+          select_entries(all_labels, label_patterns, type: 'labels', instance_method: :name)
         end
       end
 
@@ -91,7 +91,9 @@ module Geet
       end
 
       def add_labels(issue, selected_labels, output)
-        output.puts "Adding labels #{selected_labels.join(', ')}..."
+        labels_list = selected_labels.map(&:name).join(', ')
+
+        output.puts "Adding labels #{labels_list}..."
 
         Thread.new do
           issue.add_labels(selected_labels)
