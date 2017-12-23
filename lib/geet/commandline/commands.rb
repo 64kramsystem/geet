@@ -3,6 +3,7 @@ module Geet
     module Commands
       GIST_CREATE_COMMAND = 'gist.create'
       ISSUE_CREATE_COMMAND = 'issue.create'
+      LABEL_CREATE_COMMAND = 'label.create'
       ISSUE_LIST_COMMAND = 'issue.list'
       LABEL_LIST_COMMAND = 'label.list'
       MILESTONE_LIST_COMMAND = 'milestone.list'

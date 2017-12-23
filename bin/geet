@@ -29,6 +29,10 @@ class GeetLauncher
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreateIssue.new.execute(repository, title, description, options)
+    when LABEL_CREATE_COMMAND
+      name = options.delete(:name)
+
+      Services::CreateLabel.new.execute(repository, name, options)
     when ISSUE_LIST_COMMAND
       Services::ListIssues.new.execute(repository)
     when LABEL_LIST_COMMAND
