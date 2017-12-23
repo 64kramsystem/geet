@@ -36,8 +36,9 @@ module Geet
       #   :data:        (Hash) if present, will generate a POST request, otherwise, a GET
       #   :multipage:   set true for paged Github responses (eg. issues); it will make the method
       #                 return an array, with the concatenated (parsed) responses
-      #   :http_method: :get, :patch, :post, :put and :delete are accepted, but only :patch/:put/:delete
-      #                 are meaningful, since the others are automatically inferred by :data.
+      #   :http_method: symbol format of the method (:get, :patch, :post, :put and :delete)
+      #                 :get and :post are automatically inferred by the present of :data; the other
+      #                 cases must be specified.
       #
       def send_request(api_path, params: nil, data: nil, multipage: false, http_method: nil)
         address = api_url(api_path)
@@ -134,14 +135,14 @@ module Geet
         case http_method
         when :get
           Net::HTTP::Get
-        when :patch
-          Net::HTTP::Patch
-        when :put
-          Net::HTTP::Put
-        when :post
-          Net::HTTP::Post
         when :delete
           Net::HTTP::Delete
+        when :patch
+          Net::HTTP::Patch
+        when :post
+          Net::HTTP::Post
+        when :put
+          Net::HTTP::Put
         else
           raise "Unsupported HTTP method: #{http_method.inspect}"
         end
