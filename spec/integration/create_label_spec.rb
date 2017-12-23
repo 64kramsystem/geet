@@ -30,7 +30,7 @@ describe Geet::Services::CreateLabel do
 
   context 'with auto-generated color' do
     it 'should create a label' do
-      # allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
       expected_output_template = <<~STR
         Creating label...
