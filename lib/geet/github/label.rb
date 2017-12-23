@@ -24,6 +24,16 @@ module Geet
           new(name, color)
         end
       end
+
+      # See https://developer.github.com/v3/issues/labels/#create-a-label
+      def self.create(name, color, api_interface)
+        api_path = 'labels'
+        request_data = {name: name, color: color }
+
+        api_interface.send_request(api_path, data: request_data)
+
+        new(name, color)
+      end
     end
   end
 end

@@ -27,6 +27,11 @@ module Geet
         'description'
       ].freeze
 
+      LABEL_CREATE_OPTIONS = [
+        ['-c', '--color color',                             '6-digits hex color; if not specified, a random one is created'],
+        'name',
+      ].freeze
+
       ISSUE_LIST_OPTIONS = [
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
@@ -68,6 +73,7 @@ module Geet
             'list' => ISSUE_LIST_OPTIONS,
           },
           'label' => {
+            'create' => LABEL_CREATE_OPTIONS,
             'list' => LABEL_LIST_OPTIONS,
           },
           'milestone' => {

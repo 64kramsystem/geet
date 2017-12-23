@@ -43,6 +43,10 @@ module Geet
         attempt_provider_call(:Issue, :create, title, description, api_interface)
       end
 
+      def create_label(name, color)
+        attempt_provider_call(:Label, :create, name, color, api_interface)
+      end
+
       def abstract_issues(milestone: nil)
         attempt_provider_call(:AbstractIssue, :list, api_interface, milestone: milestone)
       end

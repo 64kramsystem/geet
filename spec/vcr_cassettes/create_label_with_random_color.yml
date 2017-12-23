@@ -1,0 +1,80 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.github.com/repos/saveriomiroddi/geet/labels
+    body:
+      encoding: UTF-8
+      string: '{"name":"my_label","color":"9aa53a"}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Sat, 23 Dec 2017 18:07:18 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '140'
+      Status:
+      - 201 Created
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4974'
+      X-Ratelimit-Reset:
+      - '1514053576'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - '"d40831c543892438bb03c0751514c999"'
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Location:
+      - https://api.github.com/repos/saveriomiroddi/geet/labels/my_label
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.039601'
+      X-Github-Request-Id:
+      - ECE0:7F59:1879FF8:328EDB9:5A3E9B55
+    body:
+      encoding: UTF-8
+      string: '{"id":786496976,"url":"https://api.github.com/repos/saveriomiroddi/geet/labels/my_label","name":"my_label","color":"9aa53a","default":false}'
+    http_version: 
+  recorded_at: Sat, 23 Dec 2017 18:07:18 GMT
+recorded_with: VCR 3.0.3
