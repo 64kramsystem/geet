@@ -96,7 +96,7 @@ module Geet
         output.puts "Adding labels #{labels_list}..."
 
         Thread.new do
-          issue.add_labels(selected_labels)
+          issue.add_labels(selected_labels.map(&:name))
         end
       end
 

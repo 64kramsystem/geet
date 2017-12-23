@@ -100,7 +100,7 @@ module Geet
         output.puts "Adding labels #{labels_list}..."
 
         Thread.new do
-          pr.add_labels(selected_labels)
+          pr.add_labels(selected_labels.map(&:name))
         end
       end
 
