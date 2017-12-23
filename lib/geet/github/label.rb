@@ -5,12 +5,24 @@ require 'date'
 module Geet
   module Github
     class Label
+      attr_reader :name, :color
+
+      def initialize(name, color)
+        @name = name
+        @color = color
+      end
+
       # Returns a flat list of names in string form.
       def self.list(api_interface)
         api_path = 'labels'
         response = api_interface.send_request(api_path, multipage: true)
 
-        response.map { |label_entry| label_entry.fetch('name') }
+        response.map do |label_entry|
+          name = label_entry.fetch('name')
+          color = label_entry.fetch('color')
+
+          new(name, color)
+        end
       end
     end
   end

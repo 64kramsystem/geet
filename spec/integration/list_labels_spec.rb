@@ -11,20 +11,22 @@ describe Geet::Services::ListLabels do
       allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
 
       expected_output = <<~STR
-        - bug
-        - enhancement
-        - technical_debt
-        - top_priority
+        - bug (#ee0701)
+        - enhancement (#84b6eb)
+        - technical_debt (#ee0701)
+        - top_priority (#d93f0b)
       STR
-      expected_labels = %w[bug enhancement technical_debt top_priority]
+      expected_label_names = %w[bug enhancement technical_debt top_priority]
 
       actual_output = StringIO.new
       actual_labels = VCR.use_cassette("github.com/list_labels") do
         described_class.new.execute(repository, output: actual_output)
       end
 
+      actual_label_names = actual_labels.map(&:name)
+
       expect(actual_output.string).to eql(expected_output)
-      expect(actual_labels).to eql(expected_labels)
+      expect(actual_label_names).to eql(expected_label_names)
     end
   end
 
@@ -33,24 +35,26 @@ describe Geet::Services::ListLabels do
       allow(repository).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
 
       expected_output = <<~STR
-        - bug
-        - confirmed
-        - critical
-        - discussion
-        - documentation
-        - enhancement
-        - suggestion
-        - support
+        - bug (#d9534f)
+        - confirmed (#d9534f)
+        - critical (#d9534f)
+        - discussion (#428bca)
+        - documentation (#f0ad4e)
+        - enhancement (#5cb85c)
+        - suggestion (#428bca)
+        - support (#f0ad4e)
       STR
-      expected_labels = %w[bug confirmed critical discussion documentation enhancement suggestion support]
+      expected_label_names = %w[bug confirmed critical discussion documentation enhancement suggestion support]
 
       actual_output = StringIO.new
       actual_labels = VCR.use_cassette("gitlab.com/list_labels") do
         described_class.new.execute(repository, output: actual_output)
       end
 
+      actual_label_names = actual_labels.map(&:name)
+
       expect(actual_output.string).to eql(expected_output)
-      expect(actual_labels).to eql(expected_labels)
+      expect(actual_label_names).to eql(expected_label_names)
     end
   end
 end

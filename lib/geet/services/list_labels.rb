@@ -7,7 +7,7 @@ module Geet
         labels = repository.labels
 
         labels.each do |label|
-          output.puts "- #{label}"
+          output.puts "- #{label.name} (##{label.color})"
         end
       end
     end
