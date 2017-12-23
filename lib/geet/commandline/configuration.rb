@@ -58,6 +58,7 @@ module Geet
 
       # rubocop:disable Style/MutableConstant
       PR_MERGE_OPTIONS = [
+        ['-d', '--delete-branch',                           'Delete the branch after merging'],
         long_help: 'Merge the PR for the current branch'
       ]
 
