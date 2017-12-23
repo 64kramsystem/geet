@@ -49,6 +49,8 @@ module Geet
         @api_interface.send_request(api_path, data: request_data)
       end
 
+      # labels: array of strings.
+      #
       def add_labels(labels)
         api_path = "issues/#{@number}/labels"
         request_data = labels
