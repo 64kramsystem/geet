@@ -1,3 +1,5 @@
+[![Build Status][BS IMG]](https://travis-ci.org/saveriomiroddi/geet)
+
 # Geet
 
 Command line interface for performing Git hosting service operations.
@@ -103,3 +105,5 @@ Examples:
 Geet is in alpha status. Although I use it daily, new features are frequently added, and internal/external APIs/workflows may change.
 
 The public release will be 1.0, and is expected to be released in February 2018 or earlier.
+
+[BS img]: https://travis-ci.org/saveriomiroddi/geet.svg?branch=master

@@ -1,0 +1,7 @@
+language: ruby
+rvm:
+  - 2.3
+  - 2.4
+# API tokens are always required, but not used in testing, since no requests are actually made.
+env:
+  - GITHUB_API_TOKEN=phony GITLAB_API_TOKEN=phony
