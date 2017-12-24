@@ -8,6 +8,7 @@ gem 'simple_scripting', '~> 0.9.3'
 
 group :development, :test do
   gem 'byebug', '~> 9.1.0'
+  gem 'rubocop', '~> 0.52.0'
 end
 
 group :test do
