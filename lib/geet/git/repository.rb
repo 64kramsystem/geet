@@ -143,7 +143,7 @@ module Geet
         if Kernel.const_defined?(full_class_name)
           klass = Kernel.const_get(full_class_name)
 
-          if ! klass.respond_to?(meth)
+          if !klass.respond_to?(meth)
             raise "The functionality invoked (#{class_name} #{meth}) is not currently supported!"
           end
 

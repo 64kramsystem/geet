@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -26,7 +28,7 @@ describe Geet::Services::CreatePr do
 
       actual_output = StringIO.new
 
-      actual_created_pr = VCR.use_cassette("create_pr") do
+      actual_created_pr = VCR.use_cassette('create_pr') do
         described_class.new.execute(
           repository, 'Title', 'Description',
           label_patterns: '_bug,invalid', milestone_pattern: '0.0.1', reviewer_patterns: 'nald-ts,nald-fr',
@@ -55,7 +57,7 @@ describe Geet::Services::CreatePr do
 
     actual_output = StringIO.new
 
-    actual_created_pr = VCR.use_cassette("create_pr_upstream") do
+    actual_created_pr = VCR.use_cassette('create_pr_upstream') do
       described_class.new.execute(upstream_repository, 'Title', 'Description', no_open_pr: true, output: actual_output)
     end
 

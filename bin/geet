@@ -11,9 +11,7 @@ class GeetLauncher
   include Geet::Commandline::Commands
 
   def launch
-    commandline_configuration = Commandline::Configuration.new
-
-    command, options = commandline_configuration.decode_argv || exit
+    command, options = Commandline::Configuration.new.decode_argv || exit
 
     # `:upstream` is always false in the gist command case.
     repository = Git::Repository.new(upstream: !!options[:upstream])
@@ -54,6 +52,4 @@ class GeetLauncher
   end
 end
 
-if __FILE__ == $0
-  GeetLauncher.new.launch
-end
+GeetLauncher.new.launch if $PROGRAM_NAME == __FILE__

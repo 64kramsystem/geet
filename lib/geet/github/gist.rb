@@ -6,7 +6,7 @@ module Geet
   module Github
     class Gist
       def self.create(filename, content, api_interface, description: nil, publik: false)
-        api_path = "/gists"
+        api_path = '/gists'
 
         request_data = prepare_request_data(filename, content, description, publik)
 

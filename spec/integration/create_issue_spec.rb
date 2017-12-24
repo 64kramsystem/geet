@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -24,7 +26,7 @@ describe Geet::Services::CreateIssue do
 
       actual_output = StringIO.new
 
-      actual_created_issue = VCR.use_cassette("create_issue") do
+      actual_created_issue = VCR.use_cassette('create_issue') do
         described_class.new.execute(
           repository, 'Title', 'Description',
           label_patterns: 'bug,invalid', milestone_pattern: '0.0.1', assignee_patterns: 'nald-ts,nald-fr',
@@ -53,8 +55,9 @@ describe Geet::Services::CreateIssue do
 
     actual_output = StringIO.new
 
-    actual_created_issue = VCR.use_cassette("create_issue_upstream") do
-      described_class.new.execute(upstream_repository, 'Title', 'Description', no_open_issue: true, output: actual_output)
+    actual_created_issue = VCR.use_cassette('create_issue_upstream') do
+      create_options = { no_open_issue: true, output: actual_output }
+      described_class.new.execute(upstream_repository, 'Title', 'Description', create_options)
     end
 
     expect(actual_output.string).to eql(expected_output)

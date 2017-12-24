@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -18,7 +20,7 @@ describe Geet::Services::MergePr do
 
     actual_output = StringIO.new
 
-    service_result = VCR.use_cassette("merge_pr") do
+    service_result = VCR.use_cassette('merge_pr') do
       described_class.new.execute(repository, output: actual_output)
     end
 
@@ -41,7 +43,7 @@ describe Geet::Services::MergePr do
 
     actual_output = StringIO.new
 
-    service_result = VCR.use_cassette("merge_pr_with_branch_deletion") do
+    service_result = VCR.use_cassette('merge_pr_with_branch_deletion') do
       described_class.new.execute(repository, delete_branch: true, output: actual_output)
     end
 

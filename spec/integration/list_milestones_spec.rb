@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -31,7 +33,7 @@ describe Geet::Services::ListMilestones do
 
     actual_output = StringIO.new
 
-    service_result = VCR.use_cassette("list_milestones") do
+    service_result = VCR.use_cassette('list_milestones') do
       described_class.new.execute(repository, output: actual_output)
     end
 

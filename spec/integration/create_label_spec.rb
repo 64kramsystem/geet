@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -17,7 +19,7 @@ describe Geet::Services::CreateLabel do
 
       actual_output = StringIO.new
 
-      actual_created_label = VCR.use_cassette("create_label") do
+      actual_created_label = VCR.use_cassette('create_label') do
         described_class.new.execute(repository, 'my_label', color: 'c64c64', output: actual_output)
       end
 
@@ -34,16 +36,16 @@ describe Geet::Services::CreateLabel do
 
       expected_output_template = <<~STR
         Creating label...
-        Created with color #%s
+        Created with color #%<color>s
       STR
 
       actual_output = StringIO.new
 
-      actual_created_label = VCR.use_cassette("create_label_with_random_color") do
+      actual_created_label = VCR.use_cassette('create_label_with_random_color') do
         described_class.new.execute(repository, 'my_label', output: actual_output)
       end
 
-      expected_output = expected_output_template % actual_created_label.color
+      expected_output = format(expected_output_template, color: actual_created_label.color)
 
       expect(actual_output.string).to eql(expected_output)
 

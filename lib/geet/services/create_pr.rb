@@ -12,7 +12,10 @@ module Geet
       #   :reviewer_patterns
       #   :no_open_pr
       #
-      def execute(repository, title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil, no_open_pr: nil, output: $stdout, **)
+      def execute(
+        repository, title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil,
+        no_open_pr: nil, output: $stdout, **
+      )
         labels_thread = select_labels(repository, label_patterns, output) if label_patterns
         milestone_thread = find_milestone(repository, milestone_pattern, output) if milestone_pattern
         reviewers_thread = select_reviewers(repository, reviewer_patterns, output) if reviewer_patterns
