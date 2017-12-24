@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -18,7 +20,7 @@ describe Geet::Services::ListPrs do
 
     actual_output = StringIO.new
 
-    service_result = VCR.use_cassette("list_prs") do
+    service_result = VCR.use_cassette('list_prs') do
       described_class.new.execute(repository, output: actual_output)
     end
 
@@ -40,7 +42,7 @@ describe Geet::Services::ListPrs do
 
     actual_output = StringIO.new
 
-    service_result = VCR.use_cassette("list_prs_upstream") do
+    service_result = VCR.use_cassette('list_prs_upstream') do
       described_class.new.execute(upstream_repository, output: actual_output)
     end
 

@@ -9,25 +9,48 @@ Layout/SpaceAroundOperators:
   Enabled: false
 
 Metrics/AbcSize:
-  Max: 32
+  Exclude:
+    - 'bin/geet'                                 # Program entry point switch/case
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*_spec.rb'                        # RSpec is styled in long blocks
+
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/geet/git/repository.rb'
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - 'lib/geet/github/api_interface.rb'         # Switch-case (HTTP) parameter decoding
+    - 'lib/geet/gitlab/api_interface.rb'         # Switch-case (HTTP) parameter decoding
+    - 'bin/geet'                                 # Program entry point switch/case
 
 Metrics/LineLength:
-  Max: 160
+  Max: 120
+  Exclude:
+    - 'lib/geet/git/repository.rb'               # Table-style code
+    - 'lib/geet/commandline/configuration.rb'    # Table-style code
 
 Metrics/MethodLength:
-  Max: 29
+  Max: 20
+  Exclude:
+    - 'bin/geet'                                 # Program entry point switch/case
+    - 'lib/geet/commandline/configuration.rb'    # Table-style code
 
 Metrics/ParameterLists:
   CountKeywordArgs: false
 
 Metrics/PerceivedComplexity:
   Exclude:
-    - 'lib/geet/services/create_issue.rb'
+    - 'lib/geet/services/create_issue.rb'        # The creation method has many parameters
+    - 'lib/geet/services/create_pr.rb'           # The creation method has many parameters
+    - 'bin/geet'                                 # Program entry point switch/case
 
-Style/ConditionalAssignment:
+Style/BlockComments:
   Enabled: false
 
-Style/Documentation:
+Style/ConditionalAssignment:
   Enabled: false
 
 Style/DoubleNegation:
@@ -36,6 +59,9 @@ Style/DoubleNegation:
 Style/GuardClause:
   Exclude:
     - 'lib/geet/git/repository.rb'
+
+Style/IfUnlessModifier:
+  Enabled: false
 
 Style/NegatedIf:
   Enabled: false

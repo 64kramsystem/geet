@@ -54,6 +54,4 @@ class GeetLauncher
   end
 end
 
-if __FILE__ == $0
-  GeetLauncher.new.launch
-end
+GeetLauncher.new.launch if $PROGRAM_NAME == __FILE__

@@ -36,11 +36,9 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
-      LABEL_LIST_OPTIONS = [
-      ].freeze
+      LABEL_LIST_OPTIONS = [].freeze
 
-      MILESTONE_LIST_OPTIONS = [
-      ].freeze
+      MILESTONE_LIST_OPTIONS = [].freeze
 
       PR_CREATE_OPTIONS = [
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
@@ -56,36 +54,42 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
+      # SimpleScripting 0.9.3 doesn't allow frozen arrays when hash options are present.
+      #
       # rubocop:disable Style/MutableConstant
       PR_MERGE_OPTIONS = [
         ['-d', '--delete-branch',                           'Delete the branch after merging'],
         long_help: 'Merge the PR for the current branch'
       ]
 
+      # Commands decoding table
+
+      COMMANDS_DECODING_TABLE = {
+        'gist' => {
+          'create' => GIST_CREATE_OPTIONS,
+        },
+        'issue' => {
+          'create' => ISSUE_CREATE_OPTIONS,
+          'list' => ISSUE_LIST_OPTIONS,
+        },
+        'label' => {
+          'create' => LABEL_CREATE_OPTIONS,
+          'list' => LABEL_LIST_OPTIONS,
+        },
+        'milestone' => {
+          'list' => MILESTONE_LIST_OPTIONS,
+        },
+        'pr' => {
+          'create' => PR_CREATE_OPTIONS,
+          'list' => PR_LIST_OPTIONS,
+          'merge' => PR_MERGE_OPTIONS,
+        },
+      }
+
       # Public interface
 
       def decode_argv
-        SimpleScripting::Argv.decode(
-          'gist' => {
-            'create' => GIST_CREATE_OPTIONS,
-          },
-          'issue' => {
-            'create' => ISSUE_CREATE_OPTIONS,
-            'list' => ISSUE_LIST_OPTIONS,
-          },
-          'label' => {
-            'create' => LABEL_CREATE_OPTIONS,
-            'list' => LABEL_LIST_OPTIONS,
-          },
-          'milestone' => {
-            'list' => MILESTONE_LIST_OPTIONS,
-          },
-          'pr' => {
-            'create' => PR_CREATE_OPTIONS,
-            'list' => PR_LIST_OPTIONS,
-            'merge' => PR_MERGE_OPTIONS,
-          },
-        )
+        SimpleScripting::Argv.decode(COMMANDS_DECODING_TABLE)
       end
     end
   end

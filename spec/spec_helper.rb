@@ -1,15 +1,17 @@
+# frozen_string_literal: true
+
 # User-defined
 
 require 'vcr'
 require 'base64'
 
 VCR.configure do |config|
-  config.cassette_library_dir = "spec/vcr_cassettes"
+  config.cassette_library_dir = 'spec/vcr_cassettes'
   config.hook_into :webmock
 
   # See https://github.com/vcr/vcr/issues/201
   config.filter_sensitive_data('<GITHUB_CREDENTIALS>') do
-    user = ""
+    user = ''
     api_token = ENV.fetch('GITHUB_API_TOKEN')
 
     Base64.strict_encode64("#{user}:#{api_token}")

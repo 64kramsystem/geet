@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -19,7 +21,7 @@ describe Geet::Services::ListIssues do
 
       actual_output = StringIO.new
 
-      service_result = VCR.use_cassette("github_com/list_issues") do
+      service_result = VCR.use_cassette('github_com/list_issues') do
         described_class.new.execute(repository, output: actual_output)
       end
 
@@ -41,7 +43,7 @@ describe Geet::Services::ListIssues do
 
       actual_output = StringIO.new
 
-      service_result = VCR.use_cassette("github_com/list_issues_upstream") do
+      service_result = VCR.use_cassette('github_com/list_issues_upstream') do
         described_class.new.execute(upstream_repository, output: actual_output)
       end
 
@@ -64,7 +66,7 @@ describe Geet::Services::ListIssues do
 
       actual_output = StringIO.new
 
-      service_result = VCR.use_cassette("gitlab_com/list_issues") do
+      service_result = VCR.use_cassette('gitlab_com/list_issues') do
         described_class.new.execute(repository, output: actual_output)
       end
 

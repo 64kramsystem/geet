@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 require_relative '../../lib/geet/git/repository'
@@ -19,7 +21,7 @@ describe Geet::Services::ListLabels do
       expected_label_names = %w[bug enhancement technical_debt top_priority]
 
       actual_output = StringIO.new
-      actual_labels = VCR.use_cassette("github.com/list_labels") do
+      actual_labels = VCR.use_cassette('github.com/list_labels') do
         described_class.new.execute(repository, output: actual_output)
       end
 
@@ -47,7 +49,7 @@ describe Geet::Services::ListLabels do
       expected_label_names = %w[bug confirmed critical discussion documentation enhancement suggestion support]
 
       actual_output = StringIO.new
-      actual_labels = VCR.use_cassette("gitlab.com/list_labels") do
+      actual_labels = VCR.use_cassette('gitlab.com/list_labels') do
         described_class.new.execute(repository, output: actual_output)
       end
 
