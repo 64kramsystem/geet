@@ -20,19 +20,7 @@ module Geet
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
       def self.list(api_interface)
-        api_path = 'issues'
-
-        response = api_interface.send_request(api_path, multipage: true)
-
-        response.each_with_object([]) do |issue_data, result|
-          if !issue_data.key?('pull_request')
-            number = issue_data.fetch('number')
-            title = issue_data.fetch('title')
-            link = issue_data.fetch('html_url')
-
-            result << new(number, api_interface, title, link)
-          end
-        end
+        super(api_interface, only_issues: true)
       end
     end
   end

@@ -22,21 +22,25 @@ module Geet
 
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
-      def self.list(api_interface, milestone: nil)
+      def self.list(api_interface, only_issues: false, milestone: nil)
         api_path = 'issues'
         request_params = { milestone: milestone } if milestone
 
         response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
-        response.map do |issue_data|
+        abstract_issues_list = response.map do |issue_data|
           number = issue_data.fetch('number')
           title = issue_data.fetch('title')
           link = issue_data.fetch('html_url')
 
           klazz = issue_data.key?('pull_request') ? PR : Issue
 
-          klazz.new(number, api_interface, title, link)
+          if !only_issues || klazz == Issue
+            klazz.new(number, api_interface, title, link)
+          end
         end
+
+        abstract_issues_list.compact
       end
 
       # params:
