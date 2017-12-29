@@ -17,15 +17,17 @@ module Geet
         '[description]'
       ].freeze
 
+      # SimpleScripting 0.9.3 doesn't allow frozen arrays when hash options are present.
+      #
+      # rubocop:disable Style/MutableConstant
       ISSUE_CREATE_OPTIONS = [
         ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],
         ['-l', '--label-patterns "bug,help wanted"',        'Label patterns'],
         ['-m', '--milestone number_or_pattern',             'Milestone number or description pattern'],
         ['-a', '--assignee-patterns john,tom,adrian,kevin', 'Assignee login patterns. Defaults to authenticated user'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
-        'title',
-        'description'
-      ].freeze
+        long_help: 'The default editor will be opened for editing title and description.'
+      ]
 
       LABEL_CREATE_OPTIONS = [
         ['-c', '--color color',                             '6-digits hex color; if not specified, a random one is created'],
@@ -46,9 +48,8 @@ module Geet
         ['-m', '--milestone number_or_pattern',             'Milestone number or description pattern'],
         ['-r', '--reviewer-patterns john,tom,adrian,kevin', 'Reviewer login patterns'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
-        'title',
-        'description'
-      ].freeze
+        long_help: 'The default editor will be opened for editing title and description.'
+      ]
 
       PR_LIST_OPTIONS = [
         ['-u', '--upstream',                                'List on the upstream repository'],

@@ -3,6 +3,7 @@
 
 require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
+require_relative '../lib/geet/commandline/editor.rb'
 require_relative '../lib/geet/git/repository.rb'
 Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
 
@@ -23,7 +24,7 @@ class GeetLauncher
 
       Services::CreateGist.new.execute(repository, filename, options)
     when ISSUE_CREATE_COMMAND
-      title, description = options.values_at(:title, :description)
+      title, description = Commandline::Editor.new.edit_summary
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreateIssue.new.execute(repository, title, description, options)
@@ -38,7 +39,7 @@ class GeetLauncher
     when MILESTONE_LIST_COMMAND
       Services::ListMilestones.new.execute(repository)
     when PR_CREATE_COMMAND
-      title, description = options.values_at(:title, :description)
+      title, description = Commandline::Editor.new.edit_summary
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreatePr.new.execute(repository, title, description, options)
