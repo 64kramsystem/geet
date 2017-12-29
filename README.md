@@ -4,19 +4,18 @@
 
 Command line interface for performing Git hosting service operations.
 
-The current version supports only creating PRs/issues.
-
 This tool is very similar to [Hub](https://github.com/github/hub), but it supports a different set of operations, fully specified via command line.
 
 Please see the [development status](#development-status) section for informations about the current development.
 
-## Providers support
+## Operation/providers support
 
 The functionalities currently supported are:
 
 - Github:
   - create gist
   - create issue
+  - create label
   - create PR
   - list issues
   - list labels
@@ -40,27 +39,37 @@ All the commands need to be run from the git repository.
 
 ### Create an issue (with label and assignees)
 
-Basic creation of an issue (after creation, will open the page in the browser):
+Basic creation of an issue:
 
-    $ geet issue create 'Issue title' 'Multi
-    > line
-    > description'
+    $ geet issue create
+
+The default editor will be used for title/description:
+
+![Issue creation editing screenshot](/extra/issue_editing.png?raw=true)
 
 More advanced issue creation, with labels and assignees:
 
-    $ geet issue create 'Issue title' 'Issue description' --label-patterns bug,wip --assignee-patterns john
+    $ geet issue create --label-patterns bug,wip --assignee-patterns john
 
 patterns are partial matches, so, for example, `johncarmack` will be matched as assignee in the first case.
 
+After creation, the issue page will be automatically opened in the default browser.
+
 ### Create a PR (with label, reviewers, and assigned to self)
 
-Basic creation of a PR (after creation, will open the page in the browser):
+Basic creation of a PR:
 
-    $ geet pr create 'PR title' 'Description'
+    $ geet pr create
+
+The default editor will be used for title/description:
+
+![Issue creation editing screenshot](/extra/pr_editing.png?raw=true)
 
 More advanced PR creation, with label and reviewers, assigned to self:
 
-    $ geet pr create 'PR title' 'Closes #1' --label-patterns "code review" --reviewer-patterns kevin,tom,adrian
+    $ geet pr create --label-patterns "code review" --reviewer-patterns kevin,tom,adrian
+
+After creation, the issue page will be automatically opened in the default browser.
 
 ### List issues/PRs
 
@@ -77,6 +86,27 @@ List the open PRs, in default order (inverse creation date):
 
     $ geet pr list
     > 21. Add PRs listing support (https://github.com/saveriomiroddi/geet/pull/21)
+
+### List milestones
+
+    $ geet milestone list
+    > 9. 0.2.0
+    >   4. Allow writing description in an editor (https://github.com/saveriomiroddi/geet/issues/4)
+    > 6. 0.2.1
+    >   69. Display warning when some operations are performed on a forked repository (https://github.com/saveriomiroddi/geet/issues/69)
+    >   60. Update Create PR test suite; the UTs are not inspecting some of the changes (https://github.com/saveriomiroddi/geet/issues/60)
+    >   51. Services should take repository in the initializer (https://github.com/saveriomiroddi/geet/issues/51)
+    > 7. 0.2.2
+    >   43. PR Merging: upstream support (https://github.com/saveriomiroddi/geet/issues/43)
+    >   35. Improve design of repository-independent actions (https://github.com/saveriomiroddi/geet/issues/35)
+
+### List labels
+
+    $ geet label list
+    > - bug (#ee0701)
+    > - enhancement (#84b6eb)
+    > - technical_debt (#ee0701)
+    > - top_priority (#d93f0b)
 
 ### Create a gist
 
