@@ -24,7 +24,7 @@ module Geet
         if no_browse
           output.puts "Gist address: #{gist.link}"
         else
-          os_open(gist.link)
+          open_file_with_default_application(gist.link)
         end
       end
     end

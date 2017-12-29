@@ -39,7 +39,7 @@ module Geet
         if no_open_pr
           output.puts "PR address: #{pr.link}"
         else
-          os_open(pr.link)
+          open_file_with_default_application(pr.link)
         end
 
         pr
