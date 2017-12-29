@@ -46,7 +46,7 @@ module Geet
         if no_open_issue
           output.puts "Issue address: #{issue.link}"
         else
-          os_open(issue.link)
+          open_file_with_default_application(issue.link)
         end
 
         issue
