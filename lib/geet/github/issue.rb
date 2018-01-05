@@ -19,8 +19,8 @@ module Geet
 
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
-      def self.list(api_interface)
-        super(api_interface, only_issues: true)
+      def self.list(api_interface, assignee: nil)
+        super(api_interface, only_issues: true, assignee: assignee)
       end
     end
   end

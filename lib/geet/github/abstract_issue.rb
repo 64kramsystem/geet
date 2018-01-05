@@ -22,9 +22,12 @@ module Geet
 
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
-      def self.list(api_interface, only_issues: false, milestone: nil)
+      def self.list(api_interface, only_issues: false, milestone: nil, assignee: nil)
         api_path = 'issues'
-        request_params = { milestone: milestone } if milestone
+
+        request_params = {}
+        request_params[:milestone] = milestone if milestone
+        request_params[:assignee] = assignee if assignee
 
         response = api_interface.send_request(api_path, params: request_params, multipage: true)
 

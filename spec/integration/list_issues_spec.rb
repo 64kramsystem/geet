@@ -10,7 +10,7 @@ describe Geet::Services::ListIssues do
   let(:upstream_repository) { Geet::Git::Repository.new(upstream: true) }
 
   context 'with github.com' do
-    it 'should list the issues' do
+    it 'should list the default issues' do
       allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
       expected_output = <<~STR
@@ -29,6 +29,30 @@ describe Geet::Services::ListIssues do
 
       expect(actual_output.string).to eql(expected_output)
       expect(actual_issue_numbers).to eql(expected_issue_numbers)
+    end
+
+    context 'with assignee filtering' do
+      it 'should list the issues' do
+        allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_gh')
+
+        expected_output = <<~STR
+          Finding assignee...
+          12. test issue 3 (https://github.com/donaldduck/testrepo_gh/issues/12)
+          10. test issue 1 (https://github.com/donaldduck/testrepo_gh/issues/10)
+        STR
+        expected_issue_numbers = [12, 10]
+
+        actual_output = StringIO.new
+
+        service_result = VCR.use_cassette('github_com/list_issues_with_assignee') do
+          described_class.new.execute(repository, assignee_pattern: 'donald-fr', output: actual_output)
+        end
+
+        actual_issue_numbers = service_result.map(&:number)
+
+        expect(actual_output.string).to eql(expected_output)
+        expect(actual_issue_numbers).to eql(expected_issue_numbers)
+      end
     end
 
     it 'should list the upstream issues' do

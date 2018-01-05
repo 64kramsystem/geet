@@ -35,6 +35,7 @@ module Geet
       ].freeze
 
       ISSUE_LIST_OPTIONS = [
+        ['-a', '--assignee-pattern john',                   'Assignee pattern'],
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
