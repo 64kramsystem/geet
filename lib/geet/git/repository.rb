@@ -55,8 +55,8 @@ module Geet
         attempt_provider_call(:AbstractIssue, :list, api_interface, milestone: milestone)
       end
 
-      def issues
-        attempt_provider_call(:Issue, :list, api_interface)
+      def issues(assignee: nil)
+        attempt_provider_call(:Issue, :list, api_interface, assignee: assignee)
       end
 
       def milestone(number)

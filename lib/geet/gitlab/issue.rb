@@ -11,7 +11,9 @@ module Geet
         @link = link
       end
 
-      def self.list(api_interface)
+      def self.list(api_interface, assignee: nil)
+        raise "Assignee filtering not currently supported!" if assignee
+
         api_path = "projects/#{api_interface.path_with_namespace(encoded: true)}/issues"
 
         response = api_interface.send_request(api_path, multipage: true)
