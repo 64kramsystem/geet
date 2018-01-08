@@ -5,6 +5,7 @@ require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/commandline/editor.rb'
 require_relative '../lib/geet/git/repository.rb'
+require_relative '../lib/geet/utils/git.rb'
 Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
 
 class GeetLauncher
@@ -39,7 +40,12 @@ class GeetLauncher
     when MILESTONE_LIST_COMMAND
       Services::ListMilestones.new.execute(repository)
     when PR_CREATE_COMMAND
-      title, description = Commandline::Editor.new.edit_summary
+      # Tricky. It would be best to have Git logic exlusively inside the services,
+      # but at the same time, the summary editing should be out.
+      git = Utils::Git.new(repository)
+      summary = git.cherry('master').size == 1 ? git.show_description('HEAD') : ''
+
+      title, description = Commandline::Editor.new.edit_summary(summary: summary)
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreatePr.new.execute(repository, title, description, options)

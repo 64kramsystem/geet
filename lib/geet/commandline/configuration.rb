@@ -49,7 +49,8 @@ module Geet
         ['-m', '--milestone number_or_pattern',             'Milestone number or description pattern'],
         ['-r', '--reviewer-patterns john,tom,adrian,kevin', 'Reviewer login patterns'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
-        long_help: 'The default editor will be opened for editing title and description.'
+        long_help: 'The default editor will be opened for editing title and description; if the PR adds one commit only, '\
+                   'the content will be prepopulated with the commit description.'
       ]
 
       PR_LIST_OPTIONS = [
