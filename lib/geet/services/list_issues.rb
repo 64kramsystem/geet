@@ -3,7 +3,7 @@
 module Geet
   module Services
     class ListIssues
-      def execute(repository, assignee_pattern: nil, output: $stdout)
+      def execute(repository, assignee_pattern: nil, output: $stdout, **)
         assignee_thread = find_assignee(repository, assignee_pattern, output) if assignee_pattern
 
         assignee = assignee_thread&.join&.value
