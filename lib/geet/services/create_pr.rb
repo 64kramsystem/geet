@@ -63,13 +63,9 @@ module Geet
         output.puts 'Finding milestone...'
 
         Thread.new do
-          if milestone_pattern =~ /\A\d+\Z/
-            repository.milestone(milestone_pattern)
-          else
-            all_milestones = repository.milestones
+          all_milestones = repository.milestones
 
-            select_entries(all_milestones, milestone_pattern, type: 'milestones', instance_method: :title).first
-          end
+          select_entries(all_milestones, milestone_pattern, type: 'milestones', instance_method: :title).first
         end
       end
 
