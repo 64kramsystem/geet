@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/os_helper.rb'
+require_relative '../utils/manual_list_selection.rb'
+require_relative '../utils/pattern_matching_selection.rb'
 
 module Geet
   module Services
     class CreatePr
       include Geet::Helpers::OsHelper
+
+      MANUAL_LIST_SELECTION_FLAG = '-'.freeze
 
       # options:
       #   :label_patterns
@@ -16,18 +20,18 @@ module Geet
         repository, title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil,
         no_open_pr: nil, output: $stdout, **
       )
-        labels_thread = select_labels(repository, label_patterns, output) if label_patterns
-        milestone_thread = find_milestone(repository, milestone_pattern, output) if milestone_pattern
-        reviewers_thread = select_reviewers(repository, reviewer_patterns, output) if reviewer_patterns
+        all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
+          repository, label_patterns, milestone_pattern, reviewer_patterns, output
+        )
 
-        selected_labels = labels_thread&.join&.value
-        reviewers = reviewers_thread&.join&.value
-        milestone = milestone_thread&.join&.value
+        labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
+        milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
+        reviewers = select_entries('collaborator', all_collaborators, reviewer_patterns, :multiple, nil) if reviewer_patterns
 
         pr = create_pr(repository, title, description, output)
 
         assign_user_thread = assign_authenticated_user(pr, repository, output)
-        add_labels_thread = add_labels(pr, selected_labels, output) if selected_labels
+        add_labels_thread = add_labels(pr, labels, output) if labels
         set_milestone_thread = set_milestone(pr, milestone, output) if milestone
         request_review_thread = request_review(pr, reviewers, output) if reviewers
 
@@ -49,34 +53,27 @@ module Geet
 
       # Internal actions
 
-      def select_labels(repository, label_patterns, output)
-        output.puts 'Finding labels...'
-
-        Thread.new do
-          all_labels = repository.labels
-
-          select_entries(all_labels, label_patterns, type: 'labels', instance_method: :name)
+      def find_all_attribute_entries(repository,label_patterns, milestone_pattern, reviewer_patterns, output)
+        if label_patterns
+          output.puts 'Finding labels...'
+          labels_thread = Thread.new { repository.labels }
         end
-      end
 
-      def find_milestone(repository, milestone_pattern, output)
-        output.puts 'Finding milestone...'
-
-        Thread.new do
-          all_milestones = repository.milestones
-
-          select_entries(all_milestones, milestone_pattern, type: 'milestones', instance_method: :title).first
+        if milestone_pattern
+          output.puts 'Finding milestone...'
+          milestone_thread = Thread.new { repository.milestones }
         end
-      end
 
-      def select_reviewers(repository, reviewer_patterns, output)
-        output.puts 'Finding collaborators...'
-
-        Thread.new do
-          all_collaborators = repository.collaborators
-
-          select_entries(all_collaborators, reviewer_patterns, type: 'collaborators')
+        if reviewer_patterns
+          output.puts 'Finding collaborators...'
+          reviewers_thread = Thread.new { repository.collaborators }
         end
+
+        labels = labels_thread&.value
+        milestones = milestone_thread&.value
+        reviewers = reviewers_thread&.value
+
+        [labels, milestones, reviewers]
       end
 
       def create_pr(repository, title, description, output)
@@ -121,23 +118,11 @@ module Geet
 
       # Generic helpers
 
-      def select_entries(entries, raw_patterns, type: 'entries', instance_method: nil)
-        patterns = raw_patterns.split(',')
-
-        patterns.map do |pattern|
-          entries_found = entries.select do |entry|
-            entry = entry.send(instance_method) if instance_method
-            entry =~ /#{pattern}/i
-          end
-
-          case entries_found.size
-          when 1
-            entries_found.first
-          when 0
-            raise "No #{type} found for pattern: #{pattern.inspect}"
-          else
-            raise "Multiple #{type} found for pattern #{pattern.inspect}: #{entries_found}"
-          end
+      def select_entries(entry_type, entries, raw_patterns, selection_type, instance_method)
+        if raw_patterns == MANUAL_LIST_SELECTION_FLAG
+          Geet::Utils::ManualListSelection.new.select(entry_type, entries, selection_type, instance_method: instance_method)
+        else
+          Geet::Utils::PatternMatchingSelection.new.select(entry_type, entries, raw_patterns, instance_method: instance_method)
         end
       end
     end
