@@ -32,18 +32,7 @@ module Geet
 
         issue = create_issue(repository, title, description, output)
 
-        add_labels_thread = add_labels(issue, labels, output) if labels
-        set_milestone_thread = set_milestone(issue, milestone, output) if milestone
-
-        if assignees
-          assign_users_thread = assign_users(issue, assignees, output)
-        else
-          assign_users_thread = assign_authenticated_user(repository, issue, output)
-        end
-
-        add_labels_thread&.join
-        set_milestone_thread&.join
-        assign_users_thread.join
+        edit_issue(repository, issue, labels, milestone, assignees, output)
 
         if no_open_issue
           output.puts "Issue address: #{issue.link}"
@@ -85,6 +74,21 @@ module Geet
         output.puts 'Creating the issue...'
 
         issue = repository.create_issue(title, description)
+      end
+
+      def edit_issue(repository, issue, labels, milestone, assignees, output)
+        add_labels_thread = add_labels(issue, labels, output) if labels
+        set_milestone_thread = set_milestone(issue, milestone, output) if milestone
+
+        if assignees
+          assign_users_thread = assign_users(issue, assignees, output)
+        else
+          assign_users_thread = assign_authenticated_user(repository, issue, output)
+        end
+
+        add_labels_thread&.join
+        set_milestone_thread&.join
+        assign_users_thread.join
       end
 
       def add_labels(issue, selected_labels, output)

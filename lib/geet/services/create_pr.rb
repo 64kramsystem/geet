@@ -30,15 +30,7 @@ module Geet
 
         pr = create_pr(repository, title, description, output)
 
-        assign_user_thread = assign_authenticated_user(pr, repository, output)
-        add_labels_thread = add_labels(pr, labels, output) if labels
-        set_milestone_thread = set_milestone(pr, milestone, output) if milestone
-        request_review_thread = request_review(pr, reviewers, output) if reviewers
-
-        assign_user_thread.join
-        add_labels_thread&.join
-        set_milestone_thread&.join
-        request_review_thread&.join
+        edit_pr(repository, pr, labels, milestone, reviewers, output)
 
         if no_open_pr
           output.puts "PR address: #{pr.link}"
@@ -80,6 +72,19 @@ module Geet
         output.puts 'Creating PR...'
 
         repository.create_pr(title, description, repository.current_branch)
+      end
+
+      def edit_pr(repository, pr, labels, milestone, reviewers, output)
+        assign_user_thread = assign_authenticated_user(pr, repository, output)
+
+        add_labels_thread = add_labels(pr, labels, output) if labels
+        set_milestone_thread = set_milestone(pr, milestone, output) if milestone
+        request_review_thread = request_review(pr, reviewers, output) if reviewers
+
+        assign_user_thread.join
+        add_labels_thread&.join
+        set_milestone_thread&.join
+        request_review_thread&.join
       end
 
       def assign_authenticated_user(pr, repository, output)
