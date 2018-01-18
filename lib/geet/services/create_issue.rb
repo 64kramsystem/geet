@@ -1,11 +1,15 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/os_helper.rb'
+require_relative '../utils/manual_list_selection.rb'
+require_relative '../utils/pattern_matching_selection.rb'
 
 module Geet
   module Services
     class CreateIssue
       include Geet::Helpers::OsHelper
+
+      MANUAL_LIST_SELECTION_FLAG = '-'.freeze
 
       # options:
       #   :label_patterns
@@ -18,30 +22,17 @@ module Geet
           label_patterns: nil, milestone_pattern: nil, assignee_patterns: nil, no_open_issue: nil,
           output: $stdout, **
       )
-        labels_thread = select_labels(repository, label_patterns, output) if label_patterns
-        milestone_thread = find_milestone(repository, milestone_pattern, output) if milestone_pattern
-        assignees_thread = select_assignees(repository, assignee_patterns, output) if assignee_patterns
+        all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
+          repository, label_patterns, milestone_pattern, assignee_patterns, output
+        )
 
-        selected_labels = labels_thread&.join&.value
-        assignees = assignees_thread&.join&.value
-        milestone = milestone_thread&.join&.value
+        labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
+        milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
+        assignees = select_entries('collaborator', all_collaborators, assignee_patterns, :multiple, nil) if assignee_patterns
 
-        output.puts 'Creating the issue...'
+        issue = create_issue(repository, title, description, output)
 
-        issue = repository.create_issue(title, description)
-
-        add_labels_thread = add_labels(issue, selected_labels, output) if selected_labels
-        set_milestone_thread = set_milestone(issue, milestone, output) if milestone
-
-        if assignees
-          assign_users_thread = assign_users(issue, assignees, output)
-        else
-          assign_users_thread = assign_authenticated_user(repository, issue, output)
-        end
-
-        add_labels_thread&.join
-        set_milestone_thread&.join
-        assign_users_thread.join
+        edit_issue(repository, issue, labels, milestone, assignees, output)
 
         if no_open_issue
           output.puts "Issue address: #{issue.link}"
@@ -56,38 +47,48 @@ module Geet
 
       # Internal actions
 
-      def select_labels(repository, label_patterns, output)
-        output.puts 'Finding labels...'
-
-        Thread.new do
-          all_labels = repository.labels
-
-          select_entries(all_labels, label_patterns, type: 'labels', instance_method: :name)
+      def find_all_attribute_entries(repository, label_patterns, milestone_pattern, assignee_patterns, output)
+        if label_patterns
+          output.puts 'Finding labels...'
+          labels_thread = Thread.new { repository.labels }
         end
+
+        if milestone_pattern
+          output.puts 'Finding milestone...'
+          milestone_thread = Thread.new { repository.milestones }
+        end
+
+        if assignee_patterns
+          output.puts 'Finding collaborators...'
+          reviewers_thread = Thread.new { repository.collaborators }
+        end
+
+        labels = labels_thread&.value
+        milestones = milestone_thread&.value
+        reviewers = reviewers_thread&.value
+
+        [labels, milestones, reviewers]
       end
 
-      def find_milestone(repository, milestone_pattern, output)
-        output.puts 'Finding milestone...'
+      def create_issue(repository, title, description, output)
+        output.puts 'Creating the issue...'
 
-        Thread.new do
-          if milestone_pattern =~ /\A\d+\Z/
-            repository.milestone(milestone_pattern)
-          else
-            all_milestones = repository.milestones
-
-            select_entries(all_milestones, milestone_pattern, type: 'milestones', instance_method: :title).first
-          end
-        end
+        issue = repository.create_issue(title, description)
       end
 
-      def select_assignees(repository, assignee_patterns, output)
-        output.puts 'Finding collaborators...'
+      def edit_issue(repository, issue, labels, milestone, assignees, output)
+        add_labels_thread = add_labels(issue, labels, output) if labels
+        set_milestone_thread = set_milestone(issue, milestone, output) if milestone
 
-        Thread.new do
-          all_collaborators = repository.collaborators
-
-          select_entries(all_collaborators, assignee_patterns, type: 'collaborators')
+        if assignees
+          assign_users_thread = assign_users(issue, assignees, output)
+        else
+          assign_users_thread = assign_authenticated_user(repository, issue, output)
         end
+
+        add_labels_thread&.join
+        set_milestone_thread&.join
+        assign_users_thread.join
       end
 
       def add_labels(issue, selected_labels, output)
@@ -126,23 +127,11 @@ module Geet
 
       # Generic helpers
 
-      def select_entries(entries, raw_patterns, type: 'entries', instance_method: nil)
-        patterns = raw_patterns.split(',')
-
-        patterns.map do |pattern|
-          entries_found = entries.select do |entry|
-            entry = entry.send(instance_method) if instance_method
-            entry =~ /#{pattern}/i
-          end
-
-          case entries_found.size
-          when 1
-            entries_found.first
-          when 0
-            raise "No #{type} found for pattern: #{pattern.inspect}"
-          else
-            raise "Multiple #{type} found for pattern #{pattern.inspect}: #{entries_found}"
-          end
+      def select_entries(entry_type, entries, raw_patterns, selection_type, instance_method)
+        if raw_patterns == MANUAL_LIST_SELECTION_FLAG
+          Geet::Utils::ManualListSelection.new.select(entry_type, entries, selection_type, instance_method: instance_method)
+        else
+          Geet::Utils::PatternMatchingSelection.new.select(entry_type, entries, raw_patterns, instance_method: instance_method)
         end
       end
     end

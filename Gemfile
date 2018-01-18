@@ -5,6 +5,7 @@ source 'https://rubygems.org'
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
 gem 'simple_scripting', '~> 0.9.3'
+gem 'temp-fork-tp-filter', '= 0.0.3'
 
 group :development, :test do
   gem 'byebug', '~> 9.1.0'
