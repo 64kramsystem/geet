@@ -18,8 +18,8 @@ module Geet
       # A summary is a composition with a title and an optional description;
       # if the description is not found, a blank string is returned.
       #
-      def edit_summary(summary: '')
-        full_summary = summary + IO.read(SUMMARY_TEMPLATE)
+      def edit_summary(summary: nil)
+        full_summary = summary.to_s + IO.read(SUMMARY_TEMPLATE)
 
         raw_summary = edit_content_in_default_editor(full_summary)
 
