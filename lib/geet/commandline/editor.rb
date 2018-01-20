@@ -8,7 +8,7 @@ module Geet
   module Commandline
     class Editor
       # Liberally ripp..., ahem, inspired from git.
-      SUMMARY_TEMPLATE = File.expand_path('../resources/edit_summary_template.md', __dir__)
+      SUMMARY_TEMPLATE = File.expand_path('../resources/templates/edit_summary.md', __dir__)
       SUMMARY_TEMPLATE_SEPARATOR = '------------------------ >8 ------------------------'
 
       include Geet::Helpers::OsHelper
