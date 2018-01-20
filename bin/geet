@@ -64,9 +64,10 @@ class GeetLauncher
 
     if pr_commits.size == 1
       prepopulated_summary = git.show_description('HEAD')
+      cancel_pr_help = "In order to cancel the PR creation, delete the description above.\n"
     end
 
-    Commandline::Editor.new.edit_summary(summary: prepopulated_summary)
+    Commandline::Editor.new.edit_summary(summary: prepopulated_summary, extra_help: cancel_pr_help)
   end
 end
 
