@@ -94,6 +94,10 @@ module Geet
         branch
       end
 
+      def upstream?
+        @upstream
+      end
+
       private
 
       # REPOSITORY METADATA
