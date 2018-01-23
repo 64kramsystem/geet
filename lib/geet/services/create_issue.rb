@@ -82,13 +82,13 @@ module Geet
 
         if assignees
           assign_users_thread = assign_users(issue, assignees, output)
-        else
+        elsif !repository.upstream?
           assign_users_thread = assign_authenticated_user(repository, issue, output)
         end
 
         add_labels_thread&.join
         set_milestone_thread&.join
-        assign_users_thread.join
+        assign_users_thread&.join
       end
 
       def add_labels(issue, selected_labels, output)
