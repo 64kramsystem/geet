@@ -6,7 +6,7 @@ module Geet
   module Utils
     # Represents the git program interface; used for performing git operations.
     #
-    class Git
+    class GitClient
       def initialize(repository)
         @repository = repository
       end
