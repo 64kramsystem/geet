@@ -6,11 +6,12 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/merge_pr'
 
 describe Geet::Services::MergePr do
-  let(:repository) { Geet::Git::Repository.new }
+  let(:git_client) { Geet::Utils::GitClient.new }
+  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
 
   it 'should merge the PR for the current branch' do
-    allow(repository).to receive(:current_branch).and_return('mybranch1')
-    allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+    allow(git_client).to receive(:current_branch).and_return('mybranch1')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
     expected_output = <<~STR
       Finding PR with head (mybranch1)...
@@ -31,8 +32,8 @@ describe Geet::Services::MergePr do
   end
 
   it 'should merge the PR for the current branch, with branch deletion' do
-    allow(repository).to receive(:current_branch).and_return('mybranch')
-    allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+    allow(git_client).to receive(:current_branch).and_return('mybranch')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
     expected_output = <<~STR
       Finding PR with head (mybranch)...

@@ -6,10 +6,11 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/list_milestones'
 
 describe Geet::Services::ListMilestones do
-  let(:repository) { Geet::Git::Repository.new }
+  let(:git_client) { Geet::Utils::GitClient.new }
+  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
 
   it 'should list the milestones' do
-    allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
 
     expected_output = <<~STR
       Finding milestones...

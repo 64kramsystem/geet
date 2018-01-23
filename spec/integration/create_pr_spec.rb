@@ -6,13 +6,14 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/create_pr'
 
 describe Geet::Services::CreatePr do
-  let(:repository) { Geet::Git::Repository.new }
-  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true) }
+  let(:git_client) { Geet::Utils::GitClient.new }
+  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   context 'with labels, reviewers and milestones' do
     it 'should create a PR' do
-      allow(repository).to receive(:current_branch).and_return('mybranch1')
-      allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:current_branch).and_return('mybranch1')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
       expected_output = <<~STR
         Finding labels...
@@ -45,9 +46,9 @@ describe Geet::Services::CreatePr do
   end
 
   it 'should create an upstream PR' do
-    allow(upstream_repository).to receive(:current_branch).and_return('mybranch')
-    allow(upstream_repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
-    allow(upstream_repository).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+    allow(git_client).to receive(:current_branch).and_return('mybranch')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
+    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
     expected_output = <<~STR
       Creating PR...

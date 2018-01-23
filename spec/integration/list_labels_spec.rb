@@ -6,11 +6,12 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/list_labels'
 
 describe Geet::Services::ListLabels do
-  let(:repository) { Geet::Git::Repository.new }
+  let(:git_client) { Geet::Utils::GitClient.new }
+  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
 
   context 'with github.com' do
     it 'should list the labels' do
-      allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
 
       expected_output = <<~STR
         - bug (#ee0701)
@@ -34,7 +35,7 @@ describe Geet::Services::ListLabels do
 
   context 'with gitlab.com' do
     it 'should list the labels' do
-      allow(repository).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
 
       expected_output = <<~STR
         - bug (#d9534f)

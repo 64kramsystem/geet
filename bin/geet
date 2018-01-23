@@ -5,7 +5,7 @@ require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/commandline/editor.rb'
 require_relative '../lib/geet/git/repository.rb'
-require_relative '../lib/geet/utils/git.rb'
+require_relative '../lib/geet/utils/git_client.rb'
 Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
 
 class GeetLauncher
@@ -59,7 +59,7 @@ class GeetLauncher
   def edit_pr_title_and_description(repository)
     # Tricky. It would be best to have Git logic exlusively inside the services,
     # but at the same time, the summary editing should be out.
-    git = Utils::Git.new(repository)
+    git = Utils::GitClient.new(repository)
     pr_commits = git.cherry('master')
 
     if pr_commits.size == 1

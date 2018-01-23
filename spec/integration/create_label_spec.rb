@@ -6,11 +6,12 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/create_label'
 
 describe Geet::Services::CreateLabel do
-  let(:repository) { Geet::Git::Repository.new }
+  let(:git_client) { Geet::Utils::GitClient.new }
+  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
 
   context 'with user-specified color' do
     it 'should create a label' do
-      allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
       expected_output = <<~STR
         Creating label...
@@ -32,7 +33,7 @@ describe Geet::Services::CreateLabel do
 
   context 'with auto-generated color' do
     it 'should create a label' do
-      allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
       expected_output_template = <<~STR
         Creating label...
