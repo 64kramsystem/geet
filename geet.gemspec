@@ -20,6 +20,8 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'simple_scripting', '~> 0.9.3'
   s.add_runtime_dependency 'temp-fork-tp-filter', '= 0.0.3'
 
+  s.add_development_dependency 'rake', '~> 12.3.0'
+
   s.files         = `git ls-files`.split("\n")
   s.executables   << 'geet'
   s.require_paths = ['lib']
