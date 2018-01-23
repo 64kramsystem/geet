@@ -19,6 +19,11 @@ module Geet
       ORIGIN_NAME   = 'origin'
       UPSTREAM_NAME = 'upstream'
 
+      CONFIRM_ACTION_TEXT = <<~STR
+        WARNING! The action will be performed on a fork, but an upstream repository has been found!
+        Press Enter to continue, or Ctrl+C to exit now.
+      STR
+
       def initialize(upstream: false, location: nil)
         @upstream = upstream
         @location = location
@@ -40,7 +45,7 @@ module Geet
       end
 
       def create_issue(title, description)
-        ask_confirm_action if location_action_with_upstream_repository?
+        ask_confirm_action if local_action_with_upstream_repository?
         attempt_provider_call(:Issue, :create, title, description, api_interface)
       end
 
@@ -69,7 +74,7 @@ module Geet
       end
 
       def create_pr(title, description, head)
-        ask_confirm_action if location_action_with_upstream_repository?
+        ask_confirm_action if local_action_with_upstream_repository?
         attempt_provider_call(:PR, :create, title, description, head, api_interface)
       end
 
@@ -102,6 +107,9 @@ module Geet
 
       # REPOSITORY METADATA
 
+      # Returns the URL of the remote with the given name.
+      # Sanity checks are performed.
+      #
       # The result is in the format `git@github.com:donaldduck/geet.git`
       #
       def remote(name)
@@ -117,11 +125,10 @@ module Geet
         remote_url
       end
 
-      # "Lightweight" version of #remote.
       # Doesn't sanity check for the remote url format; this action is for querying
       # purposes, any any action that needs to work with the remote, uses #remote.
       #
-      def has_remote?(name)
+      def remote_defined?(name)
         gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         remote_url = `git #{gitdir_option} ls-remote --get-url #{name}`.strip
 
@@ -192,13 +199,12 @@ module Geet
       end
 
       def ask_confirm_action
-        puts "WARNING! The action will be performed on a fork, but an upstream repository has been found!"
-        print "Press Enter to continue, or Ctrl+C to exit now."
+        print CONFIRM_ACTION_TEXT.rstrip
         gets
       end
 
-      def location_action_with_upstream_repository?
-        has_remote?('upstream') && !@upstream
+      def local_action_with_upstream_repository?
+        remote_defined?('upstream') && !@upstream
       end
     end
   end
