@@ -6,12 +6,13 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/list_issues'
 
 describe Geet::Services::ListIssues do
-  let(:repository) { Geet::Git::Repository.new }
-  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true) }
+  let(:git_client) { Geet::Utils::GitClient.new }
+  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   context 'with github.com' do
     it 'should list the default issues' do
-      allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
       expected_output = <<~STR
         5. Title 2 (https://github.com/donaldduck/testrepo/issues/5)
@@ -33,7 +34,7 @@ describe Geet::Services::ListIssues do
 
     context 'with assignee filtering' do
       it 'should list the issues' do
-        allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_gh')
+        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_gh')
 
         expected_output = <<~STR
           Finding assignee...
@@ -56,8 +57,8 @@ describe Geet::Services::ListIssues do
     end
 
     it 'should list the upstream issues' do
-      allow(upstream_repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
-      allow(upstream_repository).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
+      allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
       expected_output = <<~STR
         2. Title 2 U (https://github.com/donald-fr/testrepo_u/issues/2)
@@ -80,7 +81,7 @@ describe Geet::Services::ListIssues do
 
   context 'with gitlab.com' do
     it 'should list the issues' do
-      allow(repository).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
 
       expected_output = <<~STR
         2. I like more pizza (https://gitlab.com/donaldduck/testproject/issues/2)

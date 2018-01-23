@@ -6,11 +6,12 @@ require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/list_prs'
 
 describe Geet::Services::ListPrs do
-  let(:repository) { Geet::Git::Repository.new }
-  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true) }
+  let(:git_client) { Geet::Utils::GitClient.new }
+  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   it 'should list the PRs' do
-    allow(repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
     expected_output = <<~STR
       6. Title 2 (https://github.com/donaldduck/testrepo/pull/6)
@@ -31,8 +32,8 @@ describe Geet::Services::ListPrs do
   end
 
   it 'should list the upstream PRs' do
-    allow(upstream_repository).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
-    allow(upstream_repository).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
+    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
     expected_output = <<~STR
       5. Title 2 (https://github.com/donald-fr/testrepo_u/pull/5)

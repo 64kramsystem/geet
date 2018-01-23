@@ -1,32 +1,23 @@
 # frozen_string_literal: true
 
 require 'shellwords'
+require_relative '../utils/git_client'
 
 module Geet
   module Git
     # This class represents, for convenience, both the local and the remote repository, but the
     # remote code is separated in each provider module.
     class Repository
-      # For simplicity, we match any character except the ones the separators.
-      REMOTE_ORIGIN_REGEX = %r{
-        \A
-        (?:https://(.+?)/|git@(.+?):)
-        ([^/]+/.*?)
-        (?:\.git)?
-        \Z
-      }x
-
-      ORIGIN_NAME   = 'origin'
-      UPSTREAM_NAME = 'upstream'
-
       CONFIRM_ACTION_TEXT = <<~STR
         WARNING! The action will be performed on a fork, but an upstream repository has been found!
         Press Enter to continue, or Ctrl+C to exit now.
       STR
 
-      def initialize(upstream: false, location: nil)
+      DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
+
+      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT)
         @upstream = upstream
-        @location = location
+        @git_client = git_client
         @api_token = extract_env_api_token
       end
 
@@ -91,12 +82,7 @@ module Geet
       # OTHER/CONVENIENCE FUNCTIONALITIES
 
       def current_branch
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
-        branch = `git #{gitdir_option} rev-parse --abbrev-ref HEAD`.strip
-
-        raise "Couldn't find current branch" if branch == 'HEAD'
-
-        branch
+        @git_client.current_branch
       end
 
       def upstream?
@@ -105,60 +91,19 @@ module Geet
 
       private
 
-      # REPOSITORY METADATA
-
-      # Returns the URL of the remote with the given name.
-      # Sanity checks are performed.
-      #
-      # The result is in the format `git@github.com:donaldduck/geet.git`
-      #
-      def remote(name)
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
-        remote_url = `git #{gitdir_option} ls-remote --get-url #{name}`.strip
-
-        if remote_url == name
-          raise "Remote #{name.inspect} not found!"
-        elsif remote_url !~ REMOTE_ORIGIN_REGEX
-          raise "Unexpected remote reference format: #{remote_url.inspect}"
-        end
-
-        remote_url
-      end
-
-      # Doesn't sanity check for the remote url format; this action is for querying
-      # purposes, any any action that needs to work with the remote, uses #remote.
-      #
-      def remote_defined?(name)
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
-        remote_url = `git #{gitdir_option} ls-remote --get-url #{name}`.strip
-
-        remote_url != name
-      end
-
       # PROVIDER
 
       def extract_env_api_token
-        env_variable_name = "#{provider_domain[/(.*)\.\w+/, 1].upcase}_API_TOKEN"
+        provider_name = @git_client.provider_domain[/(.*)\.\w+/, 1]
+        env_variable_name = "#{provider_name.upcase}_API_TOKEN"
 
         ENV[env_variable_name] || raise("#{env_variable_name} not set!")
-      end
-
-      def provider_domain
-        # We assume that it's not possible to have origin and upstream on different providers.
-        #
-        remote_url = remote(ORIGIN_NAME)
-
-        domain = remote_url[REMOTE_ORIGIN_REGEX, 1] || remote_url[REMOTE_ORIGIN_REGEX, 2]
-
-        raise "Can't identify domain in the provider domain string: #{domain}" if domain !~ /(.*)\.\w+/
-
-        domain
       end
 
       # Attempt to find the provider class and send the specified method, returning a friendly
       # error (functionality X [Y] is missing) when a class/method is missing.
       def attempt_provider_call(class_name, meth, *args)
-        module_name = provider_domain[/(.*)\.\w+/, 1].capitalize
+        module_name = provider_name.capitalize
 
         require_provider_modules
 
@@ -178,8 +123,7 @@ module Geet
       end
 
       def require_provider_modules
-        provider_dirname = provider_domain[/(.*)\.\w+/, 1]
-        files_pattern = "#{__dir__}/../#{provider_dirname}/*.rb"
+        files_pattern = "#{__dir__}/../#{provider_name}/*.rb"
 
         Dir[files_pattern].each { |filename| require filename }
       end
@@ -187,15 +131,8 @@ module Geet
       # OTHER HELPERS
 
       def api_interface
-        attempt_provider_call(:ApiInterface, :new, @api_token, path(upstream: @upstream), @upstream)
-      end
-
-      # Example: `donaldduck/geet`
-      #
-      def path(upstream: false)
-        remote_name = upstream ? UPSTREAM_NAME : ORIGIN_NAME
-
-        remote(remote_name)[REMOTE_ORIGIN_REGEX, 3]
+        path = @git_client.path(upstream: @upstream)
+        attempt_provider_call(:ApiInterface, :new, @api_token, path, @upstream)
       end
 
       def ask_confirm_action
@@ -204,7 +141,13 @@ module Geet
       end
 
       def local_action_with_upstream_repository?
-        remote_defined?('upstream') && !@upstream
+        @git_client.remote_defined?('upstream') && !@upstream
+      end
+
+      # Bare downcase provider name, eg. `github`
+      #
+      def provider_name
+        @git_client.provider_domain[/(.*)\.\w+/, 1]
       end
     end
   end
