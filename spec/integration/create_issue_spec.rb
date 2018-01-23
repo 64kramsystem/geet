@@ -49,7 +49,6 @@ describe Geet::Services::CreateIssue do
 
     expected_output = <<~STR
       Creating the issue...
-      Assigning authenticated user...
       Issue address: https://github.com/donald-fr/testrepo_u/issues/7
     STR
 
