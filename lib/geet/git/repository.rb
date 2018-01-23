@@ -150,7 +150,7 @@ module Geet
 
         domain = remote_url[REMOTE_ORIGIN_REGEX, 1] || remote_url[REMOTE_ORIGIN_REGEX, 2]
 
-        raise "Can't identify domain in the provider domain string: #{provider_domain}" if domain !~ /(.*)\.\w+/
+        raise "Can't identify domain in the provider domain string: #{domain}" if domain !~ /(.*)\.\w+/
 
         domain
       end
