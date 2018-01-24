@@ -1,12 +1,15 @@
 # frozen_string_literal: true
 
 require 'shellwords'
+require_relative '../helpers/os_helper.rb'
 
 module Geet
   module Utils
     # Represents the git program interface; used for performing git operations.
     #
     class GitClient
+      include Geet::Helpers::OsHelper
+
       ORIGIN_NAME   = 'origin'
       UPSTREAM_NAME = 'upstream'
 
@@ -27,14 +30,14 @@ module Geet
       # (which start with `-`)
       #
       def cherry(limit)
-        raw_commits = `git cherry #{limit.shellescape}`.strip
+        raw_commits = execute_command("git cherry #{limit.shellescape}")
 
         raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
       end
 
       def current_branch
         gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
-        branch = `git #{gitdir_option} rev-parse --abbrev-ref HEAD`.strip
+        branch = execute_command("git #{gitdir_option} rev-parse --abbrev-ref HEAD")
 
         raise "Couldn't find current branch" if branch == 'HEAD'
 
@@ -68,7 +71,7 @@ module Geet
       #
       def remote(name)
         gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
-        remote_url = `git #{gitdir_option} ls-remote --get-url #{name}`.strip
+        remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
 
         if remote_url == name
           raise "Remote #{name.inspect} not found!"
@@ -84,7 +87,7 @@ module Geet
       #
       def remote_defined?(name)
         gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
-        remote_url = `git #{gitdir_option} ls-remote --get-url #{name}`.strip
+        remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
 
         # If the remote is not define, `git ls-remote` will return the passed value.
         remote_url != name
@@ -93,7 +96,7 @@ module Geet
       # Show the description ("<subject>\n\n<body>") for the given git object.
       #
       def show_description(object)
-        `git show --quiet --format='%s\n\n%b' #{object.shellescape}`.strip
+        execute_command("git show --quiet --format='%s\n\n%b' #{object.shellescape}")
       end
     end
   end
