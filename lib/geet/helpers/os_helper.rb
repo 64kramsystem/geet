@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'English'
+require 'open3'
 require 'shellwords'
 
 module Geet
@@ -14,10 +15,41 @@ module Geet
         end
       end
 
-      def execute_command(description, *command_tokens)
-        system(*command_tokens.map(&:shellescape))
+      # Executes the command.
+      #
+      # If the command doesn't execute successfully, it will raise an error
+      #
+      # On non-interactive runs, the stdout content is returned, stripped of the surrounding
+      # whitespaces.
+      #
+      # descriptipon: optional string, to make the error clearer.
+      # interactive:  set when required; in this case, a different API will be used (`system()`
+      #               instead of `popen3`).
+      #
+      def execute_command(command, description: nil, interactive: false)
+        description_message = " on #{description}" if description
 
-        raise "Error during #{description} (exit status: #{$CHILD_STATUS.exitstatus})" if !$CHILD_STATUS.success?
+        if interactive
+          system(command)
+
+          if !$CHILD_STATUS.success?
+            raise "Error#{description_message} (exit status: #{$CHILD_STATUS.exitstatus})"
+          end
+        else
+          Open3.popen3(command) do |_, stdout, stderr, wait_thread|
+            stdout_content = stdout.read
+            stderr_content = stderr.read
+
+            puts stderr_content if stderr_content != ''
+
+            if !wait_thread.value.success?
+              error_message = stderr_content.lines.first.strip
+              raise "Error#{description_message}: #{error_message})"
+            end
+
+            stdout_content.strip
+          end
+        end
       end
     end
   end

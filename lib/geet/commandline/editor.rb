@@ -38,8 +38,9 @@ module Geet
       #
       def edit_content_in_default_editor(content)
         tempfile = Tempfile.open(['geet_editor', '.md']) { |file| file << content }.path
+        command = "#{system_editor} #{tempfile.shellescape}"
 
-        execute_command('editing', system_editor, tempfile)
+        execute_command(command, description: 'editing', interactive: true)
 
         content = IO.read(tempfile)
 
