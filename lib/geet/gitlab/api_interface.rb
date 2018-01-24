@@ -11,9 +11,12 @@ module Geet
     class ApiInterface
       API_BASE_URL = 'https://gitlab.com/api/v4'
 
-      def initialize(api_token, path_with_namespace, upstream)
+      # repo_path: "path/namespace"; required for the current GitLab operations.
+      # upstream:  boolean; required for the current GitLab operations.
+      #
+      def initialize(api_token, repo_path:, upstream:)
         @api_token = api_token
-        @path_with_namespace = path_with_namespace
+        @path_with_namespace = repo_path
         @upstream = upstream
       end
 

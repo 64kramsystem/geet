@@ -11,9 +11,12 @@ module Geet
       API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
       API_BASE_URL = 'https://api.github.com'
 
-      def initialize(api_token, repository_path, upstream)
+      # repo_path: optional for operations that don't require a repository, eg. gist creation.
+      # upstream:  boolean; makes sense only when :repo_path is set.
+      #
+      def initialize(api_token, repo_path: nil, upstream: nil)
         @api_token = api_token
-        @repository_path = repository_path
+        @repository_path = repo_path
         @upstream = upstream
       end
 
@@ -69,7 +72,12 @@ module Geet
 
       def api_url(api_path)
         url = API_BASE_URL
-        url += "/repos/#{@repository_path}/" if !api_path.start_with?('/')
+
+        if !api_path.start_with?('/')
+          raise 'Missing repo path!' if @repository_path.nil?
+          url += "/repos/#{@repository_path}/"
+        end
+
         url + api_path
       end
 
