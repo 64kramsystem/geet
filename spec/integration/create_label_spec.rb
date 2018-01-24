@@ -21,7 +21,7 @@ describe Geet::Services::CreateLabel do
       actual_output = StringIO.new
 
       actual_created_label = VCR.use_cassette('create_label') do
-        described_class.new.execute(repository, 'my_label', color: 'c64c64', output: actual_output)
+        described_class.new(repository).execute('my_label', color: 'c64c64', output: actual_output)
       end
 
       expect(actual_output.string).to eql(expected_output)
@@ -43,7 +43,7 @@ describe Geet::Services::CreateLabel do
       actual_output = StringIO.new
 
       actual_created_label = VCR.use_cassette('create_label_with_random_color') do
-        described_class.new.execute(repository, 'my_label', output: actual_output)
+        described_class.new(repository).execute('my_label', output: actual_output)
       end
 
       expected_output = format(expected_output_template, color: actual_created_label.color)

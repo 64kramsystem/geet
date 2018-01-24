@@ -3,25 +3,32 @@
 module Geet
   module Services
     class MergePr
-      def execute(repository, delete_branch: false, output: $stdout)
-        merge_head = find_merge_head(repository)
-        pr = checked_find_branch_pr(repository, merge_head, output)
+      DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
+
+      def initialize(repository, git_client: DEFAULT_GIT_CLIENT)
+        @repository = repository
+        @git_client = git_client
+      end
+
+      def execute(delete_branch: false, output: $stdout)
+        merge_head = find_merge_head
+        pr = checked_find_branch_pr(merge_head, output)
         merge_pr(pr, output)
-        do_delete_branch(repository, output) if delete_branch
+        do_delete_branch(output) if delete_branch
         pr
       end
 
       private
 
-      def find_merge_head(repository)
-        repository.current_branch
+      def find_merge_head
+        @git_client.current_branch
       end
 
       # Expect to find only one.
-      def checked_find_branch_pr(repository, head, output)
+      def checked_find_branch_pr(head, output)
         output.puts "Finding PR with head (#{head})..."
 
-        prs = repository.prs(head: head)
+        prs = @repository.prs(head: head)
 
         raise "Expected to find only one PR for the current branch; found: #{prs.size}" if prs.size != 1
 
@@ -34,10 +41,10 @@ module Geet
         pr.merge
       end
 
-      def do_delete_branch(repository, output)
-        output.puts "Deleting branch #{repository.current_branch}..."
+      def do_delete_branch(output)
+        output.puts "Deleting branch #{@git_client.current_branch}..."
 
-        repository.delete_branch(repository.current_branch)
+        @repository.delete_branch(@git_client.current_branch)
       end
     end
   end

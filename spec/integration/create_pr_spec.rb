@@ -30,8 +30,8 @@ describe Geet::Services::CreatePr do
       actual_output = StringIO.new
 
       actual_created_pr = VCR.use_cassette('create_pr') do
-        described_class.new.execute(
-          repository, 'Title', 'Description',
+        described_class.new(repository).execute(
+          'Title', 'Description',
           label_patterns: '_bug,invalid', milestone_pattern: '0.0.1', reviewer_patterns: 'nald-ts,nald-fr',
           no_open_pr: true, output: actual_output
         )
@@ -59,7 +59,7 @@ describe Geet::Services::CreatePr do
     actual_output = StringIO.new
 
     actual_created_pr = VCR.use_cassette('create_pr_upstream') do
-      described_class.new.execute(upstream_repository, 'Title', 'Description', no_open_pr: true, output: actual_output)
+      described_class.new(upstream_repository).execute('Title', 'Description', no_open_pr: true, output: actual_output)
     end
 
     expect(actual_output.string).to eql(expected_output)
