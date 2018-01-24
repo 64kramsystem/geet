@@ -30,7 +30,8 @@ describe Geet::Services::CreatePr do
       actual_output = StringIO.new
 
       actual_created_pr = VCR.use_cassette('create_pr') do
-        described_class.new(repository).execute(
+        service_instance = described_class.new(repository, git_client: git_client)
+        service_instance.execute(
           'Title', 'Description',
           label_patterns: '_bug,invalid', milestone_pattern: '0.0.1', reviewer_patterns: 'nald-ts,nald-fr',
           no_open_pr: true, output: actual_output
@@ -59,7 +60,8 @@ describe Geet::Services::CreatePr do
     actual_output = StringIO.new
 
     actual_created_pr = VCR.use_cassette('create_pr_upstream') do
-      described_class.new(upstream_repository).execute('Title', 'Description', no_open_pr: true, output: actual_output)
+      service_instance = described_class.new(upstream_repository, git_client: git_client)
+      service_instance.execute('Title', 'Description', no_open_pr: true, output: actual_output)
     end
 
     expect(actual_output.string).to eql(expected_output)
