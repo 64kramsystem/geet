@@ -72,6 +72,10 @@ module Geet
         milestones = milestone_thread&.value
         reviewers = reviewers_thread&.value
 
+        raise "No labels found!" if label_patterns && labels.empty?
+        raise "No milestones found!" if milestone_pattern && milestones.empty?
+        raise "No collaborators found!" if reviewer_patterns && reviewers.empty?
+
         [labels, milestones, reviewers]
       end
 
