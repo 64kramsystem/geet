@@ -15,7 +15,6 @@ class GeetLauncher
   def launch
     command, options = Commandline::Configuration.new.decode_argv || exit
 
-    # `:upstream` is always false in the gist command case.
     repository = Git::Repository.new(upstream: !!options[:upstream])
 
     case command
