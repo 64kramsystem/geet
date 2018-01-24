@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative 'abstract_issue'
+require_relative '../github/gist'
 
 module Geet
   module Github

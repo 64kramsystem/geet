@@ -23,7 +23,7 @@ class GeetLauncher
       filename = options.delete(:filename)
       options[:publik] = options.delete(:public) if options.key?(:public)
 
-      Services::CreateGist.new.execute(repository, filename, options)
+      Services::CreateGist.new.execute(filename, options)
     when ISSUE_CREATE_COMMAND
       title, description = Commandline::Editor.new.edit_summary
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)

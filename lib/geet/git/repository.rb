@@ -31,10 +31,6 @@ module Geet
         attempt_provider_call(:Label, :list, api_interface)
       end
 
-      def create_gist(filename, content, description: nil, publik: false)
-        attempt_provider_call(:Gist, :create, filename, content, api_interface, description: description, publik: publik)
-      end
-
       def create_issue(title, description)
         ask_confirm_action if local_action_with_upstream_repository?
         attempt_provider_call(:Issue, :create, title, description, api_interface)
