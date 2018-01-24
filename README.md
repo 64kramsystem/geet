@@ -55,6 +55,31 @@ patterns are partial matches, so, for example, `johncarmack` will be matched as 
 
 After creation, the issue page will be automatically opened in the default browser.
 
+### Using menus for options selection
+
+Geet supports selecting options (labels, collaborators, etc.), using the `-` parameter:
+
+    $ geet issue create --label-patterns -
+
+This will show a menu like the following:
+
+    Please select the label(s): (Use arrow keys, press Space to select and Enter to finish, and alphanumeric/underscore characters to filter)
+    ‣ ⬡ bug
+      ⬡ enhancement
+      ⬡ not_an_issue
+      ⬡ requires_design
+      ⬡ technical_debt
+      ⬡ top_priority
+      ⬡ ux
+
+Typing alphanumeric keys and underscore will enable filtering:
+
+    Please select the label(s): (Filter: "b")
+    ‣ ⬡ bug
+      ⬡ technical_debt
+
+When a filter is active, use `Backspace` to cancel the last character, and `Canc` to reset it.
+
 ### Create a PR (with label, reviewers, and assigned to self)
 
 Basic creation of a PR:
@@ -132,8 +157,8 @@ Examples:
 
 ## Development status
 
-Geet is in alpha status. Although I use it daily, new features are frequently added, and internal/external APIs/workflows may change.
+Geet is in beta status. Although I use it daily, new features are frequently added, and internal/external APIs/workflows may change.
 
-The public release will be 1.0, and is expected to be released in February 2018 or earlier.
+The public release will be 1.0.
 
 [BS img]: https://travis-ci.org/saveriomiroddi/geet.svg?branch=master
