@@ -9,10 +9,13 @@ module Geet
     class CreatePr
       include Geet::Helpers::OsHelper
 
+      DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
+
       MANUAL_LIST_SELECTION_FLAG = '-'.freeze
 
-      def initialize(repository)
+      def initialize(repository, git_client: DEFAULT_GIT_CLIENT)
         @repository = repository
+        @git_client = git_client
       end
 
       # options:
@@ -75,7 +78,7 @@ module Geet
       def create_pr(title, description, output)
         output.puts 'Creating PR...'
 
-        @repository.create_pr(title, description, @repository.current_branch)
+        @repository.create_pr(title, description, @git_client.current_branch)
       end
 
       def edit_pr(pr, labels, milestone, reviewers, output)
