@@ -157,8 +157,8 @@ Examples:
 
 ## Development status
 
-Geet is in alpha status. Although I use it daily, new features are frequently added, and internal/external APIs/workflows may change.
+Geet is in beta status. Although I use it daily, new features are frequently added, and internal/external APIs/workflows may change.
 
-The public release will be 1.0, and is expected to be released in February 2018 or earlier.
+The public release will be 1.0.
 
 [BS img]: https://travis-ci.org/saveriomiroddi/geet.svg?branch=master
