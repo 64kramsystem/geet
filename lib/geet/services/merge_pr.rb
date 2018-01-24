@@ -3,8 +3,11 @@
 module Geet
   module Services
     class MergePr
-      def initialize(repository)
+      DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
+
+      def initialize(repository, git_client: DEFAULT_GIT_CLIENT)
         @repository = repository
+        @git_client = git_client
       end
 
       def execute(delete_branch: false, output: $stdout)
@@ -18,7 +21,7 @@ module Geet
       private
 
       def find_merge_head
-        @repository.current_branch
+        @git_client.current_branch
       end
 
       # Expect to find only one.
@@ -39,9 +42,9 @@ module Geet
       end
 
       def do_delete_branch(output)
-        output.puts "Deleting branch #{@repository.current_branch}..."
+        output.puts "Deleting branch #{@git_client.current_branch}..."
 
-        @repository.delete_branch(@repository.current_branch)
+        @repository.delete_branch(@git_client.current_branch)
       end
     end
   end

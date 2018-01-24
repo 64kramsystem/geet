@@ -22,7 +22,7 @@ describe Geet::Services::MergePr do
     actual_output = StringIO.new
 
     service_result = VCR.use_cassette('merge_pr') do
-      described_class.new(repository).execute(output: actual_output)
+      described_class.new(repository, git_client: git_client).execute(output: actual_output)
     end
 
     actual_pr_number = service_result.number
@@ -45,7 +45,7 @@ describe Geet::Services::MergePr do
     actual_output = StringIO.new
 
     service_result = VCR.use_cassette('merge_pr_with_branch_deletion') do
-      described_class.new(repository).execute(delete_branch: true, output: actual_output)
+      described_class.new(repository, git_client: git_client).execute(delete_branch: true, output: actual_output)
     end
 
     actual_pr_number = service_result.number

@@ -77,10 +77,6 @@ module Geet
 
       # OTHER/CONVENIENCE FUNCTIONALITIES
 
-      def current_branch
-        @git_client.current_branch
-      end
-
       def upstream?
         @upstream
       end
