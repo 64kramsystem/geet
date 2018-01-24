@@ -64,18 +64,18 @@ module Geet
 
         if assignee_patterns
           output.puts 'Finding collaborators...'
-          reviewers_thread = Thread.new { @repository.collaborators }
+          assignees_thread = Thread.new { @repository.collaborators }
         end
 
         labels = labels_thread&.value
         milestones = milestone_thread&.value
-        reviewers = reviewers_thread&.value
+        assignees = assignees_thread&.value
 
         raise "No labels found!" if label_patterns && labels.empty?
         raise "No milestones found!" if milestone_pattern && milestones.empty?
-        raise "No collaborators found!" if assignee_patterns && reviewers.empty?
+        raise "No collaborators found!" if assignee_patterns && assignees.empty?
 
-        [labels, milestones, reviewers]
+        [labels, milestones, assignees]
       end
 
       def create_issue(title, description, output)
