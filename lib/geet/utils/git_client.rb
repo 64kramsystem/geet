@@ -33,7 +33,7 @@ module Geet
       end
 
       def current_branch
-        gitdir_option = "--git-dir #{location.shellescape}/.git" if location
+        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         branch = `git #{gitdir_option} rev-parse --abbrev-ref HEAD`.strip
 
         raise "Couldn't find current branch" if branch == 'HEAD'
