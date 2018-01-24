@@ -132,7 +132,7 @@ module Geet
 
       def api_interface
         path = @git_client.path(upstream: @upstream)
-        attempt_provider_call(:ApiInterface, :new, @api_token, path, @upstream)
+        attempt_provider_call(:ApiInterface, :new, @api_token, repo_path: path, upstream: @upstream)
       end
 
       def ask_confirm_action
