@@ -3,8 +3,12 @@
 module Geet
   module Services
     class CreateLabel
-      def execute(repository, name, color: generate_random_color, output: $stdout)
-        label = create_label(repository, name, color, output)
+      def initialize(repository)
+        @repository = repository
+      end
+
+      def execute(name, color: generate_random_color, output: $stdout)
+        label = create_label(name, color, output)
 
         output.puts "Created with color ##{label.color}"
 
@@ -13,10 +17,10 @@ module Geet
 
       private
 
-      def create_label(repository, name, color, output)
+      def create_label(name, color, output)
         output.puts 'Creating label...'
 
-        repository.create_label(name, color)
+        @repository.create_label(name, color)
       end
 
       # Return a 6-digits hex random color.

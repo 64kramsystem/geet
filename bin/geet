@@ -27,27 +27,27 @@ class GeetLauncher
       title, description = Commandline::Editor.new.edit_summary
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
-      Services::CreateIssue.new.execute(repository, title, description, options)
+      Services::CreateIssue.new(repository).execute(title, description, options)
     when LABEL_CREATE_COMMAND
       name = options.delete(:name)
 
-      Services::CreateLabel.new.execute(repository, name, options)
+      Services::CreateLabel.new(repository).execute(name, options)
     when ISSUE_LIST_COMMAND
-      Services::ListIssues.new.execute(repository, options)
+      Services::ListIssues.new(repository).execute(options)
     when LABEL_LIST_COMMAND
-      Services::ListLabels.new.execute(repository)
+      Services::ListLabels.new(repository).execute
     when MILESTONE_LIST_COMMAND
-      Services::ListMilestones.new.execute(repository)
+      Services::ListMilestones.new(repository).execute
     when PR_CREATE_COMMAND
       title, description = edit_pr_title_and_description
 
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
-      Services::CreatePr.new.execute(repository, title, description, options)
+      Services::CreatePr.new(repository).execute(title, description, options)
     when PR_LIST_COMMAND
-      Services::ListPrs.new.execute(repository)
+      Services::ListPrs.new(repository).execute
     when PR_MERGE_COMMAND
-      Services::MergePr.new.execute(repository, options)
+      Services::MergePr.new(repository).execute(options)
     else
       raise "Internal error - Unrecognized command #{command.inspect}"
     end

@@ -11,26 +11,30 @@ module Geet
 
       MANUAL_LIST_SELECTION_FLAG = '-'.freeze
 
+      def initialize(repository)
+        @repository = repository
+      end
+
       # options:
       #   :label_patterns
       #   :reviewer_patterns
       #   :no_open_pr
       #
       def execute(
-        repository, title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil,
+        title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil,
         no_open_pr: nil, output: $stdout, **
       )
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          repository, label_patterns, milestone_pattern, reviewer_patterns, output
+          label_patterns, milestone_pattern, reviewer_patterns, output
         )
 
         labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
         milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
         reviewers = select_entries('collaborator', all_collaborators, reviewer_patterns, :multiple, nil) if reviewer_patterns
 
-        pr = create_pr(repository, title, description, output)
+        pr = create_pr(title, description, output)
 
-        edit_pr(repository, pr, labels, milestone, reviewers, output)
+        edit_pr(pr, labels, milestone, reviewers, output)
 
         if no_open_pr
           output.puts "PR address: #{pr.link}"
@@ -45,20 +49,20 @@ module Geet
 
       # Internal actions
 
-      def find_all_attribute_entries(repository,label_patterns, milestone_pattern, reviewer_patterns, output)
+      def find_all_attribute_entries(label_patterns, milestone_pattern, reviewer_patterns, output)
         if label_patterns
           output.puts 'Finding labels...'
-          labels_thread = Thread.new { repository.labels }
+          labels_thread = Thread.new { @repository.labels }
         end
 
         if milestone_pattern
           output.puts 'Finding milestone...'
-          milestone_thread = Thread.new { repository.milestones }
+          milestone_thread = Thread.new { @repository.milestones }
         end
 
         if reviewer_patterns
           output.puts 'Finding collaborators...'
-          reviewers_thread = Thread.new { repository.collaborators }
+          reviewers_thread = Thread.new { @repository.collaborators }
         end
 
         labels = labels_thread&.value
@@ -68,14 +72,14 @@ module Geet
         [labels, milestones, reviewers]
       end
 
-      def create_pr(repository, title, description, output)
+      def create_pr(title, description, output)
         output.puts 'Creating PR...'
 
-        repository.create_pr(title, description, repository.current_branch)
+        @repository.create_pr(title, description, @repository.current_branch)
       end
 
-      def edit_pr(repository, pr, labels, milestone, reviewers, output)
-        assign_user_thread = assign_authenticated_user(pr, repository, output)
+      def edit_pr(pr, labels, milestone, reviewers, output)
+        assign_user_thread = assign_authenticated_user(pr, output)
 
         add_labels_thread = add_labels(pr, labels, output) if labels
         set_milestone_thread = set_milestone(pr, milestone, output) if milestone
@@ -87,11 +91,11 @@ module Geet
         request_review_thread&.join
       end
 
-      def assign_authenticated_user(pr, repository, output)
+      def assign_authenticated_user(pr, output)
         output.puts 'Assigning authenticated user...'
 
         Thread.new do
-          pr.assign_users(repository.authenticated_user)
+          pr.assign_users(@repository.authenticated_user)
         end
       end
 
