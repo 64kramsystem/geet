@@ -8,6 +8,7 @@ require_relative '../../lib/geet/services/list_milestones'
 describe Geet::Services::ListMilestones do
   let(:git_client) { Geet::Utils::GitClient.new }
   let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   it 'should list the milestones' do
     allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
@@ -36,6 +37,31 @@ describe Geet::Services::ListMilestones do
 
     service_result = VCR.use_cassette('list_milestones') do
       described_class.new(repository).execute(output: actual_output)
+    end
+
+    actual_milestone_numbers = service_result.map(&:number)
+
+    expect(actual_output.string).to eql(expected_output)
+    expect(actual_milestone_numbers).to eql(expected_milestone_numbers)
+  end
+
+  it 'should list the upstream milestones' do
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
+    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+
+    expected_output = <<~STR
+      Finding milestones...
+      Finding issues...
+
+      1. Milestone 1 Up
+        32. t (https://github.com/donald-fr/testrepo_u/issues/32)
+    STR
+    expected_milestone_numbers = [1]
+
+    actual_output = StringIO.new
+
+    service_result = VCR.use_cassette('list_milestones_upstream') do
+      described_class.new(upstream_repository).execute(output: actual_output)
     end
 
     actual_milestone_numbers = service_result.map(&:number)

@@ -41,7 +41,9 @@ module Geet
 
       LABEL_LIST_OPTIONS = [].freeze
 
-      MILESTONE_LIST_OPTIONS = [].freeze
+      MILESTONE_LIST_OPTIONS = [
+        ['-u', '--upstream',                                'List on the upstream repository'],
+      ].freeze
 
       PR_CREATE_OPTIONS = [
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
