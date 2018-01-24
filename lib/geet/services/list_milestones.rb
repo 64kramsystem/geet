@@ -3,9 +3,13 @@
 module Geet
   module Services
     class ListMilestones
-      def execute(repository, output: $stdout)
-        milestones = find_milestones(repository, output)
-        issues_by_milestone_number = find_milestone_issues(repository, milestones, output)
+      def initialize(repository)
+        @repository = repository
+      end
+
+      def execute(output: $stdout)
+        milestones = find_milestones(output)
+        issues_by_milestone_number = find_milestone_issues(milestones, output)
 
         output.puts
 
@@ -30,13 +34,13 @@ module Geet
         description
       end
 
-      def find_milestones(repository, output)
+      def find_milestones(output)
         output.puts 'Finding milestones...'
 
-        repository.milestones
+        @repository.milestones
       end
 
-      def find_milestone_issues(repository, milestones, output)
+      def find_milestone_issues(milestones, output)
         output.puts 'Finding issues...'
 
         # Interestingly, on MRI, concurrent hash access is not a problem without mutex,
@@ -46,7 +50,7 @@ module Geet
 
         issue_threads = milestones.map do |milestone|
           Thread.new do
-            issues = repository.abstract_issues(milestone: milestone.number)
+            issues = @repository.abstract_issues(milestone: milestone.number)
 
             mutex.synchronize do
               issues_by_milestone_number[milestone.number] = issues

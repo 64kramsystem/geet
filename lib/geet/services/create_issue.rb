@@ -11,6 +11,10 @@ module Geet
 
       MANUAL_LIST_SELECTION_FLAG = '-'.freeze
 
+      def initialize(repository)
+        @repository = repository
+      end
+
       # options:
       #   :label_patterns
       #   :milestone_pattern:     number or description pattern.
@@ -18,21 +22,21 @@ module Geet
       #   :no_open_issue
       #
       def execute(
-          repository, title, description,
+          title, description,
           label_patterns: nil, milestone_pattern: nil, assignee_patterns: nil, no_open_issue: nil,
           output: $stdout, **
       )
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          repository, label_patterns, milestone_pattern, assignee_patterns, output
+          label_patterns, milestone_pattern, assignee_patterns, output
         )
 
         labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
         milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
         assignees = select_entries('collaborator', all_collaborators, assignee_patterns, :multiple, nil) if assignee_patterns
 
-        issue = create_issue(repository, title, description, output)
+        issue = create_issue(title, description, output)
 
-        edit_issue(repository, issue, labels, milestone, assignees, output)
+        edit_issue(issue, labels, milestone, assignees, output)
 
         if no_open_issue
           output.puts "Issue address: #{issue.link}"
@@ -47,20 +51,20 @@ module Geet
 
       # Internal actions
 
-      def find_all_attribute_entries(repository, label_patterns, milestone_pattern, assignee_patterns, output)
+      def find_all_attribute_entries(label_patterns, milestone_pattern, assignee_patterns, output)
         if label_patterns
           output.puts 'Finding labels...'
-          labels_thread = Thread.new { repository.labels }
+          labels_thread = Thread.new { @repository.labels }
         end
 
         if milestone_pattern
           output.puts 'Finding milestone...'
-          milestone_thread = Thread.new { repository.milestones }
+          milestone_thread = Thread.new { @repository.milestones }
         end
 
         if assignee_patterns
           output.puts 'Finding collaborators...'
-          reviewers_thread = Thread.new { repository.collaborators }
+          reviewers_thread = Thread.new { @repository.collaborators }
         end
 
         labels = labels_thread&.value
@@ -70,20 +74,20 @@ module Geet
         [labels, milestones, reviewers]
       end
 
-      def create_issue(repository, title, description, output)
+      def create_issue(title, description, output)
         output.puts 'Creating the issue...'
 
-        issue = repository.create_issue(title, description)
+        issue = @repository.create_issue(title, description)
       end
 
-      def edit_issue(repository, issue, labels, milestone, assignees, output)
+      def edit_issue(issue, labels, milestone, assignees, output)
         add_labels_thread = add_labels(issue, labels, output) if labels
         set_milestone_thread = set_milestone(issue, milestone, output) if milestone
 
         if assignees
           assign_users_thread = assign_users(issue, assignees, output)
-        elsif !repository.upstream?
-          assign_users_thread = assign_authenticated_user(repository, issue, output)
+        elsif !@repository.upstream?
+          assign_users_thread = assign_authenticated_user(@repository, issue, output)
         end
 
         add_labels_thread&.join
@@ -117,11 +121,11 @@ module Geet
         end
       end
 
-      def assign_authenticated_user(repository, issue, output)
+      def assign_authenticated_user(issue, output)
         output.puts 'Assigning authenticated user...'
 
         Thread.new do
-          issue.assign_users(repository.authenticated_user)
+          issue.assign_users(@repository.authenticated_user)
         end
       end
 

@@ -23,7 +23,7 @@ describe Geet::Services::ListLabels do
 
       actual_output = StringIO.new
       actual_labels = VCR.use_cassette('github.com/list_labels') do
-        described_class.new.execute(repository, output: actual_output)
+        described_class.new(repository).execute(output: actual_output)
       end
 
       actual_label_names = actual_labels.map(&:name)
@@ -51,7 +51,7 @@ describe Geet::Services::ListLabels do
 
       actual_output = StringIO.new
       actual_labels = VCR.use_cassette('gitlab.com/list_labels') do
-        described_class.new.execute(repository, output: actual_output)
+        described_class.new(repository).execute(output: actual_output)
       end
 
       actual_label_names = actual_labels.map(&:name)
