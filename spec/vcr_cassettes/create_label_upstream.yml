@@ -1,0 +1,80 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.github.com/repos/donaldduck-fr/testrepo_gh/labels
+    body:
+      encoding: UTF-8
+      string: '{"name":"my_label","color":"c64c64"}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Thu, 25 Jan 2018 17:15:05 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '165'
+      Status:
+      - 201 Created
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4980'
+      X-Ratelimit-Reset:
+      - '1516900528'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - '"ffff9999b041066d43bc10f1c68004b3"'
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Location:
+      - https://api.github.com/repos/donaldduck-fr/testrepo_gh/labels/my_label
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.135044'
+      X-Github-Request-Id:
+      - B8F0:EEEE:1E8FFFF:3AA24E4:5A6A1097
+    body:
+      encoding: UTF-8
+      string: '{"id":777766664,"url":"https://api.github.com/repos/donaldduck-fr/testrepo_gh/labels/my_label","name":"my_label","color":"c64c64","default":false}'
+    http_version: 
+  recorded_at: Thu, 25 Jan 2018 17:15:05 GMT
+recorded_with: VCR 3.0.3

@@ -31,6 +31,7 @@ module Geet
 
       LABEL_CREATE_OPTIONS = [
         ['-c', '--color color',                             '6-digits hex color; if not specified, a random one is created'],
+        ['-u', '--upstream',                                'Create on the upstream repository'],
         'name',
       ].freeze
 
@@ -39,7 +40,9 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
-      LABEL_LIST_OPTIONS = [].freeze
+      LABEL_LIST_OPTIONS = [
+        ['-u', '--upstream',                                'List on the upstream repository'],
+      ].freeze
 
       MILESTONE_LIST_OPTIONS = [
         ['-u', '--upstream',                                'List on the upstream repository'],
