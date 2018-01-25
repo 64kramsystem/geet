@@ -15,10 +15,11 @@ module Geet
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
-      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT)
+      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT, warnings: true)
         @upstream = upstream
         @git_client = git_client
         @api_token = extract_env_api_token
+        @warnings = warnings
       end
 
       # REMOTE FUNCTIONALITIES (REPOSITORY)
@@ -32,7 +33,7 @@ module Geet
       end
 
       def create_issue(title, description)
-        ask_confirm_action if local_action_with_upstream_repository?
+        ask_confirm_action if local_action_with_upstream_repository? && @warnings
         attempt_provider_call(:Issue, :create, title, description, api_interface)
       end
 
@@ -61,7 +62,7 @@ module Geet
       end
 
       def create_pr(title, description, head)
-        ask_confirm_action if local_action_with_upstream_repository?
+        ask_confirm_action if local_action_with_upstream_repository? && @warnings
         attempt_provider_call(:PR, :create, title, description, head, api_interface)
       end
 
