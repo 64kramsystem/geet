@@ -5,12 +5,16 @@ require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/commandline/editor.rb'
 require_relative '../lib/geet/git/repository.rb'
+require_relative '../lib/geet/helpers/summary_helper.rb'
 require_relative '../lib/geet/utils/git_client.rb'
 Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
 
 class GeetLauncher
   include Geet
   include Geet::Commandline::Commands
+  include Geet::Helpers::SummaryHelper
+
+  SUMMARY_TEMPLATE = IO.read(File.expand_path('../lib/geet/resources/templates/edit_summary.md', __dir__))
 
   def launch
     command, options = Commandline::Configuration.new.decode_argv || exit
@@ -24,7 +28,9 @@ class GeetLauncher
 
       Services::CreateGist.new.execute(filename, options)
     when ISSUE_CREATE_COMMAND
-      title, description = Commandline::Editor.new.edit_summary
+      summary = Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
+      title, description = split_summary(summary)
+
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreateIssue.new(repository).execute(title, description, options)
@@ -39,7 +45,8 @@ class GeetLauncher
     when MILESTONE_LIST_COMMAND
       Services::ListMilestones.new(repository).execute
     when PR_CREATE_COMMAND
-      title, description = edit_pr_title_and_description
+      summary = edit_pr_summary
+      title, description = split_summary(summary)
 
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
@@ -55,7 +62,7 @@ class GeetLauncher
 
   private
 
-  def edit_pr_title_and_description
+  def edit_pr_summary
     # Tricky. It would be best to have Git logic exlusively inside the services,
     # but at the same time, the summary editing should be out.
     git = Utils::GitClient.new
@@ -64,9 +71,11 @@ class GeetLauncher
     if pr_commits.size == 1
       prepopulated_summary = git.show_description('HEAD')
       cancel_pr_help = "In order to cancel the PR creation, delete the description above.\n"
-    end
 
-    Commandline::Editor.new.edit_summary(summary: prepopulated_summary, extra_help: cancel_pr_help)
+      Commandline::Editor.new.edit_content(content: prepopulated_summary, help: SUMMARY_TEMPLATE + cancel_pr_help)
+    else
+      Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
+    end
   end
 end
 
