@@ -39,7 +39,9 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
-      LABEL_LIST_OPTIONS = [].freeze
+      LABEL_LIST_OPTIONS = [
+        ['-u', '--upstream',                                'List on the upstream repository'],
+      ].freeze
 
       MILESTONE_LIST_OPTIONS = [
         ['-u', '--upstream',                                'List on the upstream repository'],

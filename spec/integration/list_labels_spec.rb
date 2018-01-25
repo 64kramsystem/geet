@@ -8,6 +8,7 @@ require_relative '../../lib/geet/services/list_labels'
 describe Geet::Services::ListLabels do
   let(:git_client) { Geet::Utils::GitClient.new }
   let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   context 'with github.com' do
     it 'should list the labels' do
@@ -24,6 +25,27 @@ describe Geet::Services::ListLabels do
       actual_output = StringIO.new
       actual_labels = VCR.use_cassette('github.com/list_labels') do
         described_class.new(repository).execute(output: actual_output)
+      end
+
+      actual_label_names = actual_labels.map(&:name)
+
+      expect(actual_output.string).to eql(expected_output)
+      expect(actual_label_names).to eql(expected_label_names)
+    end
+
+    it 'should list the upstream labels' do
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
+      allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donaldduck-fr/testrepo_u')
+
+      expected_output = <<~STR
+        - bug (#ee0701)
+        - enhancement (#c2e0c6)
+      STR
+      expected_label_names = %w[bug enhancement]
+
+      actual_output = StringIO.new
+      actual_labels = VCR.use_cassette('github.com/list_labels_upstream') do
+        described_class.new(upstream_repository).execute(output: actual_output)
       end
 
       actual_label_names = actual_labels.map(&:name)
