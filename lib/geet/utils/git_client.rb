@@ -22,6 +22,10 @@ module Geet
         \Z
       }x
 
+      UPSTREAM_BRANCH_REGEX = %r{\A[^/]+/([^/]+)\Z}
+
+      CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
+
       def initialize(location: nil)
         @location = location
       end
@@ -45,6 +49,28 @@ module Geet
         raise "Couldn't find current branch" if branch == 'HEAD'
 
         branch
+      end
+
+      # Not to be confused with `upstream` repository!
+      #
+      # return: nil, if the upstream branch is not configured.
+      #
+      def upstream_branch
+        head_symbolic_ref = execute_command("git #{gitdir_option} symbolic-ref -q HEAD")
+
+        raw_upstream_branch = execute_command("git #{gitdir_option} for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
+
+        if raw_upstream_branch != ''
+          raw_upstream_branch[UPSTREAM_BRANCH_REGEX, 1] || raise("Unexpected upstream format: #{raw_upstream_branch}")
+        else
+          nil
+        end
+      end
+
+      def working_tree_clean?
+        git_message = execute_command("git #{gitdir_option} status")
+
+        !!(git_message =~ CLEAN_TREE_MESSAGE_REGEX)
       end
 
       ##########################################################################
@@ -106,6 +132,18 @@ module Geet
 
         # If the remote is not define, `git ls-remote` will return the passed value.
         remote_url != name
+      end
+
+      ##########################################################################
+      # OPERATION APIS
+      ##########################################################################
+
+      # upstream_branch: create an upstream branch.
+      #
+      def push(upstream_branch: nil)
+        upstream_branch_option = "-u origin #{upstream_branch.shellescape}" if upstream_branch
+
+        execute_command("git #{gitdir_option} push #{upstream_branch_option}")
       end
 
       ##########################################################################
