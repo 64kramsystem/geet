@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'tmpdir'
 require_relative '../helpers/os_helper.rb'
 require_relative '../utils/manual_list_selection.rb'
 require_relative '../utils/pattern_matching_selection.rb'
@@ -10,6 +11,8 @@ module Geet
       include Geet::Helpers::OsHelper
 
       MANUAL_LIST_SELECTION_FLAG = '-'.freeze
+
+      SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
 
       def initialize(repository)
         @repository = repository
@@ -45,6 +48,9 @@ module Geet
         end
 
         issue
+      rescue => error
+        save_summary(title, description) if title
+        raise
       end
 
       private
@@ -131,6 +137,14 @@ module Geet
         Thread.new do
           issue.assign_users(@repository.authenticated_user)
         end
+      end
+
+      def save_summary(title, description)
+        summary = "#{title}\n\n#{description}".strip + "\n"
+
+        IO.write(SUMMARY_BACKUP_FILENAME, summary)
+
+        puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
       end
 
       # Generic helpers

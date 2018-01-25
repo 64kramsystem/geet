@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'tmpdir'
 require_relative '../helpers/os_helper.rb'
 require_relative '../utils/manual_list_selection.rb'
 require_relative '../utils/pattern_matching_selection.rb'
@@ -12,6 +13,8 @@ module Geet
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
       MANUAL_LIST_SELECTION_FLAG = '-'.freeze
+
+      SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
 
       def initialize(repository, git_client: DEFAULT_GIT_CLIENT)
         @repository = repository
@@ -46,6 +49,9 @@ module Geet
         end
 
         pr
+      rescue => error
+        save_summary(title, description) if title
+        raise
       end
 
       private
@@ -130,6 +136,14 @@ module Geet
         Thread.new do
           pr.request_review(reviewers)
         end
+      end
+
+      def save_summary(title, description)
+        summary = "#{title}\n\n#{description}".strip + "\n"
+
+        IO.write(SUMMARY_BACKUP_FILENAME, summary)
+
+        puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
       end
 
       # Generic helpers
