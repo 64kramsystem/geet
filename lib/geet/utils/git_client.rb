@@ -22,27 +22,70 @@ module Geet
         \Z
       }x
 
+      UPSTREAM_BRANCH_REGEX = %r{\A[^/]+/([^/]+)\Z}
+
+      CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
+
       def initialize(location: nil)
         @location = location
       end
+
+      ##########################################################################
+      # BRANCH/TREE APIS
+      ##########################################################################
 
       # Return the commit shas between HEAD and `limit`, excluding the already applied commits
       # (which start with `-`)
       #
       def cherry(limit)
-        raw_commits = execute_command("git cherry #{limit.shellescape}")
+        raw_commits = execute_command("git #{gitdir_option} cherry #{limit.shellescape}")
 
         raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
       end
 
       def current_branch
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         branch = execute_command("git #{gitdir_option} rev-parse --abbrev-ref HEAD")
 
         raise "Couldn't find current branch" if branch == 'HEAD'
 
         branch
       end
+
+      # Not to be confused with `upstream` repository!
+      #
+      # return: nil, if the upstream branch is not configured.
+      #
+      def upstream_branch
+        head_symbolic_ref = execute_command("git #{gitdir_option} symbolic-ref -q HEAD")
+
+        raw_upstream_branch = execute_command("git #{gitdir_option} for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
+
+        if raw_upstream_branch != ''
+          raw_upstream_branch[UPSTREAM_BRANCH_REGEX, 1] || raise("Unexpected upstream format: #{raw_upstream_branch}")
+        else
+          nil
+        end
+      end
+
+      def working_tree_clean?
+        git_message = execute_command("git #{gitdir_option} status")
+
+        !!(git_message =~ CLEAN_TREE_MESSAGE_REGEX)
+      end
+
+      ##########################################################################
+      # COMMIT/OBJECT APIS
+      ##########################################################################
+
+      # Show the description ("<subject>\n\n<body>") for the given git object.
+      #
+      def show_description(object)
+        execute_command("git #{gitdir_option} show --quiet --format='%s\n\n%b' #{object.shellescape}")
+      end
+
+      ##########################################################################
+      # REPOSITORY/REMOTE APIS
+      ##########################################################################
 
       # Example: `donaldduck/geet`
       #
@@ -70,7 +113,6 @@ module Geet
       # The result is in the format `git@github.com:donaldduck/geet.git`
       #
       def remote(name)
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
 
         if remote_url == name
@@ -86,17 +128,32 @@ module Geet
       # purposes, any any action that needs to work with the remote, uses #remote.
       #
       def remote_defined?(name)
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
 
         # If the remote is not define, `git ls-remote` will return the passed value.
         remote_url != name
       end
 
-      # Show the description ("<subject>\n\n<body>") for the given git object.
+      ##########################################################################
+      # OPERATION APIS
+      ##########################################################################
+
+      # upstream_branch: create an upstream branch.
       #
-      def show_description(object)
-        execute_command("git show --quiet --format='%s\n\n%b' #{object.shellescape}")
+      def push(upstream_branch: nil)
+        upstream_branch_option = "-u origin #{upstream_branch.shellescape}" if upstream_branch
+
+        execute_command("git #{gitdir_option} push #{upstream_branch_option}")
+      end
+
+      ##########################################################################
+      # INTERNAL HELPERS
+      ##########################################################################
+
+      private
+
+      def gitdir_option
+        "--git-dir #{@location.shellescape}/.git" if @location
       end
     end
   end

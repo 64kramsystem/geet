@@ -72,7 +72,7 @@ http_interactions:
       - B872:1DEC:1E60813:3A54952:5A6A0C43
     body:
       encoding: ASCII-8BIT
-      string: '[{"id":788888888,"url":"https://api.github.com/repos/donaldduck-fr/testrepo_u/labels/bug","name":"bug","color":"ee0701","default":true},{"id":788889999,"url":"https://api.github.com/repos/donaldduck-fr/testrepo_u/labels/enhancement","name":"enhancement","color":"c2e0c6","default":false}]'
+      string: '[{"id":123456888,"url":"https://api.github.com/repos/donaldduck-fr/testrepo_u/labels/bug","name":"bug","color":"ee0701","default":true},{"id":123456999,"url":"https://api.github.com/repos/donaldduck-fr/testrepo_u/labels/enhancement","name":"enhancement","color":"c2e0c6","default":false}]'
     http_version: 
   recorded_at: Thu, 25 Jan 2018 16:56:36 GMT
 recorded_with: VCR 3.0.3

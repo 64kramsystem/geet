@@ -74,7 +74,7 @@ http_interactions:
       - B8F0:EEEE:1E8FFFF:3AA24E4:5A6A1097
     body:
       encoding: UTF-8
-      string: '{"id":777766664,"url":"https://api.github.com/repos/donaldduck-fr/testrepo_gh/labels/my_label","name":"my_label","color":"c64c64","default":false}'
+      string: '{"id":123456664,"url":"https://api.github.com/repos/donaldduck-fr/testrepo_gh/labels/my_label","name":"my_label","color":"c64c64","default":false}'
     http_version: 
   recorded_at: Thu, 25 Jan 2018 17:15:05 GMT
 recorded_with: VCR 3.0.3

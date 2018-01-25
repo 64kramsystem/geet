@@ -50,14 +50,20 @@ module Geet
       ].freeze
 
       PR_CREATE_OPTIONS = [
+        ['-A', '--automated-mode',                          "Automate the branch operations (see long help)"],
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
         ['-l', '--label-patterns "legacy,code review"',     'Label patterns'],
         ['-m', '--milestone 1.5.0',                         'Milestone title pattern'],
         ['-r', '--reviewer-patterns john,tom,adrian,kevin', 'Reviewer login patterns'],
         ['-s', '--summary title_and_description',           'Set the summary (title and optionally description'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
-        long_help: 'The default editor will be opened for editing title and description; if the PR adds one commit only, '\
-                   'the content will be prepopulated with the commit description.'
+        long_help: <<~STR
+          The default editor will be opened for editing title and description; if the PR adds one commit only, the content will be prepopulated with the commit description.
+
+          The "automated mode" will automate branch operations:
+          - raise an error if the current tree is dirty;
+          - if the upstream branch is not present, it will create it, otherwise, it will perform a push.
+        STR
       ]
 
       PR_LIST_OPTIONS = [
