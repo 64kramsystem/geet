@@ -94,9 +94,11 @@ module Geet
       def edit_pr(pr, labels, milestone, reviewers, output)
         assign_user_thread = assign_authenticated_user(pr, output)
 
-        add_labels_thread = add_labels(pr, labels, output) if labels
+        # labels/reviewers can be nil (parameter not passed) or empty array (parameter passed, but
+        # nothing selected)
+        add_labels_thread = add_labels(pr, labels, output) if labels && !labels.empty?
         set_milestone_thread = set_milestone(pr, milestone, output) if milestone
-        request_review_thread = request_review(pr, reviewers, output) if reviewers
+        request_review_thread = request_review(pr, reviewers, output) if reviewers && !reviewers.empty?
 
         assign_user_thread.join
         add_labels_thread&.join
