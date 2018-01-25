@@ -50,7 +50,7 @@ module Geet
 
         pr
       rescue => error
-        save_summary(title, description) if title
+        save_summary(title, description, output) if title
         raise
       end
 
@@ -140,12 +140,12 @@ module Geet
         end
       end
 
-      def save_summary(title, description)
+      def save_summary(title, description, output)
         summary = "#{title}\n\n#{description}".strip + "\n"
 
         IO.write(SUMMARY_BACKUP_FILENAME, summary)
 
-        puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
+        output.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
       end
 
       # Generic helpers
