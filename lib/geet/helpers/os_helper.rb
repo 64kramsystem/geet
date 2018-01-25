@@ -17,14 +17,14 @@ module Geet
 
       # Executes the command.
       #
-      # If the command doesn't execute successfully, it will raise an error
+      # If the command doesn't execute successfully, it will raise an error.
       #
       # On non-interactive runs, the stdout content is returned, stripped of the surrounding
       # whitespaces.
       #
-      # descriptipon: optional string, to make the error clearer.
-      # interactive:  set when required; in this case, a different API will be used (`system()`
-      #               instead of `popen3`).
+      # description:   optional string, to make the error clearer.
+      # interactive:   set when required; in this case, a different API will be used (`system()`
+      #                instead of `popen3`).
       # silent_stderr: don't print the stderr output
       #
       def execute_command(command, description: nil, interactive: false, silent_stderr: false)
