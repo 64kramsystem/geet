@@ -28,8 +28,10 @@ module Geet
       #
       def execute(
         title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil,
-        no_open_pr: nil, output: $stdout, **
+        no_open_pr: nil, automated_mode: false, output: $stdout, **
       )
+        ensure_clean_tree if automated_mode
+
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
           label_patterns, milestone_pattern, reviewer_patterns, output
         )
@@ -37,6 +39,8 @@ module Geet
         labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
         milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
         reviewers = select_entries('reviewer', all_collaborators, reviewer_patterns, :multiple, nil) if reviewer_patterns
+
+        sync_with_upstream_branch(output) if automated_mode
 
         pr = create_pr(title, description, output)
 
@@ -57,6 +61,10 @@ module Geet
       private
 
       # Internal actions
+
+      def ensure_clean_tree
+        raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
+      end
 
       def find_all_attribute_entries(label_patterns, milestone_pattern, reviewer_patterns, output)
         if label_patterns
@@ -83,6 +91,20 @@ module Geet
         raise "No collaborators found!" if reviewer_patterns && reviewers.empty?
 
         [labels, milestones, reviewers]
+      end
+
+      def sync_with_upstream_branch(output)
+        if @git_client.upstream_branch
+          output.puts "Pushing to upstream branch..."
+
+          @git_client.push
+        else
+          upstream_branch = @git_client.current_branch
+
+          output.puts "Creating upstream branch #{upstream_branch.inspect}..."
+
+          @git_client.push(upstream_branch: upstream_branch)
+        end
       end
 
       def create_pr(title, description, output)
