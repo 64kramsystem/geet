@@ -28,7 +28,7 @@ class GeetLauncher
 
       Services::CreateGist.new.execute(filename, options)
     when ISSUE_CREATE_COMMAND
-      summary = Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
+      summary = options[:summary] || Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
       title, description = split_summary(summary)
 
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
@@ -45,7 +45,7 @@ class GeetLauncher
     when MILESTONE_LIST_COMMAND
       Services::ListMilestones.new(repository).execute
     when PR_CREATE_COMMAND
-      summary = edit_pr_summary
+      summary = options[:summary] || edit_pr_summary
       title, description = split_summary(summary)
 
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
