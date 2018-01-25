@@ -31,6 +31,7 @@ module Geet
 
       LABEL_CREATE_OPTIONS = [
         ['-c', '--color color',                             '6-digits hex color; if not specified, a random one is created'],
+        ['-u', '--upstream',                                'Create on the upstream repository'],
         'name',
       ].freeze
 
