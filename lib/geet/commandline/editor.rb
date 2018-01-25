@@ -7,25 +7,24 @@ require_relative '../helpers/os_helper.rb'
 module Geet
   module Commandline
     class Editor
-      # Liberally ripp..., ahem, inspired from git.
-      SUMMARY_TEMPLATE = File.expand_path('../resources/templates/edit_summary.md', __dir__)
-      SUMMARY_TEMPLATE_SEPARATOR = '------------------------ >8 ------------------------'
-
       include Geet::Helpers::OsHelper
 
-      # Edits a summary in the default editor, providing the SUMMARY_TEMPLATE.
-      #
-      # A summary is a composition with a title and an optional description;
-      # if the description is not found, a blank string is returned.
-      #
-      # It's possible to append extra text to the help, by passing :extra_help.
-      #
-      def edit_summary(summary: nil, extra_help: nil)
-        full_summary = summary.to_s + IO.read(SUMMARY_TEMPLATE) + extra_help.to_s
+      # Git style!
+      HELP_SEPARATOR = '------------------------ >8 ------------------------'
 
-        raw_summary = edit_content_in_default_editor(full_summary)
+      # Edits a content in the default editor, optionally providing help.
+      #
+      # When the help is provided, it's appended to the bottom, separated by HELP_SEPARATOR.
+      # The help is stripped after the content if edited.
+      #
+      def edit_content(content: '', help: nil)
+        content += "\n\n" + HELP_SEPARATOR + "\n" + help if help
 
-        split_raw_summary(raw_summary)
+        edited_content = edit_content_in_default_editor(content)
+
+        edited_content = edited_content.split(HELP_SEPARATOR, 2).first if help
+
+        edited_content.strip
       end
 
       private
@@ -47,18 +46,6 @@ module Geet
         File.unlink(tempfile)
 
         content
-      end
-
-      def split_raw_summary(raw_summary)
-        raw_summary, _ = raw_summary.strip.split(SUMMARY_TEMPLATE_SEPARATOR, 2)
-
-        raise "Missing title!" if raw_summary.empty?
-
-        title, description = raw_summary.split(/\r|\n/, 2)
-
-        # The title may have a residual newline char; the description may not be present,
-        # or have multiple blank lines.
-        [title.strip, description.to_s.strip]
       end
 
       # HELPERS ##########################################################################
