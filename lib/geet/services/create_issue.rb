@@ -35,7 +35,7 @@ module Geet
 
         labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
         milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
-        assignees = select_entries('collaborator', all_collaborators, assignee_patterns, :multiple, nil) if assignee_patterns
+        assignees = select_entries('assignee', all_collaborators, assignee_patterns, :multiple, nil) if assignee_patterns
 
         issue = create_issue(title, description, output)
 
@@ -91,11 +91,14 @@ module Geet
       end
 
       def edit_issue(issue, labels, milestone, assignees, output)
-        add_labels_thread = add_labels(issue, labels, output) if labels
+        # labels can be nil (parameter not passed) or empty array (parameter passed, but nothing
+        # selected)
+        add_labels_thread = add_labels(issue, labels, output) if labels && !labels.empty?
         set_milestone_thread = set_milestone(issue, milestone, output) if milestone
 
+        # same considerations as above, but with additional upstream case.
         if assignees
-          assign_users_thread = assign_users(issue, assignees, output)
+          assign_users_thread = assign_users(issue, assignees, output) if !assignees.empty?
         elsif !@repository.upstream?
           assign_users_thread = assign_authenticated_user(issue, output)
         end

@@ -5,41 +5,59 @@ require 'temp-fork-tp-filter'
 module Geet
   module Utils
     class ManualListSelection
+      NO_SELECTION_KEY = '(none)'
+
       PAGER_SIZE = 16
 
-      PROMPT_METHODS = {
-        single: :select,
-        multiple: :multi_select,
-      }
-
-      # selection_type: :single or :multiple
+      # entry_type:      description of the entries type.
+      # entries:         array of objects; if they're not strings, must also pass :instance_method.
+      #                  this value must not be empty.
+      # selection_type:  :single or :multiple
+      # instance_method: required when non-string objects are passed as entries; its invocation on
+      #                  each object must return a string, which is used as key.
+      #
+      # returns: the selected entry or array of entries. for single selection, if no entries are
+      #          chosen, nil is returned.
+      #
       def select(entry_type, entries, selection_type, instance_method: nil)
-        raise "No #{entry_type} provided!" if entries.empty?
+        check_entries(entries)
 
-        prompt_method = find_prompt_method(selection_type)
-        prompt_title = "Please select the #{entry_type}(s):"
+        entries = create_entries_map(entries, instance_method)
 
-        if instance_method
-          entries = entries.each_with_object({}) do |entry, current_map|
-            current_map[entry.send(instance_method)] = entry
-          end
-        end
+        result = show_prompt(entry_type, selection_type, entries)
 
-        selected_entries = TTY::Prompt.new.send(prompt_method, prompt_title, entries, filter: true, per_page: PAGER_SIZE)
-
-        if selected_entries.is_a?(Array)
-          raise "No #{entry_type} selected!" if selected_entries.empty?
-        else
-          raise "No #{entry_type} selected!" if selected_entries.nil?
-        end
-
-        selected_entries
+        result
       end
 
       private
 
-      def find_prompt_method(selection_type)
-        PROMPT_METHODS[selection_type] || raise("Unrecognized selection_type: #{selection_type}")
+      def check_entries(entries)
+        raise "No #{entry_type} provided!" if entries.empty?
+      end
+
+      def create_entries_map(entries, instance_method)
+        entries.each_with_object({}) do |entry, current_map|
+          key = instance_method ? entry.send(instance_method) : entry
+          current_map[key] = entry
+        end
+      end
+
+      def show_prompt(entry_type, selection_type, entries)
+        prompt_title = "Please select the #{entry_type}(s):"
+
+        case selection_type
+        when :single
+          entries = add_no_selection_entry(entries)
+          TTY::Prompt.new.select(prompt_title, entries, filter: true, per_page: PAGER_SIZE)
+        when :multiple
+          TTY::Prompt.new.multi_select(prompt_title, entries, filter: true, per_page: PAGER_SIZE)
+        else
+          raise "Unexpected selection type: #{selection_type.inspect}"
+        end
+      end
+
+      def add_no_selection_entry(entries)
+        {NO_SELECTION_KEY => nil}.merge(entries)
       end
     end
   end
