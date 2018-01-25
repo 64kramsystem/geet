@@ -34,13 +34,12 @@ module Geet
       # (which start with `-`)
       #
       def cherry(limit)
-        raw_commits = execute_command("git cherry #{limit.shellescape}")
+        raw_commits = execute_command("git #{gitdir_option} cherry #{limit.shellescape}")
 
         raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
       end
 
       def current_branch
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         branch = execute_command("git #{gitdir_option} rev-parse --abbrev-ref HEAD")
 
         raise "Couldn't find current branch" if branch == 'HEAD'
@@ -55,7 +54,7 @@ module Geet
       # Show the description ("<subject>\n\n<body>") for the given git object.
       #
       def show_description(object)
-        execute_command("git show --quiet --format='%s\n\n%b' #{object.shellescape}")
+        execute_command("git #{gitdir_option} show --quiet --format='%s\n\n%b' #{object.shellescape}")
       end
 
       ##########################################################################
@@ -88,7 +87,6 @@ module Geet
       # The result is in the format `git@github.com:donaldduck/geet.git`
       #
       def remote(name)
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
 
         if remote_url == name
@@ -104,11 +102,20 @@ module Geet
       # purposes, any any action that needs to work with the remote, uses #remote.
       #
       def remote_defined?(name)
-        gitdir_option = "--git-dir #{@location.shellescape}/.git" if @location
         remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
 
         # If the remote is not define, `git ls-remote` will return the passed value.
         remote_url != name
+      end
+
+      ##########################################################################
+      # INTERNAL HELPERS
+      ##########################################################################
+
+      private
+
+      def gitdir_option
+        "--git-dir #{@location.shellescape}/.git" if @location
       end
     end
   end
