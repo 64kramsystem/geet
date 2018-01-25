@@ -36,7 +36,7 @@ module Geet
 
         labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
         milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
-        reviewers = select_entries('collaborator', all_collaborators, reviewer_patterns, :multiple, nil) if reviewer_patterns
+        reviewers = select_entries('reviewer', all_collaborators, reviewer_patterns, :multiple, nil) if reviewer_patterns
 
         pr = create_pr(title, description, output)
 
