@@ -26,6 +26,10 @@ module Geet
         @location = location
       end
 
+      ##########################################################################
+      # BRANCH/TREE APIS
+      ##########################################################################
+
       # Return the commit shas between HEAD and `limit`, excluding the already applied commits
       # (which start with `-`)
       #
@@ -43,6 +47,20 @@ module Geet
 
         branch
       end
+
+      ##########################################################################
+      # COMMIT/OBJECT APIS
+      ##########################################################################
+
+      # Show the description ("<subject>\n\n<body>") for the given git object.
+      #
+      def show_description(object)
+        execute_command("git show --quiet --format='%s\n\n%b' #{object.shellescape}")
+      end
+
+      ##########################################################################
+      # REPOSITORY/REMOTE APIS
+      ##########################################################################
 
       # Example: `donaldduck/geet`
       #
@@ -91,12 +109,6 @@ module Geet
 
         # If the remote is not define, `git ls-remote` will return the passed value.
         remote_url != name
-      end
-
-      # Show the description ("<subject>\n\n<body>") for the given git object.
-      #
-      def show_description(object)
-        execute_command("git show --quiet --format='%s\n\n%b' #{object.shellescape}")
       end
     end
   end
