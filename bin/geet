@@ -32,9 +32,9 @@ class GeetLauncher
       summary = options[:summary] || Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
       title, description = split_summary(summary)
 
-      options[:labels] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
-      options[:assignees] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
-      options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
+      %i(labels milestone assignees).each do |param|
+        options[param] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
+      end
 
       Services::CreateIssue.new(repository).execute(title, description, options)
     when LABEL_CREATE_COMMAND
@@ -51,9 +51,9 @@ class GeetLauncher
       summary = options[:summary] || edit_pr_summary
       title, description = split_summary(summary)
 
-      options[:labels] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
-      options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
-      options[:reviewers] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
+      %i(labels milestone reviewers).each do |param|
+        options[param] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
+      end
 
       Services::CreatePr.new(repository).execute(title, description, options)
     when PR_LIST_COMMAND

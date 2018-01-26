@@ -25,24 +25,24 @@ module Geet
       #   :no_open_pr
       #
       def execute(
-        title, description, labels: nil, milestone_pattern: nil, reviewers: nil,
+        title, description, labels: nil, milestone: nil, reviewers: nil,
         no_open_pr: nil, automated_mode: false, output: $stdout, **
       )
         ensure_clean_tree if automated_mode
 
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          labels, milestone_pattern, reviewers, output
+          labels, milestone, reviewers, output
         )
 
         selected_labels = select_entries('label', all_labels, labels, :name) if labels
-        milestone = select_entry('milestone', all_milestones, milestone_pattern, :title) if milestone_pattern
+        selected_milestone = select_entry('milestone', all_milestones, milestone, :title) if milestone
         selected_reviewers = select_entries('reviewer', all_collaborators, reviewers, nil) if reviewers
 
         sync_with_upstream_branch(output) if automated_mode
 
         pr = create_pr(title, description, output)
 
-        edit_pr(pr, selected_labels, milestone, selected_reviewers, output)
+        edit_pr(pr, selected_labels, selected_milestone, selected_reviewers, output)
 
         if no_open_pr
           output.puts "PR address: #{pr.link}"
@@ -64,13 +64,13 @@ module Geet
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
       end
 
-      def find_all_attribute_entries(labels, milestone_pattern, reviewers, output)
+      def find_all_attribute_entries(labels, milestone, reviewers, output)
         if labels
           output.puts 'Finding labels...'
           labels_thread = Thread.new { @repository.labels }
         end
 
-        if milestone_pattern
+        if milestone
           output.puts 'Finding milestone...'
           milestone_thread = Thread.new { @repository.milestones }
         end
@@ -85,7 +85,7 @@ module Geet
         all_collaborators = collaborators_thread&.value
 
         raise "No labels found!" if labels && all_labels.empty?
-        raise "No milestones found!" if milestone_pattern && milestones.empty?
+        raise "No milestones found!" if milestone && milestones.empty?
         raise "No collaborators found!" if reviewers && all_collaborators.empty?
 
         [all_labels, milestones, all_collaborators]

@@ -10,7 +10,7 @@ module Geet
 
       # Sample call:
       #
-      #   select_entry('milestone', all_milestones, milestone_pattern, :title)
+      #   select_entry('milestone', all_milestones, milestone, :title)
       #
       def select_entry(entry_type, entries, pattern, instance_method)
         if pattern == MANUAL_LIST_SELECTION_FLAG

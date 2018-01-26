@@ -18,26 +18,26 @@ module Geet
 
       # options:
       #   :labels
-      #   :milestone_pattern:     number or description pattern.
+      #   :milestone:     number or description pattern.
       #   :assignees
       #   :no_open_issue
       #
       def execute(
           title, description,
-          labels: nil, milestone_pattern: nil, assignees: nil, no_open_issue: nil,
+          labels: nil, milestone: nil, assignees: nil, no_open_issue: nil,
           output: $stdout, **
       )
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          labels, milestone_pattern, assignees, output
+          labels, milestone, assignees, output
         )
 
         selected_labels = select_entries('label', all_labels, labels, :name) if labels
-        milestone = select_entry('milestone', all_milestones, milestone_pattern, :title) if milestone_pattern
+        selected_milestone = select_entry('milestone', all_milestones, milestone, :title) if milestone
         selected_assignees = select_entries('assignee', all_collaborators, assignees, nil) if assignees
 
         issue = create_issue(title, description, output)
 
-        edit_issue(issue, selected_labels, milestone, selected_assignees, output)
+        edit_issue(issue, selected_labels, selected_milestone, selected_assignees, output)
 
         if no_open_issue
           output.puts "Issue address: #{issue.link}"
@@ -55,13 +55,13 @@ module Geet
 
       # Internal actions
 
-      def find_all_attribute_entries(labels, milestone_pattern, assignees, output)
+      def find_all_attribute_entries(labels, milestone, assignees, output)
         if labels
           output.puts 'Finding labels...'
           labels_thread = Thread.new { @repository.labels }
         end
 
-        if milestone_pattern
+        if milestone
           output.puts 'Finding milestone...'
           milestone_thread = Thread.new { @repository.milestones }
         end
@@ -76,7 +76,7 @@ module Geet
         all_collaborators = collaborators_thread&.value
 
         raise "No labels found!" if labels && all_labels.empty?
-        raise "No milestones found!" if milestone_pattern && milestones.empty?
+        raise "No milestones found!" if milestone && milestones.empty?
         raise "No collaborators found!" if assignees && all_collaborators.empty?
 
         [all_labels, milestones, all_collaborators]
