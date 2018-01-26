@@ -8,18 +8,26 @@ module Geet
     # This class represents, for convenience, both the local and the remote repository, but the
     # remote code is separated in each provider module.
     class Repository
-      CONFIRM_ACTION_TEXT = <<~STR
-        WARNING! The action will be performed on a fork, but an upstream repository has been found!
-        Press Enter to continue, or Ctrl+C to exit now.
+      LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE = <<~STR
+        The action will be performed on a fork, but an upstream repository has been found!
+      STR
+
+      ACTION_ON_PROTECTED_REPOSITORY_MESSAGE = <<~STR
+        This action will be performed on a protected repository!
       STR
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
-      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT, warnings: true)
+      # warnings:               disable all the warnings.
+      # protected_repositories: warn when creating an issue/pr on this repositories (entry format:
+      #                         `owner/repo`).
+      #
+      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT, warnings: true, protected_repositories: [])
         @upstream = upstream
         @git_client = git_client
         @api_token = extract_env_api_token
         @warnings = warnings
+        @protected_repositories = protected_repositories
       end
 
       # REMOTE FUNCTIONALITIES (REPOSITORY)
@@ -33,7 +41,9 @@ module Geet
       end
 
       def create_issue(title, description)
-        ask_confirm_action if local_action_with_upstream_repository? && @warnings
+        confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
+        confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings
+
         attempt_provider_call(:Issue, :create, title, description, api_interface)
       end
 
@@ -62,7 +72,9 @@ module Geet
       end
 
       def create_pr(title, description, head)
-        ask_confirm_action if local_action_with_upstream_repository? && @warnings
+        confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
+        confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings
+
         attempt_provider_call(:PR, :create, title, description, head, api_interface)
       end
 
@@ -87,7 +99,6 @@ module Geet
       # PROVIDER
 
       def extract_env_api_token
-        provider_name = @git_client.provider_domain[/(.*)\.\w+/, 1]
         env_variable_name = "#{provider_name.upcase}_API_TOKEN"
 
         ENV[env_variable_name] || raise("#{env_variable_name} not set!")
@@ -121,20 +132,28 @@ module Geet
         Dir[files_pattern].each { |filename| require filename }
       end
 
+      # WARNINGS
+
+      def confirm(message)
+        full_message = "WARNING! #{message.strip}\nPress Enter to continue, or Ctrl+C to exit now."
+        print full_message
+        gets
+      end
+
+      def action_on_protected_repository?
+        path = @git_client.path(upstream: @upstream)
+        @protected_repositories.include?(path)
+      end
+
+      def local_action_on_upstream_repository?
+        @git_client.remote_defined?('upstream') && !@upstream
+      end
+
       # OTHER HELPERS
 
       def api_interface
         path = @git_client.path(upstream: @upstream)
         attempt_provider_call(:ApiInterface, :new, @api_token, repo_path: path, upstream: @upstream)
-      end
-
-      def ask_confirm_action
-        print CONFIRM_ACTION_TEXT.rstrip
-        gets
-      end
-
-      def local_action_with_upstream_repository?
-        @git_client.remote_defined?('upstream') && !@upstream
       end
 
       # Bare downcase provider name, eg. `github`
