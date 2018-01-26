@@ -5,6 +5,7 @@ require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/commandline/editor.rb'
 require_relative '../lib/geet/git/repository.rb'
+require_relative '../lib/geet/helpers/selection_helper.rb'
 require_relative '../lib/geet/helpers/summary_helper.rb'
 require_relative '../lib/geet/utils/git_client.rb'
 Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
@@ -31,6 +32,7 @@ class GeetLauncher
       summary = options[:summary] || Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
       title, description = split_summary(summary)
 
+      options[:labels] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreateIssue.new(repository).execute(title, description, options)
@@ -48,6 +50,7 @@ class GeetLauncher
       summary = options[:summary] || edit_pr_summary
       title, description = split_summary(summary)
 
+      options[:labels] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreatePr.new(repository).execute(title, description, options)

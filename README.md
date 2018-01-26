@@ -49,9 +49,7 @@ The default editor will be used for title/description:
 
 More advanced issue creation, with labels and assignees:
 
-    $ geet issue create --label-patterns bug,wip --assignee-patterns john
-
-patterns are partial matches, so, for example, `johncarmack` will be matched as assignee in the first case.
+    $ geet issue create --labels bug,wip --assignee-patterns johncarmark
 
 After creation, the issue page will be automatically opened in the default browser.
 
@@ -59,7 +57,7 @@ After creation, the issue page will be automatically opened in the default brows
 
 Geet supports selecting options (labels, collaborators, etc.), using the `-` parameter:
 
-    $ geet issue create --label-patterns -
+    $ geet issue create --labels -
 
 This will show a menu like the following:
 
@@ -92,7 +90,7 @@ The default editor will be used for title/description:
 
 More advanced PR creation, with label and reviewers, assigned to self:
 
-    $ geet pr create --label-patterns "code review" --reviewer-patterns kevin,tom,adrian
+    $ geet pr create --labels "code review" --reviewer-patterns kevin,tom,adrian
 
 After creation, the issue page will be automatically opened in the default browser.
 

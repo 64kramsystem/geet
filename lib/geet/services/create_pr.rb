@@ -20,21 +20,21 @@ module Geet
       end
 
       # options:
-      #   :label_patterns
+      #   :labels
       #   :reviewer_patterns
       #   :no_open_pr
       #
       def execute(
-        title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil,
+        title, description, labels: nil, milestone_pattern: nil, reviewer_patterns: nil,
         no_open_pr: nil, automated_mode: false, output: $stdout, **
       )
         ensure_clean_tree if automated_mode
 
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          label_patterns, milestone_pattern, reviewer_patterns, output
+          labels, milestone_pattern, reviewer_patterns, output
         )
 
-        labels = select_entries('label', all_labels, label_patterns, :name) if label_patterns
+        selected_labels = select_entries('label', all_labels, labels, :name) if labels
         milestone = select_entry('milestone', all_milestones, milestone_pattern, :title) if milestone_pattern
         reviewers = select_entries('reviewer', all_collaborators, reviewer_patterns, nil) if reviewer_patterns
 
@@ -42,7 +42,7 @@ module Geet
 
         pr = create_pr(title, description, output)
 
-        edit_pr(pr, labels, milestone, reviewers, output)
+        edit_pr(pr, selected_labels, milestone, reviewers, output)
 
         if no_open_pr
           output.puts "PR address: #{pr.link}"
@@ -64,8 +64,8 @@ module Geet
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
       end
 
-      def find_all_attribute_entries(label_patterns, milestone_pattern, reviewer_patterns, output)
-        if label_patterns
+      def find_all_attribute_entries(labels, milestone_pattern, reviewer_patterns, output)
+        if labels
           output.puts 'Finding labels...'
           labels_thread = Thread.new { @repository.labels }
         end
@@ -80,15 +80,15 @@ module Geet
           reviewers_thread = Thread.new { @repository.collaborators }
         end
 
-        labels = labels_thread&.value
+        all_labels = labels_thread&.value
         milestones = milestone_thread&.value
         reviewers = reviewers_thread&.value
 
-        raise "No labels found!" if label_patterns && labels.empty?
+        raise "No labels found!" if labels && all_labels.empty?
         raise "No milestones found!" if milestone_pattern && milestones.empty?
         raise "No collaborators found!" if reviewer_patterns && reviewers.empty?
 
-        [labels, milestones, reviewers]
+        [all_labels, milestones, reviewers]
       end
 
       def sync_with_upstream_branch(output)
