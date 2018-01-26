@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+require 'simple_scripting/configuration'
 require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/commandline/editor.rb'
@@ -20,7 +21,7 @@ class GeetLauncher
   def launch
     command, options = Commandline::Configuration.new.decode_argv || exit
 
-    repository = Git::Repository.new(upstream: !!options[:upstream])
+    repository = Git::Repository.new(upstream: !!options[:upstream], protected_repositories: protected_repositories)
 
     case command
     when GIST_CREATE_COMMAND
@@ -87,6 +88,12 @@ class GeetLauncher
     end
 
     options
+  end
+
+  def protected_repositories
+    configuration = SimpleScripting::Configuration.load
+
+    configuration.protected_repositories.to_s.split(':')
   end
 end
 

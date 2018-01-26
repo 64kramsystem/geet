@@ -12,13 +12,22 @@ module Geet
         The action will be performed on a fork, but an upstream repository has been found!
       STR
 
+      ACTION_ON_PROTECTED_REPOSITORY_MESSAGE = <<~STR
+        This action will be performed on a protected repository!
+      STR
+
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
-      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT, warnings: true)
+      # warnings:               disable all the warnings.
+      # protected_repositories: warn when creating an issue/pr on this repositories (entry format:
+      #                         `owner/repo`).
+      #
+      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT, warnings: true, protected_repositories: [])
         @upstream = upstream
         @git_client = git_client
         @api_token = extract_env_api_token
         @warnings = warnings
+        @protected_repositories = protected_repositories
       end
 
       # REMOTE FUNCTIONALITIES (REPOSITORY)
@@ -33,6 +42,7 @@ module Geet
 
       def create_issue(title, description)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
+        confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings
 
         attempt_provider_call(:Issue, :create, title, description, api_interface)
       end
@@ -63,6 +73,7 @@ module Geet
 
       def create_pr(title, description, head)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
+        confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings
 
         attempt_provider_call(:PR, :create, title, description, head, api_interface)
       end
@@ -127,6 +138,11 @@ module Geet
         full_message = "WARNING! #{message.strip}\nPress Enter to continue, or Ctrl+C to exit now."
         print full_message
         gets
+      end
+
+      def action_on_protected_repository?
+        path = @git_client.path(upstream: @upstream)
+        @protected_repositories.include?(path)
       end
 
       def local_action_on_upstream_repository?
