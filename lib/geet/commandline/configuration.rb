@@ -54,7 +54,7 @@ module Geet
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
         ['-l', '--labels "legacy,code review"',             'Labels'],
         ['-m', '--milestone 1.5.0',                         'Milestone title pattern'],
-        ['-r', '--reviewer-patterns john,tom,adrian,kevin', 'Reviewer login patterns'],
+        ['-r', '--reviewers john,tom,adrian,kevin',         'Reviewer logins'],
         ['-s', '--summary title_and_description',           'Set the summary (title and optionally description'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
         long_help: <<~STR

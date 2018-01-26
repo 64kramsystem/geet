@@ -22,7 +22,7 @@ module Geet
 
       # Sample call:
       #
-      #   select_entries('reviewer', all_collaborators, reviewer_patterns, nil)
+      #   select_entries('reviewer', all_collaborators, reviewers, nil)
       #
       def select_entries(entry_type, entries, pattern, instance_method)
         if pattern == MANUAL_LIST_SELECTION_FLAG

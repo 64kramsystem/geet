@@ -90,7 +90,7 @@ The default editor will be used for title/description:
 
 More advanced PR creation, with label and reviewers, assigned to self:
 
-    $ geet pr create --labels "code review" --reviewer-patterns kevin,tom,adrian
+    $ geet pr create --labels "code review" --reviewers kevin,tom,adrian
 
 After creation, the issue page will be automatically opened in the default browser.
 
