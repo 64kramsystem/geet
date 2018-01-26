@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    geet (0.3.0)
+    geet (0.3.1)
       simple_scripting (~> 0.9.3)
       temp-fork-tp-filter (= 0.0.3)
 
