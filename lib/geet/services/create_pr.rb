@@ -2,17 +2,15 @@
 
 require 'tmpdir'
 require_relative '../helpers/os_helper.rb'
-require_relative '../utils/manual_list_selection.rb'
-require_relative '../utils/pattern_matching_selection.rb'
+require_relative '../helpers/selection_helper.rb'
 
 module Geet
   module Services
     class CreatePr
       include Geet::Helpers::OsHelper
+      include Geet::Helpers::SelectionHelper
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
-
-      MANUAL_LIST_SELECTION_FLAG = '-'.freeze
 
       SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
 
@@ -168,16 +166,6 @@ module Geet
         IO.write(SUMMARY_BACKUP_FILENAME, summary)
 
         output.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
-      end
-
-      # Generic helpers
-
-      def select_entries(entry_type, entries, raw_patterns, selection_type, instance_method)
-        if raw_patterns == MANUAL_LIST_SELECTION_FLAG
-          Geet::Utils::ManualListSelection.new.select(entry_type, entries, selection_type, instance_method: instance_method)
-        else
-          Geet::Utils::PatternMatchingSelection.new.select(entry_type, entries, raw_patterns, instance_method: instance_method)
-        end
       end
     end
   end
