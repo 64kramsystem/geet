@@ -8,9 +8,8 @@ module Geet
     # This class represents, for convenience, both the local and the remote repository, but the
     # remote code is separated in each provider module.
     class Repository
-      CONFIRM_ACTION_TEXT = <<~STR
-        WARNING! The action will be performed on a fork, but an upstream repository has been found!
-        Press Enter to continue, or Ctrl+C to exit now.
+      LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE = <<~STR
+        The action will be performed on a fork, but an upstream repository has been found!
       STR
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
@@ -33,7 +32,8 @@ module Geet
       end
 
       def create_issue(title, description)
-        ask_confirm_action if local_action_with_upstream_repository? && @warnings
+        confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
+
         attempt_provider_call(:Issue, :create, title, description, api_interface)
       end
 
@@ -62,7 +62,8 @@ module Geet
       end
 
       def create_pr(title, description, head)
-        ask_confirm_action if local_action_with_upstream_repository? && @warnings
+        confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
+
         attempt_provider_call(:PR, :create, title, description, head, api_interface)
       end
 
@@ -120,20 +121,23 @@ module Geet
         Dir[files_pattern].each { |filename| require filename }
       end
 
+      # WARNINGS
+
+      def confirm(message)
+        full_message = "WARNING! #{message.strip}\nPress Enter to continue, or Ctrl+C to exit now."
+        print full_message
+        gets
+      end
+
+      def local_action_on_upstream_repository?
+        @git_client.remote_defined?('upstream') && !@upstream
+      end
+
       # OTHER HELPERS
 
       def api_interface
         path = @git_client.path(upstream: @upstream)
         attempt_provider_call(:ApiInterface, :new, @api_token, repo_path: path, upstream: @upstream)
-      end
-
-      def ask_confirm_action
-        print CONFIRM_ACTION_TEXT.rstrip
-        gets
-      end
-
-      def local_action_with_upstream_repository?
-        @git_client.remote_defined?('upstream') && !@upstream
       end
 
       # Bare downcase provider name, eg. `github`
