@@ -11,13 +11,13 @@ module Geet
         @repository = repository
       end
 
-      def execute(assignee_pattern: nil, output: $stdout, **)
-        if assignee_pattern
+      def execute(assignee: nil, output: $stdout, **)
+        if assignee
           all_collaborators = find_all_collaborator_entries(output)
-          assignee = select_entry('assignee', all_collaborators, assignee_pattern, nil)
+          selected_assignee = select_entry('assignee', all_collaborators, assignee, nil)
         end
 
-        issues = @repository.issues(assignee: assignee)
+        issues = @repository.issues(assignee: selected_assignee)
 
         issues.each do |issue|
           output.puts "#{issue.number}. #{issue.title} (#{issue.link})"

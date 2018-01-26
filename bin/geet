@@ -32,9 +32,7 @@ class GeetLauncher
       summary = options[:summary] || Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
       title, description = split_summary(summary)
 
-      %i(labels milestone assignees).each do |param|
-        options[param] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
-      end
+      options = default_to_manual_selection(options, :labels, :milestone, :assignees)
 
       Services::CreateIssue.new(repository).execute(title, description, options)
     when LABEL_CREATE_COMMAND
@@ -42,6 +40,8 @@ class GeetLauncher
 
       Services::CreateLabel.new(repository).execute(name, options)
     when ISSUE_LIST_COMMAND
+      options = default_to_manual_selection(options, :assignee)
+
       Services::ListIssues.new(repository).execute(options)
     when LABEL_LIST_COMMAND
       Services::ListLabels.new(repository).execute
@@ -51,9 +51,7 @@ class GeetLauncher
       summary = options[:summary] || edit_pr_summary
       title, description = split_summary(summary)
 
-      %i(labels milestone reviewers).each do |param|
-        options[param] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
-      end
+      options = default_to_manual_selection(options, :labels, :milestone, :reviewers)
 
       Services::CreatePr.new(repository).execute(title, description, options)
     when PR_LIST_COMMAND
@@ -81,6 +79,14 @@ class GeetLauncher
     else
       Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
     end
+  end
+
+  def default_to_manual_selection(options, *params)
+    params.each do |param|
+      options[param] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
+    end
+
+    options
   end
 end
 
