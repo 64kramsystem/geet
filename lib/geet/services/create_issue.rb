@@ -2,15 +2,13 @@
 
 require 'tmpdir'
 require_relative '../helpers/os_helper.rb'
-require_relative '../utils/manual_list_selection.rb'
-require_relative '../utils/pattern_matching_selection.rb'
+require_relative '../helpers/selection_helper.rb'
 
 module Geet
   module Services
     class CreateIssue
       include Geet::Helpers::OsHelper
-
-      MANUAL_LIST_SELECTION_FLAG = '-'.freeze
+      include Geet::Helpers::SelectionHelper
 
       SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
 
@@ -19,27 +17,27 @@ module Geet
       end
 
       # options:
-      #   :label_patterns
-      #   :milestone_pattern:     number or description pattern.
-      #   :assignee_patterns
+      #   :labels
+      #   :milestone:     number or description pattern.
+      #   :assignees
       #   :no_open_issue
       #
       def execute(
           title, description,
-          label_patterns: nil, milestone_pattern: nil, assignee_patterns: nil, no_open_issue: nil,
+          labels: nil, milestone: nil, assignees: nil, no_open_issue: nil,
           output: $stdout, **
       )
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          label_patterns, milestone_pattern, assignee_patterns, output
+          labels, milestone, assignees, output
         )
 
-        labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
-        milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
-        assignees = select_entries('assignee', all_collaborators, assignee_patterns, :multiple, nil) if assignee_patterns
+        selected_labels = select_entries('label', all_labels, labels, :name) if labels
+        selected_milestone = select_entry('milestone', all_milestones, milestone, :title) if milestone
+        selected_assignees = select_entries('assignee', all_collaborators, assignees, nil) if assignees
 
         issue = create_issue(title, description, output)
 
-        edit_issue(issue, labels, milestone, assignees, output)
+        edit_issue(issue, selected_labels, selected_milestone, selected_assignees, output)
 
         if no_open_issue
           output.puts "Issue address: #{issue.link}"
@@ -57,31 +55,31 @@ module Geet
 
       # Internal actions
 
-      def find_all_attribute_entries(label_patterns, milestone_pattern, assignee_patterns, output)
-        if label_patterns
+      def find_all_attribute_entries(labels, milestone, assignees, output)
+        if labels
           output.puts 'Finding labels...'
           labels_thread = Thread.new { @repository.labels }
         end
 
-        if milestone_pattern
+        if milestone
           output.puts 'Finding milestone...'
           milestone_thread = Thread.new { @repository.milestones }
         end
 
-        if assignee_patterns
+        if assignees
           output.puts 'Finding collaborators...'
-          assignees_thread = Thread.new { @repository.collaborators }
+          collaborators_thread = Thread.new { @repository.collaborators }
         end
 
-        labels = labels_thread&.value
+        all_labels = labels_thread&.value
         milestones = milestone_thread&.value
-        assignees = assignees_thread&.value
+        all_collaborators = collaborators_thread&.value
 
-        raise "No labels found!" if label_patterns && labels.empty?
-        raise "No milestones found!" if milestone_pattern && milestones.empty?
-        raise "No collaborators found!" if assignee_patterns && assignees.empty?
+        raise "No labels found!" if labels && all_labels.empty?
+        raise "No milestones found!" if milestone && milestones.empty?
+        raise "No collaborators found!" if assignees && all_collaborators.empty?
 
-        [labels, milestones, assignees]
+        [all_labels, milestones, all_collaborators]
       end
 
       def create_issue(title, description, output)
@@ -148,16 +146,6 @@ module Geet
         IO.write(SUMMARY_BACKUP_FILENAME, summary)
 
         output.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
-      end
-
-      # Generic helpers
-
-      def select_entries(entry_type, entries, raw_patterns, selection_type, instance_method)
-        if raw_patterns == MANUAL_LIST_SELECTION_FLAG
-          Geet::Utils::ManualListSelection.new.select(entry_type, entries, selection_type, instance_method: instance_method)
-        else
-          Geet::Utils::PatternMatchingSelection.new.select(entry_type, entries, raw_patterns, instance_method: instance_method)
-        end
       end
     end
   end

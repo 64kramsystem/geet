@@ -37,7 +37,7 @@ describe Geet::Services::ListIssues do
         allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_gh')
 
         expected_output = <<~STR
-          Finding assignee...
+          Finding collaborators...
           12. test issue 3 (https://github.com/donaldduck/testrepo_gh/issues/12)
           10. test issue 1 (https://github.com/donaldduck/testrepo_gh/issues/10)
         STR
@@ -46,7 +46,7 @@ describe Geet::Services::ListIssues do
         actual_output = StringIO.new
 
         service_result = VCR.use_cassette('github_com/list_issues_with_assignee') do
-          described_class.new(repository).execute(assignee_pattern: 'donald-fr', output: actual_output)
+          described_class.new(repository).execute(assignee: 'donald-fr', output: actual_output)
         end
 
         actual_issue_numbers = service_result.map(&:number)

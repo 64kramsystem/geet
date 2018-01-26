@@ -1,18 +1,23 @@
 # frozen_string_literal: true
 
+require_relative '../helpers/selection_helper.rb'
+
 module Geet
   module Services
     class ListIssues
+      include Geet::Helpers::SelectionHelper
+
       def initialize(repository)
         @repository = repository
       end
 
-      def execute(assignee_pattern: nil, output: $stdout, **)
-        assignee_thread = find_assignee(assignee_pattern, output) if assignee_pattern
+      def execute(assignee: nil, output: $stdout, **)
+        if assignee
+          all_collaborators = find_all_collaborator_entries(output)
+          selected_assignee = select_entry('assignee', all_collaborators, assignee, nil)
+        end
 
-        assignee = assignee_thread&.join&.value
-
-        issues = @repository.issues(assignee: assignee)
+        issues = @repository.issues(assignee: selected_assignee)
 
         issues.each do |issue|
           output.puts "#{issue.number}. #{issue.title} (#{issue.link})"
@@ -21,14 +26,14 @@ module Geet
 
       private
 
-      def find_assignee(assignee_pattern, output)
-        output.puts 'Finding assignee...'
+      def find_all_collaborator_entries(output)
+        output.puts 'Finding collaborators...'
 
-        Thread.new do
-          collaborators = @repository.collaborators
-          collaborator = collaborators.find { |collaborator| collaborator =~ /#{assignee_pattern}/i }
-          collaborator || raise("No collaborator found for pattern: #{assignee_pattern.inspect}")
+        collaborators_thread = Thread.new do
+          @repository.collaborators
         end
+
+        collaborators_thread.value
       end
     end
   end

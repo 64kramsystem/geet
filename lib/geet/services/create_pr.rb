@@ -2,17 +2,15 @@
 
 require 'tmpdir'
 require_relative '../helpers/os_helper.rb'
-require_relative '../utils/manual_list_selection.rb'
-require_relative '../utils/pattern_matching_selection.rb'
+require_relative '../helpers/selection_helper.rb'
 
 module Geet
   module Services
     class CreatePr
       include Geet::Helpers::OsHelper
+      include Geet::Helpers::SelectionHelper
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
-
-      MANUAL_LIST_SELECTION_FLAG = '-'.freeze
 
       SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
 
@@ -22,29 +20,29 @@ module Geet
       end
 
       # options:
-      #   :label_patterns
-      #   :reviewer_patterns
+      #   :labels
+      #   :reviewers
       #   :no_open_pr
       #
       def execute(
-        title, description, label_patterns: nil, milestone_pattern: nil, reviewer_patterns: nil,
+        title, description, labels: nil, milestone: nil, reviewers: nil,
         no_open_pr: nil, automated_mode: false, output: $stdout, **
       )
         ensure_clean_tree if automated_mode
 
         all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          label_patterns, milestone_pattern, reviewer_patterns, output
+          labels, milestone, reviewers, output
         )
 
-        labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
-        milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
-        reviewers = select_entries('reviewer', all_collaborators, reviewer_patterns, :multiple, nil) if reviewer_patterns
+        selected_labels = select_entries('label', all_labels, labels, :name) if labels
+        selected_milestone = select_entry('milestone', all_milestones, milestone, :title) if milestone
+        selected_reviewers = select_entries('reviewer', all_collaborators, reviewers, nil) if reviewers
 
         sync_with_upstream_branch(output) if automated_mode
 
         pr = create_pr(title, description, output)
 
-        edit_pr(pr, labels, milestone, reviewers, output)
+        edit_pr(pr, selected_labels, selected_milestone, selected_reviewers, output)
 
         if no_open_pr
           output.puts "PR address: #{pr.link}"
@@ -66,31 +64,31 @@ module Geet
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
       end
 
-      def find_all_attribute_entries(label_patterns, milestone_pattern, reviewer_patterns, output)
-        if label_patterns
+      def find_all_attribute_entries(labels, milestone, reviewers, output)
+        if labels
           output.puts 'Finding labels...'
           labels_thread = Thread.new { @repository.labels }
         end
 
-        if milestone_pattern
+        if milestone
           output.puts 'Finding milestone...'
           milestone_thread = Thread.new { @repository.milestones }
         end
 
-        if reviewer_patterns
+        if reviewers
           output.puts 'Finding collaborators...'
-          reviewers_thread = Thread.new { @repository.collaborators }
+          collaborators_thread = Thread.new { @repository.collaborators }
         end
 
-        labels = labels_thread&.value
+        all_labels = labels_thread&.value
         milestones = milestone_thread&.value
-        reviewers = reviewers_thread&.value
+        all_collaborators = collaborators_thread&.value
 
-        raise "No labels found!" if label_patterns && labels.empty?
-        raise "No milestones found!" if milestone_pattern && milestones.empty?
-        raise "No collaborators found!" if reviewer_patterns && reviewers.empty?
+        raise "No labels found!" if labels && all_labels.empty?
+        raise "No milestones found!" if milestone && milestones.empty?
+        raise "No collaborators found!" if reviewers && all_collaborators.empty?
 
-        [labels, milestones, reviewers]
+        [all_labels, milestones, all_collaborators]
       end
 
       def sync_with_upstream_branch(output)
@@ -168,16 +166,6 @@ module Geet
         IO.write(SUMMARY_BACKUP_FILENAME, summary)
 
         output.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
-      end
-
-      # Generic helpers
-
-      def select_entries(entry_type, entries, raw_patterns, selection_type, instance_method)
-        if raw_patterns == MANUAL_LIST_SELECTION_FLAG
-          Geet::Utils::ManualListSelection.new.select(entry_type, entries, selection_type, instance_method: instance_method)
-        else
-          Geet::Utils::PatternMatchingSelection.new.select(entry_type, entries, raw_patterns, instance_method: instance_method)
-        end
       end
     end
   end
