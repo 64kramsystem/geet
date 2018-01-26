@@ -47,36 +47,19 @@ The default editor will be used for title/description:
 
 ![Issue creation editing screenshot](/extra/issue_editing.png?raw=true)
 
-More advanced issue creation, with labels and assignees:
-
-    $ geet issue create --labels bug,wip --assignees johncarmark
-
-After creation, the issue page will be automatically opened in the default browser.
-
-### Using menus for options selection
-
-Geet supports selecting options (labels, collaborators, etc.), using the `-` parameter:
-
-    $ geet issue create --labels -
-
-This will show a menu like the following:
+Labels, milestone and assignees will be asked with menu selection:
 
     Please select the label(s): (Use arrow keys, press Space to select and Enter to finish, and alphanumeric/underscore characters to filter)
     ‣ ⬡ bug
       ⬡ enhancement
       ⬡ not_an_issue
       ⬡ requires_design
-      ⬡ technical_debt
-      ⬡ top_priority
-      ⬡ ux
 
-Typing alphanumeric keys and underscore will enable filtering:
+Labels, milestone and assignees can be directly specified with the respective parameters:
 
-    Please select the label(s): (Filter: "b")
-    ‣ ⬡ bug
-      ⬡ technical_debt
+    $ geet issue create --labels bug,wip --assignees johncarmark --milestone 1.0
 
-When a filter is active, use `Backspace` to cancel the last character, and `Canc` to reset it.
+After creation, the issue page will be automatically opened in the default browser.
 
 ### Create a PR (with label, reviewers, and assigned to self)
 
@@ -140,6 +123,26 @@ Create a private gist:
 Create a public gist, with description:
 
     $ geet gist create --public /path/to/myfile 'Gist description'
+
+### Using menus for options selection
+
+Menus can be used for selecting attributes (labels, collaborators, milestones...).
+
+This is an example of multiple choice selection:
+
+    Please select the label(s): (Use arrow keys, press Space to select and Enter to finish, and alphanumeric/underscore characters to filter)
+    ‣ ⬡ bug
+      ⬡ enhancement
+      ⬡ not_an_issue
+      ⬡ requires_design
+
+Typing alphanumeric keys and underscore will enable filtering:
+
+    Please select the label(s): (Filter: "b")
+    ‣ ⬡ bug
+      ⬡ technical_debt
+
+When a filter is active, use `Backspace` to cancel the last character, and `Canc` to reset it.
 
 ### Help
 
