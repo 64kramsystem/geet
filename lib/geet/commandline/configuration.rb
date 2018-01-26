@@ -24,7 +24,7 @@ module Geet
         ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],
         ['-l', '--labels "bug,help wanted"',                'Labels'],
         ['-m', '--milestone 1.5.0',                         'Milestone title pattern'],
-        ['-a', '--assignee-patterns john,tom,adrian,kevin', 'Assignee login patterns'],
+        ['-a', '--assignees john,tom,adrian,kevin',         'Assignee logins'],
         ['-s', '--summary title_and_description',           'Set the summary (title and optionally description'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
         long_help: 'The default editor will be opened for editing title and description.'

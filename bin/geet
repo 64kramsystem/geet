@@ -33,6 +33,7 @@ class GeetLauncher
       title, description = split_summary(summary)
 
       options[:labels] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
+      options[:assignees] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
       options[:milestone_pattern] = options.delete(:milestone) if options.key?(:milestone)
 
       Services::CreateIssue.new(repository).execute(title, description, options)

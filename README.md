@@ -49,7 +49,7 @@ The default editor will be used for title/description:
 
 More advanced issue creation, with labels and assignees:
 
-    $ geet issue create --labels bug,wip --assignee-patterns johncarmark
+    $ geet issue create --labels bug,wip --assignees johncarmark
 
 After creation, the issue page will be automatically opened in the default browser.
 
