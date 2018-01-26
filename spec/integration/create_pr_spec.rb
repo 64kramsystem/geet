@@ -33,7 +33,7 @@ describe Geet::Services::CreatePr do
         service_instance = described_class.new(repository, git_client: git_client)
         service_instance.execute(
           'Title', 'Description',
-          label_patterns: '_bug,invalid', milestone_pattern: '0.0.1', reviewer_patterns: 'nald-ts,nald-fr',
+          label_patterns: 'other_bug,invalid', milestone_pattern: '0.0.1', reviewer_patterns: 'donald-ts,donald-fr',
           no_open_pr: true, output: actual_output
         )
       end

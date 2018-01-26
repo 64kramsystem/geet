@@ -34,9 +34,9 @@ module Geet
           label_patterns, milestone_pattern, reviewer_patterns, output
         )
 
-        labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
-        milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
-        reviewers = select_entries('reviewer', all_collaborators, reviewer_patterns, :multiple, nil) if reviewer_patterns
+        labels = select_entries('label', all_labels, label_patterns, :name) if label_patterns
+        milestone = select_entry('milestone', all_milestones, milestone_pattern, :title) if milestone_pattern
+        reviewers = select_entries('reviewer', all_collaborators, reviewer_patterns, nil) if reviewer_patterns
 
         sync_with_upstream_branch(output) if automated_mode
 

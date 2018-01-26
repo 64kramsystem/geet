@@ -30,7 +30,7 @@ describe Geet::Services::CreateIssue do
       actual_created_issue = VCR.use_cassette('create_issue') do
         described_class.new(repository).execute(
           'Title', 'Description',
-          label_patterns: 'bug,invalid', milestone_pattern: '0.0.1', assignee_patterns: 'nald-ts,nald-fr',
+          label_patterns: 'bug,invalid', milestone_pattern: '0.0.1', assignee_patterns: 'donald-ts,donald-fr',
           no_open_issue: true, output: actual_output
         )
       end

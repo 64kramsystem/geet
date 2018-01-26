@@ -14,7 +14,7 @@ module Geet
       def execute(assignee_pattern: nil, output: $stdout, **)
         if assignee_pattern
           all_collaborators = find_all_collaborator_entries(output)
-          assignee = select_entries('assignee', all_collaborators, assignee_pattern, :single, nil)
+          assignee = select_entry('assignee', all_collaborators, assignee_pattern, nil)
         end
 
         issues = @repository.issues(assignee: assignee)

@@ -31,9 +31,9 @@ module Geet
           label_patterns, milestone_pattern, assignee_patterns, output
         )
 
-        labels = select_entries('label', all_labels, label_patterns, :multiple, :name) if label_patterns
-        milestone, _ = select_entries('milestone', all_milestones, milestone_pattern, :single, :title) if milestone_pattern
-        assignees = select_entries('assignee', all_collaborators, assignee_patterns, :multiple, nil) if assignee_patterns
+        labels = select_entries('label', all_labels, label_patterns, :name) if label_patterns
+        milestone = select_entry('milestone', all_milestones, milestone_pattern, :title) if milestone_pattern
+        assignees = select_entries('assignee', all_collaborators, assignee_patterns, nil) if assignee_patterns
 
         issue = create_issue(title, description, output)
 
