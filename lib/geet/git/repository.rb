@@ -87,7 +87,6 @@ module Geet
       # PROVIDER
 
       def extract_env_api_token
-        provider_name = @git_client.provider_domain[/(.*)\.\w+/, 1]
         env_variable_name = "#{provider_name.upcase}_API_TOKEN"
 
         ENV[env_variable_name] || raise("#{env_variable_name} not set!")
