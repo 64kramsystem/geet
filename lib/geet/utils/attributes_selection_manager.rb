@@ -55,11 +55,7 @@ module Geet
         @out.puts "Finding #{repository_call}..."
 
         Thread.new do
-          entries = @repository.send(repository_call)
-
-          raise "No #{repository_call} found!" if entries.empty?
-
-          entries
+          @repository.send(repository_call)
         end
       end
 
