@@ -11,6 +11,8 @@ module Geet
 
       # Shows a prompt for selecting an entry from a list.
       #
+      # Returns nil, without showing the prompt, if there are no entries.
+      #
       # entry_type:      description of the entries type.
       # entries:         array of objects; if they're not strings, must also pass :instance_method.
       #                  this value must not be empty.
@@ -20,6 +22,8 @@ module Geet
       # returns: the selected entry. if no entries are nil is returned.
       #
       def select_entry(entry_type, entries, instance_method: nil)
+        return nil if entries.empty?
+
         check_entries(entries, entry_type)
 
         entries = create_entries_map(entries, instance_method)
@@ -30,11 +34,15 @@ module Geet
 
       # Shows a prompt for selecting an entry from a list.
       #
+      # Returns an empty array, without showing the prompt, if there are no entries.
+      #
       # See #selecte_entry for the parameters.
       #
       # returns: array of entries.
       #
       def select_entries(entry_type, entries, instance_method: nil)
+        return [] if entries.empty?
+
         check_entries(entries, entry_type)
 
         entries = create_entries_map(entries, instance_method)
