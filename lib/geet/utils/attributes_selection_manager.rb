@@ -18,10 +18,10 @@ module Geet
 
       # Initialize the instance, and starts the background threads.
       #
-      def initialize(repository, output)
+      def initialize(repository, out: output)
         @repository = repository
+        @out = out
         @selections_data = []
-        @output = output
       end
 
       def add_attribute(repository_call, description, pattern, selection_type, name_method: nil)
@@ -50,7 +50,7 @@ module Geet
       private
 
       def find_attribute_entries(repository_call)
-        @output.puts "Finding #{repository_call}..."
+        @out.puts "Finding #{repository_call}..."
 
         Thread.new do
           entries = @repository.send(repository_call)

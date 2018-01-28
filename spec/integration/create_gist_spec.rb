@@ -18,8 +18,8 @@ describe Geet::Services::CreateGist do
     actual_output = StringIO.new
 
     VCR.use_cassette('create_gist_public') do
-      described_class.new.execute(
-        tempfile.path, description: 'testdescription', publik: true, no_browse: true, output: actual_output
+      described_class.new(out: actual_output).execute(
+        tempfile.path, description: 'testdescription', publik: true, no_browse: true
       )
     end
 
@@ -35,8 +35,8 @@ describe Geet::Services::CreateGist do
     actual_output = StringIO.new
 
     VCR.use_cassette('create_gist_private') do
-      described_class.new.execute(
-        tempfile.path, description: 'testdescription', no_browse: true, output: actual_output
+      described_class.new(out: actual_output).execute(
+        tempfile.path, description: 'testdescription', no_browse: true
       )
     end
 

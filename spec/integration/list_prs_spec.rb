@@ -22,7 +22,7 @@ describe Geet::Services::ListPrs do
     actual_output = StringIO.new
 
     service_result = VCR.use_cassette('list_prs') do
-      described_class.new(repository).execute(output: actual_output)
+      described_class.new(repository, out: actual_output).execute
     end
 
     actual_pr_numbers = service_result.map(&:number)
@@ -44,7 +44,7 @@ describe Geet::Services::ListPrs do
     actual_output = StringIO.new
 
     service_result = VCR.use_cassette('list_prs_upstream') do
-      described_class.new(upstream_repository).execute(output: actual_output)
+      described_class.new(upstream_repository, out: actual_output).execute
     end
 
     actual_pr_numbers = service_result.map(&:number)

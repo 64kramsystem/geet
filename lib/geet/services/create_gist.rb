@@ -12,7 +12,9 @@ module Geet
       API_TOKEN_KEY = 'GITHUB_API_TOKEN'
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
-      def initialize
+      def initialize(out: $stdout)
+        @out = out
+
         api_token = extract_env_api_token
         @api_interface = Geet::Github::ApiInterface.new(api_token)
       end
@@ -22,17 +24,17 @@ module Geet
       #   :publik:      defaults to false
       #   :no_browse    defaults to false
       #
-      def execute(full_filename, description: nil, publik: false, no_browse: false, output: $stdout)
+      def execute(full_filename, description: nil, publik: false, no_browse: false)
         content = IO.read(full_filename)
 
         gist_access = publik ? 'public' : 'private'
-        output.puts "Creating a #{gist_access} gist..."
+        @out.puts "Creating a #{gist_access} gist..."
 
         filename = File.basename(full_filename)
         gist = Geet::Github::Gist.create(filename, content, @api_interface, description: description, publik: publik)
 
         if no_browse
-          output.puts "Gist address: #{gist.link}"
+          @out.puts "Gist address: #{gist.link}"
         else
           open_file_with_default_application(gist.link)
         end

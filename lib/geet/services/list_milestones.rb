@@ -3,23 +3,24 @@
 module Geet
   module Services
     class ListMilestones
-      def initialize(repository)
+      def initialize(repository, out: $output)
         @repository = repository
+        @out = out
       end
 
-      def execute(output: $stdout)
-        milestones = find_milestones(output)
-        issues_by_milestone_number = find_milestone_issues(milestones, output)
+      def execute
+        milestones = find_milestones
+        issues_by_milestone_number = find_milestone_issues(milestones)
 
-        output.puts
+        @out.puts
 
         milestones.each do |milestone|
-          output.puts milestone_description(milestone)
+          @out.puts milestone_description(milestone)
 
           milestone_issues = issues_by_milestone_number[milestone.number]
 
           milestone_issues.each do |issue|
-            output.puts "  #{issue.number}. #{issue.title} (#{issue.link})"
+            @out.puts "  #{issue.number}. #{issue.title} (#{issue.link})"
           end
         end
       end
@@ -34,14 +35,14 @@ module Geet
         description
       end
 
-      def find_milestones(output)
-        output.puts 'Finding milestones...'
+      def find_milestones
+        @out.puts 'Finding milestones...'
 
         @repository.milestones
       end
 
-      def find_milestone_issues(milestones, output)
-        output.puts 'Finding issues...'
+      def find_milestone_issues(milestones)
+        @out.puts 'Finding issues...'
 
         # Interestingly, on MRI, concurrent hash access is not a problem without mutex,
         # since due to the GIL, only one thread at a time will actually access it.
