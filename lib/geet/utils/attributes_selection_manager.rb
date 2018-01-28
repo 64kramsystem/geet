@@ -63,25 +63,25 @@ module Geet
 
       # Sample call:
       #
-      #   select_entry('milestone', all_milestones, milestone, :title)
+      #   select_entry('milestone', all_milestones, '0.1.0', :title)
       #
-      def select_entry(entry_type, entries, pattern, instance_method)
+      def select_entry(entry_type, entries, pattern, name_method)
         if pattern == MANUAL_LIST_SELECTION_FLAG
-          Geet::Utils::ManualListSelection.new.select_entry(entry_type, entries, instance_method: instance_method)
+          Geet::Utils::ManualListSelection.new.select_entry(entry_type, entries, name_method: name_method)
         else
-          Geet::Utils::StringMatchingSelection.new.select_entry(entry_type, entries, pattern, instance_method: instance_method)
+          Geet::Utils::StringMatchingSelection.new.select_entry(entry_type, entries, pattern, name_method: name_method)
         end
       end
 
       # Sample call:
       #
-      #   select_entries('reviewer', all_collaborators, reviewers, nil)
+      #   select_entries('reviewer', all_collaborators, 'donaldduck', nil)
       #
-      def select_entries(entry_type, entries, pattern, instance_method)
+      def select_entries(entry_type, entries, pattern, name_method)
         if pattern == MANUAL_LIST_SELECTION_FLAG
-          Geet::Utils::ManualListSelection.new.select_entries(entry_type, entries, instance_method: instance_method)
+          Geet::Utils::ManualListSelection.new.select_entries(entry_type, entries, name_method: name_method)
         else
-          Geet::Utils::StringMatchingSelection.new.select_entries(entry_type, entries, pattern, instance_method: instance_method)
+          Geet::Utils::StringMatchingSelection.new.select_entries(entry_type, entries, pattern, name_method: name_method)
         end
       end
     end

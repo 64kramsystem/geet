@@ -3,9 +3,9 @@
 module Geet
   module Utils
     class StringMatchingSelection
-      def select_entry(entry_type, entries, pattern, instance_method: nil)
+      def select_entry(entry_type, entries, pattern, name_method: nil)
         entries_found = entries.select do |entry|
-          entry = entry.send(instance_method) if instance_method
+          entry = entry.send(name_method) if name_method
           entry.downcase == pattern.downcase
         end
 
@@ -19,12 +19,12 @@ module Geet
         end
       end
 
-      def select_entries(entry_type, entries, raw_patterns, instance_method: nil)
+      def select_entries(entry_type, entries, raw_patterns, name_method: nil)
         patterns = raw_patterns.split(',')
 
         patterns.map do |pattern|
           # Haha.
-          select_entry(entry_type, entries, pattern, instance_method: instance_method)
+          select_entry(entry_type, entries, pattern, name_method: name_method)
         end
       end
     end
