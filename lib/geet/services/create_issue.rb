@@ -27,13 +27,13 @@ module Geet
           labels: nil, milestone: nil, assignees: nil, no_open_issue: nil,
           output: $stdout, **
       )
-        all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          labels, milestone, assignees, output
-        )
+        all_labels_thread = find_attribute_entries(:labels, output) if labels
+        all_milestones_thread = find_attribute_entries(:milestones, output) if milestone
+        all_collaborators_thread = find_attribute_entries(:collaborators, output) if assignees
 
-        selected_labels = select_entries('label', all_labels, labels, :name) if labels
-        selected_milestone = select_entry('milestone', all_milestones, milestone, :title) if milestone
-        selected_assignees = select_entries('assignee', all_collaborators, assignees, nil) if assignees
+        selected_labels = select_entries('label', all_labels_thread.value, labels, :name) if labels
+        selected_milestone = select_entry('milestone', all_milestones_thread.value, milestone, :title) if milestone
+        selected_assignees = select_entries('assignee', all_collaborators_thread.value, assignees, nil) if assignees
 
         issue = create_issue(title, description, output)
 
@@ -55,31 +55,16 @@ module Geet
 
       # Internal actions
 
-      def find_all_attribute_entries(labels, milestone, assignees, output)
-        if labels
-          output.puts 'Finding labels...'
-          labels_thread = Thread.new { @repository.labels }
+      def find_attribute_entries(repository_call, output)
+        output.puts "Finding #{repository_call}..."
+
+        Thread.new do
+          entries = @repository.send(repository_call)
+
+          raise "No #{repository_call} found!" if entries.empty?
+
+          entries
         end
-
-        if milestone
-          output.puts 'Finding milestone...'
-          milestone_thread = Thread.new { @repository.milestones }
-        end
-
-        if assignees
-          output.puts 'Finding collaborators...'
-          collaborators_thread = Thread.new { @repository.collaborators }
-        end
-
-        all_labels = labels_thread&.value
-        milestones = milestone_thread&.value
-        all_collaborators = collaborators_thread&.value
-
-        raise "No labels found!" if labels && all_labels.empty?
-        raise "No milestones found!" if milestone && milestones.empty?
-        raise "No collaborators found!" if assignees && all_collaborators.empty?
-
-        [all_labels, milestones, all_collaborators]
       end
 
       def create_issue(title, description, output)

@@ -30,13 +30,13 @@ module Geet
       )
         ensure_clean_tree if automated_mode
 
-        all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          labels, milestone, reviewers, output
-        )
+        all_labels_thread = find_attribute_entries(:labels, output) if labels
+        all_milestones_thread = find_attribute_entries(:milestones, output) if milestone
+        all_collaborators_thread = find_attribute_entries(:collaborators, output) if reviewers
 
-        selected_labels = select_entries('label', all_labels, labels, :name) if labels
-        selected_milestone = select_entry('milestone', all_milestones, milestone, :title) if milestone
-        selected_reviewers = select_entries('reviewer', all_collaborators, reviewers, nil) if reviewers
+        selected_labels = select_entries('label', all_labels_thread.value, labels, :name) if labels
+        selected_milestone = select_entry('milestone', all_milestones_thread.value, milestone, :title) if milestone
+        selected_reviewers = select_entries('reviewer', all_collaborators_thread.value, reviewers, nil) if reviewers
 
         sync_with_upstream_branch(output) if automated_mode
 
@@ -64,31 +64,16 @@ module Geet
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
       end
 
-      def find_all_attribute_entries(labels, milestone, reviewers, output)
-        if labels
-          output.puts 'Finding labels...'
-          labels_thread = Thread.new { @repository.labels }
+      def find_attribute_entries(repository_call, output)
+        output.puts "Finding #{repository_call}..."
+
+        Thread.new do
+          entries = @repository.send(repository_call)
+
+          raise "No #{repository_call} found!" if entries.empty?
+
+          entries
         end
-
-        if milestone
-          output.puts 'Finding milestone...'
-          milestone_thread = Thread.new { @repository.milestones }
-        end
-
-        if reviewers
-          output.puts 'Finding collaborators...'
-          collaborators_thread = Thread.new { @repository.collaborators }
-        end
-
-        all_labels = labels_thread&.value
-        milestones = milestone_thread&.value
-        all_collaborators = collaborators_thread&.value
-
-        raise "No labels found!" if labels && all_labels.empty?
-        raise "No milestones found!" if milestone && milestones.empty?
-        raise "No collaborators found!" if reviewers && all_collaborators.empty?
-
-        [all_labels, milestones, all_collaborators]
       end
 
       def sync_with_upstream_branch(output)

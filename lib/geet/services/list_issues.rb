@@ -13,8 +13,8 @@ module Geet
 
       def execute(assignee: nil, output: $stdout, **)
         if assignee
-          all_collaborators = find_all_collaborator_entries(output)
-          selected_assignee = select_entry('assignee', all_collaborators, assignee, nil)
+          all_collaborators_thread = find_attribute_entries(:collaborators, output)
+          selected_assignee = select_entry('assignee', all_collaborators_thread.value, assignee, nil)
         end
 
         issues = @repository.issues(assignee: selected_assignee)
@@ -26,14 +26,16 @@ module Geet
 
       private
 
-      def find_all_collaborator_entries(output)
-        output.puts 'Finding collaborators...'
+      def find_attribute_entries(repository_call, output)
+        output.puts "Finding #{repository_call}..."
 
-        collaborators_thread = Thread.new do
-          @repository.collaborators
+        Thread.new do
+          entries = @repository.send(repository_call)
+
+          raise "No #{repository_call} found!" if entries.empty?
+
+          entries
         end
-
-        collaborators_thread.value
       end
     end
   end
