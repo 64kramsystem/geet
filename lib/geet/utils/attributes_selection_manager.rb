@@ -24,19 +24,21 @@ module Geet
         @selections_data = []
       end
 
-      def add_attribute(repository_call, description, pattern, selection_type, name_method: nil)
+      def add_attribute(repository_call, description, pattern, selection_type, name_method: nil, &pre_selection_hook)
         raise "Unrecognized selection type #{selection_type.inspect}" if ![:single, :multiple].include?(selection_type)
 
         finder_thread = find_attribute_entries(repository_call)
 
-        @selections_data << [finder_thread, description, pattern, selection_type, name_method]
+        @selections_data << [finder_thread, description, pattern, selection_type, name_method, pre_selection_hook]
       end
 
       # Select and return the attributes, in the same order they've been added.
       #
       def select_attributes
-        @selections_data.map do |finder_thread, description, pattern, selection_type, name_method|
+        @selections_data.map do |finder_thread, description, pattern, selection_type, name_method, pre_selection_hook|
           entries = finder_thread.value
+
+          entries = pre_selection_hook.(entries) if pre_selection_hook
 
           case selection_type
           when :single

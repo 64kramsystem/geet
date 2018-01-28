@@ -21,10 +21,10 @@ describe Geet::Services::CreatePr do
         Finding collaborators...
         Creating PR...
         Assigning authenticated user...
-        Adding labels other_bug, invalid...
-        Setting milestone 0.0.1...
-        Requesting review from donald-ts, donald-fr...
-        PR address: https://github.com/donaldduck/testrepo/pull/3
+        Adding labels bug, invalid...
+        Setting milestone milestone 1...
+        Requesting review from donald-fr...
+        PR address: https://github.com/donaldduck/testrepo/pull/39
       STR
 
       actual_output = StringIO.new
@@ -33,16 +33,16 @@ describe Geet::Services::CreatePr do
         service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
         service_instance.execute(
           'Title', 'Description',
-          labels: 'other_bug,invalid', milestone: '0.0.1', reviewers: 'donald-ts,donald-fr',
+          labels: 'bug,invalid', milestone: 'milestone 1', reviewers: 'donald-fr',
           no_open_pr: true, output: actual_output
         )
       end
 
       expect(actual_output.string).to eql(expected_output)
 
-      expect(actual_created_pr.number).to eql(3)
+      expect(actual_created_pr.number).to eql(39)
       expect(actual_created_pr.title).to eql('Title')
-      expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo/pull/3')
+      expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo/pull/39')
     end
   end
 
