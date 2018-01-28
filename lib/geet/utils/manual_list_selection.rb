@@ -20,7 +20,7 @@ module Geet
       # returns: the selected entry. if no entries are nil is returned.
       #
       def select_entry(entry_type, entries, instance_method: nil)
-        check_entries(entries)
+        check_entries(entries, entry_type)
 
         entries = create_entries_map(entries, instance_method)
         entries = add_no_selection_entry(entries)
@@ -35,7 +35,7 @@ module Geet
       # returns: array of entries.
       #
       def select_entries(entry_type, entries, instance_method: nil)
-        check_entries(entries)
+        check_entries(entries, entry_type)
 
         entries = create_entries_map(entries, instance_method)
 
@@ -44,7 +44,7 @@ module Geet
 
       private
 
-      def check_entries(entries)
+      def check_entries(entries, entry_type)
         raise "No #{entry_type} provided!" if entries.empty?
       end
 
