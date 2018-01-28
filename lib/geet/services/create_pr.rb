@@ -1,21 +1,14 @@
 # frozen_string_literal: true
 
-require 'tmpdir'
-require_relative '../helpers/os_helper.rb'
-require_relative '../helpers/selection_helper.rb'
+require_relative 'abstract_create_issue'
 
 module Geet
   module Services
-    class CreatePr
-      include Geet::Helpers::OsHelper
-      include Geet::Helpers::SelectionHelper
-
+    class CreatePr < AbstractCreateIssue
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
-      SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
-
       def initialize(repository, git_client: DEFAULT_GIT_CLIENT)
-        @repository = repository
+        super(repository)
         @git_client = git_client
       end
 
@@ -62,18 +55,6 @@ module Geet
 
       def ensure_clean_tree
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
-      end
-
-      def find_attribute_entries(repository_call, output)
-        output.puts "Finding #{repository_call}..."
-
-        Thread.new do
-          entries = @repository.send(repository_call)
-
-          raise "No #{repository_call} found!" if entries.empty?
-
-          entries
-        end
       end
 
       def sync_with_upstream_branch(output)
@@ -143,14 +124,6 @@ module Geet
         Thread.new do
           pr.request_review(reviewers)
         end
-      end
-
-      def save_summary(title, description, output)
-        summary = "#{title}\n\n#{description}".strip + "\n"
-
-        IO.write(SUMMARY_BACKUP_FILENAME, summary)
-
-        output.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
       end
     end
   end

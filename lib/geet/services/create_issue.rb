@@ -1,21 +1,10 @@
 # frozen_string_literal: true
 
-require 'tmpdir'
-require_relative '../helpers/os_helper.rb'
-require_relative '../helpers/selection_helper.rb'
+require_relative 'abstract_create_issue'
 
 module Geet
   module Services
-    class CreateIssue
-      include Geet::Helpers::OsHelper
-      include Geet::Helpers::SelectionHelper
-
-      SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
-
-      def initialize(repository)
-        @repository = repository
-      end
-
+    class CreateIssue < AbstractCreateIssue
       # options:
       #   :labels
       #   :milestone:     number or description pattern.
@@ -54,18 +43,6 @@ module Geet
       private
 
       # Internal actions
-
-      def find_attribute_entries(repository_call, output)
-        output.puts "Finding #{repository_call}..."
-
-        Thread.new do
-          entries = @repository.send(repository_call)
-
-          raise "No #{repository_call} found!" if entries.empty?
-
-          entries
-        end
-      end
 
       def create_issue(title, description, output)
         output.puts 'Creating the issue...'
@@ -123,14 +100,6 @@ module Geet
         Thread.new do
           issue.assign_users(@repository.authenticated_user)
         end
-      end
-
-      def save_summary(title, description, output)
-        summary = "#{title}\n\n#{description}".strip + "\n"
-
-        IO.write(SUMMARY_BACKUP_FILENAME, summary)
-
-        output.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
       end
     end
   end
