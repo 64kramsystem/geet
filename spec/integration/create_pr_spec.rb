@@ -17,7 +17,7 @@ describe Geet::Services::CreatePr do
 
       expected_output = <<~STR
         Finding labels...
-        Finding milestone...
+        Finding milestones...
         Finding collaborators...
         Creating PR...
         Assigning authenticated user...
@@ -30,7 +30,7 @@ describe Geet::Services::CreatePr do
       actual_output = StringIO.new
 
       actual_created_pr = VCR.use_cassette('create_pr') do
-        service_instance = described_class.new(repository, git_client: git_client)
+        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
         service_instance.execute(
           'Title', 'Description',
           labels: 'other_bug,invalid', milestone: '0.0.1', reviewers: 'donald-ts,donald-fr',
@@ -60,7 +60,7 @@ describe Geet::Services::CreatePr do
     actual_output = StringIO.new
 
     actual_created_pr = VCR.use_cassette('create_pr_upstream') do
-      service_instance = described_class.new(upstream_repository, git_client: git_client)
+      service_instance = described_class.new(upstream_repository, out: actual_output, git_client: git_client)
       service_instance.execute('Title', 'Description', no_open_pr: true, output: actual_output)
     end
 
@@ -83,7 +83,7 @@ describe Geet::Services::CreatePr do
       actual_output = StringIO.new
 
       operation = -> do
-        service_instance = described_class.new(repository, git_client: git_client)
+        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
         service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
       end
 
@@ -110,7 +110,7 @@ describe Geet::Services::CreatePr do
       actual_output = StringIO.new
 
       actual_created_pr = VCR.use_cassette('create_pr_in_auto_mode_with_push') do
-        service_instance = described_class.new(repository, git_client: git_client)
+        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
         service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
       end
 
@@ -135,7 +135,7 @@ describe Geet::Services::CreatePr do
       actual_output = StringIO.new
 
       actual_created_pr = VCR.use_cassette('create_pr_in_auto_mode_create_upstream') do
-        service_instance = described_class.new(repository, git_client: git_client)
+        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
         service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
       end
 

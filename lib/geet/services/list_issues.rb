@@ -1,39 +1,33 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/selection_helper.rb'
+require_relative '../utils/attributes_selection_manager'
 
 module Geet
   module Services
     class ListIssues
-      include Geet::Helpers::SelectionHelper
-
-      def initialize(repository)
+      def initialize(repository, out: $stdout)
         @repository = repository
+        @out = out
       end
 
-      def execute(assignee: nil, output: $stdout, **)
-        if assignee
-          all_collaborators = find_all_collaborator_entries(output)
-          selected_assignee = select_entry('assignee', all_collaborators, assignee, nil)
-        end
+      def execute(assignee: nil, **)
+        selected_assignee = find_and_select_attributes(assignee) if assignee
 
         issues = @repository.issues(assignee: selected_assignee)
 
         issues.each do |issue|
-          output.puts "#{issue.number}. #{issue.title} (#{issue.link})"
+          @out.puts "#{issue.number}. #{issue.title} (#{issue.link})"
         end
       end
 
       private
 
-      def find_all_collaborator_entries(output)
-        output.puts 'Finding collaborators...'
+      def find_and_select_attributes(assignee)
+        selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
-        collaborators_thread = Thread.new do
-          @repository.collaborators
-        end
+        selection_manager.add_attribute(:collaborators, 'assignee', assignee, :single)
 
-        collaborators_thread.value
+        selection_manager.select_attributes
       end
     end
   end

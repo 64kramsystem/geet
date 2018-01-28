@@ -1,22 +1,16 @@
 # frozen_string_literal: true
 
-require 'tmpdir'
-require_relative '../helpers/os_helper.rb'
-require_relative '../helpers/selection_helper.rb'
+require_relative 'abstract_create_issue'
 
 module Geet
   module Services
-    class CreatePr
-      include Geet::Helpers::OsHelper
-      include Geet::Helpers::SelectionHelper
-
+    class CreatePr < AbstractCreateIssue
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
-      SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
-
-      def initialize(repository, git_client: DEFAULT_GIT_CLIENT)
-        @repository = repository
+      def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
+        super(repository)
         @git_client = git_client
+        @out = out
       end
 
       # options:
@@ -26,33 +20,27 @@ module Geet
       #
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
-        no_open_pr: nil, automated_mode: false, output: $stdout, **
+        no_open_pr: nil, automated_mode: false, **
       )
         ensure_clean_tree if automated_mode
 
-        all_labels, all_milestones, all_collaborators = find_all_attribute_entries(
-          labels, milestone, reviewers, output
-        )
+        selected_labels, selected_milestone, selected_reviewers = find_and_select_attributes(labels, milestone, reviewers)
 
-        selected_labels = select_entries('label', all_labels, labels, :name) if labels
-        selected_milestone = select_entry('milestone', all_milestones, milestone, :title) if milestone
-        selected_reviewers = select_entries('reviewer', all_collaborators, reviewers, nil) if reviewers
+        sync_with_upstream_branch if automated_mode
 
-        sync_with_upstream_branch(output) if automated_mode
+        pr = create_pr(title, description)
 
-        pr = create_pr(title, description, output)
-
-        edit_pr(pr, selected_labels, selected_milestone, selected_reviewers, output)
+        edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)
 
         if no_open_pr
-          output.puts "PR address: #{pr.link}"
+          @out.puts "PR address: #{pr.link}"
         else
           open_file_with_default_application(pr.link)
         end
 
         pr
       rescue => error
-        save_summary(title, description, output) if title
+        save_summary(title, description) if title
         raise
       end
 
@@ -64,61 +52,44 @@ module Geet
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
       end
 
-      def find_all_attribute_entries(labels, milestone, reviewers, output)
-        if labels
-          output.puts 'Finding labels...'
-          labels_thread = Thread.new { @repository.labels }
-        end
+      def find_and_select_attributes(labels, milestone, reviewers)
+        selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
-        if milestone
-          output.puts 'Finding milestone...'
-          milestone_thread = Thread.new { @repository.milestones }
-        end
+        selection_manager.add_attribute(:labels, 'label', labels, :multiple, name_method: :name) if labels
+        selection_manager.add_attribute(:milestones, 'milestone', milestone, :single, name_method: :title) if milestone
+        selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple) if reviewers
 
-        if reviewers
-          output.puts 'Finding collaborators...'
-          collaborators_thread = Thread.new { @repository.collaborators }
-        end
-
-        all_labels = labels_thread&.value
-        milestones = milestone_thread&.value
-        all_collaborators = collaborators_thread&.value
-
-        raise "No labels found!" if labels && all_labels.empty?
-        raise "No milestones found!" if milestone && milestones.empty?
-        raise "No collaborators found!" if reviewers && all_collaborators.empty?
-
-        [all_labels, milestones, all_collaborators]
+        selection_manager.select_attributes
       end
 
-      def sync_with_upstream_branch(output)
+      def sync_with_upstream_branch
         if @git_client.upstream_branch
-          output.puts "Pushing to upstream branch..."
+          @out.puts "Pushing to upstream branch..."
 
           @git_client.push
         else
           upstream_branch = @git_client.current_branch
 
-          output.puts "Creating upstream branch #{upstream_branch.inspect}..."
+          @out.puts "Creating upstream branch #{upstream_branch.inspect}..."
 
           @git_client.push(upstream_branch: upstream_branch)
         end
       end
 
-      def create_pr(title, description, output)
-        output.puts 'Creating PR...'
+      def create_pr(title, description)
+        @out.puts 'Creating PR...'
 
         @repository.create_pr(title, description, @git_client.current_branch)
       end
 
-      def edit_pr(pr, labels, milestone, reviewers, output)
-        assign_user_thread = assign_authenticated_user(pr, output)
+      def edit_pr(pr, labels, milestone, reviewers)
+        assign_user_thread = assign_authenticated_user(pr)
 
         # labels/reviewers can be nil (parameter not passed) or empty array (parameter passed, but
         # nothing selected)
-        add_labels_thread = add_labels(pr, labels, output) if labels && !labels.empty?
-        set_milestone_thread = set_milestone(pr, milestone, output) if milestone
-        request_review_thread = request_review(pr, reviewers, output) if reviewers && !reviewers.empty?
+        add_labels_thread = add_labels(pr, labels) if labels && !labels.empty?
+        set_milestone_thread = set_milestone(pr, milestone) if milestone
+        request_review_thread = request_review(pr, reviewers) if reviewers && !reviewers.empty?
 
         assign_user_thread.join
         add_labels_thread&.join
@@ -126,46 +97,38 @@ module Geet
         request_review_thread&.join
       end
 
-      def assign_authenticated_user(pr, output)
-        output.puts 'Assigning authenticated user...'
+      def assign_authenticated_user(pr)
+        @out.puts 'Assigning authenticated user...'
 
         Thread.new do
           pr.assign_users(@repository.authenticated_user)
         end
       end
 
-      def add_labels(pr, selected_labels, output)
+      def add_labels(pr, selected_labels)
         labels_list = selected_labels.map(&:name).join(', ')
 
-        output.puts "Adding labels #{labels_list}..."
+        @out.puts "Adding labels #{labels_list}..."
 
         Thread.new do
           pr.add_labels(selected_labels.map(&:name))
         end
       end
 
-      def set_milestone(pr, milestone, output)
-        output.puts "Setting milestone #{milestone.title}..."
+      def set_milestone(pr, milestone)
+        @out.puts "Setting milestone #{milestone.title}..."
 
         Thread.new do
           pr.edit(milestone: milestone.number)
         end
       end
 
-      def request_review(pr, reviewers, output)
-        output.puts "Requesting review from #{reviewers.join(', ')}..."
+      def request_review(pr, reviewers)
+        @out.puts "Requesting review from #{reviewers.join(', ')}..."
 
         Thread.new do
           pr.request_review(reviewers)
         end
-      end
-
-      def save_summary(title, description, output)
-        summary = "#{title}\n\n#{description}".strip + "\n"
-
-        IO.write(SUMMARY_BACKUP_FILENAME, summary)
-
-        output.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
       end
     end
   end

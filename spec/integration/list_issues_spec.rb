@@ -23,7 +23,7 @@ describe Geet::Services::ListIssues do
       actual_output = StringIO.new
 
       service_result = VCR.use_cassette('github_com/list_issues') do
-        described_class.new(repository).execute(output: actual_output)
+        described_class.new(repository, out: actual_output).execute
       end
 
       actual_issue_numbers = service_result.map(&:number)
@@ -46,7 +46,7 @@ describe Geet::Services::ListIssues do
         actual_output = StringIO.new
 
         service_result = VCR.use_cassette('github_com/list_issues_with_assignee') do
-          described_class.new(repository).execute(assignee: 'donald-fr', output: actual_output)
+          described_class.new(repository, out: actual_output).execute(assignee: 'donald-fr', )
         end
 
         actual_issue_numbers = service_result.map(&:number)
@@ -69,7 +69,7 @@ describe Geet::Services::ListIssues do
       actual_output = StringIO.new
 
       service_result = VCR.use_cassette('github_com/list_issues_upstream') do
-        described_class.new(upstream_repository).execute(output: actual_output)
+        described_class.new(upstream_repository, out: actual_output).execute
       end
 
       actual_issue_numbers = service_result.map(&:number)
@@ -92,7 +92,7 @@ describe Geet::Services::ListIssues do
       actual_output = StringIO.new
 
       service_result = VCR.use_cassette('gitlab_com/list_issues') do
-        described_class.new(repository).execute(output: actual_output)
+        described_class.new(repository, out: actual_output).execute
       end
 
       actual_issue_numbers = service_result.map(&:number)

@@ -6,8 +6,8 @@ require_relative '../lib/geet/commandline/configuration.rb'
 require_relative '../lib/geet/commandline/commands.rb'
 require_relative '../lib/geet/commandline/editor.rb'
 require_relative '../lib/geet/git/repository.rb'
-require_relative '../lib/geet/helpers/selection_helper.rb'
 require_relative '../lib/geet/helpers/summary_helper.rb'
+require_relative '../lib/geet/shared/constants.rb'
 require_relative '../lib/geet/utils/git_client.rb'
 Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
 
@@ -84,7 +84,7 @@ class GeetLauncher
 
   def default_to_manual_selection(options, *params)
     params.each do |param|
-      options[param] ||= Helpers::SelectionHelper::MANUAL_LIST_SELECTION_FLAG
+      options[param] ||= Shared::Constants::MANUAL_LIST_SELECTION_FLAG
     end
 
     options
