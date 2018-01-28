@@ -1,21 +1,16 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/selection_helper.rb'
+require_relative '../utils/attributes_selection_manager'
 
 module Geet
   module Services
     class ListIssues
-      include Geet::Helpers::SelectionHelper
-
       def initialize(repository)
         @repository = repository
       end
 
       def execute(assignee: nil, output: $stdout, **)
-        if assignee
-          all_collaborators_thread = find_attribute_entries(:collaborators, output)
-          selected_assignee = select_entry('assignee', all_collaborators_thread.value, assignee, nil)
-        end
+        selected_assignee = find_and_select_attributes(assignee, output) if assignee
 
         issues = @repository.issues(assignee: selected_assignee)
 
@@ -26,16 +21,12 @@ module Geet
 
       private
 
-      def find_attribute_entries(repository_call, output)
-        output.puts "Finding #{repository_call}..."
+      def find_and_select_attributes(assignee, output)
+        selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, output)
 
-        Thread.new do
-          entries = @repository.send(repository_call)
+        selection_manager.add_attribute(:collaborators, 'assignee', assignee, :single)
 
-          raise "No #{repository_call} found!" if entries.empty?
-
-          entries
-        end
+        selection_manager.select_attributes
       end
     end
   end

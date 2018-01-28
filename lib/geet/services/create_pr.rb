@@ -23,13 +23,7 @@ module Geet
       )
         ensure_clean_tree if automated_mode
 
-        all_labels_thread = find_attribute_entries(:labels, output) if labels
-        all_milestones_thread = find_attribute_entries(:milestones, output) if milestone
-        all_collaborators_thread = find_attribute_entries(:collaborators, output) if reviewers
-
-        selected_labels = select_entries('label', all_labels_thread.value, labels, :name) if labels
-        selected_milestone = select_entry('milestone', all_milestones_thread.value, milestone, :title) if milestone
-        selected_reviewers = select_entries('reviewer', all_collaborators_thread.value, reviewers, nil) if reviewers
+        selected_labels, selected_milestone, selected_reviewers = find_and_select_attributes(labels, milestone, reviewers, output)
 
         sync_with_upstream_branch(output) if automated_mode
 
@@ -55,6 +49,16 @@ module Geet
 
       def ensure_clean_tree
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
+      end
+
+      def find_and_select_attributes(labels, milestone, reviewers, output)
+        selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, output)
+
+        selection_manager.add_attribute(:labels, 'label', labels, :multiple, name_method: :name) if labels
+        selection_manager.add_attribute(:milestones, 'milestone', milestone, :single, name_method: :title) if milestone
+        selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple) if reviewers
+
+        selection_manager.select_attributes
       end
 
       def sync_with_upstream_branch(output)

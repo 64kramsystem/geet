@@ -16,13 +16,7 @@ module Geet
           labels: nil, milestone: nil, assignees: nil, no_open_issue: nil,
           output: $stdout, **
       )
-        all_labels_thread = find_attribute_entries(:labels, output) if labels
-        all_milestones_thread = find_attribute_entries(:milestones, output) if milestone
-        all_collaborators_thread = find_attribute_entries(:collaborators, output) if assignees
-
-        selected_labels = select_entries('label', all_labels_thread.value, labels, :name) if labels
-        selected_milestone = select_entry('milestone', all_milestones_thread.value, milestone, :title) if milestone
-        selected_assignees = select_entries('assignee', all_collaborators_thread.value, assignees, nil) if assignees
+        selected_labels, selected_milestone, selected_assignees = find_and_select_attributes(labels, milestone, assignees, output)
 
         issue = create_issue(title, description, output)
 
@@ -43,6 +37,16 @@ module Geet
       private
 
       # Internal actions
+
+      def find_and_select_attributes(labels, milestone, assignees, output)
+        selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, output)
+
+        selection_manager.add_attribute(:labels, 'label', labels, :multiple, name_method: :name) if labels
+        selection_manager.add_attribute(:milestones, 'milestone', milestone, :single, name_method: :title) if milestone
+        selection_manager.add_attribute(:collaborators, 'assignee', assignees, :multiple) if assignees
+
+        selection_manager.select_attributes
+      end
 
       def create_issue(title, description, output)
         output.puts 'Creating the issue...'
