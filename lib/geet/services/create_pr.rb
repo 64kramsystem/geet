@@ -57,7 +57,12 @@ module Geet
 
         selection_manager.add_attribute(:labels, 'label', labels, :multiple, name_method: :name) if labels
         selection_manager.add_attribute(:milestones, 'milestone', milestone, :single, name_method: :title) if milestone
-        selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple) if reviewers
+
+        if reviewers
+          selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple) do |all_reviewers|
+            all_reviewers - [@repository.authenticated_user]
+          end
+        end
 
         selection_manager.select_attributes
       end
