@@ -2,7 +2,7 @@
 
 module Geet
   module Shared
-    module Constants
+    module Selection
       MANUAL_LIST_SELECTION_FLAG = '-'.freeze
     end
   end

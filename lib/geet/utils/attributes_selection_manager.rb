@@ -2,7 +2,7 @@
 
 require_relative 'manual_list_selection'
 require_relative 'string_matching_selection'
-require_relative '../shared/constants'
+require_relative '../shared/selection'
 
 module Geet
   module Utils
@@ -14,7 +14,7 @@ module Geet
     # multiple attributes are required (typically, three).
     #
     class AttributesSelectionManager
-      include Geet::Shared::Constants
+      include Geet::Shared::Selection
 
       # Workaround for VCR not supporting multithreading; see https://github.com/vcr/vcr/issues/200.
       #
