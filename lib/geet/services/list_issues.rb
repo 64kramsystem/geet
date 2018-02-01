@@ -27,7 +27,7 @@ module Geet
 
         selection_manager.add_attribute(:collaborators, 'assignee', assignee, :single)
 
-        selection_manager.select_attributes
+        selection_manager.select_attributes.first
       end
     end
   end
