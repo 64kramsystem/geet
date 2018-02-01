@@ -43,7 +43,7 @@ module Geet
 
         selection_manager.add_attribute(:labels, 'label', labels, :multiple, name_method: :name) if labels
         selection_manager.add_attribute(:milestones, 'milestone', milestone, :single, name_method: :title) if milestone
-        selection_manager.add_attribute(:collaborators, 'assignee', assignees, :multiple) if assignees
+        selection_manager.add_attribute(:collaborators, 'assignee', assignees, :multiple, name_method: :username) if assignees
 
         selection_manager.select_attributes
       end
@@ -91,7 +91,7 @@ module Geet
       end
 
       def assign_users(issue, users)
-        @out.puts "Assigning users #{users.join(', ')}..."
+        @out.puts "Assigning users #{users.map(&:username).join(', ')}..."
 
         Thread.new do
           issue.assign_users(users)

@@ -25,9 +25,9 @@ module Geet
       def find_and_select_attributes(assignee)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
-        selection_manager.add_attribute(:collaborators, 'assignee', assignee, :single)
+        selection_manager.add_attribute(:collaborators, 'assignee', assignee, :single, name_method: :username)
 
-        selection_manager.select_attributes.first
+        selection_manager.select_attributes.map(&:username).first
       end
     end
   end
