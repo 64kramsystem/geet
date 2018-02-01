@@ -2,7 +2,7 @@
 
 require 'tempfile'
 
-require_relative '../helpers/os_helper.rb'
+require_relative '../helpers/os_helper'
 
 module Geet
   module Commandline

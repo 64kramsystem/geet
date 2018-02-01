@@ -2,13 +2,13 @@
 # frozen_string_literal: true
 
 require 'simple_scripting/configuration'
-require_relative '../lib/geet/commandline/configuration.rb'
-require_relative '../lib/geet/commandline/commands.rb'
-require_relative '../lib/geet/commandline/editor.rb'
-require_relative '../lib/geet/git/repository.rb'
-require_relative '../lib/geet/helpers/summary_helper.rb'
-require_relative '../lib/geet/shared/constants.rb'
-require_relative '../lib/geet/utils/git_client.rb'
+require_relative '../lib/geet/commandline/configuration'
+require_relative '../lib/geet/commandline/commands'
+require_relative '../lib/geet/commandline/editor'
+require_relative '../lib/geet/git/repository'
+require_relative '../lib/geet/helpers/summary_helper'
+require_relative '../lib/geet/shared/constants'
+require_relative '../lib/geet/utils/git_client'
 Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
 
 class GeetLauncher
