@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'shellwords'
 require_relative '../utils/git_client'
 
 module Geet
