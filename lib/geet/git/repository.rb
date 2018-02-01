@@ -84,7 +84,7 @@ module Geet
       # REMOTE FUNCTIONALITIES (ACCOUNT)
 
       def authenticated_user
-        attempt_provider_call(:Account, :new, api_interface).authenticated_user
+        attempt_provider_call(:User, :authenticated, api_interface)
       end
 
       # OTHER/CONVENIENCE FUNCTIONALITIES

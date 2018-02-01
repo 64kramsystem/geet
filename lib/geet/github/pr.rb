@@ -12,8 +12,8 @@ module Geet
         api_path = 'pulls'
 
         if api_interface.upstream?
-          account = Geet::Github::Account.new(api_interface)
-          head = "#{account.authenticated_user}:#{head}"
+          authenticated_user = Geet::Github::User.authenticated(api_interface).username
+          head = "#{authenticated_user}:#{head}"
         end
 
         request_data = { title: title, body: description, head: head, base: 'master' }

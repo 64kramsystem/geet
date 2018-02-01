@@ -102,7 +102,7 @@ module Geet
         @out.puts 'Assigning authenticated user...'
 
         Thread.new do
-          issue.assign_users(@repository.authenticated_user)
+          issue.assign_users(@repository.authenticated_user.username)
         end
       end
     end

@@ -61,7 +61,7 @@ module Geet
         if reviewers
           selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple, name_method: :username) do |all_reviewers|
             authenticated_user = @repository.authenticated_user
-            all_reviewers.delete_if { |reviewer| reviewer.username == authenticated_user }
+            all_reviewers.delete_if { |reviewer| reviewer.username == authenticated_user.username }
           end
         end
 
@@ -107,7 +107,7 @@ module Geet
         @out.puts 'Assigning authenticated user...'
 
         Thread.new do
-          pr.assign_users(@repository.authenticated_user)
+          pr.assign_users(@repository.authenticated_user.username)
         end
       end
 
