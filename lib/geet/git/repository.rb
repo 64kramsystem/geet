@@ -32,7 +32,7 @@ module Geet
       # REMOTE FUNCTIONALITIES (REPOSITORY)
 
       def collaborators
-        attempt_provider_call(:Collaborator, :list, api_interface)
+        attempt_provider_call(:User, :list_collaborators, api_interface)
       end
 
       def labels
