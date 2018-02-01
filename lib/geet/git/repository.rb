@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'shellwords'
 require_relative '../utils/git_client'
 
 module Geet
@@ -33,7 +32,7 @@ module Geet
       # REMOTE FUNCTIONALITIES (REPOSITORY)
 
       def collaborators
-        attempt_provider_call(:Collaborator, :list, api_interface)
+        attempt_provider_call(:User, :list_collaborators, api_interface)
       end
 
       def labels
@@ -85,7 +84,7 @@ module Geet
       # REMOTE FUNCTIONALITIES (ACCOUNT)
 
       def authenticated_user
-        attempt_provider_call(:Account, :new, api_interface).authenticated_user
+        attempt_provider_call(:User, :authenticated, api_interface)
       end
 
       # OTHER/CONVENIENCE FUNCTIONALITIES

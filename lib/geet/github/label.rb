@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'date'
-
 module Geet
   module Github
     class Label

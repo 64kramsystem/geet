@@ -59,8 +59,9 @@ module Geet
         selection_manager.add_attribute(:milestones, 'milestone', milestone, :single, name_method: :title) if milestone
 
         if reviewers
-          selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple) do |all_reviewers|
-            all_reviewers - [@repository.authenticated_user]
+          selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple, name_method: :username) do |all_reviewers|
+            authenticated_user = @repository.authenticated_user
+            all_reviewers.delete_if { |reviewer| reviewer.username == authenticated_user.username }
           end
         end
 
@@ -106,7 +107,7 @@ module Geet
         @out.puts 'Assigning authenticated user...'
 
         Thread.new do
-          pr.assign_users(@repository.authenticated_user)
+          pr.assign_users(@repository.authenticated_user.username)
         end
       end
 
@@ -129,7 +130,7 @@ module Geet
       end
 
       def request_review(pr, reviewers)
-        @out.puts "Requesting review from #{reviewers.join(', ')}..."
+        @out.puts "Requesting review from #{reviewers.map(&:username).join(', ')}..."
 
         Thread.new do
           pr.request_review(reviewers)
