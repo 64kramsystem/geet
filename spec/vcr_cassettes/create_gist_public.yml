@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.github.com/gists
     body:
       encoding: UTF-8
-      string: '{"public":true,"files":{"geet_gist20171120-21351-vhp23e":{"content":"testcontent"}},"description":"testdescription"}'
+      string: '{"public":true,"files":{"geet_gist_test.md":{"content":"testcontent"}},"description":"testdescription"}'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3

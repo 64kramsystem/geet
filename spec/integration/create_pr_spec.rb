@@ -12,7 +12,7 @@ describe Geet::Services::CreatePr do
 
   context 'with labels, reviewers and milestones' do
     it 'should create a PR' do
-      allow(git_client).to receive(:current_branch).and_return('mybranch1')
+      allow(git_client).to receive(:current_branch).and_return('mybranch')
       allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
       expected_output = <<~STR

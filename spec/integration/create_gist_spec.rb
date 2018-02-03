@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'tempfile'
+require 'tmpdir'
 
 require_relative '../../lib/geet/git/repository'
 require_relative '../../lib/geet/services/create_gist'
 
 describe Geet::Services::CreateGist do
-  let(:tempfile) { Tempfile.open('geet_gist') { |file| file << 'testcontent' } }
+  let(:temp_filename) { File.join(Dir.tmpdir, 'geet_gist_test.md') }
+  let(:temp_file) { File.open(temp_filename, 'w') { |file| file << 'testcontent' } }
 
   it 'should create a public gist' do
     expected_output = <<~STR
@@ -19,7 +20,7 @@ describe Geet::Services::CreateGist do
 
     VCR.use_cassette('create_gist_public') do
       described_class.new(out: actual_output).execute(
-        tempfile.path, description: 'testdescription', publik: true, no_browse: true
+        temp_file.path, description: 'testdescription', publik: true, no_browse: true
       )
     end
 
@@ -36,7 +37,7 @@ describe Geet::Services::CreateGist do
 
     VCR.use_cassette('create_gist_private') do
       described_class.new(out: actual_output).execute(
-        tempfile.path, description: 'testdescription', no_browse: true
+        temp_file.path, description: 'testdescription', no_browse: true
       )
     end
 
