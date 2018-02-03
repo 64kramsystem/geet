@@ -91,10 +91,12 @@ module Geet
       end
 
       def assign_users(issue, users)
-        @out.puts "Assigning users #{users.map(&:username).join(', ')}..."
+        usernames = users.map(&:username)
+
+        @out.puts "Assigning users #{usernames.join(', ')}..."
 
         Thread.new do
-          issue.assign_users(users)
+          issue.assign_users(usernames)
         end
       end
 
