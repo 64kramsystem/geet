@@ -8,7 +8,7 @@ require 'base64'
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/vcr_cassettes'
   config.hook_into :webmock
-  config.default_cassette_options = {match_requests_on: [:method, :uri, :body]}
+  config.default_cassette_options = {match_requests_on: [:method, :uri, :body], allow_unused_http_interactions: false}
 
   # See https://github.com/vcr/vcr/issues/201
   config.filter_sensitive_data('<GITHUB_CREDENTIALS>') do
