@@ -27,7 +27,9 @@ module Geet
 
         selection_manager.add_attribute(:collaborators, 'assignee', assignee, :single, name_method: :username)
 
-        selection_manager.select_attributes.map(&:username).first
+        selected_assignee, _ = selection_manager.select_attributes
+
+        selected_assignee&.username
       end
     end
   end
