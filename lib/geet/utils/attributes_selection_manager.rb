@@ -16,6 +16,12 @@ module Geet
     class AttributesSelectionManager
       include Geet::Shared::Constants
 
+      # Workaround for VCR not supporting multithreading; see https://github.com/vcr/vcr/issues/200.
+      #
+      class << self
+        attr_accessor :serialize_requests
+      end
+
       # Initialize the instance, and starts the background threads.
       #
       def initialize(repository, out: output)
@@ -54,9 +60,13 @@ module Geet
       def find_attribute_entries(repository_call)
         @out.puts "Finding #{repository_call}..."
 
-        Thread.new do
+        finder_thread = Thread.new do
           @repository.send(repository_call)
         end
+
+        finder_thread.join if self.class.serialize_requests
+
+        finder_thread
       end
 
       # Sample call:

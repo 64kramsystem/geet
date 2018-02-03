@@ -59,15 +59,19 @@ describe Geet::Services::CreateLabel do
     it 'should create a label' do
       allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
 
-      expected_output_template = <<~STR
-        Creating label...
-        Created with color #%<color>s
-      STR
-
       actual_output = StringIO.new
 
+      service_instance = described_class.new(repository, out: actual_output)
+
+      expect(service_instance).to receive(:rand).with(2**24).and_return(38911)
+
+      expected_output_template = <<~STR
+        Creating label...
+        Created with color #0097ff
+      STR
+
       actual_created_label = VCR.use_cassette('create_label_with_random_color') do
-        described_class.new(repository, out: actual_output).execute('my_label')
+        service_instance.execute('my_label')
       end
 
       expected_output = format(expected_output_template, color: actual_created_label.color)
@@ -75,7 +79,7 @@ describe Geet::Services::CreateLabel do
       expect(actual_output.string).to eql(expected_output)
 
       expect(actual_created_label.name).to eql('my_label')
-      expect(actual_created_label.color).to match(/\A[0-9a-f]{6}\z/)
+      expect(actual_created_label.color).to eql('0097ff')
     end
   end
 end

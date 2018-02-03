@@ -5,7 +5,7 @@ http_interactions:
     uri: https://api.github.com/repos/donaldduck/testrepo/labels
     body:
       encoding: UTF-8
-      string: '{"name":"my_label","color":"9aa53a"}'
+      string: '{"name":"my_label","color":"0097ff"}'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3

@@ -130,10 +130,12 @@ module Geet
       end
 
       def request_review(pr, reviewers)
-        @out.puts "Requesting review from #{reviewers.map(&:username).join(', ')}..."
+        reviewer_usernames = reviewers.map(&:username)
+
+        @out.puts "Requesting review from #{reviewer_usernames.join(', ')}..."
 
         Thread.new do
-          pr.request_review(reviewers)
+          pr.request_review(reviewer_usernames)
         end
       end
     end
