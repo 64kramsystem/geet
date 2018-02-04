@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'abstract_create_issue'
+require_relative '../shared/repo_permissions'
 
 module Geet
   module Services
     class CreateIssue < AbstractCreateIssue
+      include Geet::Shared::RepoPermissions
+
       # options:
       #   :labels
       #   :milestone:     number or description pattern.
@@ -16,11 +19,23 @@ module Geet
           labels: nil, milestone: nil, assignees: nil, no_open_issue: nil,
           **
       )
-        selected_labels, selected_milestone, selected_assignees = find_and_select_attributes(labels, milestone, assignees)
+        # Inefficient (in worst case, triples the pre issue creation waiting time: #is_collaborator?,
+        # #has_permissions?, and the attributes batch), but not trivial to speed up. Not difficult
+        # either, but currently not worth spending time.
+        #
+        # Theoretically, #is_collaborator? could be skipped, but this is cleaner.
+        user_has_write_permissions = @repository.authenticated_user.is_collaborator? &&
+                                     @repository.authenticated_user.has_permission?(PERMISSION_WRITE)
+
+        if user_has_write_permissions
+          selected_labels, selected_milestone, selected_assignees = find_and_select_attributes(labels, milestone, assignees)
+        end
 
         issue = create_issue(title, description)
 
-        edit_issue(issue, selected_labels, selected_milestone, selected_assignees)
+        if user_has_write_permissions
+          edit_issue(issue, selected_labels, selected_milestone, selected_assignees)
+        end
 
         if no_open_issue
           @out.puts "Issue address: #{issue.link}"

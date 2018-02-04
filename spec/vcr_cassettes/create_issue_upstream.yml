@@ -1,8 +1,155 @@
 ---
 http_interactions:
 - request:
+    method: get
+    uri: https://api.github.com/user
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 05 Feb 2018 12:21:32 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4973'
+      X-Ratelimit-Reset:
+      - '1517834613'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      Etag:
+      - W/"9ed227278873ad9bdb804e3f45b1383e"
+      Last-Modified:
+      - Tue, 30 Jan 2018 20:56:34 GMT
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.076684'
+      X-Github-Request-Id:
+      - 8FE6:14EC:2CB9F3D:5FA8226:5A784C4B
+    body:
+      encoding: ASCII-8BIT
+      string: '{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false,"name":"Donald
+        Duck","company":"@momcorp","blog":"","location":"Berlin","email":"donald.pub2@gmail.com","hireable":true,"bio":null,"public_repos":18,"public_gists":0,"followers":9,"following":0,"created_at":"2012-04-01T11:52:16Z","updated_at":"2018-01-30T20:56:34Z","private_gists":0,"total_private_repos":0,"owned_private_repos":0,"disk_usage":32591,"collaborators":0,"two_factor_authentication":true,"plan":{"name":"free","space":976562499,"collaborators":0,"private_repos":0}}'
+    http_version: 
+  recorded_at: Mon, 05 Feb 2018 12:21:32 GMT
+- request:
+    method: get
+    uri: https://api.github.com/repos/momcorp/therepo/collaborators/donaldduck
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 404
+      message: Not Found
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Mon, 05 Feb 2018 12:21:33 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 404 Not Found
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4972'
+      X-Ratelimit-Reset:
+      - '1517834613'
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Runtime-Rack:
+      - '0.030822'
+      X-Github-Request-Id:
+      - C5A6:14EC:2CB9F7A:5FA82A4:5A784C4C
+    body:
+      encoding: ASCII-8BIT
+      string: '{"message":"Not Found","documentation_url":"https://developer.github.com/v3/repos/collaborators/#check-if-a-user-is-a-collaborator"}'
+    http_version: 
+  recorded_at: Mon, 05 Feb 2018 12:21:33 GMT
+- request:
     method: post
-    uri: https://api.github.com/repos/donald-fr/testrepo_u/issues
+    uri: https://api.github.com/repos/momcorp/therepo/issues
     body:
       encoding: UTF-8
       string: '{"title":"Title","body":"Description","base":"master"}'
@@ -25,32 +172,32 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Tue, 21 Nov 2017 13:01:25 GMT
+      - Mon, 05 Feb 2018 12:21:33 GMT
       Content-Type:
       - application/json; charset=utf-8
       Content-Length:
-      - '1720'
+      - '1864'
       Status:
       - 201 Created
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4986'
+      - '4971'
       X-Ratelimit-Reset:
-      - '1511270582'
+      - '1517834613'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       Etag:
-      - '"4f22b9f19b5f2d56c87996ff9c1450c4"'
+      - '"cc0a9e95ca24d1d5ead805305ff4f450"'
       X-Oauth-Scopes:
       - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
         delete_repo, gist, notifications, repo, user
       X-Accepted-Oauth-Scopes:
       - ''
       Location:
-      - https://api.github.com/repos/donald-fr/testrepo_u/issues/7
+      - https://api.github.com/repos/momcorp/therepo/issues/42
       X-Github-Media-Type:
       - github.v3; format=json
       Access-Control-Expose-Headers:
@@ -69,12 +216,12 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Runtime-Rack:
-      - '0.194797'
+      - '0.162733'
       X-Github-Request-Id:
-      - C4A8:2B89:3D76FA:9B82AE:5A1423A4
+      - 8FEA:14ED:3C0B222:78B5001:5A784C4D
     body:
       encoding: UTF-8
-      string: '{"url":"https://api.github.com/repos/donald-fr/testrepo_u/issues/7","repository_url":"https://api.github.com/repos/donald-fr/testrepo_u","labels_url":"https://api.github.com/repos/donald-fr/testrepo_u/issues/7/labels{/name}","comments_url":"https://api.github.com/repos/donald-fr/testrepo_u/issues/7/comments","events_url":"https://api.github.com/repos/donald-fr/testrepo_u/issues/7/events","html_url":"https://github.com/donald-fr/testrepo_u/issues/7","id":123456767,"number":7,"title":"Title","user":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"assignees":[],"milestone":null,"comments":0,"created_at":"2017-11-21T13:01:25Z","updated_at":"2017-11-21T13:01:25Z","closed_at":null,"author_association":"COLLABORATOR","body":"Description","closed_by":null}'
+      string: '{"url":"https://api.github.com/repos/momcorp/therepo/issues/42","repository_url":"https://api.github.com/repos/momcorp/therepo","labels_url":"https://api.github.com/repos/momcorp/therepo/issues/42/labels{/name}","comments_url":"https://api.github.com/repos/momcorp/therepo/issues/42/comments","events_url":"https://api.github.com/repos/momcorp/therepo/issues/42/events","html_url":"https://github.com/momcorp/therepo/issues/42","id":123456144,"number":42,"title":"Title","user":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"labels":[],"state":"open","locked":false,"assignee":null,"assignees":[],"milestone":null,"comments":0,"created_at":"2018-02-05T12:21:33Z","updated_at":"2018-02-05T12:21:33Z","closed_at":null,"author_association":"COLLABORATOR","body":"Description","closed_by":null}'
     http_version: 
-  recorded_at: Tue, 21 Nov 2017 13:01:25 GMT
+  recorded_at: Mon, 05 Feb 2018 12:21:33 GMT
 recorded_with: VCR 3.0.3

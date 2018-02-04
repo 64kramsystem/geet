@@ -7,12 +7,12 @@ require_relative '../../lib/geet/services/create_issue'
 
 describe Geet::Services::CreateIssue do
   let(:git_client) { Geet::Utils::GitClient.new }
-  let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
+  let(:repository) { Geet::Git::Repository.new(warnings: false, git_client: git_client) }
   let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   context 'with labels, assignees and milestones' do
     it 'should create an issue' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
 
       expected_output = <<~STR
         Finding labels...
@@ -21,8 +21,8 @@ describe Geet::Services::CreateIssue do
         Creating the issue...
         Adding labels bug, invalid...
         Setting milestone 0.0.1...
-        Assigning users donald-ts, donald-fr...
-        Issue address: https://github.com/donaldduck/testrepo/issues/1
+        Assigning users donaldduck, donald-fr...
+        Issue address: https://github.com/donaldduck/testrepo_f/issues/2
       STR
 
       actual_output = StringIO.new
@@ -30,40 +30,44 @@ describe Geet::Services::CreateIssue do
       actual_created_issue = VCR.use_cassette('create_issue') do
         described_class.new(repository, out: actual_output).execute(
           'Title', 'Description',
-          labels: 'bug,invalid', milestone: '0.0.1', assignees: 'donald-ts,donald-fr',
+          labels: 'bug,invalid', milestone: '0.0.1', assignees: 'donaldduck,donald-fr',
           no_open_issue: true
         )
       end
 
       expect(actual_output.string).to eql(expected_output)
 
-      expect(actual_created_issue.number).to eql(1)
+      expect(actual_created_issue.number).to eql(2)
       expect(actual_created_issue.title).to eql('Title')
-      expect(actual_created_issue.link).to eql('https://github.com/donaldduck/testrepo/issues/1')
+      expect(actual_created_issue.link).to eql('https://github.com/donaldduck/testrepo_f/issues/2')
     end
   end
 
-  it 'should create an upstream issue' do
-    allow(git_client).to receive(:current_branch).and_return('mybranch')
-    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
-    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+  context 'without write permissions' do
+    context 'without labels, assignees and milestones' do
+      it 'should create an upstream issue' do
+        allow(git_client).to receive(:current_branch).and_return('mybranch')
+        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+        allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:momcorp/therepo')
 
-    expected_output = <<~STR
-      Creating the issue...
-      Issue address: https://github.com/donald-fr/testrepo_u/issues/7
-    STR
+        expected_output = <<~STR
+          Creating the issue...
+          Issue address: https://github.com/momcorp/therepo/issues/42
+        STR
 
-    actual_output = StringIO.new
+        actual_output = StringIO.new
 
-    actual_created_issue = VCR.use_cassette('create_issue_upstream') do
-      create_options = { no_open_issue: true, out: actual_output }
-      described_class.new(upstream_repository, out: actual_output).execute('Title', 'Description', create_options)
+        actual_created_issue = VCR.use_cassette('create_issue_upstream') do
+          create_options = { no_open_issue: true, out: actual_output }
+          described_class.new(upstream_repository, out: actual_output).execute('Title', 'Description', create_options)
+        end
+
+        expect(actual_output.string).to eql(expected_output)
+
+        expect(actual_created_issue.number).to eql(42)
+        expect(actual_created_issue.title).to eql('Title')
+        expect(actual_created_issue.link).to eql('https://github.com/momcorp/therepo/issues/42')
+      end
     end
-
-    expect(actual_output.string).to eql(expected_output)
-
-    expect(actual_created_issue.number).to eql(7)
-    expect(actual_created_issue.title).to eql('Title')
-    expect(actual_created_issue.link).to eql('https://github.com/donald-fr/testrepo_u/issues/7')
   end
 end
