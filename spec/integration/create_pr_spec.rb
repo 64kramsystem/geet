@@ -13,7 +13,7 @@ describe Geet::Services::CreatePr do
   context 'with labels, reviewers and milestones' do
     it 'should create a PR' do
       allow(git_client).to receive(:current_branch).and_return('mybranch')
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
 
       expected_output = <<~STR
         Finding labels...
@@ -22,9 +22,9 @@ describe Geet::Services::CreatePr do
         Creating PR...
         Assigning authenticated user...
         Adding labels bug, invalid...
-        Setting milestone milestone 1...
+        Setting milestone 0.0.1...
         Requesting review from donald-fr...
-        PR address: https://github.com/donaldduck/testrepo/pull/39
+        PR address: https://github.com/donaldduck/testrepo_f/pull/1
       STR
 
       actual_output = StringIO.new
@@ -33,48 +33,85 @@ describe Geet::Services::CreatePr do
         service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
         service_instance.execute(
           'Title', 'Description',
-          labels: 'bug,invalid', milestone: 'milestone 1', reviewers: 'donald-fr',
+          labels: 'bug,invalid', milestone: '0.0.1', reviewers: 'donald-fr',
           no_open_pr: true, output: actual_output
         )
       end
 
       expect(actual_output.string).to eql(expected_output)
 
-      expect(actual_created_pr.number).to eql(39)
+      expect(actual_created_pr.number).to eql(1)
       expect(actual_created_pr.title).to eql('Title')
-      expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo/pull/39')
+      expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo_f/pull/1')
     end
   end
 
-  it 'should create an upstream PR' do
-    allow(git_client).to receive(:current_branch).and_return('mybranch')
-    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
-    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+  context 'on an upstream repository' do
+    it 'should create an upstream PR' do
+      allow(git_client).to receive(:current_branch).and_return('mybranch')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
+      allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
-    expected_output = <<~STR
-      Creating PR...
-      Assigning authenticated user...
-      PR address: https://github.com/donald-fr/testrepo_u/pull/4
-    STR
+      expected_output = <<~STR
+        Creating PR...
+        Assigning authenticated user...
+        PR address: https://github.com/donald-fr/testrepo_u/pull/8
+      STR
 
-    actual_output = StringIO.new
+      actual_output = StringIO.new
 
-    actual_created_pr = VCR.use_cassette('create_pr_upstream') do
-      service_instance = described_class.new(upstream_repository, out: actual_output, git_client: git_client)
-      service_instance.execute('Title', 'Description', no_open_pr: true, output: actual_output)
+      actual_created_pr = VCR.use_cassette('create_pr_upstream') do
+        service_instance = described_class.new(upstream_repository, out: actual_output, git_client: git_client)
+        service_instance.execute('Title', 'Description', no_open_pr: true, output: actual_output)
+      end
+
+      expect(actual_output.string).to eql(expected_output)
+
+      expect(actual_created_pr.number).to eql(8)
+      expect(actual_created_pr.title).to eql('Title')
+      expect(actual_created_pr.link).to eql('https://github.com/donald-fr/testrepo_u/pull/8')
     end
 
-    expect(actual_output.string).to eql(expected_output)
+    # It would be more consistent to have this UT outside of an upstream context, however this use
+    # case is actually a typical real-world one
+    #
+    context 'without write permissions' do
+      context 'without labels, reviewers and milestones' do
+        it 'should create a PR' do
+          allow(git_client).to receive(:current_branch).and_return('mybranch')
+          allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
+          allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
-    expect(actual_created_pr.number).to eql(4)
-    expect(actual_created_pr.title).to eql('Title')
-    expect(actual_created_pr.link).to eql('https://github.com/donald-fr/testrepo_u/pull/4')
+          expected_output = <<~STR
+            Creating PR...
+            PR address: https://github.com/donald-fr/testrepo_u/pull/9
+          STR
+
+          actual_output = StringIO.new
+
+          actual_created_pr = VCR.use_cassette('create_pr_upstream_without_write_permissions') do
+            service_instance = described_class.new(upstream_repository, out: actual_output, git_client: git_client)
+            service_instance.execute(
+              'Title', 'Description',
+              labels: '<ignored>',
+              no_open_pr: true, output: actual_output
+            )
+          end
+
+          expect(actual_output.string).to eql(expected_output)
+
+          expect(actual_created_pr.number).to eql(9)
+          expect(actual_created_pr.title).to eql('Title')
+          expect(actual_created_pr.link).to eql('https://github.com/donald-fr/testrepo_u/pull/9')
+        end
+      end
+    end
   end
 
   context 'in automated mode' do
     it 'should raise an error when the working tree is dirty' do
       allow(git_client).to receive(:working_tree_clean?).and_return(false)
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
 
       expected_output = <<~STR
         Error! Saved summary to /tmp/last_geet_edited_summary.md
@@ -98,13 +135,13 @@ describe Geet::Services::CreatePr do
       expect(git_client).to receive(:upstream_branch).and_return('mybranch')
       expect(git_client).to receive(:push)
 
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
 
       expected_output = <<~STR
         Pushing to upstream branch...
         Creating PR...
         Assigning authenticated user...
-        PR address: https://github.com/donaldduck/testrepo/pull/29
+        PR address: https://github.com/donaldduck/testrepo_f/pull/2
       STR
 
       actual_output = StringIO.new
@@ -117,19 +154,19 @@ describe Geet::Services::CreatePr do
       expect(actual_output.string).to eql(expected_output)
     end
 
-    it "should create an upstream branch, when there isn't one" do
+    it "should create an upstream branch, when there isn't one (is not tracked)" do
       allow(git_client).to receive(:working_tree_clean?).and_return(true)
       allow(git_client).to receive(:current_branch).and_return('mybranch')
       expect(git_client).to receive(:upstream_branch).and_return(nil)
       expect(git_client).to receive(:push).with(upstream_branch: 'mybranch')
 
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
 
       expected_output = <<~STR
         Creating upstream branch "mybranch"...
         Creating PR...
         Assigning authenticated user...
-        PR address: https://github.com/donaldduck/testrepo/pull/30
+        PR address: https://github.com/donaldduck/testrepo_f/pull/4
       STR
 
       actual_output = StringIO.new
