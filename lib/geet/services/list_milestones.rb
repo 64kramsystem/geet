@@ -3,7 +3,7 @@
 module Geet
   module Services
     class ListMilestones
-      def initialize(repository, out: $output)
+      def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
       end

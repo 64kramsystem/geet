@@ -3,6 +3,7 @@
 require 'uri'
 require 'net/http'
 require 'json'
+require_relative '../shared/http_error'
 
 module Geet
   module Github
@@ -53,8 +54,8 @@ module Geet
           parsed_response = JSON.parse(response.body) if response.body
 
           if error?(response)
-            formatted_error = decode_and_format_error(parsed_response)
-            raise(formatted_error)
+            error_message = decode_and_format_error(parsed_response)
+            raise Geet::Shared::HttpError.new(error_message, response.code)
           end
 
           return parsed_response if !multipage

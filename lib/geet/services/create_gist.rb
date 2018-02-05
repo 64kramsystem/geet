@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/os_helper.rb'
-require_relative '../github/api_interface.rb'
-require_relative '../github/gist.rb'
+require_relative '../helpers/os_helper'
+require_relative '../github/api_interface'
+require_relative '../github/gist'
 
 module Geet
   module Services
