@@ -153,7 +153,7 @@ module Geet
       private
 
       def gitdir_option
-        "--git-dir #{@location.shellescape}/.git" if @location
+        "-C #{@location.shellescape}" if @location
       end
     end
   end

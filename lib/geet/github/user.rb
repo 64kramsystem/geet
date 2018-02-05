@@ -35,7 +35,11 @@ module Geet
           true
         rescue Geet::Shared::HttpError => error
           # 404: not a collaborator.
-          error.code == 404 ? false : raise
+          # Although the documentation mentions only 404, 403 is a valid response as well; it seems
+          # that 404 is given on private repositories, while 403 on public ones ("Must have push
+          # access to view repository collaborators.").
+          #
+          (error.code == 404 || error.code == 403) ? false : raise
         end
       end
 

@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'abstract_create_issue'
+require_relative '../shared/repo_permissions'
 
 module Geet
   module Services
     class CreatePr < AbstractCreateIssue
+      include Geet::Shared::RepoPermissions
+
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
       def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
@@ -24,13 +27,21 @@ module Geet
       )
         ensure_clean_tree if automated_mode
 
-        selected_labels, selected_milestone, selected_reviewers = find_and_select_attributes(labels, milestone, reviewers)
+        # See CreateIssue#execute for notes about performance.
+        user_has_write_permissions = @repository.authenticated_user.is_collaborator? &&
+                                     @repository.authenticated_user.has_permission?(PERMISSION_WRITE)
+
+        if user_has_write_permissions
+          selected_labels, selected_milestone, selected_reviewers = find_and_select_attributes(labels, milestone, reviewers)
+        end
 
         sync_with_upstream_branch if automated_mode
 
         pr = create_pr(title, description)
 
-        edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)
+        if user_has_write_permissions
+          edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)
+        end
 
         if no_open_pr
           @out.puts "PR address: #{pr.link}"
