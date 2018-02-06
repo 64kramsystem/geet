@@ -45,7 +45,7 @@ module Geet
 
             if !wait_thread.value.success?
               error_message = stderr_content.lines.first.strip
-              raise "Error#{description_message}: #{error_message})"
+              raise "Error#{description_message}: #{error_message}"
             end
 
             stdout_content.strip
