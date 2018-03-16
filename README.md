@@ -8,6 +8,14 @@ This tool is very similar to [Hub](https://github.com/github/hub), but it suppor
 
 Please see the [development status](#development-status) section for informations about the current development.
 
+## Development status
+
+Geet has been put on hold until further notice (in other words, very likely discontinued).
+
+Although I will keep using it daily, and I have many ideas for making it very smooth and efficient (beside the fact that it's very easy to extend), it has no userbase, while [Hub](https://github.com/github/hub) has a very large one.
+
+Therefore, it's probably better to put effort in contributing Hub, rather than improving Geet.
+
 ## Operation/providers support
 
 The functionalities currently supported are:
@@ -155,11 +163,5 @@ Examples:
     $ geet --help
     $ geet pr --help
     $ geet pr create --help
-
-## Development status
-
-Geet is in beta status. Although I use it daily, new features are frequently added, and internal/external APIs/workflows may change.
-
-The public release will be 1.0.
 
 [BS img]: https://travis-ci.org/saveriomiroddi/geet.svg?branch=master
