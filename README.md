@@ -10,9 +10,9 @@ Please see the [development status](#development-status) section for information
 
 ## Development status
 
-Geet has been put on hold until further notice (in other words, very likely discontinued).
+Geet is not under active development anymore.
 
-Although I will keep using it daily, and I have many ideas for making it very smooth and efficient (beside the fact that it's very easy to extend), it has no userbase, while [Hub](https://github.com/github/hub) has a very large one.
+Although I keep using it daily, and I have many ideas for making it very smooth and efficient (beside the fact that it's very easy to extend), it has no userbase, while [Hub](https://github.com/github/hub) has a very large one.
 
 Therefore, it's probably better to put effort in contributing Hub, rather than improving Geet.
 
