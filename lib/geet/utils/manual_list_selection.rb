@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'temp-fork-tp-filter'
+require 'tty-prompt'
 
 module Geet
   module Utils
