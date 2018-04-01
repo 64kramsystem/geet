@@ -19,7 +19,8 @@ module Geet
       # name_method:     required when non-string objects are passed as entries; its invocation on
       #                  each object must return a string, which is used as key.
       #
-      # returns: the selected entry. if no entries are nil is returned.
+      # returns: the selected entry. if the null entry (NO_SELECTION_KEY) is selected, nil is
+      #          returned.
       #
       def select_entry(entry_type, entries, name_method: nil)
         return nil if entries.empty?
@@ -29,7 +30,9 @@ module Geet
         entries = create_entries_map(entries, name_method)
         entries = add_no_selection_entry(entries)
 
-        show_prompt(:select, entry_type, entries)
+        chosen_entry = show_prompt(:select, entry_type, entries)
+
+        no_selection?(chosen_entry) ? nil : chosen_entry
       end
 
       # Shows a prompt for selecting an entry from a list.
@@ -72,6 +75,10 @@ module Geet
         prompt_title = "Please select the #{entry_type}(s):"
 
         TTY::Prompt.new.send(invocation_method, prompt_title, entries, filter: true, per_page: PAGER_SIZE)
+      end
+
+      def no_selection?(entry)
+        entry == NO_SELECTION_KEY
       end
     end
   end
