@@ -49,7 +49,7 @@ class GeetLauncher
     when MILESTONE_LIST_COMMAND
       Services::ListMilestones.new(repository).execute
     when PR_CREATE_COMMAND
-      summary = options[:summary] || edit_pr_summary
+      summary = options[:summary] || edit_pr_summary(base: options[:base])
       title, description = split_summary(summary)
 
       options = default_to_manual_selection(options, :labels, :milestone, :reviewers)
@@ -66,11 +66,13 @@ class GeetLauncher
 
   private
 
-  def edit_pr_summary
+  def edit_pr_summary(base: nil)
+    base ||= 'master'
+
     # Tricky. It would be best to have Git logic exlusively inside the services,
     # but at the same time, the summary editing should be out.
     git = Utils::GitClient.new
-    pr_commits = git.cherry('master')
+    pr_commits = git.cherry(base)
 
     if pr_commits.size == 1
       prepopulated_summary = git.show_description('HEAD')

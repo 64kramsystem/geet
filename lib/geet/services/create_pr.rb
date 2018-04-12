@@ -23,7 +23,7 @@ module Geet
       #
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
-        no_open_pr: nil, automated_mode: false, **
+        base: nil, no_open_pr: nil, automated_mode: false, **
       )
         ensure_clean_tree if automated_mode
 
@@ -37,7 +37,7 @@ module Geet
 
         sync_with_upstream_branch if automated_mode
 
-        pr = create_pr(title, description)
+        pr = create_pr(title, description, base)
 
         if user_has_write_permissions
           edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)
@@ -93,10 +93,10 @@ module Geet
         end
       end
 
-      def create_pr(title, description)
+      def create_pr(title, description, base)
         @out.puts 'Creating PR...'
 
-        @repository.create_pr(title, description, @git_client.current_branch)
+        @repository.create_pr(title, description, @git_client.current_branch, base: base)
       end
 
       def edit_pr(pr, labels, milestone, reviewers)

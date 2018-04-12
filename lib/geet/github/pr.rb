@@ -8,15 +8,16 @@ module Geet
     class PR < AbstractIssue
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
-      def self.create(title, description, head, api_interface)
+      def self.create(title, description, head, api_interface, base: nil)
         api_path = 'pulls'
+        base ||= 'master'
 
         if api_interface.upstream?
           authenticated_user = Geet::Github::User.authenticated(api_interface).username
           head = "#{authenticated_user}:#{head}"
         end
 
-        request_data = { title: title, body: description, head: head, base: 'master' }
+        request_data = { title: title, body: description, head: head, base: base }
 
         response = api_interface.send_request(api_path, data: request_data)
 
