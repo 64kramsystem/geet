@@ -26,7 +26,7 @@ module Geet
         api_path = 'issues'
 
         request_params = {}
-        request_params[:milestone] = milestone if milestone
+        request_params[:milestone] = milestone.number if milestone
         request_params[:assignee] = assignee.username if assignee
 
         response = api_interface.send_request(api_path, params: request_params, multipage: true)

@@ -53,7 +53,7 @@ module Geet
 
         milestones.each_with_object(Mutex.new) do |milestone, mutex|
           entries_threads << Thread.new do
-            issues = @repository.issues(milestone: milestone.number)
+            issues = @repository.issues(milestone: milestone)
 
             mutex.synchronize do
               entries_by_milestone_number[milestone.number].concat(issues)
@@ -61,7 +61,7 @@ module Geet
           end
 
           entries_threads << Thread.new do
-            prs = @repository.prs(milestone: milestone.number)
+            prs = @repository.prs(milestone: milestone)
 
             mutex.synchronize do
               entries_by_milestone_number[milestone.number].concat(prs)
