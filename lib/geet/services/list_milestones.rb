@@ -8,25 +8,25 @@ module Geet
         @out = out
       end
 
-      # In the Gitlab model, a PR is not an abstract issue, so we use a vague `entry` name.
-      #
       def execute
         milestones = find_milestones
-        all_entries = find_milestone_entries(milestones)
+        all_milestone_entries = find_all_milestone_entries(milestones)
 
         @out.puts
 
-        milestones.each do |milestone|
+        all_milestone_entries.each do |milestone, milestone_entries|
           @out.puts milestone_description(milestone)
 
-          milestone_entries = all_entries[milestone.number]
+          milestone_entries.fetch(:issues).each do |issue|
+            @out.puts "  #{issue.number}. #{issue.title} (#{issue.link})"
+          end
 
-          milestone_entries = sort_milestone_entries(milestone_entries)
-
-          milestone_entries.each do |entry|
-            @out.puts "  #{entry.number}. #{entry.title} (#{entry.link})"
+          milestone_entries.fetch(:prs).each do |pr|
+            @out.puts "  #{pr.number}. #{pr.title} (#{pr.link})"
           end
         end
+
+        all_milestone_entries.keys
       end
 
       private
@@ -45,57 +45,39 @@ module Geet
         @repository.milestones
       end
 
-      def find_milestone_entries(milestones)
+      # Returns the structure:
+      #
+      # { milestone => {issues: [...], prs: [...]}}
+      #
+      def find_all_milestone_entries(milestones)
         @out.puts 'Finding issues and PRs...'
 
-        entries_by_milestone_number = milestones.map { |milestone| [milestone.number, []] }.to_h
-        entries_threads = []
+        all_milestone_entries = {}
+        all_threads = []
 
         milestones.each_with_object(Mutex.new) do |milestone, mutex|
-          entries_threads << Thread.new do
+          all_milestone_entries[milestone] = {}
+
+          all_threads << Thread.new do
             issues = @repository.issues(milestone: milestone)
 
             mutex.synchronize do
-              entries_by_milestone_number[milestone.number].concat(issues)
+              all_milestone_entries[milestone][:issues] = issues
             end
           end
 
-          entries_threads << Thread.new do
+          all_threads << Thread.new do
             prs = @repository.prs(milestone: milestone)
 
             mutex.synchronize do
-              entries_by_milestone_number[milestone.number].concat(prs)
+              all_milestone_entries[milestone][:prs] = prs
             end
           end
         end
 
-        entries_threads.map(&:join)
+        all_threads.map(&:join)
 
-        entries_by_milestone_number
-      end
-
-      def sort_milestone_entries(milestone_entries)
-        milestone_entries.sort do |entry, other_entry|
-          # Put issues before PRs, and for same type, sort by number.
-          if issue?(entry) && pr?(other_entry)
-            -1
-          elsif pr?(entry) && issue?(other_entry)
-            1
-          else
-            entry.number <=> entry.number
-          end
-        end
-      end
-
-      private
-
-      # The classes can be from any namespace, so we can't test the class itself.
-      def pr?(entry)
-        entry.class.name[/[^:]+$/] == 'PR'
-      end
-
-      def issue?(entry)
-        entry.class.name[/[^:]+$/] == 'Issue'
+        all_milestone_entries
       end
     end
   end
