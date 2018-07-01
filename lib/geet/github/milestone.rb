@@ -1,11 +1,17 @@
 # frozen_string_literal: true
 
-require 'date'
+require_relative '../helpers/json_helper'
 
 module Geet
   module Github
     class Milestone
       attr_reader :number, :title, :due_on
+
+      class << self
+        private
+
+        include Helpers::JsonHelper
+      end
 
       def initialize(number, title, due_on, api_interface)
         @number = number
@@ -24,7 +30,7 @@ module Geet
 
         number = response.fetch('number')
         title = response.fetch('title')
-        due_on = parse_due_on(response.fetch('due_on'))
+        due_on = parse_iso_8601_timestamp(raw_due_on)
 
         new(number, title, due_on, api_interface)
       end
@@ -39,17 +45,9 @@ module Geet
         response.map do |milestone_data|
           number = milestone_data.fetch('number')
           title = milestone_data.fetch('title')
-          due_on = parse_due_on(milestone_data.fetch('due_on'))
+          due_on = parse_iso_8601_timestamp(milestone_data.fetch('due_on'))
 
           new(number, title, due_on, api_interface)
-        end
-      end
-
-      class << self
-        private
-
-        def parse_due_on(raw_due_on)
-          Date.strptime(raw_due_on, '%FT%TZ') if raw_due_on
         end
       end
     end
