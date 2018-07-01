@@ -10,11 +10,7 @@ Please see the [development status](#development-status) section for information
 
 ## Development status
 
-Geet is not under active development anymore.
-
-Although I keep using it daily, and I have many ideas for making it very smooth and efficient (beside the fact that it's very easy to extend), it has no userbase, while [Hub](https://github.com/github/hub) has a very large one.
-
-Therefore, it's probably better to put effort in contributing Hub, rather than improving Geet.
+Geet is (again) under active development. The current focus is implementing Gitlab functionalities.
 
 ## Operation/providers support
 
