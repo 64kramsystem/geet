@@ -1,0 +1,162 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/members
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - "<GITLAB_CREDENTIALS>"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 01 Jul 2018 14:59:20 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '532'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"49da9037811592984beee2ce5d52e536"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/members?id=donaldduck%2Ftestproject&page=1&per_page=20>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/members?id=donaldduck%2Ftestproject&page=1&per_page=20>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - c08e58bd-0c7d-4224-8a43-702db1687f72
+      X-Runtime:
+      - '0.051731'
+      X-Total:
+      - '2'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '1'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1530457220'
+      Ratelimit-Resettime:
+      - Mon, 01 Jul 2018 15:00:20 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":1234561,"name":"Donald Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck","access_level":40,"expires_at":null},{"id":1234566,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr","access_level":30,"expires_at":null}]'
+    http_version: 
+  recorded_at: Sun, 01 Jul 2018 14:59:20 GMT
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=1234566
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - "<GITLAB_CREDENTIALS>"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 01 Jul 2018 14:59:21 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1296'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"3686f432615d8dc0a03b33872b11100e"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=1234566&id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=1234566&id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 2dd40630-6c8b-48f6-81f0-00e93ef0a9d7
+      X-Runtime:
+      - '0.109420'
+      X-Total:
+      - '1'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '1'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1530457221'
+      Ratelimit-Resettime:
+      - Mon, 01 Jul 2018 15:00:21 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":12345608,"iid":3,"project_id":1234569,"title":"This is a test
+        issue","description":"A description.\n\nNow with more lines!","state":"opened","created_at":"2018-07-01T14:23:55.801Z","updated_at":"2018-07-01T14:23:55.801Z","closed_at":null,"closed_by":null,"labels":[],"milestone":null,"assignees":[{"id":1234566,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"}],"author":{"id":1234566,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"assignee":{"id":1234566,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"user_notes_count":0,"upvotes":0,"downvotes":0,"due_date":null,"confidential":false,"discussion_locked":null,"web_url":"https://gitlab.com/donaldduck/testproject/issues/3","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"weight":null}]'
+    http_version: 
+  recorded_at: Sun, 01 Jul 2018 14:59:21 GMT
+recorded_with: VCR 3.0.3

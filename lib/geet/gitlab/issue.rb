@@ -11,12 +11,15 @@ module Geet
         @link = link
       end
 
+      # See https://docs.gitlab.com/ee/api/issues.html#list-issues
+      #
       def self.list(api_interface, assignee: nil)
-        raise "Assignee filtering not currently supported!" if assignee
-
         api_path = "projects/#{api_interface.path_with_namespace(encoded: true)}/issues"
 
-        response = api_interface.send_request(api_path, multipage: true)
+        request_params = {}
+        request_params[:assignee_id] = assignee.id if assignee
+
+        response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
         response.each_with_object([]) do |issue_data, result|
           number = issue_data.fetch('iid')
