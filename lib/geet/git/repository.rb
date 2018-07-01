@@ -116,12 +116,12 @@ module Geet
           klass = Kernel.const_get(full_class_name)
 
           if !klass.respond_to?(meth)
-            raise "The functionality invoked (#{class_name} #{meth}) is not currently supported!"
+            raise "The functionality invoked (#{class_name}.#{meth}) is not currently supported!"
           end
 
           klass.send(meth, *args)
         else
-          raise "The functionality (#{class_name}) invoked is not currently supported!"
+          raise "The class referenced (#{full_class_name}) is not currently supported!"
         end
       end
 

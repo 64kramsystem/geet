@@ -46,7 +46,7 @@ describe Geet::Services::ListIssues do
         actual_output = StringIO.new
 
         service_result = VCR.use_cassette('github_com/list_issues_with_assignee') do
-          described_class.new(repository, out: actual_output).execute(assignee: 'donald-fr', )
+          described_class.new(repository, out: actual_output).execute(assignee: 'donald-fr')
         end
 
         actual_issue_numbers = service_result.map(&:number)
@@ -100,5 +100,29 @@ describe Geet::Services::ListIssues do
       expect(actual_output.string).to eql(expected_output)
       expect(actual_issue_numbers).to eql(expected_issue_numbers)
     end
-  end
+
+    context 'with assignee filtering' do
+      it 'should list the issues' do
+        allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+
+        expected_output = <<~STR
+          Finding collaborators...
+          3. This is a test issue (https://gitlab.com/donaldduck/testproject/issues/3)
+        STR
+        expected_issue_numbers = [3]
+
+        actual_output = StringIO.new
+
+        service_result = VCR.use_cassette('gitlab_com/list_issues_with_assignee') do
+          described_class.new(repository, out: actual_output).execute(assignee: 'donald-fr')
+        end
+
+        actual_issue_numbers = service_result.map(&:number)
+
+        expect(actual_output.string).to eql(expected_output)
+        expect(actual_issue_numbers).to eql(expected_issue_numbers)
+      end
+    end
+
+  end # with gitlab.com
 end
