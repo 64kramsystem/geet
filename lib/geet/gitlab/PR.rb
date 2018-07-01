@@ -2,7 +2,7 @@
 
 module Geet
   module Gitlab
-    class Issue
+    class PR
       attr_reader :number, :title, :link
 
       def initialize(number, title, link)
@@ -11,10 +11,12 @@ module Geet
         @link = link
       end
 
-      # See https://docs.gitlab.com/ee/api/issues.html#list-issues
+      # See https://docs.gitlab.com/ee/api/merge_requests.html#list-merge-requests
       #
-      def self.list(api_interface, assignee: nil, milestone: nil)
-        api_path = "projects/#{api_interface.path_with_namespace(encoded: true)}/issues"
+      def self.list(api_interface, milestone: nil, assignee: nil, head: nil)
+        raise ":head parameter currently unsupported!" if head
+
+        api_path = "projects/#{api_interface.path_with_namespace(encoded: true)}/merge_requests"
 
         request_params = {}
         request_params[:assignee_id] = assignee.id if assignee
@@ -22,14 +24,14 @@ module Geet
 
         response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
-        response.each_with_object([]) do |issue_data, result|
+        response.map do |issue_data, result|
           number = issue_data.fetch('iid')
           title = issue_data.fetch('title')
           link = issue_data.fetch('web_url')
 
-          result << new(number, title, link)
+          new(number, title, link)
         end
       end
-    end
-  end
-end
+    end # PR
+  end # Gitlab
+end # Geet

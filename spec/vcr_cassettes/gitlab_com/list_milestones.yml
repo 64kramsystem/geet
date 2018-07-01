@@ -1,0 +1,397 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/milestones
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - "<GITLAB_CREDENTIALS>"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 01 Jul 2018 21:09:24 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '569'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"13d6cb11278de7e357cd82b2402c4593"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/milestones?id=donaldduck%2Ftestproject&page=1&per_page=20&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/milestones?id=donaldduck%2Ftestproject&page=1&per_page=20&state=all>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - 5a660685-ce2a-4239-a73f-4acf26e44fbf
+      X-Runtime:
+      - '0.087923'
+      X-Total:
+      - '2'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '5'
+      Ratelimit-Remaining:
+      - '595'
+      Ratelimit-Reset:
+      - '1530479424'
+      Ratelimit-Resettime:
+      - Mon, 01 Jul 2018 21:10:24 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":123456,"iid":2,"project_id":1234569,"title":"Milestone 2","description":"","state":"active","created_at":"2018-07-01T15:26:16.248Z","updated_at":"2018-07-01T15:26:16.248Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/2"},{"id":123456,"iid":1,"project_id":1234569,"title":"Milestone
+        1","description":"","state":"active","created_at":"2018-07-01T15:26:06.933Z","updated_at":"2018-07-01T15:26:06.933Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/1"}]'
+    http_version: 
+  recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?milestone=Milestone%202
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - "<GITLAB_CREDENTIALS>"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 01 Jul 2018 21:09:24 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"d751713988987e9331980363e24189ce"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&milestone=Milestone+2&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&milestone=Milestone+2&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - a99ec7a6-ed27-4154-9ab8-2b254775de2d
+      X-Runtime:
+      - '0.054151'
+      X-Total:
+      - '0'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '2'
+      Ratelimit-Remaining:
+      - '598'
+      Ratelimit-Reset:
+      - '1530479424'
+      Ratelimit-Resettime:
+      - Mon, 01 Jul 2018 21:10:24 GMT
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?milestone=Milestone%202
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - "<GITLAB_CREDENTIALS>"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 01 Jul 2018 21:09:24 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '2'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"d751713988987e9331980363e24189ce"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?id=donaldduck%2Ftestproject&milestone=Milestone+2&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?id=donaldduck%2Ftestproject&milestone=Milestone+2&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - b3108142-da4f-452d-a0a4-7539d5dd4a20
+      X-Runtime:
+      - '0.058546'
+      X-Total:
+      - '0'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '2'
+      Ratelimit-Remaining:
+      - '598'
+      Ratelimit-Reset:
+      - '1530479424'
+      Ratelimit-Resettime:
+      - Mon, 01 Jul 2018 21:10:24 GMT
+    body:
+      encoding: UTF-8
+      string: "[]"
+    http_version: 
+  recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?milestone=Milestone%201
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - "<GITLAB_CREDENTIALS>"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 01 Jul 2018 21:09:24 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1398'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"1fcaee5a21d87cafb1bfc7c178b266f3"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&milestone=Milestone+1&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&milestone=Milestone+1&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - fbbd7a95-e0da-4d13-9709-55aa31070e64
+      X-Runtime:
+      - '0.123152'
+      X-Total:
+      - '1'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '2'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1530479424'
+      Ratelimit-Resettime:
+      - Mon, 01 Jul 2018 21:10:24 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":12345635,"iid":1,"project_id":1234569,"title":"Merge request
+        1","description":"","state":"opened","created_at":"2018-07-01T15:54:28.717Z","updated_at":"2018-07-01T21:08:40.165Z","target_branch":"master","source_branch":"test","upvotes":0,"downvotes":0,"author":{"id":1234561,"name":"Donald
+        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"assignee":null,"source_project_id":1234569,"target_project_id":1234569,"labels":[],"work_in_progress":false,"milestone":{"id":123456,"iid":1,"project_id":1234569,"title":"Milestone
+        1","description":"","state":"active","created_at":"2018-07-01T15:26:06.933Z","updated_at":"2018-07-01T15:26:06.933Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/1"},"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"b4a0b46d1c6881bc793d7a00637d4910a914d879","merge_commit_sha":null,"user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"web_url":"https://gitlab.com/donaldduck/testproject/merge_requests/1","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null}]'
+    http_version: 
+  recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
+- request:
+    method: get
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?milestone=Milestone%201
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Host:
+      - gitlab.com
+      Private-Token:
+      - "<GITLAB_CREDENTIALS>"
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Sun, 01 Jul 2018 21:09:24 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '1575'
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Etag:
+      - W/"bdc4979cdf9bb4a04355b49e64a32fe4"
+      Link:
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?id=donaldduck%2Ftestproject&milestone=Milestone+1&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?id=donaldduck%2Ftestproject&milestone=Milestone+1&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="last"
+      Vary:
+      - Origin
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Next-Page:
+      - ''
+      X-Page:
+      - '1'
+      X-Per-Page:
+      - '20'
+      X-Prev-Page:
+      - ''
+      X-Request-Id:
+      - de98f900-e07c-4c10-8101-7a629567fc45
+      X-Runtime:
+      - '0.143037'
+      X-Total:
+      - '1'
+      X-Total-Pages:
+      - '1'
+      Strict-Transport-Security:
+      - max-age=31536000
+      Ratelimit-Limit:
+      - '600'
+      Ratelimit-Observed:
+      - '2'
+      Ratelimit-Remaining:
+      - '599'
+      Ratelimit-Reset:
+      - '1530479424'
+      Ratelimit-Resettime:
+      - Mon, 01 Jul 2018 21:10:24 GMT
+    body:
+      encoding: UTF-8
+      string: '[{"id":12345608,"iid":3,"project_id":1234569,"title":"This is a test
+        issue","description":"A description.\n\nNow with more lines!","state":"opened","created_at":"2018-07-01T14:23:55.801Z","updated_at":"2018-07-01T15:55:10.544Z","closed_at":null,"closed_by":null,"labels":[],"milestone":{"id":123456,"iid":1,"project_id":1234569,"title":"Milestone
+        1","description":"","state":"active","created_at":"2018-07-01T15:26:06.933Z","updated_at":"2018-07-01T15:26:06.933Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/1"},"assignees":[{"id":1234566,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"}],"author":{"id":1234566,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"assignee":{"id":1234566,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"user_notes_count":0,"upvotes":0,"downvotes":0,"due_date":null,"confidential":false,"discussion_locked":null,"web_url":"https://gitlab.com/donaldduck/testproject/issues/3","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"weight":null}]'
+    http_version: 
+  recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
+recorded_with: VCR 3.0.3
