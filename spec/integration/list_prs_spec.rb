@@ -11,13 +11,13 @@ describe Geet::Services::ListPrs do
   let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   it 'should list the PRs' do
-    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donald-fr/testrepo_downstream')
 
     expected_output = <<~STR
-      6. Title 2 (https://github.com/donaldduck/testrepo/pull/6)
-      3. Title (https://github.com/donaldduck/testrepo/pull/3)
+      2. Add testfile3 (downstream) (https://github.com/donald-fr/testrepo_downstream/pull/2)
+      1. Add testfile2 (downstream) (https://github.com/donald-fr/testrepo_downstream/pull/1)
     STR
-    expected_pr_numbers = [6, 3]
+    expected_pr_numbers = [2, 1]
 
     actual_output = StringIO.new
 
@@ -32,14 +32,14 @@ describe Geet::Services::ListPrs do
   end
 
   it 'should list the upstream PRs' do
-    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
-    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donald-fr/testrepo_downstream')
+    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donaldduck/testrepo_upstream')
 
     expected_output = <<~STR
-      5. Title 2 (https://github.com/donald-fr/testrepo_u/pull/5)
-      4. Title (https://github.com/donald-fr/testrepo_u/pull/4)
+      2. Add testfile3 (upstream) (https://github.com/donaldduck/testrepo_upstream/pull/2)
+      1. Add testfile2 (upstream) (https://github.com/donaldduck/testrepo_upstream/pull/1)
     STR
-    expected_pr_numbers = [5, 4]
+    expected_pr_numbers = [2, 1]
 
     actual_output = StringIO.new
 

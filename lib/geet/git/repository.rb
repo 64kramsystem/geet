@@ -54,12 +54,8 @@ module Geet
         attempt_provider_call(:Branch, :delete, name, api_interface)
       end
 
-      def abstract_issues(milestone: nil)
-        attempt_provider_call(:AbstractIssue, :list, api_interface, milestone: milestone)
-      end
-
-      def issues(assignee: nil)
-        attempt_provider_call(:Issue, :list, api_interface, assignee: assignee)
+      def issues(assignee: nil, milestone: nil)
+        attempt_provider_call(:Issue, :list, api_interface, assignee: assignee, milestone: milestone)
       end
 
       def milestone(number)
@@ -77,8 +73,8 @@ module Geet
         attempt_provider_call(:PR, :create, title, description, head, api_interface, base: base)
       end
 
-      def prs(head: nil)
-        attempt_provider_call(:PR, :list, api_interface, head: head)
+      def prs(head: nil, milestone: nil)
+        attempt_provider_call(:PR, :list, api_interface, head: head, milestone: milestone)
       end
 
       # REMOTE FUNCTIONALITIES (ACCOUNT)

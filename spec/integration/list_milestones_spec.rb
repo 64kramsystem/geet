@@ -15,23 +15,26 @@ describe Geet::Services::ListMilestones do
 
     expected_output = <<~STR
       Finding milestones...
-      Finding issues...
+      Finding issues and PRs...
 
-      6. 0.2.1
-        51. Services should take repository in the initializer (https://github.com/donaldduck/geet/issues/51)
-        49. Add issue list --assigned (https://github.com/donaldduck/geet/issues/49)
-        29. Edit Issue/PR properties in a single request after creation (https://github.com/donaldduck/geet/issues/29)
-      8. 0.2.3
-        16. Implement issue opening (https://github.com/donaldduck/geet/issues/16)
-      7. 0.2.2
-        43. PR Merging: add support for upstream and branch autodelete (https://github.com/donaldduck/geet/issues/43)
-        35. Improve design of repository-independent actions (https://github.com/donaldduck/geet/issues/35)
-      5. 0.3.0
-        4. Allow writing description in an editor (https://github.com/donaldduck/geet/issues/4)
-      4. 0.2.0
-        41. Add test suites (https://github.com/donaldduck/geet/issues/41)
+      5. 0.4.0
+        123. Increase scope of functional testing (https://github.com/donaldduck/geet/issues/123)
+        117. Add PRs/issues paging (don't show all) (https://github.com/donaldduck/geet/issues/117)
+        67. Review merge AbstractIssue.list with Issue.list (https://github.com/donaldduck/geet/issues/67)
+        52. Don't autoopen browser (https://github.com/donaldduck/geet/issues/52)
+      14. 0.3.8
+        136. Remove module namespaces where possible (https://github.com/donaldduck/geet/issues/136)
+        127. Add option for including description in issues list (https://github.com/donaldduck/geet/issues/127)
+        116. Add `none`/`*` assignee options to the issues listing, on manual selection (https://github.com/donaldduck/geet/issues/116)
+        115. When attributes are passed via string selection, don't search the options where possible (https://github.com/donaldduck/geet/issues/115)
+        110. Review help (in README) (https://github.com/donaldduck/geet/issues/110)
+        109. Review gemspec (https://github.com/donaldduck/geet/issues/109)
+        105. Automate branch handling on PR merging (https://github.com/donaldduck/geet/issues/105)
+        81. Prompt for location vs. upstream action should be asked before editing (https://github.com/donaldduck/geet/issues/81)
+        16. Implement issue/pr opening (https://github.com/donaldduck/geet/issues/16)
+      19. 0.3.7 (GitLab edition)
     STR
-    expected_milestone_numbers = [6, 8, 7, 5, 4]
+    expected_milestone_numbers = [5, 14, 19]
 
     actual_output = StringIO.new
 
@@ -46,17 +49,20 @@ describe Geet::Services::ListMilestones do
   end
 
   it 'should list the upstream milestones' do
-    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
-    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donald-fr/testrepo_downstream')
+    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donaldduck/testrepo_upstream')
 
     expected_output = <<~STR
       Finding milestones...
-      Finding issues...
+      Finding issues and PRs...
 
-      1. Milestone 1 Up
-        32. t (https://github.com/donald-fr/testrepo_u/issues/32)
+      2. Upstream milestone 2
+        5. Issue upstream 3 (https://github.com/donaldduck/testrepo_upstream/issues/5)
+        4. Issue upstream 2 (https://github.com/donaldduck/testrepo_upstream/issues/4)
+      1. Upstream milestone 1 (due 2019-04-10)
+        3. Issue upstream 1 (https://github.com/donaldduck/testrepo_upstream/issues/3)
     STR
-    expected_milestone_numbers = [1]
+    expected_milestone_numbers = [2, 1]
 
     actual_output = StringIO.new
 

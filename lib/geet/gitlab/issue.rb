@@ -13,7 +13,9 @@ module Geet
 
       # See https://docs.gitlab.com/ee/api/issues.html#list-issues
       #
-      def self.list(api_interface, assignee: nil)
+      def self.list(api_interface, assignee: nil, milestone: nil)
+        raise "Milestone filtering not supported in Gitlab!" if milestone
+
         api_path = "projects/#{api_interface.path_with_namespace(encoded: true)}/issues"
 
         request_params = {}

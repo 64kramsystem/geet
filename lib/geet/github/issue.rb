@@ -17,10 +17,10 @@ module Geet
         new(issue_number, api_interface, title, link)
       end
 
-      # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
-      #
-      def self.list(api_interface, assignee: nil)
-        super(api_interface, only_issues: true, assignee: assignee)
+      def self.list(api_interface, assignee: nil, milestone: nil)
+        super do |issue_data|
+          !issue_data.key?('pull_request')
+        end
       end
     end
   end

@@ -22,7 +22,7 @@ module Geet
 
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
-      def self.list(api_interface, only_issues: false, milestone: nil, assignee: nil)
+      def self.list(api_interface, milestone: nil, assignee: nil, &type_filter)
         api_path = 'issues'
 
         request_params = {}
@@ -36,11 +36,7 @@ module Geet
           title = issue_data.fetch('title')
           link = issue_data.fetch('html_url')
 
-          klazz = issue_data.key?('pull_request') ? PR : Issue
-
-          if !only_issues || klazz == Issue
-            klazz.new(number, api_interface, title, link)
-          end
+          new(number, api_interface, title, link) if type_filter.nil? || type_filter.call(issue_data)
         end
 
         abstract_issues_list.compact
