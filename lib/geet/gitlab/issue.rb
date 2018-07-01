@@ -22,12 +22,12 @@ module Geet
 
         response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
-        response.each_with_object([]) do |issue_data, result|
+        response.map do |issue_data, result|
           number = issue_data.fetch('iid')
           title = issue_data.fetch('title')
           link = issue_data.fetch('web_url')
 
-          result << new(number, title, link)
+          new(number, title, link)
         end
       end
     end
