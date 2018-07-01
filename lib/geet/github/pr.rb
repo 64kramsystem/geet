@@ -26,20 +26,26 @@ module Geet
         new(number, api_interface, title, link)
       end
 
-      # See https://developer.github.com/v3/pulls/#list-pull-requests
-      #
-      def self.list(api_interface, head: nil)
-        api_path = 'pulls'
-        request_params = { head: head } if head
+      def self.list(api_interface, milestone: nil, assignee: nil, head: nil)
+        check_list_params!(milestone, assignee, head)
 
-        response = api_interface.send_request(api_path, params: request_params, multipage: true)
+        if head
+          api_path = 'pulls'
+          request_params = { head: head }
 
-        response.map do |issue_data|
-          number = issue_data.fetch('number')
-          title = issue_data.fetch('title')
-          link = issue_data.fetch('html_url')
+          response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
-          new(number, api_interface, title, link)
+          response.map do |issue_data|
+            number = issue_data.fetch('number')
+            title = issue_data.fetch('title')
+            link = issue_data.fetch('html_url')
+
+            new(number, api_interface, title, link)
+          end
+        else
+          super(api_interface, milestone: milestone, assignee: assignee) do |issue_data|
+            issue_data.key?('pull_request')
+          end
         end
       end
 
@@ -56,6 +62,16 @@ module Geet
         request_data = { reviewers: reviewers }
 
         @api_interface.send_request(api_path, data: request_data)
+      end
+
+      class << self
+        private
+
+        def check_list_params!(milestone, assignee, head)
+          if (milestone || assignee) && head
+            raise "Head can't be specified with milestone or assignee!"
+          end
+        end
       end
     end
   end

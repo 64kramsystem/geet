@@ -10,19 +10,23 @@ module Geet
 
       def execute
         milestones = find_milestones
-        issues_by_milestone_number = find_milestone_issues(milestones)
+        all_milestone_entries = find_all_milestone_entries(milestones)
 
         @out.puts
 
-        milestones.each do |milestone|
+        all_milestone_entries.each do |milestone, milestone_entries|
           @out.puts milestone_description(milestone)
 
-          milestone_issues = issues_by_milestone_number[milestone.number]
-
-          milestone_issues.each do |issue|
+          milestone_entries.fetch(:issues).each do |issue|
             @out.puts "  #{issue.number}. #{issue.title} (#{issue.link})"
           end
+
+          milestone_entries.fetch(:prs).each do |pr|
+            @out.puts "  #{pr.number}. #{pr.title} (#{pr.link})"
+          end
         end
+
+        all_milestone_entries.keys
       end
 
       private
@@ -41,27 +45,39 @@ module Geet
         @repository.milestones
       end
 
-      def find_milestone_issues(milestones)
-        @out.puts 'Finding issues...'
+      # Returns the structure:
+      #
+      # { milestone => {issues: [...], prs: [...]}}
+      #
+      def find_all_milestone_entries(milestones)
+        @out.puts 'Finding issues and PRs...'
 
-        # Interestingly, on MRI, concurrent hash access is not a problem without mutex,
-        # since due to the GIL, only one thread at a time will actually access it.
-        issues_by_milestone_number = {}
-        mutex = Mutex.new
+        all_milestone_entries = {}
+        all_threads = []
 
-        issue_threads = milestones.map do |milestone|
-          Thread.new do
-            issues = @repository.abstract_issues(milestone: milestone.number)
+        milestones.each_with_object(Mutex.new) do |milestone, mutex|
+          all_milestone_entries[milestone] = {}
+
+          all_threads << Thread.new do
+            issues = @repository.issues(milestone: milestone)
 
             mutex.synchronize do
-              issues_by_milestone_number[milestone.number] = issues
+              all_milestone_entries[milestone][:issues] = issues
+            end
+          end
+
+          all_threads << Thread.new do
+            prs = @repository.prs(milestone: milestone)
+
+            mutex.synchronize do
+              all_milestone_entries[milestone][:prs] = prs
             end
           end
         end
 
-        issue_threads.map(&:join)
+        all_threads.map(&:join)
 
-        issues_by_milestone_number
+        all_milestone_entries
       end
     end
   end

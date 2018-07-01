@@ -29,6 +29,7 @@ The functionalities currently supported are:
 - Gitlab:
   - list issues
   - list labels
+  - list milestones
 
 ## Samples
 
