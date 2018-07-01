@@ -46,7 +46,7 @@ describe Geet::Services::ListIssues do
         actual_output = StringIO.new
 
         service_result = VCR.use_cassette('github_com/list_issues_with_assignee') do
-          described_class.new(repository, out: actual_output).execute(assignee: 'donald-fr', )
+          described_class.new(repository, out: actual_output).execute(assignee: 'donald-fr')
         end
 
         actual_issue_numbers = service_result.map(&:number)
