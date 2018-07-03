@@ -44,7 +44,7 @@ module Geet
             puts stderr_content if stderr_content != '' && !silent_stderr
 
             if !wait_thread.value.success?
-              error_message = stderr_content.lines.first.strip
+              error_message = stderr_content.lines.first&.strip || "Error running command #{command.inspect}"
               raise "Error#{description_message}: #{error_message}"
             end
 
