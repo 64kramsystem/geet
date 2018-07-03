@@ -30,6 +30,7 @@ The functionalities currently supported are:
   - list issues
   - list labels
   - list milestones
+  - list PRs
 
 ## Samples
 
