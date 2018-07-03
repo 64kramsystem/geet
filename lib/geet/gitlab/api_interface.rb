@@ -89,7 +89,7 @@ module Geet
           request = http_class.new(uri)
 
           request['Private-Token'] = @api_token
-          request.body = data.to_json if data
+          request.body = URI.encode_www_form(data) if data
 
           http.request(request)
         end
