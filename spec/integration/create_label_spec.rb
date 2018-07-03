@@ -84,4 +84,26 @@ describe Geet::Services::CreateLabel do
       end
     end
   end # context 'with github.com'
+
+  context 'with gitlab.com' do
+    it 'should create a label' do
+      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+
+      expected_output = <<~STR
+        Creating label...
+        Created with color #123456
+      STR
+
+      actual_output = StringIO.new
+
+      actual_created_label = VCR.use_cassette('gitlab_com/create_label') do
+        described_class.new(repository, out: actual_output).execute('my_label', color: '123456')
+      end
+
+      expect(actual_output.string).to eql(expected_output)
+
+      expect(actual_created_label.name).to eql('my_label')
+      expect(actual_created_label.color).to eql('123456')
+    end
+  end
 end

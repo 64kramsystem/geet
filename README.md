@@ -27,6 +27,7 @@ The functionalities currently supported are:
   - list PRs
   - merge PR
 - Gitlab:
+  - create label
   - list issues
   - list labels
   - list milestones
