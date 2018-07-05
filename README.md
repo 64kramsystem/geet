@@ -22,11 +22,11 @@ The functionalities currently supported are:
   - list labels
   - list milestones
   - list PRs
+  - merge PR
 - Github:
   - create gist
   - create issue
   - create PR
-  - merge PR
 
 ## Samples
 
