@@ -2,6 +2,12 @@
 
 module Geet
   module Services
+    # Merges the PR for the current branch.
+    #
+    # The workflow of this services is oriented to the a commondline usage: the user doesn't need
+    # to lookup the merge for the working branch; this comes at the cost of extra operations and
+    # constraints, but speeds up the workflow.
+    #
     class MergePr
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
