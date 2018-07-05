@@ -26,6 +26,8 @@ module Geet
         new(number, api_interface, title, link)
       end
 
+      # See https://developer.github.com/v3/pulls/#list-pull-requests
+      #
       def self.list(api_interface, milestone: nil, assignee: nil, head: nil)
         check_list_params!(milestone, assignee, head)
 
