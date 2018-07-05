@@ -4,34 +4,29 @@
 
 Command line interface for performing Git hosting service operations.
 
-This tool is very similar to [Hub](https://github.com/github/hub), but it supports a different set of operations, fully specified via command line.
+This tool is a provider-independent version of [Hub](https://github.com/github/hub) and [Lab](https://github.com/zaquestion/lab).
 
-Please see the [development status](#development-status) section for informations about the current development.
+## Development status/plan
 
-## Development status
+The current focus is implementing Gitlab functionalities (0.3.x series).
 
-Geet is (again) under active development. The current focus is implementing Gitlab functionalities.
+Everything is tracked in detail via [issues](https://github.com/saveriomiroddi/geet/issues) and [milestones](https://github.com/saveriomiroddi/geet/milestones).
 
 ## Operation/providers support
 
 The functionalities currently supported are:
 
+- Github/Gitlab:
+  - create label
+  - list issues
+  - list labels
+  - list milestones
+  - list PRs
 - Github:
   - create gist
   - create issue
-  - create label
   - create PR
-  - list issues
-  - list labels
-  - list milestones
-  - list PRs
   - merge PR
-- Gitlab:
-  - create label
-  - list issues
-  - list labels
-  - list milestones
-  - list PRs
 
 ## Samples
 
