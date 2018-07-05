@@ -55,4 +55,28 @@ describe Geet::Services::MergePr do
       expect(actual_pr_number).to eql(expected_pr_number)
     end
   end # context 'with github.com'
+
+  context 'with gitlab.com' do
+    it 'should merge the PR for the current branch' do
+      allow(git_client).to receive(:current_branch).and_return('mybranch')
+      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+
+      expected_output = <<~STR
+        Finding PR with head (mybranch)...
+        Merging PR #2...
+      STR
+      expected_pr_number = 2
+
+      actual_output = StringIO.new
+
+      service_result = VCR.use_cassette('gitlab_com/merge_pr') do
+        described_class.new(repository, out: actual_output, git_client: git_client).execute
+      end
+
+      actual_pr_number = service_result.number
+
+      expect(actual_output.string).to eql(expected_output)
+      expect(actual_pr_number).to eql(expected_pr_number)
+    end
+  end # context 'with gitlab.com'
 end
