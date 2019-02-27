@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.date        = '2019-02-27'
   s.email       = ['saverio.pub2@gmail.com']
   s.homepage    = 'https://github.com/saveriomiroddi/geet'
-  s.summary     = 'Commandline interface for performing SCM (eg. GitHub) operations (eg. PR creation).'
-  s.description = 'Commandline interface for performing SCM (eg. GitHub) operations (eg. PR creation).'
+  s.summary     = 'Commandline interface for performing SCM host operations, eg. create a PR on GitHub'
+  s.description = 'Commandline interface for performing SCM host operations, eg. create a PR on GitHub, with support for multiple hosts.'
   s.license     = 'GPL-3.0'
 
   s.add_runtime_dependency 'simple_scripting', '~> 0.10.1'
