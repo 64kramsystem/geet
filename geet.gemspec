@@ -18,9 +18,9 @@ Gem::Specification.new do |s|
   s.license     = 'GPL-3.0'
 
   s.add_runtime_dependency 'simple_scripting', '~> 0.10.1'
-  s.add_runtime_dependency 'tty-prompt', '>= 0.15.0'
+  s.add_runtime_dependency 'tty-prompt', '~> 0.15.0'
 
-  s.add_development_dependency 'rake', '~> 12.3.0'
+  s.add_development_dependency 'rake', '~> 12.3'
 
   s.files         = `git ls-files`.split("\n")
   s.executables   << 'geet'
