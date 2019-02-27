@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.description = 'Commandline interface for performing SCM (eg. GitHub) operations (eg. PR creation).'
   s.license     = 'GPL-3.0'
 
-  s.add_runtime_dependency 'simple_scripting', '~> 0.9.4'
+  s.add_runtime_dependency 'simple_scripting', '~> 0.10.1'
   s.add_runtime_dependency 'tty-prompt', '>= 0.15.0'
 
   s.add_development_dependency 'rake', '~> 12.3.0'
