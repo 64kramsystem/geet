@@ -95,6 +95,10 @@ module Geet
         remote(remote_name)[REMOTE_ORIGIN_REGEX, 3]
       end
 
+      def owner
+        path.split('/')[0]
+      end
+
       def provider_domain
         # We assume that it's not possible to have origin and upstream on different providers.
         #

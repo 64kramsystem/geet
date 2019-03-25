@@ -18,8 +18,8 @@ module Geet
       end
 
       def execute(delete_branch: false)
-        merge_head = find_merge_head
-        pr = checked_find_branch_pr(merge_head)
+        merge_owner, merge_head = find_merge_head
+        pr = checked_find_branch_pr(merge_owner, merge_head)
         merge_pr(pr)
         do_delete_branch if delete_branch
         pr
@@ -28,14 +28,14 @@ module Geet
       private
 
       def find_merge_head
-        @git_client.current_branch
+        [@git_client.owner, @git_client.current_branch]
       end
 
       # Expect to find only one.
-      def checked_find_branch_pr(head)
-        @out.puts "Finding PR with head (#{head})..."
+      def checked_find_branch_pr(owner, head)
+        @out.puts "Finding PR with head (#{owner}:#{head})..."
 
-        prs = @repository.prs(head: head)
+        prs = @repository.prs(owner: owner, head: head)
 
         raise "Expected to find only one PR for the current branch; found: #{prs.size}" if prs.size != 1
 

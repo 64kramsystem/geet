@@ -28,12 +28,12 @@ module Geet
 
       # See https://developer.github.com/v3/pulls/#list-pull-requests
       #
-      def self.list(api_interface, milestone: nil, assignee: nil, head: nil)
+      def self.list(api_interface, milestone: nil, assignee: nil, owner: nil, head: nil)
         check_list_params!(milestone, assignee, head)
 
         if head
           api_path = 'pulls'
-          request_params = { head: head }
+          request_params = { head: "#{owner}:#{head}" }
 
           response = api_interface.send_request(api_path, params: request_params, multipage: true)
 

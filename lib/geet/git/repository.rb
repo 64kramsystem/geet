@@ -73,8 +73,8 @@ module Geet
         attempt_provider_call(:PR, :create, title, description, head, api_interface, base: base)
       end
 
-      def prs(head: nil, milestone: nil)
-        attempt_provider_call(:PR, :list, api_interface, head: head, milestone: milestone)
+      def prs(owner: nil, head: nil, milestone: nil)
+        attempt_provider_call(:PR, :list, api_interface, owner: owner, head: head, milestone: milestone)
       end
 
       # REMOTE FUNCTIONALITIES (ACCOUNT)
