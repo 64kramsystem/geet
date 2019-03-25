@@ -25,18 +25,18 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 05 Jul 2018 10:26:02 GMT
+      - Mon, 25 Mar 2019 11:44:35 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1115'
+      - '1188'
       Cache-Control:
       - max-age=0, private, must-revalidate
       Etag:
-      - W/"e988027264fe5cf0c30640e4212fea0c"
+      - W/"ed3d49f8811d744a6429bb3c90f615d6"
       Link:
-      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&source_branch=mybranch&state=all>;
-        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&source_branch=mybranch&state=all>;
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&source_branch=mybranch&state=opened>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests?id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&source_branch=mybranch&state=opened>;
         rel="last"
       Vary:
       - Origin
@@ -53,9 +53,9 @@ http_interactions:
       X-Prev-Page:
       - ''
       X-Request-Id:
-      - 11dea779-d74a-449f-baad-57b1a54e52f5
+      - cX2JhRXZHh3
       X-Runtime:
-      - '0.128214'
+      - '0.074870'
       X-Total:
       - '1'
       X-Total-Pages:
@@ -69,18 +69,18 @@ http_interactions:
       Ratelimit-Remaining:
       - '599'
       Ratelimit-Reset:
-      - '1530786422'
+      - '1553514335'
       Ratelimit-Resettime:
-      - Fri, 05 Jul 2018 10:27:02 GMT
+      - Tue, 25 Mar 2019 11:45:35 GMT
     body:
       encoding: UTF-8
-      string: '[{"id":12345600,"iid":2,"project_id":1234569,"title":"Test PR","description":"","state":"opened","created_at":"2018-07-05T10:25:10.670Z","updated_at":"2018-07-05T10:25:10.670Z","target_branch":"master","source_branch":"mybranch","upvotes":0,"downvotes":0,"author":{"id":1234561,"name":"Donald
-        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"assignee":null,"source_project_id":1234569,"target_project_id":1234569,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"8c5971f670b5915c8a1c11448b36ed65ddbf4e33","merge_commit_sha":null,"user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"web_url":"https://gitlab.com/donaldduck/testproject/merge_requests/2","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null}]'
+      string: '[{"id":12345690,"iid":4,"project_id":1234569,"title":"Delete pizza","description":"","state":"opened","created_at":"2019-03-25T11:44:15.881Z","updated_at":"2019-03-25T11:44:15.881Z","merged_by":null,"merged_at":null,"closed_by":null,"closed_at":null,"target_branch":"master","source_branch":"mybranch","user_notes_count":0,"upvotes":0,"downvotes":0,"author":{"id":1234561,"name":"Donald
+        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"assignee":null,"source_project_id":1234569,"target_project_id":1234569,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"9a845eec03092a38707eaecaa0a1d71aa05a1bff","merge_commit_sha":null,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"web_url":"https://gitlab.com/donaldduck/testproject/merge_requests/4","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null}]'
     http_version: 
-  recorded_at: Thu, 05 Jul 2018 10:26:02 GMT
+  recorded_at: Mon, 25 Mar 2019 11:44:35 GMT
 - request:
     method: put
-    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests/2/merge
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/merge_requests/4/merge
     body:
       encoding: UTF-8
       string: ''
@@ -103,15 +103,15 @@ http_interactions:
       Server:
       - nginx
       Date:
-      - Thu, 05 Jul 2018 10:26:04 GMT
+      - Mon, 25 Mar 2019 11:44:37 GMT
       Content-Type:
       - application/json
       Content-Length:
-      - '1805'
+      - '1855'
       Cache-Control:
       - max-age=0, private, must-revalidate
       Etag:
-      - W/"6c6d3084301470b5561b5106f5ce1da1"
+      - W/"0953f932a542fa60616d9cd2eb521226"
       Vary:
       - Origin
       X-Content-Type-Options:
@@ -119,9 +119,9 @@ http_interactions:
       X-Frame-Options:
       - SAMEORIGIN
       X-Request-Id:
-      - 998cef6c-2c57-4e0a-8513-f187b555a43b
+      - EtYFTByIBFa
       X-Runtime:
-      - '1.395083'
+      - '1.315189'
       Strict-Transport-Security:
       - max-age=31536000
       Ratelimit-Limit:
@@ -131,14 +131,14 @@ http_interactions:
       Ratelimit-Remaining:
       - '598'
       Ratelimit-Reset:
-      - '1530786424'
+      - '1553514337'
       Ratelimit-Resettime:
-      - Fri, 05 Jul 2018 10:27:04 GMT
+      - Tue, 25 Mar 2019 11:45:37 GMT
     body:
       encoding: UTF-8
-      string: '{"id":12345600,"iid":2,"project_id":1234569,"title":"Test PR","description":"","state":"merged","created_at":"2018-07-05T10:25:10.670Z","updated_at":"2018-07-05T10:26:03.813Z","target_branch":"master","source_branch":"mybranch","upvotes":0,"downvotes":0,"author":{"id":1234561,"name":"Donald
-        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"assignee":null,"source_project_id":1234569,"target_project_id":1234569,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"8c5971f670b5915c8a1c11448b36ed65ddbf4e33","merge_commit_sha":"8f98cc2323509d78326184b0b961c3e182165983","user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"web_url":"https://gitlab.com/donaldduck/testproject/merge_requests/2","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"subscribed":true,"changes_count":"1","merged_by":{"id":1234561,"name":"Donald
-        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"merged_at":"2018-07-05T10:26:03.863Z","closed_by":null,"closed_at":null,"latest_build_started_at":null,"latest_build_finished_at":null,"first_deployed_to_production_at":null,"pipeline":null,"diff_refs":{"base_sha":"f2fd3bd4f6acfc2256a3163b19c54dbbdd138709","head_sha":"8c5971f670b5915c8a1c11448b36ed65ddbf4e33","start_sha":"f2fd3bd4f6acfc2256a3163b19c54dbbdd138709"},"approvals_before_merge":null}'
+      string: '{"id":12345690,"iid":4,"project_id":1234569,"title":"Delete pizza","description":"","state":"merged","created_at":"2019-03-25T11:44:15.881Z","updated_at":"2019-03-25T11:44:37.343Z","merged_by":{"id":1234561,"name":"Donald
+        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"merged_at":"2019-03-25T11:44:37.381Z","closed_by":null,"closed_at":null,"target_branch":"master","source_branch":"mybranch","user_notes_count":0,"upvotes":0,"downvotes":0,"author":{"id":1234561,"name":"Donald
+        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"assignee":null,"source_project_id":1234569,"target_project_id":1234569,"labels":[],"work_in_progress":false,"milestone":null,"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"9a845eec03092a38707eaecaa0a1d71aa05a1bff","merge_commit_sha":"f2bfcfaaad7211e42662978616ca655c5200f8e0","discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"web_url":"https://gitlab.com/donaldduck/testproject/merge_requests/4","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"subscribed":true,"changes_count":"1","latest_build_started_at":null,"latest_build_finished_at":null,"first_deployed_to_production_at":null,"pipeline":null,"diff_refs":{"base_sha":"619b12ce4162cf7bb30c5e64f860ba14318f3098","head_sha":"9a845eec03092a38707eaecaa0a1d71aa05a1bff","start_sha":"619b12ce4162cf7bb30c5e64f860ba14318f3098"},"merge_error":null,"user":{"can_merge":true},"approvals_before_merge":null}'
     http_version: 
-  recorded_at: Thu, 05 Jul 2018 10:26:04 GMT
+  recorded_at: Mon, 25 Mar 2019 11:44:37 GMT
 recorded_with: VCR 3.0.3

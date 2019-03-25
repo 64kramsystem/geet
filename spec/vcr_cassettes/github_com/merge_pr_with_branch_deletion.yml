@@ -2,7 +2,7 @@
 http_interactions:
 - request:
     method: get
-    uri: https://api.github.com/repos/donaldduck/testrepo/pulls?head=mybranch
+    uri: https://api.github.com/repos/donaldduck/testrepo_upstream/pulls?head=donaldduck:mybranch
     body:
       encoding: US-ASCII
       string: ''
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Sat, 23 Dec 2017 19:37:16 GMT
+      - Mon, 25 Mar 2019 11:16:53 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -37,13 +37,13 @@ http_interactions:
       X-Ratelimit-Remaining:
       - '4985'
       X-Ratelimit-Reset:
-      - '1514060897'
+      - '1553516213'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       Etag:
-      - W/"3c4eae32c605d321ef5b2ce6ef37e871"
+      - W/"aca9965f8c7bfb769c7e0041da1b9610"
       X-Oauth-Scopes:
       - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
         delete_repo, gist, notifications, repo, user
@@ -52,33 +52,34 @@ http_interactions:
       X-Github-Media-Type:
       - github.v3; format=json
       Access-Control-Expose-Headers:
-      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
-        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval,
+        X-GitHub-Media-Type
       Access-Control-Allow-Origin:
       - "*"
-      Content-Security-Policy:
-      - default-src 'none'
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains; preload
-      X-Content-Type-Options:
-      - nosniff
       X-Frame-Options:
       - deny
+      X-Content-Type-Options:
+      - nosniff
       X-Xss-Protection:
       - 1; mode=block
-      X-Runtime-Rack:
-      - '0.067047'
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Content-Security-Policy:
+      - default-src 'none'
       X-Github-Request-Id:
-      - 856A:7F5A:28B6813:4B3F6AE:5A3EB06C
+      - 0D92:608C:188C3C7:34E67E8:5C98B8A5
     body:
       encoding: ASCII-8BIT
-      string: '[{"url":"https://api.github.com/repos/donaldduck/testrepo/pulls/3","id":123456833,"html_url":"https://github.com/donaldduck/testrepo/pull/3","diff_url":"https://github.com/donaldduck/testrepo/pull/3.diff","patch_url":"https://github.com/donaldduck/testrepo/pull/3.patch","issue_url":"https://api.github.com/repos/donaldduck/testrepo/issues/3","number":3,"state":"open","locked":false,"title":"My
-        PR","user":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"body":"","created_at":"2017-12-23T19:34:00Z","updated_at":"2017-12-23T19:34:01Z","closed_at":null,"merged_at":null,"merge_commit_sha":"8ae6021263e0b8813a8bed2b5563bb80a69a1e07","assignee":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"assignees":[{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false}],"requested_reviewers":[],"milestone":null,"commits_url":"https://api.github.com/repos/donaldduck/testrepo/pulls/3/commits","review_comments_url":"https://api.github.com/repos/donaldduck/testrepo/pulls/3/comments","review_comment_url":"https://api.github.com/repos/donaldduck/testrepo/pulls/comments{/number}","comments_url":"https://api.github.com/repos/donaldduck/testrepo/issues/3/comments","statuses_url":"https://api.github.com/repos/donaldduck/testrepo/statuses/095ef8693b51fcf7a3581282d7de4f8db3b17d68","head":{"label":"donaldduck:mybranch","ref":"mybranch","sha":"095ef8693b51fcf7a3581282d7de4f8db3b17d68","user":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"repo":{"id":123456754,"name":"testrepo","full_name":"donaldduck/testrepo","owner":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"private":true,"html_url":"https://github.com/donaldduck/testrepo","description":null,"fork":true,"url":"https://api.github.com/repos/donaldduck/testrepo","forks_url":"https://api.github.com/repos/donaldduck/testrepo/forks","keys_url":"https://api.github.com/repos/donaldduck/testrepo/keys{/key_id}","collaborators_url":"https://api.github.com/repos/donaldduck/testrepo/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/donaldduck/testrepo/teams","hooks_url":"https://api.github.com/repos/donaldduck/testrepo/hooks","issue_events_url":"https://api.github.com/repos/donaldduck/testrepo/issues/events{/number}","events_url":"https://api.github.com/repos/donaldduck/testrepo/events","assignees_url":"https://api.github.com/repos/donaldduck/testrepo/assignees{/user}","branches_url":"https://api.github.com/repos/donaldduck/testrepo/branches{/branch}","tags_url":"https://api.github.com/repos/donaldduck/testrepo/tags","blobs_url":"https://api.github.com/repos/donaldduck/testrepo/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/donaldduck/testrepo/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/donaldduck/testrepo/git/refs{/sha}","trees_url":"https://api.github.com/repos/donaldduck/testrepo/git/trees{/sha}","statuses_url":"https://api.github.com/repos/donaldduck/testrepo/statuses/{sha}","languages_url":"https://api.github.com/repos/donaldduck/testrepo/languages","stargazers_url":"https://api.github.com/repos/donaldduck/testrepo/stargazers","contributors_url":"https://api.github.com/repos/donaldduck/testrepo/contributors","subscribers_url":"https://api.github.com/repos/donaldduck/testrepo/subscribers","subscription_url":"https://api.github.com/repos/donaldduck/testrepo/subscription","commits_url":"https://api.github.com/repos/donaldduck/testrepo/commits{/sha}","git_commits_url":"https://api.github.com/repos/donaldduck/testrepo/git/commits{/sha}","comments_url":"https://api.github.com/repos/donaldduck/testrepo/comments{/number}","issue_comment_url":"https://api.github.com/repos/donaldduck/testrepo/issues/comments{/number}","contents_url":"https://api.github.com/repos/donaldduck/testrepo/contents/{+path}","compare_url":"https://api.github.com/repos/donaldduck/testrepo/compare/{base}...{head}","merges_url":"https://api.github.com/repos/donaldduck/testrepo/merges","archive_url":"https://api.github.com/repos/donaldduck/testrepo/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/donaldduck/testrepo/downloads","issues_url":"https://api.github.com/repos/donaldduck/testrepo/issues{/number}","pulls_url":"https://api.github.com/repos/donaldduck/testrepo/pulls{/number}","milestones_url":"https://api.github.com/repos/donaldduck/testrepo/milestones{/number}","notifications_url":"https://api.github.com/repos/donaldduck/testrepo/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/donaldduck/testrepo/labels{/name}","releases_url":"https://api.github.com/repos/donaldduck/testrepo/releases{/id}","deployments_url":"https://api.github.com/repos/donaldduck/testrepo/deployments","created_at":"2017-12-23T18:58:57Z","updated_at":"2017-12-23T19:00:02Z","pushed_at":"2017-12-23T19:34:00Z","git_url":"git://github.com/donaldduck/testrepo.git","ssh_url":"git@github.com:donaldduck/testrepo.git","clone_url":"https://github.com/donaldduck/testrepo.git","svn_url":"https://github.com/donaldduck/testrepo","homepage":null,"size":14,"stargazers_count":0,"watchers_count":0,"language":"Ruby","has_issues":true,"has_projects":false,"has_downloads":true,"has_wiki":false,"has_pages":false,"forks_count":0,"mirror_url":null,"archived":false,"open_issues_count":1,"license":null,"forks":0,"open_issues":1,"watchers":0,"default_branch":"master"}},"base":{"label":"donaldduck:master","ref":"master","sha":"5e27f710486bef1ffc67ac8eb53bdc7d80f77ef3","user":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"repo":{"id":123456754,"name":"testrepo","full_name":"donaldduck/testrepo","owner":{"login":"donaldduck","id":1234566,"avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"private":true,"html_url":"https://github.com/donaldduck/testrepo","description":null,"fork":true,"url":"https://api.github.com/repos/donaldduck/testrepo","forks_url":"https://api.github.com/repos/donaldduck/testrepo/forks","keys_url":"https://api.github.com/repos/donaldduck/testrepo/keys{/key_id}","collaborators_url":"https://api.github.com/repos/donaldduck/testrepo/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/donaldduck/testrepo/teams","hooks_url":"https://api.github.com/repos/donaldduck/testrepo/hooks","issue_events_url":"https://api.github.com/repos/donaldduck/testrepo/issues/events{/number}","events_url":"https://api.github.com/repos/donaldduck/testrepo/events","assignees_url":"https://api.github.com/repos/donaldduck/testrepo/assignees{/user}","branches_url":"https://api.github.com/repos/donaldduck/testrepo/branches{/branch}","tags_url":"https://api.github.com/repos/donaldduck/testrepo/tags","blobs_url":"https://api.github.com/repos/donaldduck/testrepo/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/donaldduck/testrepo/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/donaldduck/testrepo/git/refs{/sha}","trees_url":"https://api.github.com/repos/donaldduck/testrepo/git/trees{/sha}","statuses_url":"https://api.github.com/repos/donaldduck/testrepo/statuses/{sha}","languages_url":"https://api.github.com/repos/donaldduck/testrepo/languages","stargazers_url":"https://api.github.com/repos/donaldduck/testrepo/stargazers","contributors_url":"https://api.github.com/repos/donaldduck/testrepo/contributors","subscribers_url":"https://api.github.com/repos/donaldduck/testrepo/subscribers","subscription_url":"https://api.github.com/repos/donaldduck/testrepo/subscription","commits_url":"https://api.github.com/repos/donaldduck/testrepo/commits{/sha}","git_commits_url":"https://api.github.com/repos/donaldduck/testrepo/git/commits{/sha}","comments_url":"https://api.github.com/repos/donaldduck/testrepo/comments{/number}","issue_comment_url":"https://api.github.com/repos/donaldduck/testrepo/issues/comments{/number}","contents_url":"https://api.github.com/repos/donaldduck/testrepo/contents/{+path}","compare_url":"https://api.github.com/repos/donaldduck/testrepo/compare/{base}...{head}","merges_url":"https://api.github.com/repos/donaldduck/testrepo/merges","archive_url":"https://api.github.com/repos/donaldduck/testrepo/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/donaldduck/testrepo/downloads","issues_url":"https://api.github.com/repos/donaldduck/testrepo/issues{/number}","pulls_url":"https://api.github.com/repos/donaldduck/testrepo/pulls{/number}","milestones_url":"https://api.github.com/repos/donaldduck/testrepo/milestones{/number}","notifications_url":"https://api.github.com/repos/donaldduck/testrepo/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/donaldduck/testrepo/labels{/name}","releases_url":"https://api.github.com/repos/donaldduck/testrepo/releases{/id}","deployments_url":"https://api.github.com/repos/donaldduck/testrepo/deployments","created_at":"2017-12-23T18:58:57Z","updated_at":"2017-12-23T19:00:02Z","pushed_at":"2017-12-23T19:34:00Z","git_url":"git://github.com/donaldduck/testrepo.git","ssh_url":"git@github.com:donaldduck/testrepo.git","clone_url":"https://github.com/donaldduck/testrepo.git","svn_url":"https://github.com/donaldduck/testrepo","homepage":null,"size":14,"stargazers_count":0,"watchers_count":0,"language":"Ruby","has_issues":true,"has_projects":false,"has_downloads":true,"has_wiki":false,"has_pages":false,"forks_count":0,"mirror_url":null,"archived":false,"open_issues_count":1,"license":null,"forks":0,"open_issues":1,"watchers":0,"default_branch":"master"}},"_links":{"self":{"href":"https://api.github.com/repos/donaldduck/testrepo/pulls/3"},"html":{"href":"https://github.com/donaldduck/testrepo/pull/3"},"issue":{"href":"https://api.github.com/repos/donaldduck/testrepo/issues/3"},"comments":{"href":"https://api.github.com/repos/donaldduck/testrepo/issues/3/comments"},"review_comments":{"href":"https://api.github.com/repos/donaldduck/testrepo/pulls/3/comments"},"review_comment":{"href":"https://api.github.com/repos/donaldduck/testrepo/pulls/comments{/number}"},"commits":{"href":"https://api.github.com/repos/donaldduck/testrepo/pulls/3/commits"},"statuses":{"href":"https://api.github.com/repos/donaldduck/testrepo/statuses/095ef8693b51fcf7a3581282d7de4f8db3b17d68"}},"author_association":"COLLABORATOR"}]'
+      string: '[{"url":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/2","id":123456332,"node_id":"MDExOlB1bGxSZXF1ZXN0MjY0MDc3MzMy","html_url":"https://github.com/donaldduck/testrepo_upstream/pull/2","diff_url":"https://github.com/donaldduck/testrepo_upstream/pull/2.diff","patch_url":"https://github.com/donaldduck/testrepo_upstream/pull/2.patch","issue_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/2","number":2,"state":"open","locked":false,"title":"Add
+        testfile2","user":{"login":"donaldduck","id":1234566,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/1234566?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"body":"","created_at":"2019-03-25T11:16:07Z","updated_at":"2019-03-25T11:16:09Z","closed_at":null,"merged_at":null,"merge_commit_sha":"bad428fc94b0975d5e601327588421ca75949665","assignee":{"login":"donaldduck","id":1234566,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/1234566?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"assignees":[{"login":"donaldduck","id":1234566,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/1234566?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false}],"requested_reviewers":[],"requested_teams":[],"labels":[],"milestone":null,"commits_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/2/commits","review_comments_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/2/comments","review_comment_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/comments{/number}","comments_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/2/comments","statuses_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/statuses/00646aa7d1285a0c90f05da9ad47dd3c5bffb8b6","head":{"label":"donaldduck:mybranch","ref":"mybranch","sha":"00646aa7d1285a0c90f05da9ad47dd3c5bffb8b6","user":{"login":"donaldduck","id":1234566,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/1234566?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"repo":{"id":123456212,"node_id":"MDEwOlJlcG9zaXRvcnkxNzc1NjgyMTI=","name":"testrepo_upstream","full_name":"donaldduck/testrepo_upstream","private":true,"owner":{"login":"donaldduck","id":1234566,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/1234566?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"html_url":"https://github.com/donaldduck/testrepo_upstream","description":null,"fork":false,"url":"https://api.github.com/repos/donaldduck/testrepo_upstream","forks_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/forks","keys_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/keys{/key_id}","collaborators_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/teams","hooks_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/hooks","issue_events_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/events{/number}","events_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/events","assignees_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/assignees{/user}","branches_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/branches{/branch}","tags_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/tags","blobs_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/refs{/sha}","trees_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/trees{/sha}","statuses_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/statuses/{sha}","languages_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/languages","stargazers_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/stargazers","contributors_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/contributors","subscribers_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/subscribers","subscription_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/subscription","commits_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/commits{/sha}","git_commits_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/commits{/sha}","comments_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/comments{/number}","issue_comment_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/comments{/number}","contents_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/contents/{+path}","compare_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/compare/{base}...{head}","merges_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/merges","archive_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/downloads","issues_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues{/number}","pulls_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls{/number}","milestones_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/milestones{/number}","notifications_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/labels{/name}","releases_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/releases{/id}","deployments_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/deployments","created_at":"2019-03-25T10:54:43Z","updated_at":"2019-03-25T11:14:47Z","pushed_at":"2019-03-25T11:16:08Z","git_url":"git://github.com/donaldduck/testrepo_upstream.git","ssh_url":"git@github.com:donaldduck/testrepo_upstream.git","clone_url":"https://github.com/donaldduck/testrepo_upstream.git","svn_url":"https://github.com/donaldduck/testrepo_upstream","homepage":null,"size":0,"stargazers_count":0,"watchers_count":0,"language":null,"has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":false,"forks_count":0,"mirror_url":null,"archived":false,"open_issues_count":1,"license":null,"forks":0,"open_issues":1,"watchers":0,"default_branch":"master"}},"base":{"label":"donaldduck:master","ref":"master","sha":"40ca667a5854c92bc4009476d91808786092e1c2","user":{"login":"donaldduck","id":1234566,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/1234566?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"repo":{"id":123456212,"node_id":"MDEwOlJlcG9zaXRvcnkxNzc1NjgyMTI=","name":"testrepo_upstream","full_name":"donaldduck/testrepo_upstream","private":true,"owner":{"login":"donaldduck","id":1234566,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/1234566?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"html_url":"https://github.com/donaldduck/testrepo_upstream","description":null,"fork":false,"url":"https://api.github.com/repos/donaldduck/testrepo_upstream","forks_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/forks","keys_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/keys{/key_id}","collaborators_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/collaborators{/collaborator}","teams_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/teams","hooks_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/hooks","issue_events_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/events{/number}","events_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/events","assignees_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/assignees{/user}","branches_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/branches{/branch}","tags_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/tags","blobs_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/blobs{/sha}","git_tags_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/tags{/sha}","git_refs_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/refs{/sha}","trees_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/trees{/sha}","statuses_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/statuses/{sha}","languages_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/languages","stargazers_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/stargazers","contributors_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/contributors","subscribers_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/subscribers","subscription_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/subscription","commits_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/commits{/sha}","git_commits_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/git/commits{/sha}","comments_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/comments{/number}","issue_comment_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/comments{/number}","contents_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/contents/{+path}","compare_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/compare/{base}...{head}","merges_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/merges","archive_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/{archive_format}{/ref}","downloads_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/downloads","issues_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues{/number}","pulls_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls{/number}","milestones_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/milestones{/number}","notifications_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/notifications{?since,all,participating}","labels_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/labels{/name}","releases_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/releases{/id}","deployments_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/deployments","created_at":"2019-03-25T10:54:43Z","updated_at":"2019-03-25T11:14:47Z","pushed_at":"2019-03-25T11:16:08Z","git_url":"git://github.com/donaldduck/testrepo_upstream.git","ssh_url":"git@github.com:donaldduck/testrepo_upstream.git","clone_url":"https://github.com/donaldduck/testrepo_upstream.git","svn_url":"https://github.com/donaldduck/testrepo_upstream","homepage":null,"size":0,"stargazers_count":0,"watchers_count":0,"language":null,"has_issues":true,"has_projects":true,"has_downloads":true,"has_wiki":true,"has_pages":false,"forks_count":0,"mirror_url":null,"archived":false,"open_issues_count":1,"license":null,"forks":0,"open_issues":1,"watchers":0,"default_branch":"master"}},"_links":{"self":{"href":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/2"},"html":{"href":"https://github.com/donaldduck/testrepo_upstream/pull/2"},"issue":{"href":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/2"},"comments":{"href":"https://api.github.com/repos/donaldduck/testrepo_upstream/issues/2/comments"},"review_comments":{"href":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/2/comments"},"review_comment":{"href":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/comments{/number}"},"commits":{"href":"https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/2/commits"},"statuses":{"href":"https://api.github.com/repos/donaldduck/testrepo_upstream/statuses/00646aa7d1285a0c90f05da9ad47dd3c5bffb8b6"}},"author_association":"OWNER"}]'
     http_version: 
-  recorded_at: Sat, 23 Dec 2017 19:37:16 GMT
+  recorded_at: Mon, 25 Mar 2019 11:16:53 GMT
 - request:
     method: put
-    uri: https://api.github.com/repos/donaldduck/testrepo/pulls/3/merge
+    uri: https://api.github.com/repos/donaldduck/testrepo_upstream/pulls/2/merge
     body:
       encoding: UTF-8
       string: ''
@@ -101,7 +102,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Sat, 23 Dec 2017 19:37:17 GMT
+      - Mon, 25 Mar 2019 11:16:55 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -113,13 +114,13 @@ http_interactions:
       X-Ratelimit-Remaining:
       - '4984'
       X-Ratelimit-Reset:
-      - '1514060897'
+      - '1553516215'
       Cache-Control:
       - private, max-age=60, s-maxage=60
       Vary:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       Etag:
-      - W/"cc42d5199c8a2ad0e6d0dc1803c731a3"
+      - W/"cd0f85ff3976acd4f37b0a8c2fc51ef3"
       X-Oauth-Scopes:
       - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
         delete_repo, gist, notifications, repo, user
@@ -128,33 +129,34 @@ http_interactions:
       X-Github-Media-Type:
       - github.v3; format=json
       Access-Control-Expose-Headers:
-      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
-        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval,
+        X-GitHub-Media-Type
       Access-Control-Allow-Origin:
       - "*"
-      Content-Security-Policy:
-      - default-src 'none'
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains; preload
-      X-Content-Type-Options:
-      - nosniff
       X-Frame-Options:
       - deny
+      X-Content-Type-Options:
+      - nosniff
       X-Xss-Protection:
       - 1; mode=block
-      X-Runtime-Rack:
-      - '0.806765'
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Content-Security-Policy:
+      - default-src 'none'
       X-Github-Request-Id:
-      - DA30:7F59:18C523D:3332B9B:5A3EB06C
+      - 0D93:7C29:1A30601:37ACA48:5C98B8A5
     body:
       encoding: ASCII-8BIT
-      string: '{"sha":"05e7bf92117c784e6d17194f1a07c8258bbc8d3a","merged":true,"message":"Pull
+      string: '{"sha":"f73f5f313b1bde716ad5f1975b7ed0234d945177","merged":true,"message":"Pull
         Request successfully merged"}'
     http_version: 
-  recorded_at: Sat, 23 Dec 2017 19:37:18 GMT
+  recorded_at: Mon, 25 Mar 2019 11:16:55 GMT
 - request:
     method: delete
-    uri: https://api.github.com/repos/donaldduck/testrepo/git/refs/heads/mybranch
+    uri: https://api.github.com/repos/donaldduck/testrepo_upstream/git/refs/heads/mybranch
     body:
       encoding: US-ASCII
       string: ''
@@ -177,7 +179,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Sat, 23 Dec 2017 19:37:19 GMT
+      - Mon, 25 Mar 2019 11:16:56 GMT
       Content-Type:
       - application/octet-stream
       Status:
@@ -187,36 +189,37 @@ http_interactions:
       X-Ratelimit-Remaining:
       - '4983'
       X-Ratelimit-Reset:
-      - '1514060897'
+      - '1553516216'
       X-Oauth-Scopes:
       - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
         delete_repo, gist, notifications, repo, user
       X-Accepted-Oauth-Scopes:
-      - ''
+      - repo
       X-Github-Media-Type:
       - github.v3; format=json
       Access-Control-Expose-Headers:
-      - ETag, Link, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
-        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval,
+        X-GitHub-Media-Type
       Access-Control-Allow-Origin:
       - "*"
-      Content-Security-Policy:
-      - default-src 'none'
       Strict-Transport-Security:
       - max-age=31536000; includeSubdomains; preload
-      X-Content-Type-Options:
-      - nosniff
       X-Frame-Options:
       - deny
+      X-Content-Type-Options:
+      - nosniff
       X-Xss-Protection:
       - 1; mode=block
-      X-Runtime-Rack:
-      - '0.579537'
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Content-Security-Policy:
+      - default-src 'none'
       X-Github-Request-Id:
-      - DA34:7F5B:1907461:4A8AC79:5A3EB06E
+      - 0D94:4F1D:1BE790E:38CCFFA:5C98B8A7
     body:
       encoding: UTF-8
       string: ''
     http_version: 
-  recorded_at: Sat, 23 Dec 2017 19:37:19 GMT
+  recorded_at: Mon, 25 Mar 2019 11:16:56 GMT
 recorded_with: VCR 3.0.3

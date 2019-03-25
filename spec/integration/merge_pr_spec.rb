@@ -8,17 +8,21 @@ require_relative '../../lib/geet/services/merge_pr'
 describe Geet::Services::MergePr do
   let(:git_client) { Geet::Utils::GitClient.new }
   let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
+  let(:owner) { 'donaldduck' }
+  let(:branch) { 'mybranch' }
 
   context 'with github.com' do
-    it 'should merge the PR for the current branch' do
-      allow(git_client).to receive(:current_branch).and_return('mybranch1')
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+    let(:repository_name) { 'testrepo_upstream' }
 
+    it 'should merge the PR for the current branch' do
+      allow(git_client).to receive(:current_branch).and_return(branch)
+      allow(git_client).to receive(:remote).with('origin').and_return("git@github.com:#{owner}/#{repository_name}")
+
+      expected_pr_number = 1
       expected_output = <<~STR
-        Finding PR with head (mybranch1)...
-        Merging PR #3...
+        Finding PR with head (#{owner}:#{branch})...
+        Merging PR ##{expected_pr_number}...
       STR
-      expected_pr_number = 3
 
       actual_output = StringIO.new
 
@@ -33,15 +37,15 @@ describe Geet::Services::MergePr do
     end
 
     it 'should merge the PR for the current branch, with branch deletion' do
-      allow(git_client).to receive(:current_branch).and_return('mybranch')
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:current_branch).and_return(branch)
+      allow(git_client).to receive(:remote).with('origin').and_return("git@github.com:#{owner}/#{repository_name}")
 
+      expected_pr_number = 2
       expected_output = <<~STR
-        Finding PR with head (mybranch)...
-        Merging PR #3...
-        Deleting branch mybranch...
+        Finding PR with head (#{owner}:#{branch})...
+        Merging PR ##{expected_pr_number}...
+        Deleting branch #{branch}...
       STR
-      expected_pr_number = 3
 
       actual_output = StringIO.new
 
@@ -57,15 +61,17 @@ describe Geet::Services::MergePr do
   end # context 'with github.com'
 
   context 'with gitlab.com' do
-    it 'should merge the PR for the current branch' do
-      allow(git_client).to receive(:current_branch).and_return('mybranch')
-      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+    let(:repository_name) { 'testproject' }
 
+    it 'should merge the PR for the current branch' do
+      allow(git_client).to receive(:current_branch).and_return(branch)
+      allow(git_client).to receive(:remote).with('origin').and_return("git@gitlab.com:#{owner}/#{repository_name}")
+
+      expected_pr_number = 4
       expected_output = <<~STR
-        Finding PR with head (mybranch)...
-        Merging PR #2...
+        Finding PR with head (#{owner}:#{branch})...
+        Merging PR ##{expected_pr_number}...
       STR
-      expected_pr_number = 2
 
       actual_output = StringIO.new
 
