@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative '../helpers/services_workflow_helper'
+
 module Geet
   module Services
     # Merges the PR for the current branch.
@@ -9,6 +11,8 @@ module Geet
     # constraints, but speeds up the workflow.
     #
     class MergePr
+      include Geet::Helpers::ServicesWorkflowHelper
+
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
       def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
@@ -26,21 +30,6 @@ module Geet
       end
 
       private
-
-      def find_merge_head
-        [@git_client.owner, @git_client.current_branch]
-      end
-
-      # Expect to find only one.
-      def checked_find_branch_pr(owner, head)
-        @out.puts "Finding PR with head (#{owner}:#{head})..."
-
-        prs = @repository.prs(owner: owner, head: head)
-
-        raise "Expected to find only one PR for the current branch; found: #{prs.size}" if prs.size != 1
-
-        prs[0]
-      end
 
       def merge_pr(pr)
         @out.puts "Merging PR ##{pr.number}..."
