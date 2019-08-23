@@ -59,6 +59,8 @@ class GeetLauncher
       Services::ListPrs.new(repository).execute
     when PR_MERGE_COMMAND
       Services::MergePr.new(repository).execute(options)
+    when PR_OPEN_COMMAND
+      Services::OpenPr.new(repository).execute(options)
     else
       raise "Internal error - Unrecognized command #{command.inspect}"
     end

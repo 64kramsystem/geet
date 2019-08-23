@@ -79,6 +79,10 @@ module Geet
         long_help: 'Merge the PR for the current branch'
       ]
 
+      PR_OPEN_OPTIONS = [
+        long_help: 'Open in the browser the PR for the current branch'
+      ]
+
       # Commands decoding table
 
       COMMANDS_DECODING_TABLE = {
@@ -100,6 +104,7 @@ module Geet
           'create' => PR_CREATE_OPTIONS,
           'list' => PR_LIST_OPTIONS,
           'merge' => PR_MERGE_OPTIONS,
+          'open' => PR_OPEN_OPTIONS,
         },
       }
 
