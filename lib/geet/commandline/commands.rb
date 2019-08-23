@@ -12,6 +12,7 @@ module Geet
       PR_CREATE_COMMAND = 'pr.create'
       PR_LIST_COMMAND = 'pr.list'
       PR_MERGE_COMMAND = 'pr.merge'
+      PR_OPEN_COMMAND = 'pr.open'
     end
   end
 end
