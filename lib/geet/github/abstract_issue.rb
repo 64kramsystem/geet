@@ -61,6 +61,15 @@ module Geet
         @api_interface.send_request(api_path, data: request_data)
       end
 
+      # See https://developer.github.com/v3/issues/comments/#create-a-comment
+      #
+      def comment(comment)
+        api_path = "issues/#{@number}/comments"
+        request_data = { body: comment }
+
+        @api_interface.send_request(api_path, data: request_data)
+      end
+
       # See https://developer.github.com/v3/issues/#edit-an-issue
       #
       def edit(milestone:)
