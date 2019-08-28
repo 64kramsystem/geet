@@ -74,7 +74,7 @@ http_interactions:
       - Mon, 01 Jul 2018 21:10:24 GMT
     body:
       encoding: UTF-8
-      string: '[{"id":123456,"iid":2,"project_id":1234569,"title":"Milestone 2","description":"","state":"active","created_at":"2018-07-01T15:26:16.248Z","updated_at":"2018-07-01T15:26:16.248Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/2"},{"id":123456,"iid":1,"project_id":1234569,"title":"Milestone
+      string: '[{"id":123456,"iid":2,"project_id":123456,"title":"Milestone 2","description":"","state":"active","created_at":"2018-07-01T15:26:16.248Z","updated_at":"2018-07-01T15:26:16.248Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/2"},{"id":123456,"iid":1,"project_id":123456,"title":"Milestone
         1","description":"","state":"active","created_at":"2018-07-01T15:26:06.933Z","updated_at":"2018-07-01T15:26:06.933Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/1"}]'
     http_version: 
   recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
@@ -306,9 +306,9 @@ http_interactions:
       - Mon, 01 Jul 2018 21:10:24 GMT
     body:
       encoding: UTF-8
-      string: '[{"id":12345635,"iid":1,"project_id":1234569,"title":"Merge request
-        1","description":"","state":"opened","created_at":"2018-07-01T15:54:28.717Z","updated_at":"2018-07-01T21:08:40.165Z","target_branch":"master","source_branch":"test","upvotes":0,"downvotes":0,"author":{"id":1234561,"name":"Donald
-        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"assignee":null,"source_project_id":1234569,"target_project_id":1234569,"labels":[],"work_in_progress":false,"milestone":{"id":123456,"iid":1,"project_id":1234569,"title":"Milestone
+      string: '[{"id":123456,"iid":1,"project_id":123456,"title":"Merge request
+        1","description":"","state":"opened","created_at":"2018-07-01T15:54:28.717Z","updated_at":"2018-07-01T21:08:40.165Z","target_branch":"master","source_branch":"test","upvotes":0,"downvotes":0,"author":{"id":123456,"name":"Donald
+        Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck"},"assignee":null,"source_project_id":123456,"target_project_id":123456,"labels":[],"work_in_progress":false,"milestone":{"id":123456,"iid":1,"project_id":123456,"title":"Milestone
         1","description":"","state":"active","created_at":"2018-07-01T15:26:06.933Z","updated_at":"2018-07-01T15:26:06.933Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/1"},"merge_when_pipeline_succeeds":false,"merge_status":"can_be_merged","sha":"b4a0b46d1c6881bc793d7a00637d4910a914d879","merge_commit_sha":null,"user_notes_count":0,"discussion_locked":null,"should_remove_source_branch":null,"force_remove_source_branch":false,"web_url":"https://gitlab.com/donaldduck/testproject/merge_requests/1","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"squash":false,"approvals_before_merge":null}]'
     http_version: 
   recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
@@ -386,11 +386,11 @@ http_interactions:
       - Mon, 01 Jul 2018 21:10:24 GMT
     body:
       encoding: UTF-8
-      string: '[{"id":12345608,"iid":3,"project_id":1234569,"title":"This is a test
-        issue","description":"A description.\n\nNow with more lines!","state":"opened","created_at":"2018-07-01T14:23:55.801Z","updated_at":"2018-07-01T15:55:10.544Z","closed_at":null,"closed_by":null,"labels":[],"milestone":{"id":123456,"iid":1,"project_id":1234569,"title":"Milestone
-        1","description":"","state":"active","created_at":"2018-07-01T15:26:06.933Z","updated_at":"2018-07-01T15:26:06.933Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/1"},"assignees":[{"id":1234566,"name":"Donald
-        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"}],"author":{"id":1234566,"name":"Donald
-        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"assignee":{"id":1234566,"name":"Donald
+      string: '[{"id":123456,"iid":3,"project_id":123456,"title":"This is a test
+        issue","description":"A description.\n\nNow with more lines!","state":"opened","created_at":"2018-07-01T14:23:55.801Z","updated_at":"2018-07-01T15:55:10.544Z","closed_at":null,"closed_by":null,"labels":[],"milestone":{"id":123456,"iid":1,"project_id":123456,"title":"Milestone
+        1","description":"","state":"active","created_at":"2018-07-01T15:26:06.933Z","updated_at":"2018-07-01T15:26:06.933Z","due_date":null,"start_date":null,"web_url":"https://gitlab.com/donaldduck/testproject/milestones/1"},"assignees":[{"id":123456,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"}],"author":{"id":123456,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"assignee":{"id":123456,"name":"Donald
         M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"user_notes_count":0,"upvotes":0,"downvotes":0,"due_date":null,"confidential":false,"discussion_locked":null,"web_url":"https://gitlab.com/donaldduck/testproject/issues/3","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"weight":null}]'
     http_version: 
   recorded_at: Sun, 01 Jul 2018 21:09:24 GMT
