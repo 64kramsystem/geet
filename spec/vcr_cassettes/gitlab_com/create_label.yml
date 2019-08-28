@@ -58,7 +58,7 @@ http_interactions:
       - Wed, 03 Jul 2018 16:45:14 GMT
     body:
       encoding: UTF-8
-      string: '{"id":1234565,"name":"my_label","color":"#123456","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false}'
+      string: '{"id":123456,"name":"my_label","color":"#123456","description":null,"open_issues_count":0,"closed_issues_count":0,"open_merge_requests_count":0,"priority":null,"subscribed":false}'
     http_version: 
   recorded_at: Tue, 03 Jul 2018 16:44:15 GMT
 recorded_with: VCR 3.0.3

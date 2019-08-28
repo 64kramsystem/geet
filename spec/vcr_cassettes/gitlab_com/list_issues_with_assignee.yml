@@ -74,13 +74,13 @@ http_interactions:
       - Mon, 01 Jul 2018 15:00:20 GMT
     body:
       encoding: UTF-8
-      string: '[{"id":1234561,"name":"Donald Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck","access_level":40,"expires_at":null},{"id":1234566,"name":"Donald
+      string: '[{"id":123456,"name":"Donald Duck","username":"donaldduck","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef05ea2797cb94a5b0?s=80\u0026d=identicon","web_url":"https://gitlab.com/donaldduck","access_level":40,"expires_at":null},{"id":123456,"name":"Donald
         M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr","access_level":30,"expires_at":null}]'
     http_version: 
   recorded_at: Sun, 01 Jul 2018 14:59:20 GMT
 - request:
     method: get
-    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=1234566
+    uri: https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=123456
     body:
       encoding: US-ASCII
       string: ''
@@ -113,8 +113,8 @@ http_interactions:
       Etag:
       - W/"3686f432615d8dc0a03b33872b11100e"
       Link:
-      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=1234566&id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
-        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=1234566&id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+      - <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=123456&id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
+        rel="first", <https://gitlab.com/api/v4/projects/donaldduck%2Ftestproject/issues?assignee_id=123456&id=donaldduck%2Ftestproject&order_by=created_at&page=1&per_page=20&sort=desc&state=all>;
         rel="last"
       Vary:
       - Origin
@@ -152,10 +152,10 @@ http_interactions:
       - Mon, 01 Jul 2018 15:00:21 GMT
     body:
       encoding: UTF-8
-      string: '[{"id":12345608,"iid":3,"project_id":1234569,"title":"This is a test
-        issue","description":"A description.\n\nNow with more lines!","state":"opened","created_at":"2018-07-01T14:23:55.801Z","updated_at":"2018-07-01T14:23:55.801Z","closed_at":null,"closed_by":null,"labels":[],"milestone":null,"assignees":[{"id":1234566,"name":"Donald
-        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"}],"author":{"id":1234566,"name":"Donald
-        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"assignee":{"id":1234566,"name":"Donald
+      string: '[{"id":123456,"iid":3,"project_id":123456,"title":"This is a test
+        issue","description":"A description.\n\nNow with more lines!","state":"opened","created_at":"2018-07-01T14:23:55.801Z","updated_at":"2018-07-01T14:23:55.801Z","closed_at":null,"closed_by":null,"labels":[],"milestone":null,"assignees":[{"id":123456,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"}],"author":{"id":123456,"name":"Donald
+        M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"assignee":{"id":123456,"name":"Donald
         M.","username":"donald-fr","state":"active","avatar_url":"https://secure.gravatar.com/avatar/0123456789abcdef5f9bcb5c53fa82d2?s=80\u0026d=identicon","web_url":"https://gitlab.com/donald-fr"},"user_notes_count":0,"upvotes":0,"downvotes":0,"due_date":null,"confidential":false,"discussion_locked":null,"web_url":"https://gitlab.com/donaldduck/testproject/issues/3","time_stats":{"time_estimate":0,"total_time_spent":0,"human_time_estimate":null,"human_total_time_spent":null},"weight":null}]'
     http_version: 
   recorded_at: Sun, 01 Jul 2018 14:59:21 GMT

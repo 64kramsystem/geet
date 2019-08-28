@@ -1,0 +1,58 @@
+#!/bin/bash
+
+set -o errexit
+
+# We match ids with a length of 6 or more chars for simplicity - if we a generic `\d+` match is
+# performed, there are false positives (e.g. PR numbers).
+#
+# Note that since this is an associative array, there is not guaranteed ordering.
+#
+declare -A PATTERNS=(
+  ['Saverio']='Donald'
+  ['saverio']='donald'
+  ['Miroddi']='Duck'
+  ['miroddi']='duck'
+  ['("\w*id"):\d{6,}']='$1:123456'
+  ['\b(\w*id)=\d{6,}']='$1=123456'
+  ['u\/\d{6,}\b']='u\/123456'
+  ['(gravatar.com\/avatar\/)[0-9a-f]{16}']='${1}0123456789abcdef'
+)
+
+TEST_SUITES_LOCATION="$(git rev-parse --show-toplevel)/spec"
+
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+  cat <<HELP
+Usage: $(basename "$0") [<files...>|<dirs...>]
+
+Anonymizes the private data in all the files in the project test suites subdirectory ('$TEST_SUITES_LOCATION').
+
+Before applying the changes, all the project files are added to the staging area.
+
+Private data patterns:
+
+HELP
+
+  for key in ${!PATTERNS[@]}; do
+    echo "- $key => ${PATTERNS[$key]}"
+  done
+
+  cat <<'HELP'
+HELP
+
+  exit 0
+fi
+
+if [[ ! -d "$TEST_SUITES_LOCATION" ]]; then
+  echo "The expected TEST_SUITES_LOCATION '$TEST_SUITES_LOCATION' doesn't exist!"
+  exit 1
+fi
+
+git add -A :/
+
+for pattern_from in ${!PATTERNS[@]}; do
+  pattern_to="${PATTERNS[$pattern_from]}"
+
+  grep -lP "$pattern_from" -r "$TEST_SUITES_LOCATION" | xargs -I {} perl -i -pe "s/$pattern_from/$pattern_to/g" "{}"
+done
+
+git difftool --extcmd='vim -d -c "windo set wrap" $5'
