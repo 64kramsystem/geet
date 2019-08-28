@@ -24,6 +24,7 @@ The functionalities currently supported are:
   - list PRs
   - merge PR
 - Github:
+  - comment PR
   - create gist
   - create issue
   - create PR

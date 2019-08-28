@@ -9,6 +9,7 @@ module Geet
       ISSUE_LIST_COMMAND = 'issue.list'
       LABEL_LIST_COMMAND = 'label.list'
       MILESTONE_LIST_COMMAND = 'milestone.list'
+      PR_COMMENT_COMMAND = 'pr.comment'
       PR_CREATE_COMMAND = 'pr.create'
       PR_LIST_COMMAND = 'pr.list'
       PR_MERGE_COMMAND = 'pr.merge'

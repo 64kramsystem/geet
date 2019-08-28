@@ -48,6 +48,10 @@ class GeetLauncher
       Services::ListLabels.new(repository).execute
     when MILESTONE_LIST_COMMAND
       Services::ListMilestones.new(repository).execute
+    when PR_COMMENT_COMMAND
+      comment = options.delete(:comment)
+
+      Services::CommentPr.new(repository).execute(comment)
     when PR_CREATE_COMMAND
       summary = options[:summary] || edit_pr_summary(base: options[:base])
       title, description = split_summary(summary)

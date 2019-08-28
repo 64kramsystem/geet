@@ -49,6 +49,11 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
+      PR_COMMENT_OPTIONS = [
+        'comment',
+        long_help: 'Add a comment to the PR for the current branch.'
+      ]
+
       PR_CREATE_OPTIONS = [
         ['-A', '--automated-mode',                          "Automate the branch operations (see long help)"],
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
@@ -101,6 +106,7 @@ module Geet
           'list' => MILESTONE_LIST_OPTIONS,
         },
         'pr' => {
+          'comment' => PR_COMMENT_OPTIONS,
           'create' => PR_CREATE_OPTIONS,
           'list' => PR_LIST_OPTIONS,
           'merge' => PR_MERGE_OPTIONS,
