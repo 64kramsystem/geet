@@ -51,7 +51,7 @@ class GeetLauncher
     when PR_COMMENT_COMMAND
       comment = options.delete(:comment)
 
-      Services::CommentPr.new(repository).execute(comment)
+      Services::CommentPr.new(repository).execute(comment, options)
     when PR_CREATE_COMMAND
       summary = options[:summary] || edit_pr_summary(base: options[:base])
       title, description = split_summary(summary)
