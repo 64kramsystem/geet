@@ -8,6 +8,7 @@ module Geet
       LABEL_CREATE_COMMAND = 'label.create'
       ISSUE_LIST_COMMAND = 'issue.list'
       LABEL_LIST_COMMAND = 'label.list'
+      MILESTONE_CREATE_COMMAND = 'milestone.create'
       MILESTONE_LIST_COMMAND = 'milestone.list'
       PR_COMMENT_COMMAND = 'pr.comment'
       PR_CREATE_COMMAND = 'pr.create'

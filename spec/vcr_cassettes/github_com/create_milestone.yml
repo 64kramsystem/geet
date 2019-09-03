@@ -1,0 +1,82 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.github.com/repos/donaldduck/testrepo_upstream/milestones
+    body:
+      encoding: UTF-8
+      string: '{"title":"my_milestone"}'
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - application/vnd.github.v3+json
+      User-Agent:
+      - Ruby
+      Host:
+      - api.github.com
+      Authorization:
+      - Basic <GITHUB_CREDENTIALS>
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Tue, 03 Sep 2019 16:01:12 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Content-Length:
+      - '1506'
+      Server:
+      - GitHub.com
+      Status:
+      - 201 Created
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4927'
+      X-Ratelimit-Reset:
+      - '1567530072'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - '"21f10fbd46b93fec45025c213c4f1623"'
+      X-Oauth-Scopes:
+      - admin:gpg_key, admin:org, admin:org_hook, admin:public_key, admin:repo_hook,
+        delete_repo, gist, notifications, repo, user
+      X-Accepted-Oauth-Scopes:
+      - ''
+      Location:
+      - https://api.github.com/repos/donaldduck/testrepo_upstream/milestones/6
+      X-Github-Media-Type:
+      - github.v3; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, Location, Retry-After, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining,
+        X-RateLimit-Reset, X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval,
+        X-GitHub-Media-Type
+      Access-Control-Allow-Origin:
+      - "*"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Frame-Options:
+      - deny
+      X-Content-Type-Options:
+      - nosniff
+      X-Xss-Protection:
+      - 1; mode=block
+      Referrer-Policy:
+      - origin-when-cross-origin, strict-origin-when-cross-origin
+      Content-Security-Policy:
+      - default-src 'none'
+      X-Github-Request-Id:
+      - A894:36DFC:1D8B744:23F04F8:5D6E8E48
+    body:
+      encoding: UTF-8
+      string: '{"url":"https://api.github.com/repos/donaldduck/testrepo_upstream/milestones/6","html_url":"https://github.com/donaldduck/testrepo_upstream/milestone/6","labels_url":"https://api.github.com/repos/donaldduck/testrepo_upstream/milestones/6/labels","id":123456,"node_id":"MDk6TWlsZXN0b25lNDYyNTM3NQ==","number":6,"title":"my_milestone","description":null,"creator":{"login":"donaldduck","id":123456,"node_id":"MDQ6VXNlcjE1OTUzNTY=","avatar_url":"https://avatars2.githubusercontent.com/u/123456?v=4","gravatar_id":"","url":"https://api.github.com/users/donaldduck","html_url":"https://github.com/donaldduck","followers_url":"https://api.github.com/users/donaldduck/followers","following_url":"https://api.github.com/users/donaldduck/following{/other_user}","gists_url":"https://api.github.com/users/donaldduck/gists{/gist_id}","starred_url":"https://api.github.com/users/donaldduck/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/donaldduck/subscriptions","organizations_url":"https://api.github.com/users/donaldduck/orgs","repos_url":"https://api.github.com/users/donaldduck/repos","events_url":"https://api.github.com/users/donaldduck/events{/privacy}","received_events_url":"https://api.github.com/users/donaldduck/received_events","type":"User","site_admin":false},"open_issues":0,"closed_issues":0,"state":"open","created_at":"2019-09-03T16:01:12Z","updated_at":"2019-09-03T16:01:12Z","due_on":null,"closed_at":null}'
+    http_version: 
+  recorded_at: Tue, 03 Sep 2019 16:01:12 GMT
+recorded_with: VCR 3.0.3

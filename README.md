@@ -27,6 +27,7 @@ The functionalities currently supported are:
   - comment PR
   - create gist
   - create issue
+  - create milestone
   - create PR
 
 ## Samples
