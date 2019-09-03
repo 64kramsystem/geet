@@ -50,6 +50,7 @@ module Geet
       ].freeze
 
       PR_COMMENT_OPTIONS = [
+        ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
         'comment',
         long_help: 'Add a comment to the PR for the current branch.'
       ]

@@ -19,11 +19,11 @@ module Geet
         @git_client = git_client
       end
 
-      def execute(comment)
+      def execute(comment, no_open_pr: nil)
         merge_owner, merge_head = find_merge_head
         pr = checked_find_branch_pr(merge_owner, merge_head)
         pr.comment(comment)
-        open_file_with_default_application(pr.link)
+        open_file_with_default_application(pr.link) unless no_open_pr
         pr
       end
     end
