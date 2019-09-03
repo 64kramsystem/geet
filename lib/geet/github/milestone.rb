@@ -21,6 +21,20 @@ module Geet
         @api_interface = api_interface
       end
 
+      # See https://developer.github.com/v3/issues/milestones/#create-a-milestone
+      def self.create(title, api_interface)
+        api_path = 'milestones'
+        request_data = { title: title }
+
+        response = api_interface.send_request(api_path, data: request_data)
+
+        number = response.fetch('number')
+        title = response.fetch('title')
+        due_on = nil
+
+        new(number, title, due_on, api_interface)
+      end
+
       # See https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
       #
       def self.find(number, api_interface)

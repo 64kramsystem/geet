@@ -46,6 +46,10 @@ class GeetLauncher
       Services::ListIssues.new(repository).execute(options)
     when LABEL_LIST_COMMAND
       Services::ListLabels.new(repository).execute
+    when MILESTONE_CREATE_COMMAND
+      title = options.delete(:title)
+
+      Services::CreateMilestone.new(repository).execute(title)
     when MILESTONE_LIST_COMMAND
       Services::ListMilestones.new(repository).execute
     when PR_COMMENT_COMMAND
