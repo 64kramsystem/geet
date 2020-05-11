@@ -24,8 +24,15 @@ module Geet
       def execute(delete_branch: false)
         merge_owner, merge_head = find_merge_head
         pr = checked_find_branch_pr(merge_owner, merge_head)
+
         merge_pr(pr)
-        do_delete_branch if delete_branch
+
+        if delete_branch
+          branch = @git_client.current_branch
+
+          delete_remote_branch(branch)
+        end
+
         pr
       end
 
@@ -37,10 +44,10 @@ module Geet
         pr.merge
       end
 
-      def do_delete_branch
-        @out.puts "Deleting branch #{@git_client.current_branch}..."
+      def delete_remote_branch(branch)
+        @out.puts "Deleting branch #{branch}..."
 
-        @repository.delete_branch(@git_client.current_branch)
+        @repository.delete_branch(branch)
       end
     end
   end
