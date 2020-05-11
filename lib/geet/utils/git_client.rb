@@ -53,6 +53,8 @@ module Geet
 
       # Not to be confused with `upstream` repository!
       #
+      # This API doesn't reveal if the remote branch is gone.
+      #
       # return: nil, if the upstream branch is not configured.
       #
       def upstream_branch
