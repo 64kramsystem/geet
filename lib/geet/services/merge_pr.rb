@@ -45,7 +45,7 @@ module Geet
       end
 
       def delete_remote_branch(branch)
-        @out.puts "Deleting branch #{branch}..."
+        @out.puts "Deleting remote branch #{branch}..."
 
         @repository.delete_branch(branch)
       end
