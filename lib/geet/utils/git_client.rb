@@ -39,13 +39,13 @@ module Geet
       # (which start with `-`)
       #
       def cherry(limit)
-        raw_commits = execute_command("git #{gitdir_option} cherry #{limit.shellescape}")
+        raw_commits = execute_git_command("cherry #{limit.shellescape}")
 
         raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
       end
 
       def current_branch
-        branch = execute_command("git #{gitdir_option} rev-parse --abbrev-ref HEAD")
+        branch = execute_git_command("rev-parse --abbrev-ref HEAD")
 
         raise "Couldn't find current branch" if branch == 'HEAD'
 
@@ -59,9 +59,9 @@ module Geet
       # return: nil, if the upstream branch is not configured.
       #
       def upstream_branch
-        head_symbolic_ref = execute_command("git #{gitdir_option} symbolic-ref -q HEAD")
+        head_symbolic_ref = execute_git_command("symbolic-ref -q HEAD")
 
-        raw_upstream_branch = execute_command("git #{gitdir_option} for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
+        raw_upstream_branch = execute_git_command("for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
 
         if raw_upstream_branch != ''
           raw_upstream_branch[UPSTREAM_BRANCH_REGEX, 1] || raise("Unexpected upstream format: #{raw_upstream_branch}")
@@ -74,7 +74,7 @@ module Geet
       # remote branch is expressed.
       #
       def upstream_branch_gone?
-        status_output = execute_command("git #{gitdir_option} status -b --porcelain")
+        status_output = execute_git_command("status -b --porcelain")
 
         # Simplified branch naming pattern. The exact one (see https://stackoverflow.com/a/3651867)
         # is not worth implementing.
@@ -87,7 +87,7 @@ module Geet
       end
 
       def working_tree_clean?
-        git_message = execute_command("git #{gitdir_option} status")
+        git_message = execute_git_command("status")
 
         !!(git_message =~ CLEAN_TREE_MESSAGE_REGEX)
       end
@@ -99,7 +99,7 @@ module Geet
       # Show the description ("<subject>\n\n<body>") for the given git object.
       #
       def show_description(object)
-        execute_command("git #{gitdir_option} show --quiet --format='%s\n\n%b' #{object.shellescape}")
+        execute_git_command("show --quiet --format='%s\n\n%b' #{object.shellescape}")
       end
 
       ##########################################################################
@@ -136,7 +136,7 @@ module Geet
       # The result is in the format `git@github.com:donaldduck/geet.git`
       #
       def remote(name)
-        remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
+        remote_url = execute_git_command("ls-remote --get-url #{name}")
 
         if remote_url == name
           raise "Remote #{name.inspect} not found!"
@@ -151,7 +151,7 @@ module Geet
       # purposes, any any action that needs to work with the remote, uses #remote.
       #
       def remote_defined?(name)
-        remote_url = execute_command("git #{gitdir_option} ls-remote --get-url #{name}")
+        remote_url = execute_git_command("ls-remote --get-url #{name}")
 
         # If the remote is not define, `git ls-remote` will return the passed value.
         remote_url != name
@@ -162,17 +162,17 @@ module Geet
       ##########################################################################
 
       def checkout(branch)
-        execute_command("git #{gitdir_option} checkout #{branch.shellescape}")
+        execute_git_command("checkout #{branch.shellescape}")
       end
 
       # Unforced deletion.
       #
       def delete_branch(branch)
-        execute_command("git #{gitdir_option} branch --delete #{branch.shellescape}")
+        execute_git_command("branch --delete #{branch.shellescape}")
       end
 
       def rebase
-        execute_command("git #{gitdir_option} rebase")
+        execute_git_command("rebase")
       end
 
       # upstream_branch: create an upstream branch.
@@ -180,13 +180,13 @@ module Geet
       def push(upstream_branch: nil)
         upstream_branch_option = "-u origin #{upstream_branch.shellescape}" if upstream_branch
 
-        execute_command("git #{gitdir_option} push #{upstream_branch_option}")
+        execute_git_command("push #{upstream_branch_option}")
       end
 
       # Performs pruning.
       #
       def fetch
-        execute_command("git #{gitdir_option} fetch --prune")
+        execute_git_command("fetch --prune")
       end
 
       ##########################################################################
@@ -195,8 +195,13 @@ module Geet
 
       private
 
-      def gitdir_option
-        "-C #{@location.shellescape}" if @location
+      # If executing a git command without calling this API, don't forget to split `gitdir_option`
+      # and use it!
+      #
+      def execute_git_command(command)
+        gitdir_option = "-C #{@location.shellescape}" if @location
+
+        execute_command("git #{gitdir_option} #{command}")
       end
     end
   end
