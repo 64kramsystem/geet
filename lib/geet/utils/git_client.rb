@@ -154,6 +154,10 @@ module Geet
         execute_command("git #{gitdir_option} branch --delete #{branch.shellescape}")
       end
 
+      def rebase
+        execute_command("git #{gitdir_option} rebase")
+      end
+
       # upstream_branch: create an upstream branch.
       #
       def push(upstream_branch: nil)
