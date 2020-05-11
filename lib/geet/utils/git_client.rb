@@ -152,6 +152,12 @@ module Geet
         execute_command("git #{gitdir_option} push #{upstream_branch_option}")
       end
 
+      # Performs pruning.
+      #
+      def fetch
+        execute_command("git #{gitdir_option} fetch --prune")
+      end
+
       ##########################################################################
       # INTERNAL HELPERS
       ##########################################################################
