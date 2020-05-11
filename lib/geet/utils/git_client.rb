@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'English'
 require 'shellwords'
 require_relative '../helpers/os_helper'
 
@@ -66,6 +67,22 @@ module Geet
           raw_upstream_branch[UPSTREAM_BRANCH_REGEX, 1] || raise("Unexpected upstream format: #{raw_upstream_branch}")
         else
           nil
+        end
+      end
+
+      # TODO: May be merged with :upstream_branch, although it would require designing how a gone
+      # remote branch is expressed.
+      #
+      def upstream_branch_gone?
+        status_output = execute_command("git #{gitdir_option} status -b --porcelain")
+
+        # Simplified branch naming pattern. The exact one (see https://stackoverflow.com/a/3651867)
+        # is not worth implementing.
+        #
+        if status_output =~ %r(^## .+\.\.\..+?( \[gone\])?$)
+          !!$LAST_MATCH_INFO[1]
+        else
+          raise "Unexpected git command output: #{status_output}"
         end
       end
 
