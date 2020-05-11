@@ -148,6 +148,12 @@ module Geet
         execute_command("git #{gitdir_option} checkout #{branch.shellescape}")
       end
 
+      # Unforced deletion.
+      #
+      def delete_branch(branch)
+        execute_command("git #{gitdir_option} branch --delete #{branch.shellescape}")
+      end
+
       # upstream_branch: create an upstream branch.
       #
       def push(upstream_branch: nil)
