@@ -144,6 +144,10 @@ module Geet
       # OPERATION APIS
       ##########################################################################
 
+      def checkout(branch)
+        execute_command("git #{gitdir_option} checkout #{branch.shellescape}")
+      end
+
       # upstream_branch: create an upstream branch.
       #
       def push(upstream_branch: nil)
