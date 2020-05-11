@@ -105,7 +105,7 @@ module Geet
 
       # Attempt to find the provider class and send the specified method, returning a friendly
       # error (functionality X [Y] is missing) when a class/method is missing.
-      def attempt_provider_call(class_name, meth, *args)
+      def attempt_provider_call(class_name, meth, *positional_args, **keyword_args)
         module_name = provider_name.capitalize
 
         require_provider_modules
@@ -119,7 +119,7 @@ module Geet
             raise "The functionality invoked (#{class_name}.#{meth}) is not currently supported!"
           end
 
-          klass.send(meth, *args)
+          klass.send(meth, *positional_args, **keyword_args)
         else
           raise "The class referenced (#{full_class_name}) is not currently supported!"
         end

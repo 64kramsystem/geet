@@ -28,22 +28,22 @@ class GeetLauncher
       filename = options.delete(:filename)
       options[:publik] = options.delete(:public) if options.key?(:public)
 
-      Services::CreateGist.new.execute(filename, options)
+      Services::CreateGist.new.execute(filename, **options)
     when ISSUE_CREATE_COMMAND
       summary = options[:summary] || Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
       title, description = split_summary(summary)
 
       options = default_to_manual_selection(options, :labels, :milestone, :assignees)
 
-      Services::CreateIssue.new(repository).execute(title, description, options)
+      Services::CreateIssue.new(repository).execute(title, description, **options)
     when LABEL_CREATE_COMMAND
       name = options.delete(:name)
 
-      Services::CreateLabel.new(repository).execute(name, options)
+      Services::CreateLabel.new(repository).execute(name, **options)
     when ISSUE_LIST_COMMAND
       options = default_to_manual_selection(options, :assignee)
 
-      Services::ListIssues.new(repository).execute(options)
+      Services::ListIssues.new(repository).execute(**options)
     when LABEL_LIST_COMMAND
       Services::ListLabels.new(repository).execute
     when MILESTONE_CREATE_COMMAND
@@ -55,20 +55,20 @@ class GeetLauncher
     when PR_COMMENT_COMMAND
       comment = options.delete(:comment)
 
-      Services::CommentPr.new(repository).execute(comment, options)
+      Services::CommentPr.new(repository).execute(comment, **options)
     when PR_CREATE_COMMAND
       summary = options[:summary] || edit_pr_summary(base: options[:base])
       title, description = split_summary(summary)
 
       options = default_to_manual_selection(options, :labels, :milestone, :reviewers)
 
-      Services::CreatePr.new(repository).execute(title, description, options)
+      Services::CreatePr.new(repository).execute(title, description, **options)
     when PR_LIST_COMMAND
       Services::ListPrs.new(repository).execute
     when PR_MERGE_COMMAND
-      Services::MergePr.new(repository).execute(options)
+      Services::MergePr.new(repository).execute(**options)
     when PR_OPEN_COMMAND
-      Services::OpenPr.new(repository).execute(options)
+      Services::OpenPr.new(repository).execute(**options)
     else
       raise "Internal error - Unrecognized command #{command.inspect}"
     end
