@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/services_workflow_helper'
+require_relative '../shared/branches'
 
 module Geet
   module Services
@@ -12,6 +13,7 @@ module Geet
     #
     class MergePr
       include Geet::Helpers::ServicesWorkflowHelper
+      include Geet::Shared::Branches
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
@@ -24,8 +26,29 @@ module Geet
       def execute(delete_branch: false)
         merge_owner, merge_head = find_merge_head
         pr = checked_find_branch_pr(merge_owner, merge_head)
+
         merge_pr(pr)
-        do_delete_branch if delete_branch
+
+        if delete_branch
+          branch = @git_client.current_branch
+
+          delete_remote_branch(branch)
+        end
+
+        fetch_repository
+
+        if upstream_branch_gone?
+          pr_branch = @git_client.current_branch
+
+          # The rebase could also be placed after the branch deletion. There are pros/cons;
+          # currently, it's not important.
+          #
+          checkout_branch(MAIN_BRANCH)
+          rebase
+
+          delete_local_branch(pr_branch)
+        end
+
         pr
       end
 
@@ -37,10 +60,38 @@ module Geet
         pr.merge
       end
 
-      def do_delete_branch
-        @out.puts "Deleting branch #{@git_client.current_branch}..."
+      def delete_remote_branch(branch)
+        @out.puts "Deleting remote branch #{branch}..."
 
-        @repository.delete_branch(@git_client.current_branch)
+        @repository.delete_branch(branch)
+      end
+
+      def fetch_repository
+        @out.puts "Fetching repository..."
+
+        @git_client.fetch
+      end
+
+      def upstream_branch_gone?
+        @git_client.upstream_branch_gone?
+      end
+
+      def checkout_branch(branch)
+        @out.puts "Checking out #{branch}..."
+
+        @git_client.checkout(branch)
+      end
+
+      def rebase
+        @out.puts "Rebasing..."
+
+        @git_client.rebase
+      end
+
+      def delete_local_branch(branch)
+        @out.puts "Deleting local branch #{branch}..."
+
+        @git_client.delete_branch(branch)
       end
     end
   end
