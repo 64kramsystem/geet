@@ -45,6 +45,10 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
+      MILESTONE_CLOSE_OPTIONS = [
+        long_help: 'Close milestones.'
+      ]
+
       MILESTONE_CREATE_OPTIONS = [
         'title',
         long_help: 'Create a milestone.'
@@ -109,6 +113,7 @@ module Geet
           'list' => LABEL_LIST_OPTIONS,
         },
         'milestone' => {
+          'close' => MILESTONE_CLOSE_OPTIONS,
           'create' => MILESTONE_CREATE_OPTIONS,
           'list' => MILESTONE_LIST_OPTIONS,
         },
