@@ -73,6 +73,11 @@ module Geet
       # TODO: May be merged with :upstream_branch, although it would require designing how a gone
       # remote branch is expressed.
       #
+      # Sample command output:
+      #
+      #     ## add_milestone_closing...origin/add_milestone_closing [gone]
+      #      M spec/integration/merge_pr_spec.rb
+      #
       def upstream_branch_gone?
         status_output = execute_git_command("status -b --porcelain")
 
