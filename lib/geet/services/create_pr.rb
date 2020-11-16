@@ -2,11 +2,13 @@
 
 require_relative 'abstract_create_issue'
 require_relative '../shared/repo_permissions'
+require_relative '../shared/selection'
 
 module Geet
   module Services
     class CreatePr < AbstractCreateIssue
       include Geet::Shared::RepoPermissions
+      include Geet::Shared::Selection
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
@@ -66,11 +68,11 @@ module Geet
       def find_and_select_attributes(labels, milestone, reviewers)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
-        selection_manager.add_attribute(:labels, 'label', labels, :multiple, name_method: :name) if labels
-        selection_manager.add_attribute(:milestones, 'milestone', milestone, :single, name_method: :title) if milestone
+        selection_manager.add_attribute(:labels, 'label', labels, SELECTION_MULTIPLE, name_method: :name) if labels
+        selection_manager.add_attribute(:milestones, 'milestone', milestone, SELECTION_SINGLE, name_method: :title) if milestone
 
         if reviewers
-          selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, :multiple, name_method: :username) do |all_reviewers|
+          selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, SELECTION_MULTIPLE, name_method: :username) do |all_reviewers|
             authenticated_user = @repository.authenticated_user
             all_reviewers.delete_if { |reviewer| reviewer.username == authenticated_user.username }
           end
