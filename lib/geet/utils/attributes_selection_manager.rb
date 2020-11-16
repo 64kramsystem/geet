@@ -30,8 +30,10 @@ module Geet
         @selections_data = []
       end
 
+      # selection_type: SELECTION_SINGLE or SELECTION_MULTIPLE
+      #
       def add_attribute(repository_call, description, pattern, selection_type, name_method: nil, &pre_selection_hook)
-        raise "Unrecognized selection type #{selection_type.inspect}" if ![:single, :multiple].include?(selection_type)
+        raise "Unrecognized selection type #{selection_type.inspect}" if ![SELECTION_SINGLE, SELECTION_MULTIPLE].include?(selection_type)
 
         finder_thread = find_attribute_entries(repository_call)
 
@@ -47,9 +49,9 @@ module Geet
           entries = pre_selection_hook.(entries) if pre_selection_hook
 
           case selection_type
-          when :single
+          when SELECTION_SINGLE
             select_entry(description, entries, pattern, name_method)
-          when :multiple
+          when SELECTION_MULTIPLE
             select_entries(description, entries, pattern, name_method)
           end
         end

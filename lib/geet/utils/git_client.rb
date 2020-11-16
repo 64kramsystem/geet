@@ -73,8 +73,14 @@ module Geet
       # TODO: May be merged with :upstream_branch, although it would require designing how a gone
       # remote branch is expressed.
       #
+      # Sample command output:
+      #
+      #     ## add_milestone_closing...origin/add_milestone_closing [gone]
+      #      M spec/integration/merge_pr_spec.rb
+      #
       def upstream_branch_gone?
-        status_output = execute_git_command("status -b --porcelain")
+        git_command = "status -b --porcelain"
+        status_output = execute_git_command(git_command)
 
         # Simplified branch naming pattern. The exact one (see https://stackoverflow.com/a/3651867)
         # is not worth implementing.
@@ -82,7 +88,7 @@ module Geet
         if status_output =~ %r(^## .+\.\.\..+?( \[gone\])?$)
           !!$LAST_MATCH_INFO[1]
         else
-          raise "Unexpected git command output: #{status_output}"
+          raise "Unexpected git command #{git_command.inspect} output: #{status_output}"
         end
       end
 

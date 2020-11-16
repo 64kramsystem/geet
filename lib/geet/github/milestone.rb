@@ -7,6 +7,8 @@ module Geet
     class Milestone
       attr_reader :number, :title, :due_on
 
+      STATE_CLOSED = 'closed'
+
       class << self
         private
 
@@ -63,6 +65,17 @@ module Geet
 
           new(number, title, due_on, api_interface)
         end
+      end
+
+      # See https://docs.github.com/en/free-pro-team@latest/rest/reference/issues#update-a-milestone
+      #
+      # This is a convenience method; the underlying operation is a generic update.
+      #
+      def self.close(number, api_interface)
+        api_path = "milestones/#{number}"
+        request_data = { state: STATE_CLOSED }
+
+        api_interface.send_request(api_path, data: request_data)
       end
     end
   end

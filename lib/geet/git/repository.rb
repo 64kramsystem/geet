@@ -70,6 +70,10 @@ module Geet
         attempt_provider_call(:Milestone, :list, api_interface)
       end
 
+      def close_milestone(number)
+        attempt_provider_call(:Milestone, :close, number, api_interface)
+      end
+
       def create_pr(title, description, head, base: nil)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
         confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings

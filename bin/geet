@@ -46,6 +46,13 @@ class GeetLauncher
       Services::ListIssues.new(repository).execute(options)
     when LABEL_LIST_COMMAND
       Services::ListLabels.new(repository).execute
+    when MILESTONE_CLOSE_COMMAND
+      # Don't support user selection. This requires extra complexity, specifically, matching by number
+      # while displaying the titles (see AttributesSelectionManager).
+      #
+      options = {numbers: Shared::Selection::MANUAL_LIST_SELECTION_FLAG}
+
+      Services::CloseMilestones.new(repository).execute(options)
     when MILESTONE_CREATE_COMMAND
       title = options.delete(:title)
 
