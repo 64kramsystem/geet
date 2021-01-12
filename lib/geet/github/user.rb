@@ -45,7 +45,7 @@ module Geet
 
       # See https://developer.github.com/v3/users/#get-the-authenticated-user
       #
-      def self.authenticated(api_interface)
+      def self.authenticated(api_interface, **_)
         api_path = '/user'
 
         response = api_interface.send_request(api_path)
@@ -55,7 +55,7 @@ module Geet
 
       # Returns an array of User instances
       #
-      def self.list_collaborators(api_interface)
+      def self.list_collaborators(api_interface, **)
         api_path = 'collaborators'
         response = api_interface.send_request(api_path, multipage: true)
 
