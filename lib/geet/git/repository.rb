@@ -123,7 +123,11 @@ module Geet
             raise "The functionality invoked (#{class_name}.#{meth}) is not currently supported!"
           end
 
-          klass.send(meth, *args)
+          # Can't use ruby2_keywords, because the method definitions use named keyword arguments.
+          #
+          kwargs = args.last.is_a?(Hash) ? args.pop : {}
+
+          klass.send(meth, *args, **kwargs)
         else
           raise "The class referenced (#{full_class_name}) is not currently supported!"
         end

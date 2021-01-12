@@ -24,7 +24,7 @@ module Geet
       end
 
       # See https://developer.github.com/v3/issues/milestones/#create-a-milestone
-      def self.create(title, api_interface)
+      def self.create(title, api_interface, **)
         api_path = 'milestones'
         request_data = { title: title }
 
@@ -53,7 +53,7 @@ module Geet
 
       # See https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
       #
-      def self.list(api_interface)
+      def self.list(api_interface, **)
         api_path = 'milestones'
 
         response = api_interface.send_request(api_path, multipage: true)

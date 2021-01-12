@@ -17,7 +17,7 @@ module Geet
 
       # See https://docs.gitlab.com/ee/api/milestones.html#list-project-milestones
       #
-      def self.list(api_interface)
+      def self.list(api_interface, **)
         api_path = "projects/#{api_interface.path_with_namespace(encoded: true)}/milestones"
 
         response = api_interface.send_request(api_path, multipage: true)
