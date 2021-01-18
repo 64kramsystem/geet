@@ -39,7 +39,7 @@ module Geet
 
       # See https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
       #
-      def self.find(number, api_interface)
+      def self.find(number, api_interface, **)
         api_path = "milestones/#{number}"
 
         response = api_interface.send_request(api_path)
@@ -71,7 +71,7 @@ module Geet
       #
       # This is a convenience method; the underlying operation is a generic update.
       #
-      def self.close(number, api_interface)
+      def self.close(number, api_interface, **)
         api_path = "milestones/#{number}"
         request_data = { state: STATE_CLOSED }
 

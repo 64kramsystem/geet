@@ -43,7 +43,7 @@ class GeetLauncher
     when ISSUE_LIST_COMMAND
       options = default_to_manual_selection(options, :assignee)
 
-      Services::ListIssues.new(repository).execute(*options)
+      Services::ListIssues.new(repository).execute(**options)
     when LABEL_LIST_COMMAND
       Services::ListLabels.new(repository).execute
     when MILESTONE_CLOSE_COMMAND
@@ -52,7 +52,7 @@ class GeetLauncher
       #
       options = {numbers: Shared::Selection::MANUAL_LIST_SELECTION_FLAG}
 
-      Services::CloseMilestones.new(repository).execute(*options)
+      Services::CloseMilestones.new(repository).execute(**options)
     when MILESTONE_CREATE_COMMAND
       title = options.delete(:title)
 
