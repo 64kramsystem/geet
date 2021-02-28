@@ -18,17 +18,12 @@ The functionalities currently supported are:
 
 - Github/Gitlab:
   - create label
-  - list issues
-  - list labels
-  - list milestones
-  - list PRs
-  - merge PR
+  - list issues, labels, milestones, MR/PRs
+  - merge MR/PR
+  - open repository
 - Github:
   - comment PR
-  - create gist
-  - create issue
-  - create milestone
-  - create PR
+  - create gist, issue, milestone, PR
 
 ## Samples
 
