@@ -11,7 +11,6 @@ module Geet
     class GitClient
       include Geet::Helpers::OsHelper
 
-      ORIGIN_NAME   = 'origin'
       UPSTREAM_NAME = 'upstream'
 
       # For simplicity, we match any character except the ones the separators.
@@ -115,9 +114,9 @@ module Geet
       # Example: `donaldduck/geet`
       #
       def path(upstream: false)
-        remote_name = upstream ? UPSTREAM_NAME : ORIGIN_NAME
+        remote_name_option = upstream ? {name: UPSTREAM_NAME} : {}
 
-        remote(name: remote_name)[REMOTE_ORIGIN_REGEX, 3]
+        remote(**remote_name_option)[REMOTE_ORIGIN_REGEX, 3]
       end
 
       def owner
@@ -126,10 +125,8 @@ module Geet
 
       def provider_domain
         # We assume that it's not possible to have origin and upstream on different providers.
-        #
-        remote_url = remote(name: ORIGIN_NAME)
 
-        domain = remote_url[REMOTE_ORIGIN_REGEX, 1] || remote_url[REMOTE_ORIGIN_REGEX, 2]
+        domain = remote()[REMOTE_ORIGIN_REGEX, 1] || remote()[REMOTE_ORIGIN_REGEX, 2]
 
         raise "Can't identify domain in the provider domain string: #{domain}" if domain !~ /(.*)\.\w+/
 

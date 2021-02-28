@@ -12,7 +12,7 @@ describe Geet::Services::CreateMilestone do
 
   context 'with github.com' do
     it 'should create a milestone' do
-      allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/testrepo_upstream')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_upstream')
 
       expected_output = <<~STR
         Creating milestone...

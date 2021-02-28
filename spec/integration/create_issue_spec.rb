@@ -12,7 +12,7 @@ describe Geet::Services::CreateIssue do
 
   context 'with labels, assignees and milestones' do
     it 'should create an issue' do
-      allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/testrepo_f')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
       expected_output = <<~STR
         Finding labels...
@@ -47,7 +47,7 @@ describe Geet::Services::CreateIssue do
     context 'without labels, assignees and milestones' do
       it 'should create an upstream issue' do
         allow(git_client).to receive(:current_branch).and_return('mybranch')
-        allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/testrepo')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo')
         allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:momcorp/therepo')
 
         expected_output = <<~STR
