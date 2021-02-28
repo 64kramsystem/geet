@@ -16,7 +16,7 @@ describe Geet::Services::OpenPr do
 
     it 'should open the PR for the current branch' do
       allow(git_client).to receive(:current_branch).and_return(branch)
-      allow(git_client).to receive(:remote).with('origin').and_return("git@github.com:#{owner}/#{repository_name}")
+      allow(git_client).to receive(:remote).with(name: 'origin').and_return("git@github.com:#{owner}/#{repository_name}")
 
       expected_pr_number = 3
       expected_output = <<~STR

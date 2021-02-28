@@ -13,7 +13,7 @@ describe Geet::Services::CreateLabel do
   context 'with github.com' do
     context 'with user-specified color' do
       it 'should create a label' do
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+        allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/testrepo')
 
         expected_output = <<~STR
           Creating label...
@@ -34,8 +34,8 @@ describe Geet::Services::CreateLabel do
 
       context 'upstream' do
         it 'should create a label' do
-          allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
-          allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donaldduck-fr/testrepo_gh')
+          allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/testrepo')
+          allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donaldduck-fr/testrepo_gh')
 
           expected_output = <<~STR
             Creating label...
@@ -58,7 +58,7 @@ describe Geet::Services::CreateLabel do
 
     context 'with auto-generated color' do
       it 'should create a label' do
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+        allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/testrepo')
 
         actual_output = StringIO.new
 
@@ -87,7 +87,7 @@ describe Geet::Services::CreateLabel do
 
   context 'with gitlab.com' do
     it 'should create a label' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+      allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@gitlab.com:donaldduck/testproject')
 
       expected_output = <<~STR
         Creating label...

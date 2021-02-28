@@ -11,7 +11,7 @@ describe Geet::Services::ListPrs do
   let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
   it 'should list the PRs' do
-    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donald-fr/testrepo_downstream')
+    allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donald-fr/testrepo_downstream')
 
     expected_output = <<~STR
       2. Add testfile3 (downstream) (https://github.com/donald-fr/testrepo_downstream/pull/2)
@@ -32,8 +32,8 @@ describe Geet::Services::ListPrs do
   end
 
   it 'should list the upstream PRs' do
-    allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donald-fr/testrepo_downstream')
-    allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donaldduck/testrepo_upstream')
+    allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donald-fr/testrepo_downstream')
+    allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donaldduck/testrepo_upstream')
 
     expected_output = <<~STR
       2. Add testfile3 (upstream) (https://github.com/donaldduck/testrepo_upstream/pull/2)

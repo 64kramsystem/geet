@@ -12,7 +12,7 @@ describe Geet::Services::ListLabels do
 
   context 'with github.com' do
     it 'should list the labels' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
+      allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/geet')
 
       expected_output = <<~STR
         - bug (#ee0701)
@@ -34,8 +34,8 @@ describe Geet::Services::ListLabels do
     end
 
     it 'should list the upstream labels' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
-      allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donaldduck-fr/testrepo_u')
+      allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@github.com:donaldduck/geet')
+      allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donaldduck-fr/testrepo_u')
 
       expected_output = <<~STR
         - bug (#ee0701)
@@ -57,7 +57,7 @@ describe Geet::Services::ListLabels do
 
   context 'with gitlab.com' do
     it 'should list the labels' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+      allow(git_client).to receive(:remote).with(name: 'origin').and_return('git@gitlab.com:donaldduck/testproject')
 
       expected_output = <<~STR
         - bug (#d9534f)
