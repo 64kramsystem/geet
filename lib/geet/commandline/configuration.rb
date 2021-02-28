@@ -98,6 +98,10 @@ module Geet
         long_help: 'Open in the browser the PR for the current branch'
       ]
 
+      REPO_OPEN_OPTIONS = [
+        long_help: 'Open the current repository in the browser'
+      ]
+
       # Commands decoding table
 
       COMMANDS_DECODING_TABLE = {
@@ -123,6 +127,9 @@ module Geet
           'list' => PR_LIST_OPTIONS,
           'merge' => PR_MERGE_OPTIONS,
           'open' => PR_OPEN_OPTIONS,
+        },
+        'repo' => {
+          'open' => REPO_OPEN_OPTIONS,
         },
       }
 

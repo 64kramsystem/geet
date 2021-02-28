@@ -16,6 +16,7 @@ module Geet
       PR_LIST_COMMAND = 'pr.list'
       PR_MERGE_COMMAND = 'pr.merge'
       PR_OPEN_COMMAND = 'pr.open'
+      REPO_OPEN_COMMAND = 'repo.open'
     end
   end
 end
