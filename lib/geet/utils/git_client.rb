@@ -11,11 +11,10 @@ module Geet
     class GitClient
       include Geet::Helpers::OsHelper
 
-      ORIGIN_NAME   = 'origin'
       UPSTREAM_NAME = 'upstream'
 
       # For simplicity, we match any character except the ones the separators.
-      REMOTE_ORIGIN_REGEX = %r{
+      REMOTE_URL_REGEX = %r{
         \A
         (?:https://(.+?)/|git@(.+?):)
         ([^/]+/.*?)
@@ -115,9 +114,9 @@ module Geet
       # Example: `donaldduck/geet`
       #
       def path(upstream: false)
-        remote_name = upstream ? UPSTREAM_NAME : ORIGIN_NAME
+        remote_name_option = upstream ? {name: UPSTREAM_NAME} : {}
 
-        remote(remote_name)[REMOTE_ORIGIN_REGEX, 3]
+        remote(**remote_name_option)[REMOTE_URL_REGEX, 3]
       end
 
       def owner
@@ -126,10 +125,8 @@ module Geet
 
       def provider_domain
         # We assume that it's not possible to have origin and upstream on different providers.
-        #
-        remote_url = remote(ORIGIN_NAME)
 
-        domain = remote_url[REMOTE_ORIGIN_REGEX, 1] || remote_url[REMOTE_ORIGIN_REGEX, 2]
+        domain = remote()[REMOTE_URL_REGEX, 1] || remote()[REMOTE_URL_REGEX, 2]
 
         raise "Can't identify domain in the provider domain string: #{domain}" if domain !~ /(.*)\.\w+/
 
@@ -141,12 +138,15 @@ module Geet
       #
       # The result is in the format `git@github.com:donaldduck/geet.git`
       #
-      def remote(name)
+      # options
+      #   :name:           remote name; if unspecified, the default remote is used.
+      #
+      def remote(name: nil)
         remote_url = execute_git_command("ls-remote --get-url #{name}")
 
         if remote_url == name
           raise "Remote #{name.inspect} not found!"
-        elsif remote_url !~ REMOTE_ORIGIN_REGEX
+        elsif remote_url !~ REMOTE_URL_REGEX
           raise "Unexpected remote reference format: #{remote_url.inspect}"
         end
 

@@ -29,7 +29,7 @@ describe Geet::Services::MergePr do
 
     it 'should merge the PR for the current branch' do
       allow(git_client).to receive(:current_branch).and_return(branch)
-      allow(git_client).to receive(:remote).with('origin').and_return("git@github.com:#{owner}/#{repository_name}")
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:#{owner}/#{repository_name}")
 
       expected_pr_number = 1
       expected_output = <<~STR
@@ -55,7 +55,7 @@ describe Geet::Services::MergePr do
 
     it 'should merge the PR for the current branch, with branch deletion' do
       allow(git_client).to receive(:current_branch).and_return(branch)
-      allow(git_client).to receive(:remote).with('origin').and_return("git@github.com:#{owner}/#{repository_name}")
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:#{owner}/#{repository_name}")
 
       expected_pr_number = 2
       expected_output = <<~STR
@@ -86,7 +86,7 @@ describe Geet::Services::MergePr do
 
     it 'should merge the PR for the current branch' do
       allow(git_client).to receive(:current_branch).and_return(branch)
-      allow(git_client).to receive(:remote).with('origin').and_return("git@gitlab.com:#{owner}/#{repository_name}")
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@gitlab.com:#{owner}/#{repository_name}")
 
       expected_pr_number = 4
       expected_output = <<~STR

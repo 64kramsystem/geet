@@ -14,7 +14,7 @@ describe Geet::Services::CreatePr do
     context 'with labels, reviewers and milestones' do
       it 'should create a PR' do
         allow(git_client).to receive(:current_branch).and_return('mybranch')
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
         expected_output = <<~STR
           Finding labels...
@@ -50,8 +50,8 @@ describe Geet::Services::CreatePr do
     context 'on an upstream repository' do
       it 'should create an upstream PR' do
         allow(git_client).to receive(:current_branch).and_return('mybranch')
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
-        allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
+        allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
         expected_output = <<~STR
           Creating PR...
@@ -80,8 +80,8 @@ describe Geet::Services::CreatePr do
         context 'without labels, reviewers and milestones' do
           it 'should create a PR' do
             allow(git_client).to receive(:current_branch).and_return('mybranch')
-            allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
-            allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+            allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
+            allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
             expected_output = <<~STR
               Creating PR...
@@ -112,7 +112,7 @@ describe Geet::Services::CreatePr do
     context 'in automated mode' do
       it 'should raise an error when the working tree is dirty' do
         allow(git_client).to receive(:working_tree_clean?).and_return(false)
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
         expected_output = <<~STR
           Error! Saved summary to /tmp/last_geet_edited_summary.md
@@ -136,7 +136,7 @@ describe Geet::Services::CreatePr do
         expect(git_client).to receive(:upstream_branch).and_return('mybranch')
         expect(git_client).to receive(:push)
 
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
         expected_output = <<~STR
           Pushing to upstream branch...
@@ -161,7 +161,7 @@ describe Geet::Services::CreatePr do
         expect(git_client).to receive(:upstream_branch).and_return(nil)
         expect(git_client).to receive(:push).with(upstream_branch: 'mybranch')
 
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_f')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
         expected_output = <<~STR
           Creating upstream branch "mybranch"...

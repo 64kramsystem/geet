@@ -12,7 +12,7 @@ describe Geet::Services::ListIssues do
 
   context 'with github.com' do
     it 'should list the default issues' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo')
 
       expected_output = <<~STR
         5. Title 2 (https://github.com/donaldduck/testrepo/issues/5)
@@ -34,7 +34,7 @@ describe Geet::Services::ListIssues do
 
     context 'with assignee filtering' do
       it 'should list the issues' do
-        allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_gh')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_gh')
 
         expected_output = <<~STR
           Finding collaborators...
@@ -57,8 +57,8 @@ describe Geet::Services::ListIssues do
     end
 
     it 'should list the upstream issues' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/testrepo_2f')
-      allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donald-fr/testrepo_u')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_2f')
+      allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
       expected_output = <<~STR
         2. Title 2 U (https://github.com/donald-fr/testrepo_u/issues/2)
@@ -81,7 +81,7 @@ describe Geet::Services::ListIssues do
 
   context 'with gitlab.com' do
     it 'should list the issues' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@gitlab.com:donaldduck/testproject')
 
       expected_output = <<~STR
         2. I like more pizza (https://gitlab.com/donaldduck/testproject/issues/2)
@@ -103,7 +103,7 @@ describe Geet::Services::ListIssues do
 
     context 'with assignee filtering' do
       it 'should list the issues' do
-        allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@gitlab.com:donaldduck/testproject')
 
         expected_output = <<~STR
           Finding collaborators...

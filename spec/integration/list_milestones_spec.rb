@@ -12,7 +12,7 @@ describe Geet::Services::ListMilestones do
 
   context 'with github.com' do
     it 'should list the milestones' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donaldduck/geet')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/geet')
 
       expected_output = <<~STR
         Finding milestones...
@@ -50,8 +50,8 @@ describe Geet::Services::ListMilestones do
     end
 
     it 'should list the upstream milestones' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@github.com:donald-fr/testrepo_downstream')
-      allow(git_client).to receive(:remote).with('upstream').and_return('git@github.com:donaldduck/testrepo_upstream')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donald-fr/testrepo_downstream')
+      allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donaldduck/testrepo_upstream')
 
       expected_output = <<~STR
         Finding milestones...
@@ -80,7 +80,7 @@ describe Geet::Services::ListMilestones do
 
   context 'with gitlab.com' do
     it 'should list the milestones' do
-      allow(git_client).to receive(:remote).with('origin').and_return('git@gitlab.com:donaldduck/testproject')
+      allow(git_client).to receive(:remote).with(no_args).and_return('git@gitlab.com:donaldduck/testproject')
 
       expected_output = <<~STR
         Finding milestones...
