@@ -119,8 +119,15 @@ module Geet
       end
 
       ##########################################################################
-      # REPOSITORY/REMOTE APIS
+      # REPOSITORY/REMOTE QUERYING APIS
       ##########################################################################
+
+      # Return the components of the remote, according to REMOTE_URL_REGEX; doesn't include the full
+      # match.
+      #
+      def remote_components(name: nil)
+        remote.match(REMOTE_URL_REGEX)[1..]
+      end
 
       # Example: `donaldduck/geet`
       #
@@ -205,6 +212,10 @@ module Geet
       #
       def fetch
         execute_git_command("fetch --prune")
+      end
+
+      def add_remote(name, url)
+        execute_git_command("remote add #{name.shellescape} #{url}")
       end
 
       ##########################################################################
