@@ -17,8 +17,11 @@ module Geet
       #
       # Relevant matches:
       #
+      #   1: protocol + suffix
       #   2: domain
+      #   3: domain<>path separator
       #   4: path (repo, project)
+      #   5: suffix
       #
       REMOTE_URL_REGEX = %r{
         \A
@@ -152,7 +155,7 @@ module Geet
       def remote(name: nil)
         remote_url = execute_git_command("ls-remote --get-url #{name}")
 
-        if remote_url == name
+        if !remote_defined?(name)
           raise "Remote #{name.inspect} not found!"
         elsif remote_url !~ REMOTE_URL_REGEX
           raise "Unexpected remote reference format: #{remote_url.inspect}"
@@ -167,7 +170,8 @@ module Geet
       def remote_defined?(name)
         remote_url = execute_git_command("ls-remote --get-url #{name}")
 
-        # If the remote is not define, `git ls-remote` will return the passed value.
+        # If the remote is not defined, `git ls-remote` will return the passed value.
+        #
         remote_url != name
       end
 
