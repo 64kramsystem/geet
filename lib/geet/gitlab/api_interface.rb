@@ -10,6 +10,8 @@ module Geet
     class ApiInterface
       API_BASE_URL = 'https://gitlab.com/api/v4'
 
+      attr_reader :repository_path
+
       # repo_path: "path/namespace"; required for the current GitLab operations.
       # upstream:  boolean; required for the current GitLab operations.
       #

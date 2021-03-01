@@ -11,6 +11,8 @@ module Geet
       API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
       API_BASE_URL = 'https://api.github.com'
 
+      attr_reader :repository_path
+
       # repo_path: optional for operations that don't require a repository, eg. gist creation.
       # upstream:  boolean; makes sense only when :repo_path is set.
       #
