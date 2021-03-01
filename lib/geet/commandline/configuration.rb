@@ -98,6 +98,10 @@ module Geet
         long_help: 'Open in the browser the PR for the current branch'
       ]
 
+      REPO_ADD_UPSTREAM_OPTIONS = [
+        long_help: 'Add the upstream repository to the current repository (configuration).'
+      ]
+
       REPO_OPEN_OPTIONS = [
         long_help: 'Open the current repository in the browser'
       ]
@@ -129,6 +133,7 @@ module Geet
           'open' => PR_OPEN_OPTIONS,
         },
         'repo' => {
+          'add_upstream' => REPO_ADD_UPSTREAM_OPTIONS,
           'open' => REPO_OPEN_OPTIONS,
         },
       }
