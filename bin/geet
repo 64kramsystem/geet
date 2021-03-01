@@ -76,6 +76,8 @@ class GeetLauncher
       Services::MergePr.new(repository).execute(**options)
     when PR_OPEN_COMMAND
       Services::OpenPr.new(repository).execute(**options)
+    when REPO_ADD_UPSTREAM_COMMAND
+      Services::AddUpstreamRepo.new(repository).execute
     when REPO_OPEN_COMMAND
       Services::OpenRepo.new(repository).execute
     else

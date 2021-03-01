@@ -85,6 +85,12 @@ module Geet
         attempt_provider_call(:PR, :list, api_interface, owner: owner, head: head, milestone: milestone)
       end
 
+      # Returns the RemoteRepository instance.
+      #
+      def remote
+        attempt_provider_call(:RemoteRepository, :find, api_interface)
+      end
+
       # REMOTE FUNCTIONALITIES (ACCOUNT)
 
       def authenticated_user
