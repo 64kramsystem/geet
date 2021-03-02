@@ -79,7 +79,7 @@ class GeetLauncher
     when REPO_ADD_UPSTREAM_COMMAND
       Services::AddUpstreamRepo.new(repository).execute
     when REPO_OPEN_COMMAND
-      Services::OpenRepo.new(repository).execute
+      Services::OpenRepo.new(repository).execute(**options)
     else
       raise "Internal error - Unrecognized command #{command.inspect}"
     end
