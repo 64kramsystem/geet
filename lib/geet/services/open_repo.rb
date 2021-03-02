@@ -17,8 +17,10 @@ module Geet
         @git_client = git_client
       end
 
-      def execute
-        repo_url = @git_client.remote
+      def execute(upstream: false)
+        remote_options = upstream ? {name: Utils::GitClient::UPSTREAM_NAME} : {}
+
+        repo_url = @git_client.remote(**remote_options)
         repo_url = convert_repo_url_to_http_protocol(repo_url)
 
         open_file_with_default_application(repo_url)

@@ -103,6 +103,7 @@ module Geet
       ]
 
       REPO_OPEN_OPTIONS = [
+        ['-u', '--upstream',                                'Open the upstream repository'],
         long_help: 'Open the current repository in the browser'
       ]
 
