@@ -88,6 +88,13 @@ module Geet
       #   select_entries('reviewer', all_collaborators, 'donaldduck', nil)
       #
       def select_entries(entry_type, entries, pattern, name_method)
+        # Support both formats Array and String.
+        # It seems that at some point, SimpleScripting started splitting arrays automatically, so until
+        # the code is adjusted accordingly, this accommodates both the CLI and the test suite.
+        # Tracked here: https://github.com/saveriomiroddi/geet/issues/171.
+        #
+        pattern = pattern.join(',') if pattern.is_a?(Array)
+
         if pattern == MANUAL_LIST_SELECTION_FLAG
           Geet::Utils::ManualListSelection.new.select_entries(entry_type, entries, name_method: name_method)
         else
