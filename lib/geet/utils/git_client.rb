@@ -11,6 +11,7 @@ module Geet
     class GitClient
       include Geet::Helpers::OsHelper
 
+      ORIGIN_NAME = 'origin'
       UPSTREAM_NAME = 'upstream'
 
       # Simplified, but good enough, pattern.
@@ -203,7 +204,7 @@ module Geet
       # upstream_branch: create an upstream branch.
       #
       def push(upstream_branch: nil)
-        upstream_branch_option = "-u origin #{upstream_branch.shellescape}" if upstream_branch
+        upstream_branch_option = "-u #{ORIGIN_NAME} #{upstream_branch.shellescape}" if upstream_branch
 
         execute_git_command("push #{upstream_branch_option}")
       end
