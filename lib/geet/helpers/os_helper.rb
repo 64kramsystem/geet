@@ -26,14 +26,15 @@ module Geet
       # interactive:   set when required; in this case, a different API will be used (`system()`
       #                instead of `popen3`).
       # silent_stderr: don't print the stderr output
+      # allow_error:   don't raise error on failure
       #
-      def execute_command(command, description: nil, interactive: false, silent_stderr: false)
+      def execute_command(command, description: nil, interactive: false, silent_stderr: false, allow_error: false)
         description_message = " on #{description}" if description
 
         if interactive
           system(command)
 
-          if !$CHILD_STATUS.success?
+          if !$CHILD_STATUS.success? && !allow_error
             raise "Error#{description_message} (exit status: #{$CHILD_STATUS.exitstatus})"
           end
         else
@@ -43,7 +44,7 @@ module Geet
 
             puts stderr_content if stderr_content != '' && !silent_stderr
 
-            if !wait_thread.value.success?
+            if !wait_thread.value.success? && !allow_error
               error_message = stderr_content.lines.first&.strip || "Error running command #{command.inspect}"
               raise "Error#{description_message}: #{error_message}"
             end

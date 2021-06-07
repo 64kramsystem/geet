@@ -11,6 +11,7 @@ module Geet
     class GitClient
       include Geet::Helpers::OsHelper
 
+      ORIGIN_NAME = 'origin'
       UPSTREAM_NAME = 'upstream'
 
       # Simplified, but good enough, pattern.
@@ -34,6 +35,8 @@ module Geet
       }x
 
       UPSTREAM_BRANCH_REGEX = %r{\A[^/]+/([^/]+)\Z}
+
+      MAIN_BRANCH_CONFIG_ENTRY = 'custom.development-branch'
 
       CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
 
@@ -99,6 +102,19 @@ module Geet
           !!$LAST_MATCH_INFO[1]
         else
           raise "Unexpected git command #{git_command.inspect} output: #{status_output}"
+        end
+      end
+
+      # See https://saveriomiroddi.github.io/Conveniently-Handling-non-master-development-default-branches-in-git-hub
+      #
+      def main_branch
+        branch_name = execute_git_command("config --get #{MAIN_BRANCH_CONFIG_ENTRY}", allow_error: true)
+
+        if branch_name.empty?
+          full_branch_name = execute_git_command("rev-parse --abbrev-ref #{ORIGIN_NAME}/HEAD")
+          full_branch_name.split('/').last
+        else
+          branch_name
         end
       end
 
@@ -203,7 +219,7 @@ module Geet
       # upstream_branch: create an upstream branch.
       #
       def push(upstream_branch: nil)
-        upstream_branch_option = "-u origin #{upstream_branch.shellescape}" if upstream_branch
+        upstream_branch_option = "-u #{ORIGIN_NAME} #{upstream_branch.shellescape}" if upstream_branch
 
         execute_git_command("push #{upstream_branch_option}")
       end
@@ -227,10 +243,14 @@ module Geet
       # If executing a git command without calling this API, don't forget to split `gitdir_option`
       # and use it!
       #
-      def execute_git_command(command)
+      # options (passed to :execute_command):
+      # - allow_error
+      # - (others)
+      #
+      def execute_git_command(command, **options)
         gitdir_option = "-C #{@location.shellescape}" if @location
 
-        execute_command("git #{gitdir_option} #{command}")
+        execute_command("git #{gitdir_option} #{command}", **options)
       end
     end
   end
