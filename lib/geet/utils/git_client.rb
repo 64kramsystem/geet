@@ -228,10 +228,14 @@ module Geet
       # If executing a git command without calling this API, don't forget to split `gitdir_option`
       # and use it!
       #
-      def execute_git_command(command)
+      # options (passed to :execute_command):
+      # - allow_error
+      # - (others)
+      #
+      def execute_git_command(command, **options)
         gitdir_option = "-C #{@location.shellescape}" if @location
 
-        execute_command("git #{gitdir_option} #{command}")
+        execute_command("git #{gitdir_option} #{command}", **options)
       end
     end
   end
