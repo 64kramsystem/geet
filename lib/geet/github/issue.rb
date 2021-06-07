@@ -1,14 +1,18 @@
 # frozen_string_literal: true
 
+require_relative '../shared/branches'
+
 module Geet
   module Github
     # See AbstractIssue for the circular dependency issue notes.
     autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
 
     class Issue < Geet::Github::AbstractIssue
+      include Shared
+
       def self.create(title, description, api_interface, **)
         api_path = 'issues'
-        request_data = { title: title, body: description, base: 'master' }
+        request_data = { title: title, body: description, base: Branches::MAIN_BRANCH }
 
         response = api_interface.send_request(api_path, data: request_data)
 

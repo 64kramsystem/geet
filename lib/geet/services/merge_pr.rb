@@ -13,7 +13,7 @@ module Geet
     #
     class MergePr
       include Geet::Helpers::ServicesWorkflowHelper
-      include Geet::Shared::Branches
+      include Geet::Shared
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
@@ -43,7 +43,7 @@ module Geet
           # The rebase could also be placed after the branch deletion. There are pros/cons;
           # currently, it's not important.
           #
-          checkout_branch(MAIN_BRANCH)
+          checkout_branch(Branches::MAIN_BRANCH)
           rebase
 
           delete_local_branch(pr_branch)
