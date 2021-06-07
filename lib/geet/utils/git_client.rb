@@ -36,6 +36,8 @@ module Geet
 
       UPSTREAM_BRANCH_REGEX = %r{\A[^/]+/([^/]+)\Z}
 
+      MAIN_BRANCH_CONFIG_ENTRY = 'custom.development-branch'
+
       CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
 
       def initialize(location: nil)
@@ -100,6 +102,19 @@ module Geet
           !!$LAST_MATCH_INFO[1]
         else
           raise "Unexpected git command #{git_command.inspect} output: #{status_output}"
+        end
+      end
+
+      # See https://saveriomiroddi.github.io/Conveniently-Handling-non-master-development-default-branches-in-git-hub
+      #
+      def main_branch
+        branch_name = execute_git_command("config --get #{MAIN_BRANCH_CONFIG_ENTRY}", allow_error: true)
+
+        if branch_name.empty?
+          full_branch_name = execute_git_command("rev-parse --abbrev-ref #{ORIGIN_NAME}/HEAD")
+          full_branch_name.split('/').last
+        else
+          branch_name
         end
       end
 
