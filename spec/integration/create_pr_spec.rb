@@ -14,6 +14,7 @@ describe Geet::Services::CreatePr do
     context 'with labels, reviewers and milestones' do
       it 'should create a PR' do
         allow(git_client).to receive(:current_branch).and_return('mybranch')
+        allow(git_client).to receive(:main_branch).and_return('master')
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
         expected_output = <<~STR
@@ -50,6 +51,7 @@ describe Geet::Services::CreatePr do
     context 'on an upstream repository' do
       it 'should create an upstream PR' do
         allow(git_client).to receive(:current_branch).and_return('mybranch')
+        allow(git_client).to receive(:main_branch).and_return('master')
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
         allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
@@ -80,6 +82,7 @@ describe Geet::Services::CreatePr do
         context 'without labels, reviewers and milestones' do
           it 'should create a PR' do
             allow(git_client).to receive(:current_branch).and_return('mybranch')
+            allow(git_client).to receive(:main_branch).and_return('master')
             allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
             allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donald-fr/testrepo_u')
 
@@ -133,6 +136,7 @@ describe Geet::Services::CreatePr do
       it 'should push to the upstream branch' do
         allow(git_client).to receive(:working_tree_clean?).and_return(true)
         allow(git_client).to receive(:current_branch).and_return('mybranch')
+        allow(git_client).to receive(:main_branch).and_return('master')
         expect(git_client).to receive(:upstream_branch).and_return('mybranch')
         expect(git_client).to receive(:push)
 
@@ -158,6 +162,7 @@ describe Geet::Services::CreatePr do
       it "should create an upstream branch, when there isn't one (is not tracked)" do
         allow(git_client).to receive(:working_tree_clean?).and_return(true)
         allow(git_client).to receive(:current_branch).and_return('mybranch')
+        allow(git_client).to receive(:main_branch).and_return('master')
         expect(git_client).to receive(:upstream_branch).and_return(nil)
         expect(git_client).to receive(:push).with(upstream_branch: 'mybranch')
 

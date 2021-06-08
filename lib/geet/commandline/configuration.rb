@@ -2,13 +2,11 @@
 
 require 'simple_scripting/argv'
 require_relative 'commands'
-require_relative '../shared/branches'
 
 module Geet
   module Commandline
     class Configuration
       include Commands
-      include Shared
 
       # Command options
 
@@ -69,7 +67,7 @@ module Geet
       PR_CREATE_OPTIONS = [
         ['-A', '--automated-mode',                          "Automate the branch operations (see long help)"],
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
-        ['-b', '--base develop',                            "Specify the base branch; defaults to `#{Branches::MAIN_BRANCH}`"],
+        ['-b', '--base develop',                            "Specify the base branch; defaults to the main branch"],
         ['-l', '--labels "legacy,code review"',             'Labels'],
         ['-m', '--milestone 1.5.0',                         'Milestone title pattern'],
         ['-r', '--reviewers john,tom,adrian,kevin',         'Reviewer logins'],

@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../helpers/services_workflow_helper'
-require_relative '../shared/branches'
 
 module Geet
   module Services

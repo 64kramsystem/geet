@@ -39,7 +39,7 @@ module Geet
 
         sync_with_upstream_branch if automated_mode
 
-        pr = create_pr(title, description, base)
+        pr = create_pr(title, description, base: base)
 
         if user_has_write_permissions
           edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)
@@ -95,10 +95,12 @@ module Geet
         end
       end
 
-      def create_pr(title, description, base)
+      def create_pr(title, description, base: nil)
         @out.puts 'Creating PR...'
 
-        @repository.create_pr(title, description, @git_client.current_branch, base: base)
+        base ||= @git_client.main_branch
+
+        @repository.create_pr(title, description, @git_client.current_branch, base)
       end
 
       def edit_pr(pr, labels, milestone, reviewers)

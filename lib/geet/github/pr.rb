@@ -1,20 +1,15 @@
 # frozen_string_literal: true
 
-require_relative '../shared/branches'
-
 module Geet
   module Github
     # See AbstractIssue for the circular dependency issue notes.
     autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
 
     class PR < AbstractIssue
-      include Shared
-
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
-      def self.create(title, description, head, api_interface, base: nil)
+      def self.create(title, description, head, api_interface, base)
         api_path = 'pulls'
-        base ||= Branches::MAIN_BRANCH
 
         if api_interface.upstream?
           authenticated_user = Geet::Github::User.authenticated(api_interface).username
