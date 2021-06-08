@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative 'abstract_create_issue'
-require_relative '../shared/branches'
 require_relative '../shared/repo_permissions'
 require_relative '../shared/selection'
 
@@ -10,7 +9,6 @@ module Geet
     class CreatePr < AbstractCreateIssue
       include Geet::Shared::RepoPermissions
       include Geet::Shared::Selection
-      include Geet::Shared
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
@@ -100,7 +98,7 @@ module Geet
       def create_pr(title, description, base: nil)
         @out.puts 'Creating PR...'
 
-        base ||= Branches::MAIN_BRANCH
+        base ||= @git_client.main_branch
 
         @repository.create_pr(title, description, @git_client.current_branch, base)
       end
