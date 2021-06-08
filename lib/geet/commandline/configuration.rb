@@ -2,13 +2,11 @@
 
 require 'simple_scripting/argv'
 require_relative 'commands'
-require_relative '../shared/branches'
 
 module Geet
   module Commandline
     class Configuration
       include Commands
-      include Shared
 
       # Command options
 
