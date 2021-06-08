@@ -38,14 +38,14 @@ module Geet
         fetch_repository
 
         if upstream_branch_gone?
-          pr_branch = @git_client.current_branch
-
           # The rebase could also be placed after the branch deletion. There are pros/cons;
           # currently, it's not important.
           #
-          checkout_branch(Branches::MAIN_BRANCH)
+          main_branch = @git_client.main_branch
+          checkout_branch(main_branch)
           rebase
 
+          pr_branch = @git_client.current_branch
           delete_local_branch(pr_branch)
         end
 
