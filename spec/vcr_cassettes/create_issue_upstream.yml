@@ -152,7 +152,7 @@ http_interactions:
     uri: https://api.github.com/repos/momcorp/therepo/issues
     body:
       encoding: UTF-8
-      string: '{"title":"Title","body":"Description","base":"master"}'
+      string: '{"title":"Title","body":"Description"}'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
