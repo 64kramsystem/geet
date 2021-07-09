@@ -686,7 +686,7 @@ http_interactions:
     uri: https://api.github.com/repos/donaldduck/testrepo_f/pulls
     body:
       encoding: UTF-8
-      string: '{"title":"Title","body":"Description","head":"mybranch","base":"master"}'
+      string: '{"title":"Title","body":"Description","head":"mybranch","base":"master","draft":false}'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
