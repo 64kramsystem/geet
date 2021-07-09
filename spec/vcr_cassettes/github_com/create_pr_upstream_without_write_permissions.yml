@@ -230,7 +230,7 @@ http_interactions:
     uri: https://api.github.com/repos/donald-fr/testrepo_u/pulls
     body:
       encoding: UTF-8
-      string: '{"title":"Title","body":"Description","head":"donaldduck:mybranch","base":"master"}'
+      string: '{"title":"Title","body":"Description","head":"donaldduck:mybranch","base":"master","draft":false}'
     headers:
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
