@@ -34,7 +34,7 @@ module Geet
         \Z
       }x
 
-      UPSTREAM_BRANCH_REGEX = %r{\A[^/]+/([^/]+)\Z}
+      UPSTREAM_BRANCH_REGEX = %r{\A[^/]+/(.+)\Z}
 
       MAIN_BRANCH_CONFIG_ENTRY = 'custom.development-branch'
 
