@@ -22,6 +22,9 @@ module Geet
 
       # See https://developer.github.com/v3/issues/#list-issues-for-a-repository
       #
+      # This works both for Issues and PRs, however, when the `/pulls` API (path) is used, additional
+      # information is provided (e.g. `head`).
+      #
       def self.list(api_interface, milestone: nil, assignee: nil, &type_filter)
         api_path = 'issues'
 
