@@ -9,17 +9,14 @@ module Geet
     # Helper for services common workflow, for example, find the merge head.
     #
     module ServicesWorkflowHelper
-      # Requires: @git_client
-      #
-      def find_merge_head
-        [@git_client.owner, @git_client.current_branch]
-      end
-
       # Expect to find only one.
       #
       # Requires: @out, @repository.
       #
-      def checked_find_branch_pr(owner, head)
+      def checked_find_branch_pr
+        owner = @git_client.owner
+        head = @git_client.current_branch
+
         @out.puts "Finding PR with head (#{owner}:#{head})..."
 
         prs = @repository.prs(owner: owner, head: head)

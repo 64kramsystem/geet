@@ -23,8 +23,7 @@ module Geet
       end
 
       def execute(delete_branch: false)
-        merge_owner, merge_head = find_merge_head
-        pr = checked_find_branch_pr(merge_owner, merge_head)
+        pr = checked_find_branch_pr
 
         merge_pr(pr)
 
