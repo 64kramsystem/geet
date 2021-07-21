@@ -133,7 +133,7 @@ describe Geet::Services::CreatePr do
         expect(actual_output.string).to eql(expected_output)
       end
 
-      it 'should push to the upstream branch' do
+      it 'should push to the remote branch' do
         allow(git_client).to receive(:working_tree_clean?).and_return(true)
         allow(git_client).to receive(:current_branch).and_return('mybranch')
         allow(git_client).to receive(:main_branch).and_return('master')
@@ -143,7 +143,7 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
         expected_output = <<~STR
-          Pushing to upstream branch...
+          Pushing to remote branch...
           Creating PR...
           Assigning authenticated user...
           PR address: https://github.com/donaldduck/testrepo_f/pull/2
@@ -159,7 +159,7 @@ describe Geet::Services::CreatePr do
         expect(actual_output.string).to eql(expected_output)
       end
 
-      it "should create an upstream branch, when there isn't one (is not tracked)" do
+      it "should create a remote branch, when there isn't one (is not tracked)" do
         allow(git_client).to receive(:working_tree_clean?).and_return(true)
         allow(git_client).to receive(:current_branch).and_return('mybranch')
         allow(git_client).to receive(:main_branch).and_return('master')
@@ -169,7 +169,7 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
         expected_output = <<~STR
-          Creating upstream branch "mybranch"...
+          Creating remote branch "mybranch"...
           Creating PR...
           Assigning authenticated user...
           PR address: https://github.com/donaldduck/testrepo_f/pull/4
