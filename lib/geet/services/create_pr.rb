@@ -82,7 +82,7 @@ module Geet
       end
 
       def sync_with_upstream_branch
-        if @git_client.upstream_branch
+        if @git_client.remote_branch
           @out.puts "Pushing to upstream branch..."
 
           @git_client.push

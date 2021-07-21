@@ -65,13 +65,11 @@ module Geet
         branch
       end
 
-      # Not to be confused with `upstream` repository!
-      #
       # This API doesn't reveal if the remote branch is gone.
       #
       # return: nil, if the upstream branch is not configured.
       #
-      def upstream_branch
+      def remote_branch
         head_symbolic_ref = execute_git_command("symbolic-ref -q HEAD")
 
         raw_upstream_branch = execute_git_command("for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
@@ -83,7 +81,7 @@ module Geet
         end
       end
 
-      # TODO: May be merged with :upstream_branch, although it would require designing how a gone
+      # TODO: May be merged with :remote_branch, although it would require designing how a gone
       # remote branch is expressed.
       #
       # Sample command output:

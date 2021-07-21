@@ -137,7 +137,7 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:working_tree_clean?).and_return(true)
         allow(git_client).to receive(:current_branch).and_return('mybranch')
         allow(git_client).to receive(:main_branch).and_return('master')
-        expect(git_client).to receive(:upstream_branch).and_return('mybranch')
+        expect(git_client).to receive(:remote_branch).and_return('mybranch')
         expect(git_client).to receive(:push)
 
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
@@ -163,7 +163,7 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:working_tree_clean?).and_return(true)
         allow(git_client).to receive(:current_branch).and_return('mybranch')
         allow(git_client).to receive(:main_branch).and_return('master')
-        expect(git_client).to receive(:upstream_branch).and_return(nil)
+        expect(git_client).to receive(:remote_branch).and_return(nil)
         expect(git_client).to receive(:push).with(upstream_branch: 'mybranch')
 
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
