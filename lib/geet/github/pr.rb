@@ -36,10 +36,10 @@ module Geet
 
           response = api_interface.send_request(api_path, params: request_params, multipage: true)
 
-          response.map do |issue_data|
-            number = issue_data.fetch('number')
-            title = issue_data.fetch('title')
-            link = issue_data.fetch('html_url')
+          response.map do |pr_data|
+            number = pr_data.fetch('number')
+            title = pr_data.fetch('title')
+            link = pr_data.fetch('html_url')
 
             new(number, api_interface, title, link)
           end
