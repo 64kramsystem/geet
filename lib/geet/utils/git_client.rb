@@ -34,7 +34,7 @@ module Geet
         \Z
       }x
 
-      UPSTREAM_BRANCH_REGEX = %r{\A[^/]+/(.+)\Z}
+      REMOTE_BRANCH_REGEX = %r{\A[^/]+/(.+)\Z}
 
       MAIN_BRANCH_CONFIG_ENTRY = 'custom.development-branch'
 
@@ -67,15 +67,15 @@ module Geet
 
       # This API doesn't reveal if the remote branch is gone.
       #
-      # return: nil, if the upstream branch is not configured.
+      # return: nil, if the remote branch is not configured.
       #
       def remote_branch
         head_symbolic_ref = execute_git_command("symbolic-ref -q HEAD")
 
-        raw_upstream_branch = execute_git_command("for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
+        raw_remote_branch = execute_git_command("for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
 
-        if raw_upstream_branch != ''
-          raw_upstream_branch[UPSTREAM_BRANCH_REGEX, 1] || raise("Unexpected upstream format: #{raw_upstream_branch}")
+        if raw_remote_branch != ''
+          raw_remote_branch[REMOTE_BRANCH_REGEX, 1] || raise("Unexpected remote branch format: #{raw_remote_branch}")
         else
           nil
         end
@@ -214,7 +214,7 @@ module Geet
         execute_git_command("rebase")
       end
 
-      # upstream_branch: create an upstream branch.
+      # remote_branch: create an upstream branch.
       #
       def push(remote_branch: nil)
         remote_branch_option = "-u #{ORIGIN_NAME} #{remote_branch.shellescape}" if remote_branch
