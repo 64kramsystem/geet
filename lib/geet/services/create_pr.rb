@@ -91,7 +91,7 @@ module Geet
 
           @out.puts "Creating upstream branch #{upstream_branch.inspect}..."
 
-          @git_client.push(upstream_branch: upstream_branch)
+          @git_client.push(remote_branch: upstream_branch)
         end
       end
 

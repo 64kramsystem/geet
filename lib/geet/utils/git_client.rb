@@ -216,10 +216,10 @@ module Geet
 
       # upstream_branch: create an upstream branch.
       #
-      def push(upstream_branch: nil)
-        upstream_branch_option = "-u #{ORIGIN_NAME} #{upstream_branch.shellescape}" if upstream_branch
+      def push(remote_branch: nil)
+        remote_branch_option = "-u #{ORIGIN_NAME} #{remote_branch.shellescape}" if remote_branch
 
-        execute_git_command("push #{upstream_branch_option}")
+        execute_git_command("push #{remote_branch_option}")
       end
 
       # Performs pruning.
