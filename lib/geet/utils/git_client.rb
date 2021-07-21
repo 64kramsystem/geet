@@ -89,7 +89,7 @@ module Geet
       #     ## add_milestone_closing...origin/add_milestone_closing [gone]
       #      M spec/integration/merge_pr_spec.rb
       #
-      def upstream_branch_gone?
+      def remote_branch_gone?
         git_command = "status -b --porcelain"
         status_output = execute_git_command(git_command)
 

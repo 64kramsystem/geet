@@ -36,7 +36,7 @@ module Geet
 
         fetch_repository
 
-        if upstream_branch_gone?
+        if remote_branch_gone?
           pr_branch = @git_client.current_branch
           main_branch = @git_client.main_branch
 
@@ -72,8 +72,8 @@ module Geet
         @git_client.fetch
       end
 
-      def upstream_branch_gone?
-        @git_client.upstream_branch_gone?
+      def remote_branch_gone?
+        @git_client.remote_branch_gone?
       end
 
       def checkout_branch(branch)
