@@ -65,13 +65,11 @@ module Geet
         branch
       end
 
-      # Not to be confused with `upstream` repository!
-      #
       # This API doesn't reveal if the remote branch is gone.
       #
       # return: nil, if the upstream branch is not configured.
       #
-      def upstream_branch
+      def remote_branch
         head_symbolic_ref = execute_git_command("symbolic-ref -q HEAD")
 
         raw_upstream_branch = execute_git_command("for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
@@ -83,7 +81,7 @@ module Geet
         end
       end
 
-      # TODO: May be merged with :upstream_branch, although it would require designing how a gone
+      # TODO: May be merged with :remote_branch, although it would require designing how a gone
       # remote branch is expressed.
       #
       # Sample command output:
@@ -91,7 +89,7 @@ module Geet
       #     ## add_milestone_closing...origin/add_milestone_closing [gone]
       #      M spec/integration/merge_pr_spec.rb
       #
-      def upstream_branch_gone?
+      def remote_branch_gone?
         git_command = "status -b --porcelain"
         status_output = execute_git_command(git_command)
 
@@ -218,10 +216,10 @@ module Geet
 
       # upstream_branch: create an upstream branch.
       #
-      def push(upstream_branch: nil)
-        upstream_branch_option = "-u #{ORIGIN_NAME} #{upstream_branch.shellescape}" if upstream_branch
+      def push(remote_branch: nil)
+        remote_branch_option = "-u #{ORIGIN_NAME} #{remote_branch.shellescape}" if remote_branch
 
-        execute_git_command("push #{upstream_branch_option}")
+        execute_git_command("push #{remote_branch_option}")
       end
 
       # Performs pruning.

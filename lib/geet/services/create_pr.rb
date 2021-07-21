@@ -37,7 +37,7 @@ module Geet
           selected_labels, selected_milestone, selected_reviewers = find_and_select_attributes(labels, milestone, reviewers)
         end
 
-        sync_with_upstream_branch if automated_mode
+        sync_with_remote_branch if automated_mode
 
         pr = create_pr(title, description, base: base, draft: draft)
 
@@ -81,17 +81,17 @@ module Geet
         selection_manager.select_attributes
       end
 
-      def sync_with_upstream_branch
-        if @git_client.upstream_branch
-          @out.puts "Pushing to upstream branch..."
+      def sync_with_remote_branch
+        if @git_client.remote_branch
+          @out.puts "Pushing to remote branch..."
 
           @git_client.push
         else
-          upstream_branch = @git_client.current_branch
+          remote_branch = @git_client.current_branch
 
-          @out.puts "Creating upstream branch #{upstream_branch.inspect}..."
+          @out.puts "Creating remote branch #{remote_branch.inspect}..."
 
-          @git_client.push(upstream_branch: upstream_branch)
+          @git_client.push(remote_branch: remote_branch)
         end
       end
 

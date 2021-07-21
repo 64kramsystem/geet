@@ -7,7 +7,7 @@ require_relative '../../lib/geet/services/merge_pr'
 
 # Currently disabled: it requires updates following the addition of the automatic removal of the local
 # branch.
-# Specifically, `GitClient#upstream_branch_gone?` needs to be handled, since it returns the current
+# Specifically, `GitClient#remote_branch_gone?` needs to be handled, since it returns the current
 # branch, while it's supposed to return
 #
 describe Geet::Services::MergePr do
@@ -19,7 +19,7 @@ describe Geet::Services::MergePr do
 
   before :each do
     expect(git_client).to receive(:fetch)
-    expect(git_client).to receive(:upstream_branch_gone?).and_return(true)
+    expect(git_client).to receive(:remote_branch_gone?).and_return(true)
     expect(git_client).to receive(:checkout).with(main_branch)
     expect(git_client).to receive(:rebase)
     expect(git_client).to receive(:delete_branch).with('mybranch')
