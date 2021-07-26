@@ -32,14 +32,34 @@ module Geet
 
         if head
           api_path = 'pulls'
-          request_params = { head: "#{owner}:#{head}" }
 
-          response = api_interface.send_request(api_path, params: request_params, multipage: true)
+          # Technically, the upstream approach could be used for both, but it's actually good to have
+          # both of them as reference.
+          #
+          # For upstream pulls, the owner is the authenticated user, otherwise, the repository owner.
+          #
+          response = if api_interface.upstream?
+            unfiltered_response = api_interface.send_request(api_path, multipage: true)
 
-          response.map do |issue_data|
-            number = issue_data.fetch('number')
-            title = issue_data.fetch('title')
-            link = issue_data.fetch('html_url')
+            # VERY weird. From the docs, it's not clear if the user/org is required in the `head` parameter,
+            # but:
+            #
+            # - if it isn't included (eg. `anything`), the parameter is ignored
+            # - if it's included (eg. `saveriomiroddi:local_branch_name`), an empty resultset is returned.
+            #
+            # For this reason, we can't use that param, and have to filter manually.
+            #
+            unfiltered_response.select { |pr_data| pr_data.fetch('head').fetch('label') == "#{owner}:#{head}" }
+          else
+            request_params = { head: "#{owner}:#{head}" }
+
+            api_interface.send_request(api_path, params: request_params, multipage: true)
+          end
+
+          response.map do |pr_data|
+            number = pr_data.fetch('number')
+            title = pr_data.fetch('title')
+            link = pr_data.fetch('html_url')
 
             new(number, api_interface, title, link)
           end
