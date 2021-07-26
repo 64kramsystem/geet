@@ -96,6 +96,7 @@ module Geet
       ]
 
       PR_OPEN_OPTIONS = [
+        ['-u', '--upstream',                                'List on the upstream repository'],
         long_help: 'Open in the browser the PR for the current branch'
       ]
 

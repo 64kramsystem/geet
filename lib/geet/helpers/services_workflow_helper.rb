@@ -14,7 +14,12 @@ module Geet
       # Requires: @out, @repository.
       #
       def checked_find_branch_pr
-        owner = @git_client.owner
+        owner = if @repository.upstream?
+          @repository.authenticated_user.username
+        else
+          @git_client.owner
+        end
+
         head = @git_client.current_branch
 
         @out.puts "Finding PR with head (#{owner}:#{head})..."
