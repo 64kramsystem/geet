@@ -51,7 +51,9 @@ module Geet
       # Return the commit SHAs between HEAD and `base`, excluding the already applied commits
       # (which start with `-`)
       #
-      def cherry(base)
+      def cherry(base: nil)
+        base ||= main_branch
+
         raw_commits = execute_git_command("cherry #{base.shellescape}")
 
         raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
