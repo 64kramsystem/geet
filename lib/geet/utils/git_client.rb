@@ -48,11 +48,11 @@ module Geet
       # BRANCH/TREE APIS
       ##########################################################################
 
-      # Return the commit shas between HEAD and `limit`, excluding the already applied commits
+      # Return the commit SHAs between HEAD and `base`, excluding the already applied commits
       # (which start with `-`)
       #
-      def cherry(limit)
-        raw_commits = execute_git_command("cherry #{limit.shellescape}")
+      def cherry(base)
+        raw_commits = execute_git_command("cherry #{base.shellescape}")
 
         raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
       end
