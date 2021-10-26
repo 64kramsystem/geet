@@ -117,10 +117,6 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:working_tree_clean?).and_return(false)
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
-        expected_output = <<~STR
-          Error! Saved summary to /tmp/last_geet_edited_summary.md
-        STR
-
         actual_output = StringIO.new
 
         operation = -> do
@@ -129,8 +125,7 @@ describe Geet::Services::CreatePr do
         end
 
         expect(operation).to raise_error(RuntimeError, 'The working tree is not clean!')
-
-        expect(actual_output.string).to eql(expected_output)
+        expect(actual_output.string).to be_empty
       end
 
       it 'should push to the remote branch' do

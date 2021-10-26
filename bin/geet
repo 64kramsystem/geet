@@ -17,6 +17,7 @@ class GeetLauncher
   include Geet::Helpers::SummaryHelper
 
   SUMMARY_TEMPLATE = IO.read(File.expand_path('../lib/geet/resources/templates/edit_summary.md', __dir__))
+  SUMMARY_BACKUP = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
 
   def launch
     command, options = Commandline::Configuration.new.decode_argv || exit
@@ -93,14 +94,19 @@ class GeetLauncher
     git = Utils::GitClient.new
     pr_commits = git.cherry(base: base)
 
-    if pr_commits.size == 1
-      prepopulated_summary = git.show_description('HEAD')
-      cancel_pr_help = "In order to cancel the PR creation, delete the description above.\n"
+    summary =
+      if pr_commits.size == 1
+        prepopulated_summary = git.show_description('HEAD')
+        cancel_pr_help = "In order to cancel the PR creation, delete the description above.\n"
 
-      Commandline::Editor.new.edit_content(content: prepopulated_summary, help: SUMMARY_TEMPLATE + cancel_pr_help)
-    else
-      Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
-    end
+        Commandline::Editor.new.edit_content(content: prepopulated_summary, help: SUMMARY_TEMPLATE + cancel_pr_help)
+      else
+        Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
+      end
+
+    IO.write(SUMMARY_BACKUP, summary)
+
+    summary
   end
 
   def default_to_manual_selection(options, *params)
