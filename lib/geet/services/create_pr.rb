@@ -52,9 +52,6 @@ module Geet
         end
 
         pr
-      rescue => error
-        save_summary(title, description) if title
-        raise
       end
 
       private

@@ -12,21 +12,9 @@ module Geet
     class AbstractCreateIssue
       include Geet::Helpers::OsHelper
 
-      SUMMARY_BACKUP_FILENAME = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
-
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
-      end
-
-      private
-
-      def save_summary(title, description)
-        summary = "#{title}\n\n#{description}".strip + "\n"
-
-        IO.write(SUMMARY_BACKUP_FILENAME, summary)
-
-        @out.puts "Error! Saved summary to #{SUMMARY_BACKUP_FILENAME}"
       end
     end
   end
