@@ -218,10 +218,10 @@ module Geet
 
       # remote_branch: create an upstream branch.
       #
-      def push(remote_branch: nil)
+      def push(remote_branch: nil, force: false)
         remote_branch_option = "-u #{ORIGIN_NAME} #{remote_branch.shellescape}" if remote_branch
 
-        execute_git_command("push #{remote_branch_option}")
+        execute_git_command("push #{"--force" if force} #{remote_branch_option}")
       end
 
       # Performs pruning.
