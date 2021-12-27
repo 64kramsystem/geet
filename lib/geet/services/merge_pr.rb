@@ -23,6 +23,8 @@ module Geet
       end
 
       def execute(delete_branch: false)
+        @git_client.push
+
         pr = checked_find_branch_pr
 
         merge_pr(pr)
