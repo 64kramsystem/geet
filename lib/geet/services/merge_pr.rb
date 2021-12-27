@@ -23,6 +23,8 @@ module Geet
       end
 
       def execute(delete_branch: false)
+        @git_client.push
+
         pr = checked_find_branch_pr
 
         merge_pr(pr)
@@ -35,7 +37,7 @@ module Geet
 
         fetch_repository
 
-        if remote_branch_gone?
+        if @git_client.remote_branch_gone?
           pr_branch = @git_client.current_branch
           main_branch = @git_client.main_branch
 
@@ -69,10 +71,6 @@ module Geet
         @out.puts "Fetching repository..."
 
         @git_client.fetch
-      end
-
-      def remote_branch_gone?
-        @git_client.remote_branch_gone?
       end
 
       def checkout_branch(branch)
