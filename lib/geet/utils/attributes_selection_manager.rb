@@ -76,8 +76,11 @@ module Geet
       #   select_entry('milestone', all_milestones, '0.1.0', :title)
       #
       def select_entry(entry_type, entries, pattern, name_method)
-        if pattern == MANUAL_LIST_SELECTION_FLAG
+        case pattern
+        when MANUAL_LIST_SELECTION_FLAG
           Geet::Utils::ManualListSelection.new.select_entry(entry_type, entries, name_method: name_method)
+        when SKIP_LIST_SELECTION_FLAG
+          nil
         else
           Geet::Utils::StringMatchingSelection.new.select_entry(entry_type, entries, pattern, name_method: name_method)
         end
@@ -95,8 +98,11 @@ module Geet
         #
         pattern = pattern.join(',') if pattern.is_a?(Array)
 
-        if pattern == MANUAL_LIST_SELECTION_FLAG
+        case pattern
+        when MANUAL_LIST_SELECTION_FLAG
           Geet::Utils::ManualListSelection.new.select_entries(entry_type, entries, name_method: name_method)
+        when SKIP_LIST_SELECTION_FLAG
+          []
         else
           Geet::Utils::StringMatchingSelection.new.select_entries(entry_type, entries, pattern, name_method: name_method)
         end
