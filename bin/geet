@@ -71,6 +71,8 @@ class GeetLauncher
       options = default_to_manual_selection(options, :labels, :milestone, :reviewers)
 
       Services::CreatePr.new(repository).execute(title, description, **options)
+
+      File.delete(SUMMARY_BACKUP)
     when PR_LIST_COMMAND
       Services::ListPrs.new(repository).execute
     when PR_MERGE_COMMAND
