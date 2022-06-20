@@ -8,11 +8,11 @@ module Geet
   module Helpers
     module OsHelper
       def open_file_with_default_application(file_or_url)
-        if `uname`.strip == 'Darwin'
-          system "open #{file_or_url.shellescape}", exception: true
-        else
-          system "xdg-open #{file_or_url.shellescape}", exception: true
-        end
+        open_command = `uname`.strip == 'Darwin' ? "open": "xdg-open"
+
+        command = "#{open_command} #{file_or_url.shellescape}"
+
+        system(command, exception: true)
       end
 
       # Executes the command.
