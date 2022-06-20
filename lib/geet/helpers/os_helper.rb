@@ -9,9 +9,9 @@ module Geet
     module OsHelper
       def open_file_with_default_application(file_or_url)
         if `uname`.strip == 'Darwin'
-          exec "open #{file_or_url.shellescape}"
+          system "open #{file_or_url.shellescape}", exception: true
         else
-          exec "xdg-open #{file_or_url.shellescape}"
+          system "xdg-open #{file_or_url.shellescape}", exception: true
         end
       end
 
