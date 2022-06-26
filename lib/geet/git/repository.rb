@@ -159,7 +159,7 @@ module Geet
       end
 
       def local_action_on_upstream_repository?
-        @git_client.remote_defined?('upstream') && !@upstream
+        @git_client.remote_defined?(Utils::GitClient::UPSTREAM_NAME) && !@upstream
       end
 
       # OTHER HELPERS
