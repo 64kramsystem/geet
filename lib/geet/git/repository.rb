@@ -103,6 +103,14 @@ module Geet
         @upstream
       end
 
+      # For cases where it's necessary to work on the downstream repo.
+      #
+      def downstream
+        raise "downstream() is not available on not-upstream repositories!" if !upstream?
+
+        Git::Repository.new(upstream: false, protected_repositories: @protected_repositories)
+      end
+
       private
 
       # PROVIDER
