@@ -103,6 +103,14 @@ module Geet
         @upstream
       end
 
+      # For cases where it's necessary to work on the downstream repo.
+      #
+      def downstream
+        raise "downstream() is not available on not-upstream repositories!" if !upstream?
+
+        Git::Repository.new(upstream: false, protected_repositories: @protected_repositories)
+      end
+
       private
 
       # PROVIDER
@@ -159,7 +167,7 @@ module Geet
       end
 
       def local_action_on_upstream_repository?
-        @git_client.remote_defined?('upstream') && !@upstream
+        @git_client.remote_defined?(Utils::GitClient::UPSTREAM_NAME) && !@upstream
       end
 
       # OTHER HELPERS

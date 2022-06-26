@@ -3,6 +3,7 @@
 require_relative 'abstract_create_issue'
 require_relative '../shared/repo_permissions'
 require_relative '../shared/selection'
+require_relative 'add_upstream_repo'
 
 module Geet
   module Services
@@ -28,6 +29,12 @@ module Geet
         base: nil, draft: false, no_open_pr: nil, automated_mode: false, **
       )
         ensure_clean_tree if automated_mode
+
+        if @repository.upstream? && !@git_client.remote_defined?(Utils::GitClient::UPSTREAM_NAME)
+          @out.puts "Upstream not found; adding it to the repository remotes..."
+
+          AddUpstreamRepo.new(@repository.downstream, out: @out, git_client: @git_client).execute
+        end
 
         # See CreateIssue#execute for notes about performance.
         user_has_write_permissions = @repository.authenticated_user.is_collaborator? &&
