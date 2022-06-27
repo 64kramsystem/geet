@@ -69,15 +69,21 @@ module Geet
 
       # This API doesn't reveal if the remote branch is gone.
       #
+      # qualify: (false) include the remote if true, don't otherwise
+      #
       # return: nil, if the remote branch is not configured.
       #
-      def remote_branch
+      def remote_branch(qualify: false)
         head_symbolic_ref = execute_git_command("symbolic-ref -q HEAD")
 
         raw_remote_branch = execute_git_command("for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
 
         if raw_remote_branch != ''
-          raw_remote_branch[REMOTE_BRANCH_REGEX, 1] || raise("Unexpected remote branch format: #{raw_remote_branch}")
+          if qualify
+            raw_remote_branch
+          else
+            raw_remote_branch[REMOTE_BRANCH_REGEX, 1] || raise("Unexpected remote branch format: #{raw_remote_branch}")
+          end
         else
           nil
         end
