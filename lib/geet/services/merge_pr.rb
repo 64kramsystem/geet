@@ -22,7 +22,7 @@ module Geet
         @git_client = git_client
       end
 
-      def execute(delete_branch: false)
+      def execute(delete_branch: false, **)
         @git_client.push
 
         pr = checked_find_branch_pr
