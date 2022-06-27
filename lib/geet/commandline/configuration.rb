@@ -92,11 +92,12 @@ module Geet
       # rubocop:disable Style/MutableConstant
       PR_MERGE_OPTIONS = [
         ['-d', '--delete-branch',                           'Delete the branch after merging'],
+        ['-u', '--upstream',                                'List on the upstream repository'],
         long_help: 'Merge the PR for the current branch'
       ]
 
       PR_OPEN_OPTIONS = [
-        ['-u', '--upstream',                                'List on the upstream repository'],
+        ['-u', '--upstream',                                'Open on the upstream repository'],
         long_help: 'Open in the browser the PR for the current branch'
       ]
 
