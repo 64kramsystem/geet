@@ -79,7 +79,7 @@ module Geet
 
           The "automated mode" will automate branch operations:
           - raise an error if the current tree is dirty;
-          - if the upstream branch is not present, it will create it, otherwise, it will perform a push.
+          - if the remote branch is not present, it will create it, otherwise, it will perform a push.
         STR
       ]
 
