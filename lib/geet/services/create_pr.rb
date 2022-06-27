@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'io/console' # stdlib
+
 require_relative 'abstract_create_issue'
 require_relative '../shared/repo_permissions'
 require_relative '../shared/selection'
@@ -94,7 +96,28 @@ module Geet
           @out.puts "Pushing to remote branch..."
 
           @git_client.fetch
-          @git_client.push
+
+          if !@git_client.remote_branch_diff_commits.empty?
+            while true
+              @out.print "The local and remote branches differ! Force push (Y/D/Q*)?"
+              input = $stdin.getch
+              @out.puts
+
+              case input.downcase
+              when 'y'
+                @git_client.push(force: true)
+                break
+              when 'd'
+                @out.puts "# DIFF: ########################################################################"
+                @out.puts @git_client.remote_branch_diff
+                @out.puts "################################################################################"
+              when 'q'
+                exit(1)
+              end
+            end
+          else
+            @git_client.push
+          end
         else
           remote_branch = @git_client.current_branch
 
