@@ -124,6 +124,14 @@ module Geet
         end
       end
 
+      # List of different commits between local and corresponding remote branch.
+      #
+      def remote_branch_diff_commits
+        remote_branch = remote_branch(qualify: true)
+
+        execute_git_command("rev-list #{remote_branch.shellescape}..HEAD")
+      end
+
       def working_tree_clean?
         git_message = execute_git_command("status")
 
