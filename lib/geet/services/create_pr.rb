@@ -86,9 +86,14 @@ module Geet
       end
 
       def sync_with_remote_branch
+        # Fetching doesn't have a real world case when there isn't a remote branch. It's also not generally
+        # useful when there is a remote branch, however, since a force push is an option, it's important
+        # to be 100% sure of the current diff.
+
         if @git_client.remote_branch
           @out.puts "Pushing to remote branch..."
 
+          @git_client.fetch
           @git_client.push
         else
           remote_branch = @git_client.current_branch
