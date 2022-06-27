@@ -132,6 +132,12 @@ module Geet
         execute_git_command("rev-list #{remote_branch.shellescape}..HEAD")
       end
 
+      def remote_branch_diff
+        remote_branch = remote_branch(qualify: true)
+
+        execute_git_command("diff #{remote_branch.shellescape}")
+      end
+
       def working_tree_clean?
         git_message = execute_git_command("status")
 
