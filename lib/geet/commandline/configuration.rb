@@ -65,7 +65,6 @@ module Geet
       ]
 
       PR_CREATE_OPTIONS = [
-        ['-A', '--automated-mode',                          "Automate the branch operations (see long help)"],
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
         ['-b', '--base develop',                            "Specify the base branch; defaults to the main branch"],
         ['-d', '--draft',                                   "Create as draft"],
@@ -79,7 +78,7 @@ module Geet
 
           The operation is aborted if the current tree is dirty.
 
-          In "automated mode", the local branch is pushed (if the remote branch is not present, it is created).
+          Before creating the PR, the local branch is pushed; if the remote branch is not present, it is created.
         STR
       ]
 
