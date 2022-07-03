@@ -77,9 +77,9 @@ module Geet
         long_help: <<~STR
           The default editor will be opened for editing title and description; if the PR adds one commit only, the content will be prepopulated with the commit description.
 
-          The "automated mode" will automate branch operations:
-          - raise an error if the current tree is dirty;
-          - if the remote branch is not present, it will create it, otherwise, it will perform a push.
+          The operation is aborted if the current tree is dirty.
+
+          In "automated mode", the local branch is pushed (if the remote branch is not present, it is created).
         STR
       ]
 
