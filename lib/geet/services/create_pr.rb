@@ -28,7 +28,7 @@ module Geet
       #
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
-        base: nil, draft: false, no_open_pr: nil, automated_mode: false, **
+        base: nil, draft: false, no_open_pr: nil, **
       )
         ensure_clean_tree
 
@@ -46,7 +46,7 @@ module Geet
           selected_labels, selected_milestone, selected_reviewers = find_and_select_attributes(labels, milestone, reviewers)
         end
 
-        sync_with_remote_branch if automated_mode
+        sync_with_remote_branch
 
         pr = create_pr(title, description, base: base, draft: draft)
 

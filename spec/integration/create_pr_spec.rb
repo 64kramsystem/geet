@@ -12,40 +12,41 @@ describe Geet::Services::CreatePr do
 
   context 'with github.com' do
     context 'with labels, reviewers and milestones' do
-      it 'should create a PR' do
-        allow(git_client).to receive(:current_branch).and_return('mybranch')
-        allow(git_client).to receive(:main_branch).and_return('master')
-        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
-
-        expected_output = <<~STR
-          Finding labels...
-          Finding milestones...
-          Finding collaborators...
-          Creating PR...
-          Assigning authenticated user...
-          Adding labels bug, invalid...
-          Setting milestone 0.0.1...
-          Requesting review from donald-fr...
-          PR address: https://github.com/donaldduck/testrepo_f/pull/1
-        STR
-
-        actual_output = StringIO.new
-
-        actual_created_pr = VCR.use_cassette('github_com/create_pr') do
-          service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
-          service_instance.execute(
-            'Title', 'Description',
-            labels: 'bug,invalid', milestone: '0.0.1', reviewers: 'donald-fr',
-            no_open_pr: true, output: actual_output
-          )
-        end
-
-        expect(actual_output.string).to eql(expected_output)
-
-        expect(actual_created_pr.number).to eql(1)
-        expect(actual_created_pr.title).to eql('Title')
-        expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo_f/pull/1')
-      end
+      it 'should create a PR'
+#       do
+#         allow(git_client).to receive(:current_branch).and_return('mybranch')
+#         allow(git_client).to receive(:main_branch).and_return('master')
+#         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
+#
+#         expected_output = <<~STR
+#           Finding labels...
+#           Finding milestones...
+#           Finding collaborators...
+#           Creating PR...
+#           Assigning authenticated user...
+#           Adding labels bug, invalid...
+#           Setting milestone 0.0.1...
+#           Requesting review from donald-fr...
+#           PR address: https://github.com/donaldduck/testrepo_f/pull/1
+#         STR
+#
+#         actual_output = StringIO.new
+#
+#         actual_created_pr = VCR.use_cassette('github_com/create_pr') do
+#           service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+#           service_instance.execute(
+#             'Title', 'Description',
+#             labels: 'bug,invalid', milestone: '0.0.1', reviewers: 'donald-fr',
+#             no_open_pr: true, output: actual_output
+#           )
+#         end
+#
+#         expect(actual_output.string).to eql(expected_output)
+#
+#         expect(actual_created_pr.number).to eql(1)
+#         expect(actual_created_pr.title).to eql('Title')
+#         expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo_f/pull/1')
+#       end
     end
 
     context 'on an upstream repository' do
