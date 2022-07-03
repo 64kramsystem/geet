@@ -30,7 +30,7 @@ module Geet
         title, description, labels: nil, milestone: nil, reviewers: nil,
         base: nil, draft: false, no_open_pr: nil, automated_mode: false, **
       )
-        ensure_clean_tree if automated_mode
+        ensure_clean_tree
 
         if @repository.upstream? && !@git_client.remote_defined?(Utils::GitClient::UPSTREAM_NAME)
           @out.puts "Upstream not found; adding it to the repository remotes..."
