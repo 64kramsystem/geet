@@ -60,6 +60,7 @@ module Geet
 
       PR_COMMENT_OPTIONS = [
         ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
+        ['-u', '--upstream',                                'Comment on the upstream repository'],
         'comment',
         long_help: 'Add a comment to the PR for the current branch.'
       ]

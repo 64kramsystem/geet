@@ -19,7 +19,7 @@ module Geet
         @git_client = git_client
       end
 
-      def execute(comment, no_open_pr: nil)
+      def execute(comment, no_open_pr: nil, **)
         pr = checked_find_branch_pr
         pr.comment(comment)
         open_file_with_default_application(pr.link) unless no_open_pr
