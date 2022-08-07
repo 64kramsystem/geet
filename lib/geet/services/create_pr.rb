@@ -136,26 +136,15 @@ module Geet
       end
 
       def edit_pr(pr, labels, milestone, reviewers)
-        assign_user_thread = assign_authenticated_user(pr)
-
         # labels/reviewers can be nil (parameter not passed) or empty array (parameter passed, but
         # nothing selected)
         add_labels_thread = add_labels(pr, labels) if labels && !labels.empty?
         set_milestone_thread = set_milestone(pr, milestone) if milestone
         request_review_thread = request_review(pr, reviewers) if reviewers && !reviewers.empty?
 
-        assign_user_thread.join
         add_labels_thread&.join
         set_milestone_thread&.join
         request_review_thread&.join
-      end
-
-      def assign_authenticated_user(pr)
-        @out.puts 'Assigning authenticated user...'
-
-        Thread.new do
-          pr.assign_users(@repository.authenticated_user.username)
-        end
       end
 
       def add_labels(pr, selected_labels)

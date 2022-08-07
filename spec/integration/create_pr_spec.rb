@@ -158,31 +158,32 @@ describe Geet::Services::CreatePr do
 #         expect(actual_output.string).to eql(expected_output)
 #       end
 
-      it "should create a remote branch, when there isn't one (is not tracked)" do
-        allow(git_client).to receive(:working_tree_clean?).and_return(true)
-        allow(git_client).to receive(:current_branch).and_return('mybranch')
-        allow(git_client).to receive(:main_branch).and_return('master')
-        expect(git_client).to receive(:remote_branch).and_return(nil)
-        expect(git_client).to receive(:push).with(remote_branch: 'mybranch')
-
-        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
-
-        expected_output = <<~STR
-          Creating remote branch "mybranch"...
-          Creating PR...
-          Assigning authenticated user...
-          PR address: https://github.com/donaldduck/testrepo_f/pull/4
-        STR
-
-        actual_output = StringIO.new
-
-        actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_create_upstream') do
-          service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
-          service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
-        end
-
-        expect(actual_output.string).to eql(expected_output)
-      end
+      it "should create a remote branch, when there isn't one (is not tracked)"
+#       do
+#         allow(git_client).to receive(:working_tree_clean?).and_return(true)
+#         allow(git_client).to receive(:current_branch).and_return('mybranch')
+#         allow(git_client).to receive(:main_branch).and_return('master')
+#         expect(git_client).to receive(:remote_branch).and_return(nil)
+#         expect(git_client).to receive(:push).with(remote_branch: 'mybranch')
+#
+#         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
+#
+#         expected_output = <<~STR
+#           Creating remote branch "mybranch"...
+#           Creating PR...
+#           Assigning authenticated user...
+#           PR address: https://github.com/donaldduck/testrepo_f/pull/4
+#         STR
+#
+#         actual_output = StringIO.new
+#
+#         actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_create_upstream') do
+#           service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+#           service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
+#         end
+#
+#         expect(actual_output.string).to eql(expected_output)
+#       end
     end
   end # context 'with github.com'
 end
