@@ -37,20 +37,6 @@ module Geet
         new(number, title, due_on, api_interface)
       end
 
-      # See https://developer.github.com/v3/issues/milestones/#get-a-single-milestone
-      #
-      def self.find(number, api_interface, **)
-        api_path = "milestones/#{number}"
-
-        response = api_interface.send_request(api_path)
-
-        number = response.fetch('number')
-        title = response.fetch('title')
-        due_on = parse_iso_8601_timestamp(raw_due_on)
-
-        new(number, title, due_on, api_interface)
-      end
-
       # See https://developer.github.com/v3/issues/milestones/#list-milestones-for-a-repository
       #
       def self.list(api_interface, **)
