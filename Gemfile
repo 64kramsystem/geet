@@ -9,7 +9,7 @@ gem 'sorbet-runtime'
 group :development do
   gem 'sorbet'
   gem 'byebug', '~> 9.1.0'
-  gem 'rubocop', '~> 1.35.0'
+  gem 'rubocop', '~> 1.35.0', require: :false
   gem 'spoom', require: false
   gem 'tapioca', require: false
 end
