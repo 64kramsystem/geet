@@ -34,9 +34,9 @@ module Geet
             'public' => publik,
             'files' => {
               filename => {
-                'content' => content
-              }
-            }
+                'content' => content,
+              },
+            },
           }
 
           request_data['description'] = description if description
