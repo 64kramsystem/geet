@@ -24,7 +24,7 @@ module Geet
 
       # Initialize the instance, and starts the background threads.
       #
-      def initialize(repository, out: output)
+      def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
         @selections_data = []
