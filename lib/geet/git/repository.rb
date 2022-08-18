@@ -62,10 +62,6 @@ module Geet
         attempt_provider_call(:Milestone, :create, title, api_interface)
       end
 
-      def milestone(number)
-        attempt_provider_call(:Milestone, :find, number, api_interface)
-      end
-
       def milestones
         attempt_provider_call(:Milestone, :list, api_interface)
       end
