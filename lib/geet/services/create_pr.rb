@@ -123,7 +123,22 @@ module Geet
 
           @out.puts "Creating remote branch #{remote_branch.inspect}..."
 
-          @git_client.push(remote_branch: remote_branch)
+          begin
+            @git_client.push(remote_branch: remote_branch)
+          rescue
+            # A case where this helps is if a push hook fails.
+            #
+            @out.print "Error while pushing; retry (Y/N*)?"
+            input = $stdin.getch
+            @out.puts
+
+            case input.downcase.rstrip
+            when 'n', ''
+              # exit the cycle
+            else
+              retry
+            end
+          end
         end
       end
 
