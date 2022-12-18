@@ -24,8 +24,8 @@ module Geet
       #   :publik:      defaults to false
       #   :no_browse    defaults to false
       #
-      def execute(full_filename, description: nil, publik: false, no_browse: false)
-        content = IO.read(full_filename)
+      def execute(full_filename, stdin: false, description: nil, publik: false, no_browse: false)
+        content = stdin ? $stdin.read : IO.read(full_filename)
 
         gist_access = publik ? 'public' : 'private'
         @out.puts "Creating a #{gist_access} gist..."

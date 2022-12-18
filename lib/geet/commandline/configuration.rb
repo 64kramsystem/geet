@@ -12,6 +12,7 @@ module Geet
 
       GIST_CREATE_OPTIONS = [
         ['-p', '--public'],
+        ['-s', '--stdin',     "Read content from stdin"],
         ['-B', '--no-browse', "Don't open the gist link in the browser after creation"],
         'filename',
         '[description]'
