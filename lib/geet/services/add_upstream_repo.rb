@@ -18,9 +18,13 @@ module Geet
 
         parent_path = @repository.remote.parent_path
 
-        parent_url = compose_parent_url(parent_path)
+        if parent_path
+          parent_url = compose_parent_url(parent_path)
 
-        @git_client.add_remote(Utils::GitClient::UPSTREAM_NAME, parent_url)
+          @git_client.add_remote(Utils::GitClient::UPSTREAM_NAME, parent_url)
+        else
+          raise "The repository has no upstream!"
+        end
       end
 
       private
