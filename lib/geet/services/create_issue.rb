@@ -14,11 +14,11 @@ module Geet
       #   :labels
       #   :milestone:     number or description pattern.
       #   :assignees
-      #   :no_open_issue
+      #   :open_browser
       #
       def execute(
           title, description,
-          labels: nil, milestone: nil, assignees: nil, no_open_issue: nil,
+          labels: nil, milestone: nil, assignees: nil, open_browser: true,
           **
       )
         # Inefficient (in worst case, triples the pre issue creation waiting time: #is_collaborator?,
@@ -39,10 +39,10 @@ module Geet
           edit_issue(issue, selected_labels, selected_milestone, selected_assignees)
         end
 
-        if no_open_issue
-          @out.puts "Issue address: #{issue.link}"
-        else
+        if open_browser
           open_file_with_default_application(issue.link)
+        else
+          @out.puts "Issue address: #{issue.link}"
         end
 
         issue

@@ -37,7 +37,7 @@ describe Geet::Services::CreatePr do
 #           service_instance.execute(
 #             'Title', 'Description',
 #             labels: 'bug,invalid', milestone: '0.0.1', reviewers: 'donald-fr',
-#             no_open_pr: true, output: actual_output
+#             open_browser: false, output: actual_output
 #           )
 #         end
 #
@@ -67,7 +67,7 @@ describe Geet::Services::CreatePr do
 #
 #         actual_created_pr = VCR.use_cassette('github_com/create_pr_upstream') do
 #           service_instance = described_class.new(upstream_repository, out: actual_output, git_client: git_client)
-#           service_instance.execute('Title', 'Description', no_open_pr: true, output: actual_output)
+#           service_instance.execute('Title', 'Description', open_browser: false, output: actual_output)
 #         end
 #
 #         expect(actual_output.string).to eql(expected_output)
@@ -101,7 +101,7 @@ describe Geet::Services::CreatePr do
 #               service_instance.execute(
 #                 'Title', 'Description',
 #                 labels: '<ignored>',
-#                 no_open_pr: true, output: actual_output
+#                 open_browser: false, output: actual_output
 #               )
 #             end
 #
@@ -124,7 +124,7 @@ describe Geet::Services::CreatePr do
 
         operation = -> do
           service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
-          service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
+          service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, open_browser: false)
         end
 
         expect(operation).to raise_error(RuntimeError, 'The working tree is not clean!')
@@ -152,7 +152,7 @@ describe Geet::Services::CreatePr do
 #
 #         actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_with_push') do
 #           service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
-#           service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
+#           service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, open_browser: false)
 #         end
 #
 #         expect(actual_output.string).to eql(expected_output)
@@ -179,7 +179,7 @@ describe Geet::Services::CreatePr do
 #
 #         actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_create_upstream') do
 #           service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
-#           service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, no_open_pr: true)
+#           service_instance.execute('Title', 'Description', output: actual_output, automated_mode: true, open_browser: false)
 #         end
 #
 #         expect(actual_output.string).to eql(expected_output)

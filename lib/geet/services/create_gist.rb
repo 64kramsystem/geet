@@ -22,9 +22,9 @@ module Geet
       # options:
       #   :description
       #   :publik:      defaults to false
-      #   :no_browse    defaults to false
+      #   :open_browser defaults to true
       #
-      def execute(full_filename, stdin: false, description: nil, publik: false, no_browse: false)
+      def execute(full_filename, stdin: false, description: nil, publik: false, open_browser: true)
         content = stdin ? $stdin.read : IO.read(full_filename)
 
         gist_access = publik ? 'public' : 'private'
@@ -33,10 +33,10 @@ module Geet
         filename = File.basename(full_filename)
         gist = Geet::Github::Gist.create(filename, content, @api_interface, description: description, publik: publik)
 
-        if no_browse
-          @out.puts "Gist address: #{gist.link}"
-        else
+        if open_browser
           open_file_with_default_application(gist.link)
+        else
+          @out.puts "Gist address: #{gist.link}"
         end
       end
 
