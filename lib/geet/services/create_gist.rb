@@ -24,7 +24,7 @@ module Geet
       #   :publik:      defaults to false
       #   :open_browser defaults to true
       #
-      def execute(full_filename, stdin: false, description: nil, publik: false, open_browser: true)
+      def execute(full_filename, stdin: false, description: nil, publik: false, open_browser: false)
         content = stdin ? $stdin.read : IO.read(full_filename)
 
         gist_access = publik ? 'public' : 'private'

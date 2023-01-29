@@ -28,7 +28,7 @@ describe Geet::Services::CommentPr do
       service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
 
       service_result = VCR.use_cassette('github_com/comment_pr') do
-        service_instance.execute(comment, open_browser: false)
+        service_instance.execute(comment)
       end
 
       actual_pr_number = service_result.number

@@ -18,7 +18,7 @@ module Geet
       #
       def execute(
           title, description,
-          labels: nil, milestone: nil, assignees: nil, open_browser: true,
+          labels: nil, milestone: nil, assignees: nil, open_browser: false,
           **
       )
         # Inefficient (in worst case, triples the pre issue creation waiting time: #is_collaborator?,
