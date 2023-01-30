@@ -27,10 +27,6 @@ describe Geet::Services::CommentPr do
       actual_output = StringIO.new
       service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
 
-      expect(service_instance).to receive(:open_file_with_default_application).with("https://github.com/#{owner}/#{repository_name}/pull/#{expected_pr_number}") do
-        # do nothing; just don't open the browser
-      end
-
       service_result = VCR.use_cassette('github_com/comment_pr') do
         service_instance.execute(comment)
       end

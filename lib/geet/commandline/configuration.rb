@@ -13,7 +13,7 @@ module Geet
       GIST_CREATE_OPTIONS = [
         ['-p', '--public'],
         ['-s', '--stdin',     "Read content from stdin"],
-        ['-B', '--no-browse', "Don't open the gist link in the browser after creation"],
+        ['-o', '--open-browser', "Open the gist link in the browser after creation"],
         'filename',
         '[description]'
       ].freeze
@@ -22,7 +22,7 @@ module Geet
       #
       # rubocop:disable Style/MutableConstant
       ISSUE_CREATE_OPTIONS = [
-        ['-n', '--no-open-issue',                           "Don't open the issue link in the browser after creation"],
+        ['-o', '--open-browser',                            "Don't open the issue link in the browser after creation"],
         ['-l', '--labels "bug,help wanted"',                'Labels'],
         ['-m', '--milestone 1.5.0',                         'Milestone title pattern'],
         ['-a', '--assignees john,tom,adrian,kevin',         'Assignee logins'],
@@ -60,14 +60,14 @@ module Geet
       ].freeze
 
       PR_COMMENT_OPTIONS = [
-        ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
+        ['-o', '--open-browser',                            "Don't open the PR link in the browser after creation"],
         ['-u', '--upstream',                                'Comment on the upstream repository'],
         'comment',
         long_help: 'Add a comment to the PR for the current branch.'
       ]
 
       PR_CREATE_OPTIONS = [
-        ['-n', '--no-open-pr',                              "Don't open the PR link in the browser after creation"],
+        ['-o', '--open-browser',                            "Don't open the PR link in the browser after creation"],
         ['-b', '--base develop',                            "Specify the base branch; defaults to the main branch"],
         ['-d', '--draft',                                   "Create as draft"],
         ['-l', '--labels "legacy,code review"',             'Labels'],

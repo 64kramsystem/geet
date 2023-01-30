@@ -24,11 +24,11 @@ module Geet
       # options:
       #   :labels
       #   :reviewers
-      #   :no_open_pr
+      #   :open_browser
       #
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
-        base: nil, draft: false, no_open_pr: nil, **
+        base: nil, draft: false, open_browser: false, **
       )
         ensure_clean_tree
 
@@ -54,10 +54,10 @@ module Geet
           edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)
         end
 
-        if no_open_pr
-          @out.puts "PR address: #{pr.link}"
-        else
+        if open_browser
           open_file_with_default_application(pr.link)
+        else
+          @out.puts "PR address: #{pr.link}"
         end
 
         pr

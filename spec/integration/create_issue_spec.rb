@@ -31,7 +31,6 @@ describe Geet::Services::CreateIssue do
         described_class.new(repository, out: actual_output).execute(
           'Title', 'Description',
           labels: 'bug,invalid', milestone: '0.0.1', assignees: 'donaldduck,donald-fr',
-          no_open_issue: true
         )
       end
 
@@ -58,7 +57,7 @@ describe Geet::Services::CreateIssue do
         actual_output = StringIO.new
 
         actual_created_issue = VCR.use_cassette('create_issue_upstream') do
-          create_options = { no_open_issue: true, out: actual_output }
+          create_options = { out: actual_output }
           described_class.new(upstream_repository, out: actual_output).execute('Title', 'Description', **create_options)
         end
 
