@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.license     = 'GPL-3.0'
 
   s.add_runtime_dependency 'simple_scripting', '~> 0.11.0'
-  s.add_runtime_dependency 'tty-prompt', '~> 0.15.0'
+  s.add_runtime_dependency 'tty-prompt', '~> 0.23.1'
 
   s.add_development_dependency 'rake', '~> 12.3'
 
