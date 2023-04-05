@@ -67,6 +67,7 @@ module Geet
       ]
 
       PR_CREATE_OPTIONS = [
+        ['-a', '--auto-merge',                              "Enable auto-merge"],
         ['-o', '--open-browser',                            "Don't open the PR link in the browser after creation"],
         ['-b', '--base develop',                            "Specify the base branch; defaults to the main branch"],
         ['-d', '--draft',                                   "Create as draft"],

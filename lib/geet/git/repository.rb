@@ -70,11 +70,11 @@ module Geet
         attempt_provider_call(:Milestone, :close, number, api_interface)
       end
 
-      def create_pr(title, description, head, base, draft)
+      def create_pr(title, description, head, base, draft, auto_merge)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
         confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings
 
-        attempt_provider_call(:PR, :create, title, description, head, api_interface, base, draft: draft)
+        attempt_provider_call(:PR, :create, title, description, head, api_interface, base, draft: draft, auto_merge: auto_merge)
       end
 
       def prs(owner: nil, head: nil, milestone: nil)
