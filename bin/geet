@@ -99,7 +99,7 @@ class GeetLauncher
     cancel_pr_help = "In order to cancel the PR creation, delete the description above.\n"
 
     summary =
-      if File.exists?(SUMMARY_BACKUP)
+      if File.exist?(SUMMARY_BACKUP)
         prepopulated_summary = IO.read(SUMMARY_BACKUP)
 
         Commandline::Editor.new.edit_content(content: prepopulated_summary, help: SUMMARY_TEMPLATE + cancel_pr_help)
