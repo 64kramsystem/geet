@@ -48,11 +48,13 @@ module Geet
       # BRANCH/TREE APIS
       ##########################################################################
 
-      # Return the commit SHAs between HEAD and :upstream, excluding the already applied commits
+      # Return the commit SHAs between :head and :upstream, excluding the already applied commits
       # (which start with `-`)
       #
-      def cherry(upstream)
-        raw_commits = execute_git_command("cherry #{upstream.shellescape}")
+      def cherry(upstream, head: nil)
+        git_params = [upstream, head].compact.map(&:shellescape)
+
+        raw_commits = execute_git_command("cherry #{git_params.join(' ')}")
 
         raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
       end
