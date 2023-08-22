@@ -94,7 +94,7 @@ class GeetLauncher
     # Tricky. It would be best to have Git logic exlusively inside the services,
     # but at the same time, the summary editing should be out.
     git = Utils::GitClient.new
-    pr_commits = git.cherry(base: base)
+    pr_commits = git.cherry(upstream: base)
 
     cancel_pr_help = "In order to cancel the PR creation, delete the description above.\n"
 
