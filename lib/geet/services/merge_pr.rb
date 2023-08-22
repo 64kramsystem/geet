@@ -23,7 +23,11 @@ module Geet
       end
 
       def execute(delete_branch: false, **)
+        @git_client.fetch
+
         @git_client.push
+
+        check_no_missing_upstream_commits
 
         pr = checked_find_branch_pr
 
@@ -54,6 +58,12 @@ module Geet
       end
 
       private
+
+      def check_no_missing_upstream_commits
+        missing_upstream_commits = @git_client.cherry('HEAD', head: :main_branch)
+
+        raise "Found #{missing_upstream_commits.size} missing upstream commits!" if missing_upstream_commits.any?
+      end
 
       def merge_pr(pr)
         @out.puts "Merging PR ##{pr.number}..."
