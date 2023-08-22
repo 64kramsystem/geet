@@ -51,7 +51,13 @@ module Geet
       # Return the commit SHAs between :head and :upstream, excluding the already applied commits
       # (which start with `-`)
       #
+      # - upstream: String; pass :main_branch to use the main branch
+      # - head:     String (optional); pass :main_branch to use the main branch
+      #
       def cherry(upstream, head: nil)
+        upstream = main_branch if upstream == :main_branch
+        head = main_branch if head == :main_branch
+
         git_params = [upstream, head].compact.map(&:shellescape)
 
         raw_commits = execute_git_command("cherry #{git_params.join(' ')}")
