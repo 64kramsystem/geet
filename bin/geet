@@ -65,7 +65,7 @@ class GeetLauncher
 
       Services::CommentPr.new(repository).execute(comment, **options)
     when PR_CREATE_COMMAND
-      summary = options[:summary] || edit_pr_summary(base: options[:base])
+      summary = options[:summary] || edit_pr_summary(**options.slice(:base))
       title, description = split_summary(summary)
 
       options = default_to_manual_selection(options, :labels, :milestone, :reviewers)
@@ -90,7 +90,7 @@ class GeetLauncher
 
   private
 
-  def edit_pr_summary(base: nil)
+  def edit_pr_summary(base: :main_branch)
     # Tricky. It would be best to have Git logic exlusively inside the services,
     # but at the same time, the summary editing should be out.
     git = Utils::GitClient.new
