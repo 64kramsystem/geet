@@ -72,10 +72,11 @@ module Geet
 
       # See https://developer.github.com/v3/pulls/#merge-a-pull-request-merge-button
       #
-      def merge
+      def merge(merge_method: nil)
         api_path = "pulls/#{number}/merge"
+        request_data = { merge_method: } if merge_method
 
-        @api_interface.send_request(api_path, http_method: :put)
+        @api_interface.send_request(api_path, http_method: :put, data: request_data)
       end
 
       def request_review(reviewers)
