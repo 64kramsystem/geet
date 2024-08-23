@@ -22,7 +22,9 @@ module Geet
         @git_client = git_client
       end
 
-      def execute(delete_branch: false, **)
+      def execute(delete_branch: false, squash: false, **)
+        merge_method = 'squash' if squash
+
         @git_client.fetch
 
         @git_client.push
@@ -31,7 +33,7 @@ module Geet
 
         pr = checked_find_branch_pr
 
-        merge_pr(pr)
+        merge_pr(pr, merge_method:)
 
         if delete_branch
           branch = @git_client.current_branch
@@ -65,10 +67,10 @@ module Geet
         raise "Found #{missing_upstream_commits.size} missing upstream commits!" if missing_upstream_commits.any?
       end
 
-      def merge_pr(pr)
+      def merge_pr(pr, merge_method: nil)
         @out.puts "Merging PR ##{pr.number}..."
 
-        pr.merge
+        pr.merge(merge_method:)
       end
 
       def delete_remote_branch(branch)
