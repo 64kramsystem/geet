@@ -53,7 +53,10 @@ module Geet
           checkout_branch(main_branch)
           rebase
 
-          delete_local_branch(pr_branch)
+          # When squashing, we need to force delete, since Git doesn't recognize that the branch has
+          # been merged.
+          #
+          delete_local_branch(pr_branch, force: squash)
         end
 
         pr
@@ -97,10 +100,10 @@ module Geet
         @git_client.rebase
       end
 
-      def delete_local_branch(branch)
+      def delete_local_branch(branch, force:)
         @out.puts "Deleting local branch #{branch}..."
 
-        @git_client.delete_branch(branch)
+        @git_client.delete_branch(branch, force:)
       end
     end
   end
