@@ -232,10 +232,10 @@ module Geet
         execute_git_command("checkout #{branch.shellescape}")
       end
 
-      # Unforced deletion.
-      #
-      def delete_branch(branch)
-        execute_git_command("branch --delete #{branch.shellescape}")
+      def delete_branch(branch, force:)
+        force_option = "--force" if force
+
+        execute_git_command("branch --delete #{force_option} #{branch.shellescape}")
       end
 
       def rebase
