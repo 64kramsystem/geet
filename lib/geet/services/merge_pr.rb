@@ -29,7 +29,7 @@ module Geet
 
         @git_client.push
 
-        check_no_missing_upstream_commits
+        check_no_missing_upstream_commits if !squash
 
         pr = checked_find_branch_pr
 
