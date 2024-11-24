@@ -8,7 +8,14 @@ module Geet
   module Helpers
     module OsHelper
       def open_file_with_default_application(file_or_url)
-        open_command = `uname`.strip == 'Darwin' ? "open": "xdg-open"
+        open_command = case
+        when ENV["WSL_DISTRO_NAME"]
+          "wslview"
+        when `uname`.strip == 'Darwin'
+          "open"
+        else
+          "xdg-open"
+        end
 
         command = "#{open_command} #{file_or_url.shellescape}"
 
