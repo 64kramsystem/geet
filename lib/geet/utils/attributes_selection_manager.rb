@@ -1,8 +1,11 @@
 # frozen_string_literal: true
+# typed: true
 
 require_relative 'manual_list_selection'
 require_relative 'string_matching_selection'
 require_relative '../shared/selection'
+
+require 'sorbet-runtime'
 
 module Geet
   module Utils
@@ -14,6 +17,8 @@ module Geet
     # multiple attributes are required (typically, three).
     #
     class AttributesSelectionManager
+      extend T::Sig
+
       include Geet::Shared::Selection
 
       # Workaround for VCR not supporting multithreading; see https://github.com/vcr/vcr/issues/200.
@@ -24,6 +29,7 @@ module Geet
 
       # Initialize the instance, and starts the background threads.
       #
+      sig { params(repository: T.untyped, out: IO).void }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
@@ -32,6 +38,16 @@ module Geet
 
       # selection_type: SELECTION_SINGLE or SELECTION_MULTIPLE
       #
+      sig {
+        params(
+          repository_call: T.untyped,
+          description: T.untyped,
+          pattern: T.untyped,
+          selection_type: T.untyped,
+          name_method: T.untyped,
+          pre_selection_hook: T.nilable(T.proc.params(all_reviewers: T::Array[T.untyped]).void)
+        ).void
+      }
       def add_attribute(repository_call, description, pattern, selection_type, name_method: nil, &pre_selection_hook)
         raise "Unrecognized selection type #{selection_type.inspect}" if ![SELECTION_SINGLE, SELECTION_MULTIPLE].include?(selection_type)
 
@@ -42,6 +58,7 @@ module Geet
 
       # Select and return the attributes, in the same order they've been added.
       #
+      sig { returns(T.untyped) }
       def select_attributes
         @selections_data.map do |finder_thread, description, pattern, selection_type, name_method, pre_selection_hook|
           entries = finder_thread.value
