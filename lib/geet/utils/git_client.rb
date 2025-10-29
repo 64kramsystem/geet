@@ -1,7 +1,10 @@
 # frozen_string_literal: true
+# typed: true
 
 require 'English'
 require 'shellwords'
+require 'sorbet-runtime'
+
 require_relative '../helpers/os_helper'
 
 module Geet
@@ -9,6 +12,8 @@ module Geet
     # Represents the git program interface; used for performing git operations.
     #
     class GitClient
+      extend T::Sig
+
       include Geet::Helpers::OsHelper
 
       ORIGIN_NAME = 'origin'
@@ -40,6 +45,7 @@ module Geet
 
       CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
 
+      sig { params(location: T.untyped ).void }
       def initialize(location: nil)
         @location = location
       end
