@@ -21,7 +21,7 @@ jobs:
   sorbet:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: ${{ env.REPO_FETCH_DEPTH }}
       - uses: ruby/setup-ruby@v1
