@@ -1,4 +1,3 @@
 --disable-watchman
 --suppress-payload-superclass-redefinition-for=Reline::ANSI
 --dir=.
---ignore=spec
