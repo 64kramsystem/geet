@@ -21,3 +21,14 @@ jobs:
         bundler-cache: true
     - run: bundle install
     - run: bundle exec rspec
+  sorbet:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: ${{ env.REPO_FETCH_DEPTH }}
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      - name: Sorbet
+        run: bundle exec srb typecheck
