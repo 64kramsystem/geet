@@ -1,0 +1,23 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_API_TOKEN: foo
+      GITLAB_API_TOKEN: bar
+    strategy:
+      matrix:
+        ruby-version: [head, 3.4, 3.3, 3.2]
+      fail-fast: false
+    continue-on-error: ${{ endsWith(matrix['ruby-version'], 'head') || matrix['ruby-version'] == 'debug' }}
+    steps:
+    - uses: actions/checkout@v5
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+    - run: bundle install
+    - run: bundle exec rspec
