@@ -13,7 +13,7 @@ module Geet
         PERMISSION_WRITE,
         PERMISSION_READ,
         PERMISSION_NONE,
-      ]
+      ].freeze
 
       # Not worth creating a Permission class at this stage.
       #
