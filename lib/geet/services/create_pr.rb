@@ -1,6 +1,8 @@
 # frozen_string_literal: true
+# typed: true
 
 require 'io/console' # stdlib
+require 'sorbet-runtime'
 
 require_relative 'abstract_create_issue'
 require_relative '../shared/repo_permissions'
@@ -87,7 +89,9 @@ module Geet
         selection_manager.select_attributes
       end
 
-      def sync_with_remote_branch
+      # `input` is a Sorbet workaround (error 7001).
+      #
+      def sync_with_remote_branch(input: T.untyped)
         # Fetching doesn't have a real world case when there isn't a remote branch. It's also not generally
         # useful when there is a remote branch, however, since a force push is an option, it's important
         # to be 100% sure of the current diff.
