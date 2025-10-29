@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.description = 'Commandline interface for performing SCM host operations, eg. create a PR on GitHub, with support for multiple hosts.'
   s.license     = 'GPL-3.0'
 
+  s.add_runtime_dependency 'base64', '~> 0.3.0'
+  s.add_runtime_dependency 'ostruct', '~> 0.6.3'
   s.add_runtime_dependency 'simple_scripting', '~> 0.14.0'
   s.add_runtime_dependency 'tty-prompt', '~> 0.23.1'
 
