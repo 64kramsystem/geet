@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://github.com/saveriomiroddi/geet'
   s.summary     = 'Commandline interface for performing SCM host operations, eg. create a PR on GitHub'
   s.description = 'Commandline interface for performing SCM host operations, eg. create a PR on GitHub, with support for multiple hosts.'
-  s.license     = 'GPL-3.0'
+  s.license     = 'GPL-3.0-only'
 
   s.add_runtime_dependency 'base64', '~> 0.3.0'
   s.add_runtime_dependency 'ostruct', '~> 0.6.3'
