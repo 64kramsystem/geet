@@ -7,6 +7,8 @@ require 'shellwords'
 module Geet
   module Helpers
     module OsHelper
+      include Kernel # for Sorbet compatibility
+
       def open_file_with_default_application(file_or_url)
         open_command = case
         when ENV["WSL_DISTRO_NAME"]
