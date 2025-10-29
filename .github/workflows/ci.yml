@@ -5,6 +5,9 @@ on: [pull_request]
 jobs:
   test:
     runs-on: ubuntu-latest
+    env:
+      GITHUB_API_TOKEN: foo
+      GITLAB_API_TOKEN: bar
     strategy:
       matrix:
         ruby-version: [head, 3.4, 3.3, 3.2]
