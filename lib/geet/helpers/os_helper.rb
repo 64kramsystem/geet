@@ -1,12 +1,19 @@
 # frozen_string_literal: true
+# typed: true
 
 require 'English'
 require 'open3'
 require 'shellwords'
+require 'sorbet-runtime'
 
 module Geet
   module Helpers
     module OsHelper
+      extend T::Sig
+
+      include Kernel # for Sorbet compatibility
+
+      sig { params(file_or_url: T.untyped).void }
       def open_file_with_default_application(file_or_url)
         open_command = case
         when ENV["WSL_DISTRO_NAME"]
