@@ -3,7 +3,6 @@
 
 require 'English'
 require 'shellwords'
-require 'sorbet-runtime'
 
 module Geet
   module Utils
