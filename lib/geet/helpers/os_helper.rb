@@ -52,6 +52,8 @@ module Geet
             raise "Error#{description_message} (exit status: #{$CHILD_STATUS.exitstatus})"
           end
         else
+          result = ""
+
           Open3.popen3(command) do |_, stdout, stderr, wait_thread|
             stdout_content = stdout.read
             stderr_content = stderr.read
@@ -63,8 +65,10 @@ module Geet
               raise "Error#{description_message}: #{error_message}"
             end
 
-            stdout_content.strip
+            result = stdout_content.strip
           end
+
+          result
         end
       end
     end
