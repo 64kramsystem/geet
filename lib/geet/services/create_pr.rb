@@ -21,10 +21,11 @@ module Geet
       #   :labels
       #   :reviewers
       #   :open_browser
+      #   :automerge
       #
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
-        base: nil, draft: false, open_browser: false, **
+        base: nil, draft: false, open_browser: false, automerge: false, **
       )
         ensure_clean_tree
 
@@ -49,6 +50,8 @@ module Geet
         if user_has_write_permissions
           edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)
         end
+
+        enable_automerge(pr) if automerge
 
         if open_browser
           open_file_with_default_application(pr.link)
@@ -185,6 +188,22 @@ module Geet
 
         Thread.new do
           pr.request_review(reviewer_usernames)
+        end
+      end
+
+      def enable_automerge(pr)
+        if !pr.respond_to?(:enable_automerge)
+          raise "Automerge is not supported for this repository provider"
+        elsif !pr.respond_to?(:node_id) || pr.node_id.nil?
+          raise "Automerge requires node_id from the API (not available in the response)"
+        end
+
+        @out.puts "Enabling automerge..."
+
+        begin
+          pr.enable_automerge
+        rescue Geet::Shared::HttpError => e
+          @out.puts "Warning: Could not enable automerge: #{e.message}"
         end
       end
     end

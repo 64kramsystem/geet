@@ -3,6 +3,13 @@
 module Geet
   module Github
     class PR < AbstractIssue
+      attr_reader :node_id
+
+      def initialize(number, api_interface, title, link, node_id: nil)
+        super(number, api_interface, title, link)
+        @node_id = node_id
+      end
+
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #
       def self.create(title, description, head, api_interface, base, draft: false)
@@ -18,8 +25,9 @@ module Geet
         response = api_interface.send_request(api_path, data: request_data)
 
         number, title, link = response.fetch_values('number', 'title', 'html_url')
+        node_id = response['node_id']
 
-        new(number, api_interface, title, link)
+        new(number, api_interface, title, link, node_id:)
       end
 
       # See https://developer.github.com/v3/pulls/#list-pull-requests
@@ -81,6 +89,28 @@ module Geet
         request_data = { reviewers: reviewers }
 
         @api_interface.send_request(api_path, data: request_data)
+      end
+
+      # Enable auto-merge for this PR using the repository's default merge method.
+      # See https://docs.github.com/en/graphql/reference/mutations#enablepullrequestautomerge
+      #
+      def enable_automerge
+        query = <<~GRAPHQL
+          mutation($pullRequestId: ID!) {
+            enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId}) {
+              pullRequest {
+                id
+                autoMergeRequest {
+                  enabledAt
+                }
+              }
+            }
+          }
+        GRAPHQL
+
+        variables = { pullRequestId: @node_id }
+
+        @api_interface.send_graphql_request(query, variables:)
       end
 
       class << self

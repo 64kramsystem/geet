@@ -194,6 +194,74 @@ describe Geet::Services::CreatePr do
 
         expect(actual_output.string).to eql(expected_output)
       end
+
+      it 'should enable automerge after creating a PR' do
+        allow(git_client).to receive(:working_tree_clean?).and_return(true)
+        allow(git_client).to receive(:current_branch).and_return('mybranch')
+        allow(git_client).to receive(:main_branch).and_return('master')
+        allow(git_client).to receive(:remote_branch).and_return('mybranch')
+        allow(git_client).to receive(:remote_branch_diff_commits).and_return([])
+        allow(git_client).to receive(:fetch)
+        allow(git_client).to receive(:push)
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
+
+        actual_output = StringIO.new
+
+        # Mock the repository and PR
+        allow(repository).to receive(:authenticated_user).and_return(
+          double(is_collaborator?: true, has_permission?: true)
+        )
+
+        mock_pr = double(
+          'PR',
+          number: 1,
+          title: 'Title',
+          link: 'https://github.com/donaldduck/testrepo_f/pull/1',
+          node_id: 'PR_test123'
+        )
+        allow(mock_pr).to receive(:enable_automerge)
+
+        allow(repository).to receive(:create_pr).and_return(mock_pr)
+
+        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+        service_instance.execute('Title', 'Description', automerge: true)
+
+        expect(mock_pr).to have_received(:enable_automerge)
+        expect(actual_output.string).to include('Enabling automerge...')
+      end
+
+      it 'should raise an error when automerge is requested but not supported' do
+        allow(git_client).to receive(:working_tree_clean?).and_return(true)
+        allow(git_client).to receive(:current_branch).and_return('mybranch')
+        allow(git_client).to receive(:main_branch).and_return('master')
+        allow(git_client).to receive(:remote_branch).and_return('mybranch')
+        allow(git_client).to receive(:remote_branch_diff_commits).and_return([])
+        allow(git_client).to receive(:fetch)
+        allow(git_client).to receive(:push)
+        allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
+
+        actual_output = StringIO.new
+
+        # Mock the repository and PR without enable_automerge method (simulating GitLab)
+        allow(repository).to receive(:authenticated_user).and_return(
+          double(is_collaborator?: true, has_permission?: true)
+        )
+
+        mock_pr = double(
+          'PR',
+          number: 1,
+          title: 'Title',
+          link: 'https://github.com/donaldduck/testrepo_f/pull/1'
+        )
+
+        allow(repository).to receive(:create_pr).and_return(mock_pr)
+
+        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+
+        expect do
+          service_instance.execute('Title', 'Description', automerge: true)
+        end.to raise_error(RuntimeError, 'Automerge is not supported for this repository provider')
+      end
     end
   end # context 'with github.com'
 end
