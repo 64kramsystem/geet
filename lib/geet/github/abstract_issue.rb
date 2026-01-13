@@ -2,12 +2,6 @@
 
 module Geet
   module Github
-    # It seems that autoloading will be deprecated, but it's currently the cleanest solution
-    # to the legitimate problem of AbstractIssue needing Issue/PR to be loaded (due to :list),
-    # and viceversa (due to class definition).
-    autoload :Issue, File.expand_path('issue', __dir__)
-    autoload :PR, File.expand_path('pr', __dir__)
-
     # For clarity, in this class we keep only the identical logic between the subclasses, but
     # other methods could be moved in here at some complexity cost.
     class AbstractIssue

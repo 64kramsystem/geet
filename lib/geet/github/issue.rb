@@ -2,9 +2,6 @@
 
 module Geet
   module Github
-    # See AbstractIssue for the circular dependency issue notes.
-    autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
-
     class Issue < Geet::Github::AbstractIssue
       def self.create(title, description, api_interface, **)
         api_path = 'issues'

@@ -5,11 +5,6 @@ require 'stringio'
 require 'tmpdir'
 require 'sorbet-runtime'
 
-require_relative '../helpers/os_helper'
-require_relative '../utils/attributes_selection_manager'
-require_relative '../utils/manual_list_selection'
-require_relative '../utils/string_matching_selection'
-
 module Geet
   module Services
     class AbstractCreateIssue

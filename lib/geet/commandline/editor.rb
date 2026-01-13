@@ -2,8 +2,6 @@
 
 require 'tempfile'
 
-require_relative '../helpers/os_helper'
-
 module Geet
   module Commandline
     class Editor

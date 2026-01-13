@@ -3,7 +3,6 @@
 require 'uri'
 require 'net/http'
 require 'json'
-require_relative '../shared/http_error'
 
 module Geet
   module Github

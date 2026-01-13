@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/os_helper'
-
 module Geet
   module Services
     # Open in the browser the current repository.

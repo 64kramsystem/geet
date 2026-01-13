@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/services_workflow_helper'
-
 module Geet
   module Services
     # Merges the PR for the current branch.

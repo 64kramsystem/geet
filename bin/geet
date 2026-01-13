@@ -2,14 +2,8 @@
 # frozen_string_literal: true
 
 require 'simple_scripting/configuration'
-require_relative '../lib/geet/commandline/configuration'
-require_relative '../lib/geet/commandline/commands'
-require_relative '../lib/geet/commandline/editor'
-require_relative '../lib/geet/git/repository'
-require_relative '../lib/geet/helpers/summary_helper'
-require_relative '../lib/geet/shared/selection'
-require_relative '../lib/geet/utils/git_client'
-Dir[File.join(__dir__, '../lib/geet/services/*.rb')].each { |filename| require filename }
+require 'tmpdir'
+require_relative '../lib/geet'
 
 class GeetLauncher
   include Geet

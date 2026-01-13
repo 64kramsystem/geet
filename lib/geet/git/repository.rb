@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../utils/git_client'
-
 module Geet
   module Git
     # This class represents, for convenience, both the local and the remote repository, but the
@@ -122,31 +120,24 @@ module Geet
       def attempt_provider_call(class_name, meth, *args)
         module_name = provider_name.capitalize
 
-        require_provider_modules
-
         full_class_name = "Geet::#{module_name}::#{class_name}"
 
-        if Kernel.const_defined?(full_class_name)
-          klass = Kernel.const_get(full_class_name)
-
-          if !klass.respond_to?(meth)
-            raise "The functionality invoked (#{class_name}.#{meth}) is not currently supported!"
-          end
-
-          # Can't use ruby2_keywords, because the method definitions use named keyword arguments.
-          #
-          kwargs = args.last.is_a?(Hash) ? args.pop : {}
-
-          klass.send(meth, *args, **kwargs)
-        else
+        # Use const_get directly to trigger Zeitwerk autoloading
+        begin
+          klass = Object.const_get(full_class_name)
+        rescue NameError
           raise "The class referenced (#{full_class_name}) is not currently supported!"
         end
-      end
 
-      def require_provider_modules
-        files_pattern = "#{__dir__}/../#{provider_name}/*.rb"
+        if !klass.respond_to?(meth)
+          raise "The functionality invoked (#{class_name}.#{meth}) is not currently supported!"
+        end
 
-        Dir[files_pattern].each { |filename| require filename }
+        # Can't use ruby2_keywords, because the method definitions use named keyword arguments.
+        #
+        kwargs = args.last.is_a?(Hash) ? args.pop : {}
+
+        klass.send(meth, *args, **kwargs)
       end
 
       # WARNINGS

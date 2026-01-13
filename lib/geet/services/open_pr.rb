@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/os_helper'
-require_relative '../helpers/services_workflow_helper'
-
 module Geet
   module Services
     # Open in the browser the PR for the current branch.
