@@ -10,7 +10,7 @@ jobs:
       GITLAB_API_TOKEN: bar
     strategy:
       matrix:
-        ruby-version: [head, 3.4, 3.3, 3.2]
+        ruby-version: [head, 4.0, 3.4, 3.3, 3.2]
       fail-fast: false
     continue-on-error: ${{ endsWith(matrix['ruby-version'], 'head') || matrix['ruby-version'] == 'debug' }}
     steps:
