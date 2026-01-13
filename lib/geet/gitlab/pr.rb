@@ -40,7 +40,9 @@ module Geet
 
       # See https://docs.gitlab.com/ee/api/merge_requests.html#accept-mr
       #
-      def merge
+      def merge(merge_method: nil)
+        raise ArgumentError, "GitLab does not support the merge_method parameter" if merge_method
+
         api_path = "projects/#{@api_interface.path_with_namespace(encoded: true)}/merge_requests/#{number}/merge"
 
         @api_interface.send_request(api_path, http_method: :put)
