@@ -3,7 +3,6 @@
 
 require 'stringio'
 require 'tmpdir'
-require 'sorbet-runtime'
 
 module Geet
   module Services
