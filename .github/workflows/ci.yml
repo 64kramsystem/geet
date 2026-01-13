@@ -22,6 +22,7 @@ jobs:
     - run: bundle install
     - run: bundle exec rspec
   sorbet:
+    name: Sorbet typecheck
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
