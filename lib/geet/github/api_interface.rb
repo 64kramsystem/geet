@@ -9,6 +9,7 @@ module Geet
     class ApiInterface
       API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
       API_BASE_URL = 'https://api.github.com'
+      GRAPHQL_API_URL = 'https://api.github.com/graphql'
 
       attr_reader :repository_path
 
@@ -66,6 +67,42 @@ module Geet
           address = link_next_page(response.to_hash)
 
           return parsed_responses if address.nil?
+        end
+      end
+
+      # Send a GraphQL request.
+      #
+      # Returns the parsed response data.
+      #
+      # params:
+      #   :query:       GraphQL query string
+      #   :variables:   (Hash) GraphQL variables
+      #
+      def send_graphql_request(query, variables: {})
+        uri = URI(GRAPHQL_API_URL)
+
+        Net::HTTP.start(uri.host, use_ssl: true) do |http|
+          request = Net::HTTP::Post.new(uri).tap do
+            it.basic_auth API_AUTH_USER, @api_token
+            it['Accept'] = 'application/vnd.github.v3+json'
+            it.body = {query:, variables:}.to_json
+          end
+
+          response = http.request(request)
+
+          parsed_response = JSON.parse(response.body) if response.body
+
+          if error?(response)
+            error_message = decode_and_format_error(parsed_response)
+            raise Geet::Shared::HttpError.new(error_message, response.code)
+          end
+
+          if parsed_response&.key?('errors')
+            error_messages = parsed_response['errors'].map { |err| err['message'] }.join(', ')
+            raise Geet::Shared::HttpError.new("GraphQL errors: #{error_messages}", response.code)
+          end
+
+          parsed_response&.fetch('data')
         end
       end
 
