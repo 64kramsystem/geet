@@ -3,7 +3,8 @@ name: CI
 on: [pull_request]
 
 jobs:
-  test:
+  test_suite:
+    name: Test Suite
     runs-on: ubuntu-latest
     env:
       GITHUB_API_TOKEN: foo
@@ -12,9 +13,9 @@ jobs:
       matrix:
         ruby-version: [head, 4.0, 3.4, 3.3, 3.2]
       fail-fast: false
-    continue-on-error: ${{ endsWith(matrix['ruby-version'], 'head') || matrix['ruby-version'] == 'debug' }}
+    continue-on-error: ${{ endsWith(matrix['ruby-version'], 'head') }}
     steps:
-    - uses: actions/checkout@v5
+    - uses: actions/checkout@v6
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby-version }}
@@ -25,7 +26,7 @@ jobs:
     name: Sorbet typecheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: ${{ env.REPO_FETCH_DEPTH }}
       - uses: ruby/setup-ruby@v1
@@ -38,9 +39,9 @@ jobs:
   all-tests:
     name: Ruby (non-head) tests passed
     runs-on: ubuntu-latest
-    needs: [test]
+    needs: [test_suite]
     if: always()
     steps:
-      - name: Check test results
+      - name: Check test suite results
         run: |
-          [[ "${{ needs.test.result }}" == "success" ]] || exit 1
+          [[ "${{ needs.test_suite.result }}" == "success" ]] || exit 1
