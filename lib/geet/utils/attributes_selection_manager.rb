@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 # typed: true
 
-require 'sorbet-runtime'
-
 module Geet
   module Utils
     # Manages the retrieval and selection of attributes.

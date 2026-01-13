@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'sorbet-runtime'
-
 module Geet
   module Services
     # Add the upstream repository to the current repository (configuration).

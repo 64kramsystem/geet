@@ -2,7 +2,6 @@
 # typed: true
 
 require 'io/console' # stdlib
-require 'sorbet-runtime'
 
 module Geet
   module Services
