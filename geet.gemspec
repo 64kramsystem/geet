@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'base64', '~> 0.3.0'
   s.add_runtime_dependency 'ostruct', '~> 0.6.3'
   s.add_runtime_dependency 'simple_scripting', '~> 0.14.0'
+  s.add_runtime_dependency 'sorbet-runtime', '= 0.6.12883'
   s.add_runtime_dependency 'tty-prompt', '~> 0.23.1'
   s.add_runtime_dependency 'zeitwerk', '~> 2.7'
 

@@ -4,10 +4,7 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'sorbet-runtime'
-
 group :development do
-  gem 'sorbet', '= 0.6.12883', require: false
   gem 'byebug'
   gem 'rubocop', '~> 1.35.0', require: false
   gem 'spoom', require: false
