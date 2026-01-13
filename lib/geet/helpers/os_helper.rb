@@ -4,7 +4,6 @@
 require 'English'
 require 'open3'
 require 'shellwords'
-require 'sorbet-runtime'
 
 module Geet
   module Helpers
@@ -13,7 +12,7 @@ module Geet
 
       include Kernel # for Sorbet compatibility
 
-      sig { params(file_or_url: T.untyped).void }
+      sig { params(file_or_url: String).void }
       def open_file_with_default_application(file_or_url)
         open_command = case
         when ENV["WSL_DISTRO_NAME"]
@@ -36,12 +35,16 @@ module Geet
       # On non-interactive runs, the stdout content is returned, stripped of the surrounding
       # whitespaces.
       #
-      # description:   optional string, to make the error clearer.
-      # interactive:   set when required; in this case, a different API will be used (`system()`
-      #                instead of `popen3`).
-      # silent_stderr: don't print the stderr output
-      # allow_error:   don't raise error on failure
-      #
+      sig {
+        params(
+          command: String,
+          description: T.nilable(String),   # specify to make the error clearer
+          interactive: T::Boolean,          # set when required; in this case, a different API will be used (`system()`
+                                            # instead of `popen3`)
+          silent_stderr: T::Boolean,        # don't print the stderr output
+          allow_error: T::Boolean           # don't raise error on failure
+        ).returns(T.nilable(String))
+      }
       def execute_command(command, description: nil, interactive: false, silent_stderr: false, allow_error: false)
         description_message = " on #{description}" if description
 

@@ -1,11 +1,16 @@
+# typed: strict
 # frozen_string_literal: true
 
 module Geet
   module Helpers
     module SummaryHelper
+      include Kernel
+      extend T::Sig
+
       # Split the summary in title and description.
       # The description is optional, but the title mandatory.
       #
+      sig { params(summary: String).returns([String, String]) }
       def split_summary(summary)
         raise "Missing title in summary!" if summary.to_s.strip.empty?
 
