@@ -1,6 +1,7 @@
 --disable-watchman
 --suppress-payload-superclass-redefinition-for=Reline::ANSI
 --dir=.
+--ignore=spec
 # Without a Bundler lockfile, we need to ignore gems vendored in CI, to avoid typechecking gem sources
 # that may clash with those in the repo.
 --ignore=vendor/bundle

@@ -7,11 +7,11 @@ gemspec
 gem 'sorbet-runtime'
 
 group :development do
-  gem 'sorbet'
+  gem 'sorbet', '= 0.6.12883', require: false
   gem 'byebug'
   gem 'rubocop', '~> 1.35.0', require: false
   gem 'spoom', require: false
-  gem 'tapioca', require: false
+  gem 'tapioca', '>= 0.17.10', require: false
 end
 
 group :test do
