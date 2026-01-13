@@ -135,12 +135,11 @@ describe Geet::Services::CreatePr do
 
         actual_output = StringIO.new
 
-        operation = -> do
+        expect do
           service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
           service_instance.execute('Title', 'Description')
-        end
+        end.to raise_error(RuntimeError, 'The working tree is not clean!')
 
-        expect(operation).to raise_error(RuntimeError, 'The working tree is not clean!')
         expect(actual_output.string).to be_empty
       end
 
