@@ -74,7 +74,7 @@ module Geet
         # Arguably inexact phrasing for avoiding language complexities.
         prompt_title = "Please select the #{entry_type}(s):"
 
-        TTY::Prompt.new.send(invocation_method, prompt_title, entries, filter: true, per_page: PAGER_SIZE)
+        ::TTY::Prompt.new.send(invocation_method, prompt_title, entries, filter: true, per_page: PAGER_SIZE)
       end
 
       def no_selection?(entry)
