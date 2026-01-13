@@ -5,7 +5,7 @@
 require 'vcr'
 require 'base64'
 
-require_relative '../lib/geet/utils/attributes_selection_manager'
+require_relative '../lib/geet'
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/vcr_cassettes'

@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../shared/repo_permissions'
-require_relative '../shared/http_error'
-
 module Geet
   module Github
     class User

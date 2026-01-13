@@ -2,9 +2,6 @@
 
 module Geet
   module Github
-    # See AbstractIssue for the circular dependency issue notes.
-    autoload :AbstractIssue, File.expand_path('abstract_issue', __dir__)
-
     class PR < AbstractIssue
       # See https://developer.github.com/v3/pulls/#create-a-pull-request
       #

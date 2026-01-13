@@ -1,10 +1,6 @@
 # frozen_string_literal: true
 # typed: true
 
-require_relative 'manual_list_selection'
-require_relative 'string_matching_selection'
-require_relative '../shared/selection'
-
 require 'sorbet-runtime'
 
 module Geet

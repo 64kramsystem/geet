@@ -4,11 +4,6 @@
 require 'io/console' # stdlib
 require 'sorbet-runtime'
 
-require_relative 'abstract_create_issue'
-require_relative '../shared/repo_permissions'
-require_relative '../shared/selection'
-require_relative 'add_upstream_repo'
-
 module Geet
   module Services
     class CreatePr < AbstractCreateIssue

@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'abstract_create_issue'
-require_relative '../shared/repo_permissions'
-require_relative '../shared/selection'
-
 module Geet
   module Services
     class CreateIssue < AbstractCreateIssue

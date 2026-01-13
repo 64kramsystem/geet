@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../helpers/json_helper'
-
 module Geet
   module Github
     class Milestone

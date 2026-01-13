@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 
-require_relative '../utils/attributes_selection_manager'
-require_relative '../shared/selection'
-
 module Geet
   module Services
     class ListIssues

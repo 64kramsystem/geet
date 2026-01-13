@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'simple_scripting/argv'
-require_relative 'commands'
 
 module Geet
   module Commandline

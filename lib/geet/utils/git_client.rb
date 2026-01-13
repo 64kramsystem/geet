@@ -5,8 +5,6 @@ require 'English'
 require 'shellwords'
 require 'sorbet-runtime'
 
-require_relative '../helpers/os_helper'
-
 module Geet
   module Utils
     # Represents the git program interface; used for performing git operations.

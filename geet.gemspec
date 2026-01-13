@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH << File.expand_path('lib', __dir__)
-
-require 'geet/version'
+require_relative 'lib/geet/version'
 
 Gem::Specification.new do |s|
   s.name        = 'geet'
@@ -21,6 +19,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'ostruct', '~> 0.6.3'
   s.add_runtime_dependency 'simple_scripting', '~> 0.14.0'
   s.add_runtime_dependency 'tty-prompt', '~> 0.23.1'
+  s.add_runtime_dependency 'zeitwerk', '~> 2.7'
 
   s.add_development_dependency 'rake', '~> 12.3'
 
