@@ -91,26 +91,64 @@ module Geet
         @api_interface.send_request(api_path, data: request_data)
       end
 
-      # Enable auto-merge for this PR using the repository's default merge method.
+      # Enable auto-merge for this PR using an available merge method.
+      # Queries the repository to find allowed merge methods and uses the first available one
+      # (see method comment below for the priority).
       # See https://docs.github.com/en/graphql/reference/mutations#enablepullrequestautomerge
       #
       def enable_automerge
+        merge_method = fetch_available_merge_method
+
         query = <<~GRAPHQL
-          mutation($pullRequestId: ID!) {
-            enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId}) {
+          mutation($pullRequestId: ID!, $mergeMethod: PullRequestMergeMethod!) {
+            enablePullRequestAutoMerge(input: {pullRequestId: $pullRequestId, mergeMethod: $mergeMethod}) {
               pullRequest {
                 id
                 autoMergeRequest {
                   enabledAt
+                  mergeMethod
                 }
               }
             }
           }
         GRAPHQL
 
-        variables = { pullRequestId: @node_id }
+        variables = { pullRequestId: @node_id, mergeMethod: merge_method }
 
         @api_interface.send_graphql_request(query, variables:)
+      end
+
+      private
+
+      # Query the repository to find the first available merge method.
+      # Priority: MERGE > SQUASH > REBASE.
+      #
+      def fetch_available_merge_method
+        query = <<~GRAPHQL
+          query($owner: String!, $name: String!) {
+            repository(owner: $owner, name: $name) {
+              mergeCommitAllowed
+              squashMergeAllowed
+              rebaseMergeAllowed
+            }
+          }
+        GRAPHQL
+
+        owner, name = @api_interface.repository_path.split('/')
+
+        response = @api_interface.send_graphql_request(query, variables: {owner:, name:})
+        repo_data = response['repository'].transform_keys(&:to_sym)
+
+        case repo_data
+        in { mergeCommitAllowed: true }
+          'MERGE'
+        in { squashMergeAllowed: true }
+          'SQUASH'
+        in { rebaseMergeAllowed: true }
+          'REBASE'
+        else
+          raise 'No merge methods are allowed on this repository'
+        end
       end
 
       class << self
