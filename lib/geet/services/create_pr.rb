@@ -164,6 +164,8 @@ module Geet
       end
 
       def add_labels(pr, selected_labels)
+        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
+
         labels_list = selected_labels.map(&:name).join(', ')
 
         @out.puts "Adding labels #{labels_list}..."
@@ -174,6 +176,8 @@ module Geet
       end
 
       def set_milestone(pr, milestone)
+        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
+
         @out.puts "Setting milestone #{milestone.title}..."
 
         Thread.new do
@@ -182,6 +186,8 @@ module Geet
       end
 
       def request_review(pr, reviewers)
+        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
+
         reviewer_usernames = reviewers.map(&:username)
 
         @out.puts "Requesting review from #{reviewer_usernames.join(', ')}..."
@@ -192,6 +198,8 @@ module Geet
       end
 
       def enable_automerge(pr)
+        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
+
         if !pr.respond_to?(:enable_automerge)
           raise "Automerge is not supported for this repository provider"
         elsif !pr.respond_to?(:node_id) || pr.node_id.nil?
