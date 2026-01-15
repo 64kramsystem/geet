@@ -30,7 +30,7 @@ module Geet
       end
 
       sig {
-        params(
+        override.params(
           api_interface: Geet::Github::ApiInterface,
           assignee: T.nilable(Geet::Github::User),
           milestone: T.nilable(Geet::Github::Milestone),

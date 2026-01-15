@@ -10,7 +10,7 @@ module Geet
       attr_reader :node_id
 
       sig {
-        params(
+        override.params(
           number: Integer,
           api_interface: Geet::Github::ApiInterface,
           title: String,
@@ -58,7 +58,7 @@ module Geet
       # See https://developer.github.com/v3/pulls/#list-pull-requests
       #
       sig {
-        params(
+        override.params(
           api_interface: Geet::Github::ApiInterface,
           milestone: T.nilable(Geet::Github::Milestone),
           assignee: T.nilable(Geet::Github::User),

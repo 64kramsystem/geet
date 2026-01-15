@@ -17,7 +17,14 @@ module Geet
       sig { returns(String) }
       attr_reader :link
 
-      sig { params(number: Integer, api_interface: Geet::Github::ApiInterface, title: String, link: String).void }
+      sig {
+        overridable.params(
+          number: Integer,
+          api_interface: Geet::Github::ApiInterface,
+          title: String,
+          link: String
+        ).void
+      }
       def initialize(number, api_interface, title, link)
         @number = number
         @api_interface = api_interface
@@ -31,7 +38,7 @@ module Geet
       # information is provided (e.g. `head`).
       #
       sig {
-        params(
+        overridable.params(
           api_interface: Geet::Github::ApiInterface,
           milestone: T.nilable(Geet::Github::Milestone),
           assignee: T.nilable(Geet::Github::User),
