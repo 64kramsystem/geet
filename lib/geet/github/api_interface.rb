@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# typed: strict
 
 require 'uri'
 require 'net/http'
@@ -7,21 +8,32 @@ require 'json'
 module Geet
   module Github
     class ApiInterface
-      API_AUTH_USER = '' # We don't need the login, as the API key uniquely identifies the user
-      API_BASE_URL = 'https://api.github.com'
-      GRAPHQL_API_URL = 'https://api.github.com/graphql'
+      extend T::Sig
 
+      API_AUTH_USER = T.let('', String) # We don't need the login, as the API key uniquely identifies the user
+      API_BASE_URL = T.let('https://api.github.com', String)
+      GRAPHQL_API_URL = T.let('https://api.github.com/graphql', String)
+
+      sig { returns(T.nilable(String)) }
       attr_reader :repository_path
 
       # repo_path: optional for operations that don't require a repository, eg. gist creation.
       # upstream:  boolean; makes sense only when :repo_path is set.
       #
+      sig {
+        params(
+          api_token: String,
+          repo_path: T.nilable(String),
+          upstream: T.nilable(T::Boolean)
+        ).void
+      }
       def initialize(api_token, repo_path: nil, upstream: nil)
-        @api_token = api_token
-        @repository_path = repo_path
-        @upstream = upstream
+        @api_token = T.let(api_token, String)
+        @repository_path = T.let(repo_path, T.nilable(String))
+        @upstream = T.let(upstream, T.nilable(T::Boolean))
       end
 
+      sig { returns(T.nilable(T::Boolean)) }
       def upstream?
         @upstream
       end
@@ -45,24 +57,33 @@ module Geet
       #                 :get and :post are automatically inferred by the present of :data; the other
       #                 cases must be specified.
       #
+      sig {
+        params(
+          api_path: String,
+          params: T.nilable(T::Hash[Symbol, T.untyped]),
+          data: T.nilable(T.any(T::Hash[Symbol, T.untyped], T::Array[T.untyped])),
+          multipage: T::Boolean,
+          http_method: T.nilable(Symbol)
+        ).returns(T.any(T::Hash[String, T.untyped], T::Array[T::Hash[String, T.untyped]], NilClass))
+      }
       def send_request(api_path, params: nil, data: nil, multipage: false, http_method: nil)
-        address = api_url(api_path)
+        address = T.let(api_url(api_path), T.nilable(String))
         # filled only on :multipage
-        parsed_responses = []
+        parsed_responses = T.let([], T::Array[T::Hash[String, T.untyped]])
 
         loop do
-          response = send_http_request(address, params:, data:, http_method:)
+          response = send_http_request(T.must(address), params:, data:, http_method:)
 
-          parsed_response = JSON.parse(response.body) if response.body
+          parsed_response = T.unsafe(JSON.parse(T.must(response.body))) if response.body
 
           if error?(response)
-            error_message = decode_and_format_error(parsed_response)
+            error_message = decode_and_format_error(T.cast(parsed_response, T::Hash[String, T.untyped]))
             raise Geet::Shared::HttpError.new(error_message, response.code)
           end
 
           return parsed_response if !multipage
 
-          parsed_responses.concat(parsed_response)
+          parsed_responses.concat(T.cast(parsed_response, T::Array[T::Hash[String, T.untyped]]))
 
           address = link_next_page(response.to_hash)
 
@@ -78,6 +99,12 @@ module Geet
       #   :query:       GraphQL query string
       #   :variables:   (Hash) GraphQL variables
       #
+      sig {
+        params(
+          query: String,
+          variables: T::Hash[Symbol, T.untyped]
+        ).returns(T::Hash[String, T.untyped])
+      }
       def send_graphql_request(query, variables: {})
         uri = URI(GRAPHQL_API_URL)
 
@@ -90,24 +117,32 @@ module Geet
 
           response = http.request(request)
 
-          parsed_response = JSON.parse(response.body) if response.body
+          parsed_response = T.let(nil, T.nilable(T::Hash[String, T.untyped]))
+          if response.body
+            parsed_response = T.cast(T.unsafe(JSON.parse(response.body)), T::Hash[String, T.untyped])
+          end
 
           if error?(response)
-            error_message = decode_and_format_error(parsed_response)
+            error_message = decode_and_format_error(T.must(parsed_response))
             raise Geet::Shared::HttpError.new(error_message, response.code)
           end
 
           if parsed_response&.key?('errors')
-            error_messages = parsed_response['errors'].map { |err| err['message'] }.join(', ')
+            error_messages = T.cast(parsed_response['errors'], T::Array[T::Hash[String, T.untyped]]).map { |err| T.cast(err['message'], String) }.join(', ')
             raise Geet::Shared::HttpError.new("GraphQL errors: #{error_messages}", response.code)
           end
 
-          parsed_response&.fetch('data')
+          T.cast(T.must(parsed_response).fetch('data'), T::Hash[String, T.untyped])
         end
       end
 
       private
 
+      sig {
+        params(
+          api_path: String
+        ).returns(String)
+      }
       def api_url(api_path)
         url = API_BASE_URL
 
@@ -119,6 +154,14 @@ module Geet
         url + api_path
       end
 
+      sig {
+        params(
+          address: String,
+          params: T.nilable(T::Hash[Symbol, T.untyped]),
+          data: T.nilable(T.any(T::Hash[Symbol, T.untyped], T::Array[T.untyped])),
+          http_method: T.nilable(Symbol)
+        ).returns(Net::HTTPResponse)
+      }
       def send_http_request(address, params: nil, data: nil, http_method: nil)
         uri = encode_uri(address, params)
         http_class = find_http_class(http_method, data)
@@ -134,16 +177,32 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          address: String,
+          params: T.nilable(T::Hash[Symbol, T.untyped])
+        ).returns(URI::Generic)
+      }
       def encode_uri(address, params)
         address += '?' + URI.encode_www_form(params) if params
 
         URI(address)
       end
 
+      sig {
+        params(
+          response: Net::HTTPResponse
+        ).returns(T::Boolean)
+      }
       def error?(response)
         !response.code.start_with?('2')
       end
 
+      sig {
+        params(
+          parsed_response: T::Hash[String, T.untyped]
+        ).returns(String)
+      }
       def decode_and_format_error(parsed_response)
         message = parsed_response['message']
 
@@ -166,6 +225,11 @@ module Geet
         message
       end
 
+      sig {
+        params(
+          response_headers: T::Hash[String, T.untyped]
+        ).returns(T.nilable(String))
+      }
       def link_next_page(response_headers)
         # An array (or nil) is returned.
         link_header = Array(response_headers['link'])
@@ -175,6 +239,12 @@ module Geet
         link_header[0][/<(\S+)>; rel="next"/, 1]
       end
 
+      sig {
+        params(
+          http_method: T.nilable(Symbol),
+          data: T.nilable(T.any(T::Hash[Symbol, T.untyped], T::Array[T.untyped]))
+        ).returns(T.class_of(Net::HTTPRequest))
+      }
       def find_http_class(http_method, data)
         http_method ||= data ? :post : :get
 
