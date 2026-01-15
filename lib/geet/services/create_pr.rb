@@ -45,7 +45,7 @@ module Geet
 
         sync_with_remote_branch
 
-        pr = create_pr(title, description, base: base, draft: draft)
+        pr = create_pr(title, description, base:, draft:)
 
         if user_has_write_permissions
           edit_pr(pr, selected_labels, selected_milestone, selected_reviewers)

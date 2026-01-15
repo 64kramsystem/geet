@@ -36,7 +36,7 @@ module Geet
 
         @out.puts "Finding PR with head (#{owner}:#{head})..."
 
-        prs = @repository.prs(owner: owner, head: head)
+        prs = @repository.prs(owner:, head:)
 
         raise "Expected to find only one PR for the current branch; found: #{prs.size}" if prs.size != 1
 

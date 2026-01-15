@@ -51,7 +51,7 @@ module Geet
         parsed_responses = []
 
         loop do
-          response = send_http_request(address, params: params, data: data, http_method: http_method)
+          response = send_http_request(address, params:, data:, http_method:)
 
           parsed_response = JSON.parse(response.body) if response.body
 

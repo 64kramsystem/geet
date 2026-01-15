@@ -27,7 +27,7 @@ module Geet
         @out.puts "Creating a #{gist_access} gist..."
 
         filename = File.basename(full_filename)
-        gist = Geet::Github::Gist.create(filename, content, @api_interface, description: description, publik: publik)
+        gist = Geet::Github::Gist.create(filename, content, @api_interface, description:, publik:)
 
         if open_browser
           open_file_with_default_application(gist.link)

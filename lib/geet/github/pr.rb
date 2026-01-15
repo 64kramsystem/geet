@@ -20,7 +20,7 @@ module Geet
           head = "#{authenticated_user}:#{head}"
         end
 
-        request_data = { title: title, body: description, head: head, base: base, draft: draft }
+        request_data = { title:, body: description, head:, base:, draft: }
 
         response = api_interface.send_request(api_path, data: request_data)
 
@@ -69,7 +69,7 @@ module Geet
             new(number, api_interface, title, link)
           end
         else
-          super(api_interface, milestone: milestone, assignee: assignee) do |issue_data|
+          super(api_interface, milestone:, assignee:) do |issue_data|
             issue_data.key?('pull_request')
           end
         end

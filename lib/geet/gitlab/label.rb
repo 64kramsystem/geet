@@ -26,7 +26,7 @@ module Geet
       # See https://docs.gitlab.com/ee/api/labels.html#create-a-new-label
       def self.create(name, color, api_interface, **)
         api_path = "projects/#{api_interface.path_with_namespace(encoded: true)}/labels"
-        request_data = { name: name, color: "##{color}" }
+        request_data = { name:, color: "##{color}" }
 
         api_interface.send_request(api_path, data: request_data)
 

@@ -5,7 +5,7 @@ module Geet
     class Issue < Geet::Github::AbstractIssue
       def self.create(title, description, api_interface, **)
         api_path = 'issues'
-        request_data = { title: title, body: description }
+        request_data = { title:, body: description }
 
         response = api_interface.send_request(api_path, data: request_data)
 

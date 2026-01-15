@@ -7,8 +7,8 @@ require_relative '../../lib/geet/services/create_pr'
 
 describe Geet::Services::CreatePr do
   let(:git_client) { Geet::Utils::GitClient.new }
-  let(:repository) { Geet::Git::Repository.new(git_client: git_client, warnings: false) }
-  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client, warnings: false) }
+  let(:repository) { Geet::Git::Repository.new(git_client:, warnings: false) }
+  let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client:, warnings: false) }
 
   context 'with github.com' do
     context 'with labels, reviewers and milestones' do
@@ -37,7 +37,7 @@ describe Geet::Services::CreatePr do
         actual_output = StringIO.new
 
         actual_created_pr = VCR.use_cassette('github_com/create_pr', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+          service_instance = described_class.new(repository, out: actual_output, git_client:)
           service_instance.execute(
             'Title', 'Description',
             labels: 'bug,invalid', milestone: '0.0.1', reviewers: 'donald-fr'
@@ -74,7 +74,7 @@ describe Geet::Services::CreatePr do
         actual_output = StringIO.new
 
         actual_created_pr = VCR.use_cassette('github_com/create_pr_upstream', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(upstream_repository, out: actual_output, git_client: git_client)
+          service_instance = described_class.new(upstream_repository, out: actual_output, git_client:)
           service_instance.execute('Title', 'Description')
         end
 
@@ -111,7 +111,7 @@ describe Geet::Services::CreatePr do
             actual_output = StringIO.new
 
             actual_created_pr = VCR.use_cassette('github_com/create_pr_upstream_without_write_permissions') do
-              service_instance = described_class.new(upstream_repository, out: actual_output, git_client: git_client)
+              service_instance = described_class.new(upstream_repository, out: actual_output, git_client:)
               service_instance.execute(
                 'Title', 'Description',
                 labels: '<ignored>'
@@ -136,7 +136,7 @@ describe Geet::Services::CreatePr do
         actual_output = StringIO.new
 
         expect do
-          service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+          service_instance = described_class.new(repository, out: actual_output, git_client:)
           service_instance.execute('Title', 'Description')
         end.to raise_error(RuntimeError, 'The working tree is not clean!')
 
@@ -163,7 +163,7 @@ describe Geet::Services::CreatePr do
         actual_output = StringIO.new
 
         actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_with_push', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+          service_instance = described_class.new(repository, out: actual_output, git_client:)
           service_instance.execute('Title', 'Description')
         end
 
@@ -188,7 +188,7 @@ describe Geet::Services::CreatePr do
         actual_output = StringIO.new
 
         actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_create_upstream', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+          service_instance = described_class.new(repository, out: actual_output, git_client:)
           service_instance.execute('Title', 'Description')
         end
 
@@ -223,7 +223,7 @@ describe Geet::Services::CreatePr do
 
         allow(repository).to receive(:create_pr).and_return(mock_pr)
 
-        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+        service_instance = described_class.new(repository, out: actual_output, git_client:)
         service_instance.execute('Title', 'Description', automerge: true)
 
         expect(mock_pr).to have_received(:enable_automerge)
@@ -256,7 +256,7 @@ describe Geet::Services::CreatePr do
 
         allow(repository).to receive(:create_pr).and_return(mock_pr)
 
-        service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+        service_instance = described_class.new(repository, out: actual_output, git_client:)
 
         expect do
           service_instance.execute('Title', 'Description', automerge: true)

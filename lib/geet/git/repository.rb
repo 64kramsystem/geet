@@ -53,7 +53,7 @@ module Geet
       end
 
       def issues(assignee: nil, milestone: nil)
-        attempt_provider_call(:Issue, :list, api_interface, assignee: assignee, milestone: milestone)
+        attempt_provider_call(:Issue, :list, api_interface, assignee:, milestone:)
       end
 
       def create_milestone(title)
@@ -76,7 +76,7 @@ module Geet
       end
 
       def prs(owner: nil, head: nil, milestone: nil)
-        attempt_provider_call(:PR, :list, api_interface, owner: owner, head: head, milestone: milestone)
+        attempt_provider_call(:PR, :list, api_interface, owner:, head:, milestone:)
       end
 
       # Returns the RemoteRepository instance.
