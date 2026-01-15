@@ -157,7 +157,7 @@ module Geet
       # (see method comment below for the priority).
       # See https://docs.github.com/en/graphql/reference/mutations#enablepullrequestautomerge
       #
-      sig { void }
+      sig { returns(String) }
       def enable_automerge
         merge_method = fetch_available_merge_method
 
@@ -178,6 +178,8 @@ module Geet
         variables = { pullRequestId: @node_id, mergeMethod: merge_method }
 
         @api_interface.send_graphql_request(query, variables:)
+
+        merge_method
       end
 
       private
