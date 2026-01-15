@@ -82,6 +82,8 @@ module Geet
       end
 
       def add_labels(issue, selected_labels)
+        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
+
         labels_list = selected_labels.map(&:name).join(', ')
 
         @out.puts "Adding labels #{labels_list}..."
@@ -92,6 +94,8 @@ module Geet
       end
 
       def set_milestone(issue, milestone)
+        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
+
         @out.puts "Setting milestone #{milestone.title}..."
 
         Thread.new do
@@ -100,6 +104,8 @@ module Geet
       end
 
       def assign_users(issue, users)
+        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
+
         usernames = users.map(&:username)
 
         @out.puts "Assigning users #{usernames.join(', ')}..."
@@ -110,6 +116,8 @@ module Geet
       end
 
       def assign_authenticated_user(issue)
+        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
+
         @out.puts 'Assigning authenticated user...'
 
         Thread.new do
