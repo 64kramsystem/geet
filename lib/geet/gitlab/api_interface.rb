@@ -56,7 +56,9 @@ module Geet
         loop do
           response = send_http_request(address, params:, data:, http_method:)
 
-          parsed_response = JSON.parse(response.body) if response.body
+          if response_body = response.body
+            parsed_response = JSON.parse(response_body)
+          end
 
           if error?(response)
             formatted_error = decode_and_format_error(parsed_response)
