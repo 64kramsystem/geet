@@ -1,17 +1,24 @@
 # frozen_string_literal: true
+# typed: strict
 
 module Geet
   module Services
     class CreateIssue < AbstractCreateIssue
+      extend T::Sig
+
       include Geet::Shared::RepoPermissions
       include Geet::Shared::Selection
 
-      # options:
-      #   :labels
-      #   :milestone:     number or description pattern.
-      #   :assignees
-      #   :open_browser
-      #
+      sig {
+        params(
+          title: String,
+          description: String,
+          labels: T.nilable(String),
+          milestone: T.nilable(String), # Number or description pattern
+          assignees: T.nilable(String),
+          open_browser: T::Boolean
+        ).returns(T.any(Github::Issue, Gitlab::Issue))
+      }
       def execute(
           title, description,
           labels: nil, milestone: nil, assignees: nil, open_browser: false
@@ -47,6 +54,17 @@ module Geet
 
       # Internal actions
 
+      sig {
+        params(
+          labels: T.nilable(String),
+          milestone: T.nilable(String),
+          assignees: T.nilable(String)
+        ).returns([
+          T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
+          T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
+          T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+        ])
+      }
       def find_and_select_attributes(labels, milestone, assignees)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
@@ -57,12 +75,26 @@ module Geet
         selection_manager.select_attributes
       end
 
+      sig {
+        params(
+          title: String,
+          description: String
+        ).returns(T.any(Github::Issue, Gitlab::Issue))
+      }
       def create_issue(title, description)
         @out.puts 'Creating the issue...'
 
         issue = @repository.create_issue(title, description)
       end
 
+      sig {
+        params(
+          issue: T.any(Github::Issue, Gitlab::Issue),
+          labels: T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
+          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
+          assignees: T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+        ).void
+      }
       def edit_issue(issue, labels, milestone, assignees)
         # labels can be nil (parameter not passed) or empty array (parameter passed, but nothing
         # selected)
@@ -81,6 +113,12 @@ module Geet
         assign_users_thread&.join
       end
 
+      sig {
+        params(
+          issue: T.any(Github::Issue, Gitlab::Issue),
+          selected_labels: T::Array[T.any(Github::Label, Gitlab::Label)]
+        ).returns(Thread)
+      }
       def add_labels(issue, selected_labels)
         raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
 
@@ -93,6 +131,12 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          issue: T.any(Github::Issue, Gitlab::Issue),
+          milestone: T.any(Github::Milestone, Gitlab::Milestone)
+        ).returns(Thread)
+      }
       def set_milestone(issue, milestone)
         raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
 
@@ -103,6 +147,12 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          issue: T.any(Github::Issue, Gitlab::Issue),
+          users: T::Array[T.any(Github::User, Gitlab::User)]
+        ).returns(Thread)
+      }
       def assign_users(issue, users)
         raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
 
@@ -115,6 +165,11 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          issue: T.any(Github::Issue, Gitlab::Issue)
+        ).returns(Thread)
+      }
       def assign_authenticated_user(issue)
         raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
 
