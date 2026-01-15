@@ -38,7 +38,7 @@ module Geet
         @title = title
         @due_on = due_on
 
-        @api_interface = T.let(api_interface, Geet::Github::ApiInterface)
+        @api_interface = api_interface
       end
 
       # See https://developer.github.com/v3/issues/milestones/#create-a-milestone
@@ -52,7 +52,10 @@ module Geet
         api_path = 'milestones'
         request_data = { title: title }
 
-        response = T.cast(api_interface.send_request(api_path, data: request_data), T::Hash[String, T.untyped])
+        response = T.cast(
+          api_interface.send_request(api_path, data: request_data),
+          T::Hash[String, T.untyped]
+        )
 
         number = T.cast(response.fetch('number'), Integer)
         title = T.cast(response.fetch('title'), String)
@@ -71,12 +74,17 @@ module Geet
       def self.list(api_interface)
         api_path = 'milestones'
 
-        response = T.cast(api_interface.send_request(api_path, multipage: true), T::Array[T::Hash[String, T.untyped]])
+        response = T.cast(
+          api_interface.send_request(api_path, multipage: true),
+          T::Array[T::Hash[String, T.untyped]]
+        )
 
         response.map do |milestone_data|
           number = T.cast(milestone_data.fetch('number'), Integer)
           title = T.cast(milestone_data.fetch('title'), String)
-          due_on = parse_iso_8601_timestamp(T.cast(milestone_data.fetch('due_on'), T.nilable(String)))
+          due_on = parse_iso_8601_timestamp(
+            T.cast(milestone_data.fetch('due_on'), T.nilable(String))
+          )
 
           new(number, title, due_on, api_interface)
         end
@@ -86,7 +94,12 @@ module Geet
       #
       # This is a convenience method; the underlying operation is a generic update.
       #
-      sig { params(number: Integer, api_interface: Geet::Github::ApiInterface).void }
+      sig {
+        params(
+          number: Integer,
+          api_interface: Geet::Github::ApiInterface
+        ).void
+      }
       def self.close(number, api_interface)
         api_path = "milestones/#{number}"
         request_data = { state: STATE_CLOSED }
