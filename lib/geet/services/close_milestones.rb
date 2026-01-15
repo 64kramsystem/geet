@@ -1,15 +1,20 @@
 # frozen_string_literal: true
+# typed: strict
 
 module Geet
   module Services
     class CloseMilestones
+      extend T::Sig
+
       include Geet::Shared::Selection
 
+      sig { params(repository: T.untyped, out: T.any(IO, StringIO)).void }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
       end
 
+      sig { params(numbers: T.nilable(String)).void }
       def execute(numbers: nil)
         numbers = find_and_select_milestone_numbers(numbers)
 
@@ -20,6 +25,7 @@ module Geet
 
       private
 
+      sig { params(numbers: T.nilable(String)).returns(T::Array[T.untyped]) }
       def find_and_select_milestone_numbers(numbers)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
@@ -30,6 +36,7 @@ module Geet
         milestones.map(&:number)
       end
 
+      sig { params(numbers: T::Array[T.untyped]).returns(T::Array[Thread]) }
       def close_milestones(numbers)
         @out.puts "Closing milestones #{numbers.join(', ')}..."
 
