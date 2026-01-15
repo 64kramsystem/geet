@@ -4,8 +4,11 @@
 
 require 'vcr'
 require 'base64'
+require 'rspec/sorbet'
 
 require_relative '../lib/geet'
+
+RSpec::Sorbet.allow_doubles!
 
 VCR.configure do |config|
   config.cassette_library_dir = 'spec/vcr_cassettes'
