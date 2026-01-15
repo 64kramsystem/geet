@@ -206,12 +206,13 @@ module Geet
           raise "Automerge requires node_id from the API (not available in the response)"
         end
 
-        @out.puts "Enabling automerge..."
+        @out.print "Enabling automerge... "
 
         begin
-          pr.enable_automerge
+          merge_method = pr.enable_automerge
+          @out.puts merge_method
         rescue Geet::Shared::HttpError => e
-          @out.puts "Warning: Could not enable automerge: #{e.message}"
+          @out.puts "", "WARNING: Could not enable automerge: #{e.message}"
         end
       end
     end
