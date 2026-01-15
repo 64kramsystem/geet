@@ -1,28 +1,44 @@
 # frozen_string_literal: true
-# typed: true
+# typed: strict
 
 require 'io/console' # stdlib
 
 module Geet
   module Services
     class CreatePr < AbstractCreateIssue
+      extend T::Sig
+
       include Geet::Shared::RepoPermissions
       include Geet::Shared::Selection
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
+      sig {
+        params(
+          repository: Git::Repository,
+          out: IO,
+          git_client: Utils::GitClient
+        ).void
+      }
       def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
         super(repository)
         @git_client = git_client
         @out = out
       end
 
-      # options:
-      #   :labels
-      #   :reviewers
-      #   :open_browser
-      #   :automerge
-      #
+      sig {
+        params(
+          title: String,
+          description: String,
+          labels: T.nilable(String),
+          milestone: T.nilable(String),
+          reviewers: T.nilable(String),
+          base: T.nilable(String),
+          draft: T::Boolean,
+          open_browser: T::Boolean,
+          automerge: T::Boolean
+        ).returns(T.any(Github::PR, Gitlab::PR))
+      }
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
         base: nil, draft: false, open_browser: false, automerge: false
@@ -66,10 +82,22 @@ module Geet
 
       # Internal actions
 
+      sig { void }
       def ensure_clean_tree
         raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
       end
 
+      sig {
+        params(
+          labels: T.nilable(String),
+          milestone: T.nilable(String),
+          reviewers: T.nilable(String)
+        ).returns([
+          T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
+          T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
+          T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+        ])
+      }
       def find_and_select_attributes(labels, milestone, reviewers)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
@@ -92,6 +120,7 @@ module Geet
         [selected_labels, selected_milestone, selected_reviewers]
       end
 
+      sig { void }
       def sync_with_remote_branch
         # Fetching doesn't have a real world case when there isn't a remote branch. It's also not generally
         # useful when there is a remote branch, however, since a force push is an option, it's important
@@ -149,6 +178,14 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          title: String,
+          description: String,
+          base: T.nilable(String),
+          draft: T::Boolean
+        ).returns(T.any(Github::PR, Gitlab::PR))
+      }
       def create_pr(title, description, base:, draft:)
         @out.puts 'Creating PR...'
 
@@ -157,6 +194,14 @@ module Geet
         @repository.create_pr(title, description, @git_client.current_branch, base, draft)
       end
 
+      sig {
+        params(
+          pr: T.any(Github::PR, Gitlab::PR),
+          labels: T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
+          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
+          reviewers: T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+        ).void
+      }
       def edit_pr(pr, labels, milestone, reviewers)
         # labels/reviewers can be nil (parameter not passed) or empty array (parameter passed, but
         # nothing selected)
@@ -169,6 +214,12 @@ module Geet
         request_review_thread&.join
       end
 
+      sig {
+        params(
+          pr: T.any(Github::PR, Gitlab::PR),
+          selected_labels: T::Array[T.any(Github::Label, Gitlab::Label)]
+        ).returns(Thread)
+      }
       def add_labels(pr, selected_labels)
         raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
 
@@ -181,6 +232,12 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          pr: T.any(Github::PR, Gitlab::PR),
+          milestone: T.any(Github::Milestone, Gitlab::Milestone)
+        ).returns(Thread)
+      }
       def set_milestone(pr, milestone)
         raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
 
@@ -191,6 +248,12 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          pr: T.any(Github::PR, Gitlab::PR),
+          reviewers: T::Array[T.any(Github::User, Gitlab::User)]
+        ).returns(Thread)
+      }
       def request_review(pr, reviewers)
         raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
 
@@ -203,6 +266,11 @@ module Geet
         end
       end
 
+      sig {
+        params(
+          pr: T.any(Github::PR, Gitlab::PR)
+        ).void
+      }
       def enable_automerge(pr)
         raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
 

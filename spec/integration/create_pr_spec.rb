@@ -34,21 +34,19 @@ describe Geet::Services::CreatePr do
           PR address: https://github.com/donaldduck/testrepo_f/pull/1
         STR
 
-        actual_output = StringIO.new
+        expect {
+          actual_created_pr = VCR.use_cassette('github_com/create_pr', allow_unused_http_interactions: true) do
+            service_instance = described_class.new(repository, git_client:)
+            service_instance.execute(
+              'Title', 'Description',
+              labels: 'bug,invalid', milestone: '0.0.1', reviewers: 'donald-fr'
+            )
+          end
 
-        actual_created_pr = VCR.use_cassette('github_com/create_pr', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(repository, out: actual_output, git_client:)
-          service_instance.execute(
-            'Title', 'Description',
-            labels: 'bug,invalid', milestone: '0.0.1', reviewers: 'donald-fr'
-          )
-        end
-
-        expect(actual_output.string).to eql(expected_output)
-
-        expect(actual_created_pr.number).to eql(1)
-        expect(actual_created_pr.title).to eql('Title')
-        expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo_f/pull/1')
+          expect(actual_created_pr.number).to eql(1)
+          expect(actual_created_pr.title).to eql('Title')
+          expect(actual_created_pr.link).to eql('https://github.com/donaldduck/testrepo_f/pull/1')
+        }.to output(expected_output).to_stdout
       end
     end
 
@@ -71,18 +69,16 @@ describe Geet::Services::CreatePr do
           PR address: https://github.com/donald-fr/testrepo_u/pull/8
         STR
 
-        actual_output = StringIO.new
+        expect {
+          actual_created_pr = VCR.use_cassette('github_com/create_pr_upstream', allow_unused_http_interactions: true) do
+            service_instance = described_class.new(upstream_repository, git_client:)
+            service_instance.execute('Title', 'Description')
+          end
 
-        actual_created_pr = VCR.use_cassette('github_com/create_pr_upstream', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(upstream_repository, out: actual_output, git_client:)
-          service_instance.execute('Title', 'Description')
-        end
-
-        expect(actual_output.string).to eql(expected_output)
-
-        expect(actual_created_pr.number).to eql(8)
-        expect(actual_created_pr.title).to eql('Title')
-        expect(actual_created_pr.link).to eql('https://github.com/donald-fr/testrepo_u/pull/8')
+          expect(actual_created_pr.number).to eql(8)
+          expect(actual_created_pr.title).to eql('Title')
+          expect(actual_created_pr.link).to eql('https://github.com/donald-fr/testrepo_u/pull/8')
+        }.to output(expected_output).to_stdout
       end
 
       # It would be more consistent to have this UT outside of an upstream context, however this use
@@ -108,21 +104,19 @@ describe Geet::Services::CreatePr do
               PR address: https://github.com/donald-fr/testrepo_u/pull/9
             STR
 
-            actual_output = StringIO.new
+            expect {
+              actual_created_pr = VCR.use_cassette('github_com/create_pr_upstream_without_write_permissions') do
+                service_instance = described_class.new(upstream_repository, git_client:)
+                service_instance.execute(
+                  'Title', 'Description',
+                  labels: '<ignored>'
+                )
+              end
 
-            actual_created_pr = VCR.use_cassette('github_com/create_pr_upstream_without_write_permissions') do
-              service_instance = described_class.new(upstream_repository, out: actual_output, git_client:)
-              service_instance.execute(
-                'Title', 'Description',
-                labels: '<ignored>'
-              )
-            end
-
-            expect(actual_output.string).to eql(expected_output)
-
-            expect(actual_created_pr.number).to eql(9)
-            expect(actual_created_pr.title).to eql('Title')
-            expect(actual_created_pr.link).to eql('https://github.com/donald-fr/testrepo_u/pull/9')
+              expect(actual_created_pr.number).to eql(9)
+              expect(actual_created_pr.title).to eql('Title')
+              expect(actual_created_pr.link).to eql('https://github.com/donald-fr/testrepo_u/pull/9')
+            }.to output(expected_output).to_stdout
           end
         end
       end
@@ -133,14 +127,12 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:working_tree_clean?).and_return(false)
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
 
-        actual_output = StringIO.new
-
-        expect do
-          service_instance = described_class.new(repository, out: actual_output, git_client:)
-          service_instance.execute('Title', 'Description')
-        end.to raise_error(RuntimeError, 'The working tree is not clean!')
-
-        expect(actual_output.string).to be_empty
+        expect {
+          expect do
+            service_instance = described_class.new(repository, git_client:)
+            service_instance.execute('Title', 'Description')
+          end.to raise_error(RuntimeError, 'The working tree is not clean!')
+        }.to output('').to_stdout
       end
 
       it 'should push to the remote branch' do
@@ -160,14 +152,12 @@ describe Geet::Services::CreatePr do
           PR address: https://github.com/donaldduck/testrepo_f/pull/2
         STR
 
-        actual_output = StringIO.new
-
-        actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_with_push', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(repository, out: actual_output, git_client:)
-          service_instance.execute('Title', 'Description')
-        end
-
-        expect(actual_output.string).to eql(expected_output)
+        expect {
+          VCR.use_cassette('github_com/create_pr_in_auto_mode_with_push', allow_unused_http_interactions: true) do
+            service_instance = described_class.new(repository, git_client:)
+            service_instance.execute('Title', 'Description')
+          end
+        }.to output(expected_output).to_stdout
       end
 
       it "should create a remote branch, when there isn't one (is not tracked)" do
@@ -185,14 +175,12 @@ describe Geet::Services::CreatePr do
           PR address: https://github.com/donaldduck/testrepo_f/pull/4
         STR
 
-        actual_output = StringIO.new
-
-        actual_created_pr = VCR.use_cassette('github_com/create_pr_in_auto_mode_create_upstream', allow_unused_http_interactions: true) do
-          service_instance = described_class.new(repository, out: actual_output, git_client:)
-          service_instance.execute('Title', 'Description')
-        end
-
-        expect(actual_output.string).to eql(expected_output)
+        expect {
+          VCR.use_cassette('github_com/create_pr_in_auto_mode_create_upstream', allow_unused_http_interactions: true) do
+            service_instance = described_class.new(repository, git_client:)
+            service_instance.execute('Title', 'Description')
+          end
+        }.to output(expected_output).to_stdout
       end
 
       it 'should enable automerge after creating a PR' do
@@ -204,8 +192,6 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:fetch)
         allow(git_client).to receive(:push)
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
-
-        actual_output = StringIO.new
 
         # Mock the repository and PR
         allow(repository).to receive(:authenticated_user).and_return(
@@ -223,11 +209,12 @@ describe Geet::Services::CreatePr do
 
         allow(repository).to receive(:create_pr).and_return(mock_pr)
 
-        service_instance = described_class.new(repository, out: actual_output, git_client:)
-        service_instance.execute('Title', 'Description', automerge: true)
+        expect {
+          service_instance = described_class.new(repository, git_client:)
+          service_instance.execute('Title', 'Description', automerge: true)
 
-        expect(mock_pr).to have_received(:enable_automerge)
-        expect(actual_output.string).to include('Enabling automerge...')
+          expect(mock_pr).to have_received(:enable_automerge)
+        }.to output(/Enabling automerge\.\.\./).to_stdout
       end
 
       it 'should raise an error when automerge is requested but not supported' do
@@ -239,8 +226,6 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:fetch)
         allow(git_client).to receive(:push)
         allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/testrepo_f')
-
-        actual_output = StringIO.new
 
         # Mock the repository and PR without enable_automerge method (simulating GitLab)
         allow(repository).to receive(:authenticated_user).and_return(
@@ -256,11 +241,12 @@ describe Geet::Services::CreatePr do
 
         allow(repository).to receive(:create_pr).and_return(mock_pr)
 
-        service_instance = described_class.new(repository, out: actual_output, git_client:)
-
-        expect do
-          service_instance.execute('Title', 'Description', automerge: true)
-        end.to raise_error(RuntimeError, 'Automerge is not supported for this repository provider')
+        expect {
+          expect do
+            service_instance = described_class.new(repository, git_client:)
+            service_instance.execute('Title', 'Description', automerge: true)
+          end.to raise_error(RuntimeError, 'Automerge is not supported for this repository provider')
+        }.to output(//).to_stdout
       end
     end
   end # context 'with github.com'
