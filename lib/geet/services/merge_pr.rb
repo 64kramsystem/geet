@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# typed: strict
 
 module Geet
   module Services
@@ -9,17 +10,21 @@ module Geet
     # constraints, but speeds up the workflow.
     #
     class MergePr
+      extend T::Sig
+
       include Geet::Helpers::ServicesWorkflowHelper
       include Geet::Shared
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
+      sig { params(repository: T.untyped, out: T.any(IO, StringIO), git_client: T.untyped).void }
       def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
         @repository = repository
         @out = out
         @git_client = git_client
       end
 
+      sig { params(delete_branch: T::Boolean, squash: T::Boolean).returns(T.untyped) }
       def execute(delete_branch: false, squash: false)
         merge_method = 'squash' if squash
 
@@ -62,42 +67,49 @@ module Geet
 
       private
 
+      sig { void }
       def check_no_missing_upstream_commits
         missing_upstream_commits = @git_client.cherry('HEAD', head: :main_branch)
 
         raise "Found #{missing_upstream_commits.size} missing upstream commits!" if missing_upstream_commits.any?
       end
 
+      sig { params(pr: T.untyped, merge_method: T.nilable(String)).void }
       def merge_pr(pr, merge_method: nil)
         @out.puts "Merging PR ##{pr.number}..."
 
         pr.merge(merge_method:)
       end
 
+      sig { params(branch: String).void }
       def delete_remote_branch(branch)
         @out.puts "Deleting remote branch #{branch}..."
 
         @repository.delete_branch(branch)
       end
 
+      sig { void }
       def fetch_repository
         @out.puts "Fetching repository..."
 
         @git_client.fetch
       end
 
+      sig { params(branch: String).void }
       def checkout_branch(branch)
         @out.puts "Checking out #{branch}..."
 
         @git_client.checkout(branch)
       end
 
+      sig { void }
       def rebase
         @out.puts "Rebasing..."
 
         @git_client.rebase
       end
 
+      sig { params(branch: String, force: T::Boolean).void }
       def delete_local_branch(branch, force:)
         @out.puts "Deleting local branch #{branch}..."
 
