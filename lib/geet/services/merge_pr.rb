@@ -20,7 +20,7 @@ module Geet
         @git_client = git_client
       end
 
-      def execute(delete_branch: false, squash: false, **)
+      def execute(delete_branch: false, squash: false)
         merge_method = 'squash' if squash
 
         @git_client.fetch

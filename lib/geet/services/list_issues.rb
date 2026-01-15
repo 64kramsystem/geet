@@ -10,7 +10,7 @@ module Geet
         @out = out
       end
 
-      def execute(assignee: nil, **)
+      def execute(assignee: nil)
         selected_assignee = find_and_select_attributes(assignee) if assignee
 
         issues = @repository.issues(assignee: selected_assignee)

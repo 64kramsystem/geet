@@ -25,7 +25,7 @@ module Geet
       #
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
-        base: nil, draft: false, open_browser: false, automerge: false, **
+        base: nil, draft: false, open_browser: false, automerge: false
       )
         ensure_clean_tree
 
