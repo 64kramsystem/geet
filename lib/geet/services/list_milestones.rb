@@ -1,13 +1,25 @@
 # frozen_string_literal: true
+# typed: strict
 
 module Geet
   module Services
     class ListMilestones
+      extend T::Sig
+
+      sig {
+        params(
+          repository: Git::Repository,
+          out: T.any(IO, StringIO)
+        ).void
+      }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
       end
 
+      sig {
+        returns(T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
+      }
       def execute
         milestones = find_milestones
         all_milestone_entries = find_all_milestone_entries(milestones)
@@ -33,22 +45,39 @@ module Geet
 
       # Not included in the Milestone class because descriptions (which will be customizable)
       # are considered formatters, conceptually external to the class.
+      sig {
+        params(
+          milestone: T.any(Github::Milestone, Gitlab::Milestone)
+        ).returns(String)
+      }
       def milestone_description(milestone)
         description = "#{milestone.number}. #{milestone.title}"
         description += " (due #{milestone.due_on})" if milestone.due_on
         description
       end
 
+      sig {
+        returns(T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
+      }
       def find_milestones
         @out.puts 'Finding milestones...'
 
         @repository.milestones
       end
 
-      # Returns the structure:
-      #
-      # { milestone => {issues: [...], prs: [...]}}
-      #
+      sig {
+        params(
+          milestones: T::Array[T.any(Github::Milestone, Gitlab::Milestone)]
+        ).returns(
+          T::Hash[
+            T.any(Github::Milestone, Gitlab::Milestone),
+            {
+              issues: T::Array[T.any(Github::Issue, Gitlab::Issue)],
+              prs: T::Array[T.any(Github::PR, Gitlab::PR)],
+            }
+          ]
+        )
+      }
       def find_all_milestone_entries(milestones)
         @out.puts 'Finding issues and PRs...'
 
