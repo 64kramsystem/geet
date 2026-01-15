@@ -30,7 +30,7 @@ module Geet
 
         parent_path = response['parent']&.fetch("full_name")
 
-        self.new(api_interface, parent_path: parent_path)
+        new(api_interface, parent_path:)
       end
     end # module RemoteRepository
   end # module GitHub
