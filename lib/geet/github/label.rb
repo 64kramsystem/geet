@@ -11,7 +11,7 @@ module Geet
       end
 
       # Returns a flat list of names in string form.
-      def self.list(api_interface, **)
+      def self.list(api_interface)
         api_path = 'labels'
         response = api_interface.send_request(api_path, multipage: true)
 
@@ -24,7 +24,7 @@ module Geet
       end
 
       # See https://developer.github.com/v3/issues/labels/#create-a-label
-      def self.create(name, color, api_interface, **)
+      def self.create(name, color, api_interface)
         api_path = 'labels'
         request_data = { name:, color: }
 
