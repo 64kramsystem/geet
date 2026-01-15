@@ -1,15 +1,29 @@
 # frozen_string_literal: true
+# typed: strict
 
 module Geet
   module Services
     class ListIssues
+      extend T::Sig
+
       include Geet::Shared::Selection
 
+      sig {
+        params(
+          repository: Git::Repository,
+          out: StringIO
+        ).void
+      }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
       end
 
+      sig {
+        params(
+          assignee: T.nilable(String)
+        ).returns(T::Array[T.any(Github::Issue, Gitlab::Issue)])
+      }
       def execute(assignee: nil)
         selected_assignee = find_and_select_attributes(assignee) if assignee
 
@@ -22,6 +36,11 @@ module Geet
 
       private
 
+      sig {
+        params(
+          assignee: String
+        ).returns(T.any(Github::User, Gitlab::User))
+      }
       def find_and_select_attributes(assignee)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
