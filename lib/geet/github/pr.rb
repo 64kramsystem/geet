@@ -183,31 +183,41 @@ module Geet
       private
 
       # Query the repository to find the first available merge method.
-      # Priority: MERGE > SQUASH > REBASE.
+      # Priority:
+      # - If there is one commit and squash merge is supported: SQUASH
+      # - Otherwise, if merge commit is supported: MERGE
+      # - Otherwise: SQUASH > REBASE
       #
       sig { returns(String) }
       def fetch_available_merge_method
         query = <<~GRAPHQL
-          query($owner: String!, $name: String!) {
+          query($owner: String!, $name: String!, $number: Int!) {
             repository(owner: $owner, name: $name) {
               mergeCommitAllowed
               squashMergeAllowed
               rebaseMergeAllowed
+              pullRequest(number: $number) {
+                commits {
+                  totalCount
+                }
+              }
             }
           }
         GRAPHQL
 
         owner, name = T.must(@api_interface.repository_path).split('/')
 
-        response = @api_interface.send_graphql_request(query, variables: {owner:, name:})
+        response = @api_interface.send_graphql_request(query, variables: {owner:, name:, number:})
         repo_data = response['repository'].transform_keys(&:to_sym)
+        commit_count = repo_data[:pullRequest]['commits']['totalCount']
 
-        case repo_data
-        in { mergeCommitAllowed: true }
-          'MERGE'
-        in { squashMergeAllowed: true }
+        if commit_count == 1 && repo_data[:squashMergeAllowed]
           'SQUASH'
-        in { rebaseMergeAllowed: true }
+        elsif repo_data[:mergeCommitAllowed]
+          'MERGE'
+        elsif repo_data[:squashMergeAllowed]
+          'SQUASH'
+        elsif repo_data[:rebaseMergeAllowed]
           'REBASE'
         else
           raise 'No merge methods are allowed on this repository'
