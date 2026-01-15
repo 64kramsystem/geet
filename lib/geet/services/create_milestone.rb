@@ -1,19 +1,25 @@
 # frozen_string_literal: true
+# typed: strict
 
 module Geet
   module Services
     class CreateMilestone
+      extend T::Sig
+
+      sig { params(repository: T.untyped, out: T.any(IO, StringIO)).void }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
       end
 
+      sig { params(title: String).returns(T.untyped) }
       def execute(title)
         create_milestone(title)
       end
 
       private
 
+      sig { params(title: String).returns(T.untyped) }
       def create_milestone(title)
         @out.puts 'Creating milestone...'
 
