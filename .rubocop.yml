@@ -1,77 +1,91 @@
-inherit_from: .rubocop_todo.yml
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.2
+  DisabledByDefault: true
+  SuggestExtensions: false
 
-Layout/ExtraSpacing:
-  Enabled: false
+# Remove empty lines at the beginning and end of class definitions
+Layout/EmptyLinesAroundClassBody:
+  Enabled: true
+  EnforcedStyle: no_empty_lines
 
-Layout/SpaceAroundOperators:
-  Enabled: false
+# Remove empty lines at the beginning and end of module definitions
+Layout/EmptyLinesAroundModuleBody:
+  Enabled: true
+  EnforcedStyle: no_empty_lines
 
-Metrics/AbcSize:
-  Exclude:
-    - 'bin/geet'                                 # Program entry point switch/case
+# Remove space after unary ! operator
+# Examples: "! foo" -> "!foo"
+Layout/SpaceAfterNot:
+  Enabled: true
 
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*_spec.rb'                        # RSpec is styled in long blocks
+# Remove spaces inside block parameter pipes
+# Examples: { | bar | baz } -> { |bar| baz }
+Layout/SpaceAroundBlockParameters:
+  Enabled: true
+  EnforcedStyleInsidePipes: no_space
 
-Metrics/ClassLength:
-  Exclude:
-    - 'lib/geet/git/repository.rb'
+# Remove spaces inside array brackets
+# Examples: [ 1, 2 ] -> [1, 2]
+Layout/SpaceInsideArrayLiteralBrackets:
+  Enabled: true
+  EnforcedStyle: no_space
 
-Metrics/CyclomaticComplexity:
-  Exclude:
-    - 'lib/geet/github/api_interface.rb'         # Switch-case (HTTP) parameter decoding
-    - 'lib/geet/gitlab/api_interface.rb'         # Switch-case (HTTP) parameter decoding
-    - 'bin/geet'                                 # Program entry point switch/case
+# Remove spaces inside hash braces
+# Examples: { a: 1 } -> {a: 1}
+# Note: This does NOT affect blocks like foo { |bar| baz }
+Layout/SpaceInsideHashLiteralBraces:
+  Enabled: true
+  EnforcedStyle: no_space
 
-Metrics/LineLength:
-  Max: 120
-  Exclude:
-    - 'lib/geet/git/repository.rb'               # Table-style code
-    - 'lib/geet/commandline/configuration.rb'    # Table-style code
+# Remove spaces inside parentheses
+# Examples: foo( bar ) -> foo(bar)
+Layout/SpaceInsideParens:
+  Enabled: true
+  EnforcedStyle: no_space
 
-Metrics/MethodLength:
-  Max: 20
-  Exclude:
-    - 'bin/geet'                                 # Program entry point switch/case
-    - 'lib/geet/commandline/configuration.rb'    # Table-style code
+# Remove spaces inside reference brackets (hash/array access)
+# Examples: options[ :key ] -> options[:key]
+Layout/SpaceInsideReferenceBrackets:
+  Enabled: true
+  EnforcedStyle: no_space
 
-Metrics/ParameterLists:
-  CountKeywordArgs: false
+# Remove spaces inside string interpolations
+# Examples: "#{ foo }" -> "#{foo}"
+Layout/SpaceInsideStringInterpolation:
+  Enabled: true
+  EnforcedStyle: no_space
 
-Metrics/PerceivedComplexity:
-  Exclude:
-    - 'lib/geet/services/create_issue.rb'        # The creation method has many parameters
-    - 'lib/geet/services/create_pr.rb'           # The creation method has many parameters
-    - 'bin/geet'                                 # Program entry point switch/case
+# Ensure exactly one newline at the end of each file
+Layout/TrailingEmptyLines:
+  Enabled: true
+  EnforcedStyle: final_newline
 
-Style/BlockComments:
-  Enabled: false
-
-Style/ConditionalAssignment:
-  Enabled: false
-
-Style/DoubleNegation:
-  Enabled: false
-
-Style/IfUnlessModifier:
-  Enabled: false
-
-Style/NegatedIf:
-  Enabled: false
-
-Style/Next:
-  Enabled: false
-
-Style/TrailingCommaInArguments:
-  Enabled: false
-
+# Enforce trailing commas in multiline array literals
+# Examples:
+#   [
+#     1,
+#     2
+#   ]
+# becomes:
+#   [
+#     1,
+#     2,
+#   ]
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: consistent_comma
   Enabled: true
 
+# Enforce trailing commas in multiline hash literals
+# Examples:
+#   {
+#     a: 1,
+#     b: 2
+#   }
+# becomes:
+#   {
+#     a: 1,
+#     b: 2,
+#   }
 Style/TrailingCommaInHashLiteral:
   EnforcedStyleForMultiline: consistent_comma
   Enabled: true
