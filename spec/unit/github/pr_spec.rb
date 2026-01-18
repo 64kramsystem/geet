@@ -30,14 +30,14 @@ describe Geet::Github::PR do
             'rebaseMergeAllowed' => true,
             'pullRequest' => {
               'commits' => {
-                'totalCount' => 1
-              }
-            }
-          }
+                'totalCount' => 1,
+              },
+            },
+          },
         }
 
         expect(api_interface).to receive(:send_graphql_request)
-          .with(anything, variables: { owner: 'owner', name: 'repo', number: pr_number })
+          .with(anything, variables: {owner: 'owner', name: 'repo', number: pr_number})
           .and_return(graphql_response)
 
         result = subject.send(:fetch_available_merge_method)
@@ -54,14 +54,14 @@ describe Geet::Github::PR do
             'rebaseMergeAllowed' => true,
             'pullRequest' => {
               'commits' => {
-                'totalCount' => 1
-              }
-            }
-          }
+                'totalCount' => 1,
+              },
+            },
+          },
         }
 
         expect(api_interface).to receive(:send_graphql_request)
-          .with(anything, variables: { owner: 'owner', name: 'repo', number: pr_number })
+          .with(anything, variables: {owner: 'owner', name: 'repo', number: pr_number})
           .and_return(graphql_response)
 
         result = subject.send(:fetch_available_merge_method)
@@ -78,14 +78,14 @@ describe Geet::Github::PR do
             'rebaseMergeAllowed' => true,
             'pullRequest' => {
               'commits' => {
-                'totalCount' => 3
-              }
-            }
-          }
+                'totalCount' => 3,
+              },
+            },
+          },
         }
 
         expect(api_interface).to receive(:send_graphql_request)
-          .with(anything, variables: { owner: 'owner', name: 'repo', number: pr_number })
+          .with(anything, variables: {owner: 'owner', name: 'repo', number: pr_number})
           .and_return(graphql_response)
 
         result = subject.send(:fetch_available_merge_method)
@@ -102,14 +102,14 @@ describe Geet::Github::PR do
             'rebaseMergeAllowed' => true,
             'pullRequest' => {
               'commits' => {
-                'totalCount' => 3
-              }
-            }
-          }
+                'totalCount' => 3,
+              },
+            },
+          },
         }
 
         expect(api_interface).to receive(:send_graphql_request)
-          .with(anything, variables: { owner: 'owner', name: 'repo', number: pr_number })
+          .with(anything, variables: {owner: 'owner', name: 'repo', number: pr_number})
           .and_return(graphql_response)
 
         result = subject.send(:fetch_available_merge_method)
@@ -124,14 +124,14 @@ describe Geet::Github::PR do
             'rebaseMergeAllowed' => true,
             'pullRequest' => {
               'commits' => {
-                'totalCount' => 3
-              }
-            }
-          }
+                'totalCount' => 3,
+              },
+            },
+          },
         }
 
         expect(api_interface).to receive(:send_graphql_request)
-          .with(anything, variables: { owner: 'owner', name: 'repo', number: pr_number })
+          .with(anything, variables: {owner: 'owner', name: 'repo', number: pr_number})
           .and_return(graphql_response)
 
         result = subject.send(:fetch_available_merge_method)
@@ -148,14 +148,14 @@ describe Geet::Github::PR do
             'rebaseMergeAllowed' => false,
             'pullRequest' => {
               'commits' => {
-                'totalCount' => 3
-              }
-            }
-          }
+                'totalCount' => 3,
+              },
+            },
+          },
         }
 
         expect(api_interface).to receive(:send_graphql_request)
-          .with(anything, variables: { owner: 'owner', name: 'repo', number: pr_number })
+          .with(anything, variables: {owner: 'owner', name: 'repo', number: pr_number})
           .and_return(graphql_response)
 
         expect { subject.send(:fetch_available_merge_method) }.to raise_error('No merge methods are allowed on this repository')

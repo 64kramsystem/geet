@@ -14,7 +14,7 @@ module Geet
         ['-s', '--stdin',     "Read content from stdin"],
         ['-o', '--open-browser', "Open the gist link in the browser after creation"],
         'filename',
-        '[description]'
+        '[description]',
       ].freeze
 
       # SimpleScripting 0.9.3 doesn't allow frozen arrays when hash options are present.
@@ -27,7 +27,7 @@ module Geet
         ['-a', '--assignees john,tom,adrian,kevin',         'Assignee logins'],
         ['-s', '--summary title_and_description',           'Set the summary (title and optionally description'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
-        long_help: 'The default editor will be opened for editing title and description.'
+        long_help: 'The default editor will be opened for editing title and description.',
       ]
 
       LABEL_CREATE_OPTIONS = [
@@ -46,12 +46,12 @@ module Geet
       ].freeze
 
       MILESTONE_CLOSE_OPTIONS = [
-        long_help: 'Close milestones.'
+        long_help: 'Close milestones.',
       ]
 
       MILESTONE_CREATE_OPTIONS = [
         'title',
-        long_help: 'Create a milestone.'
+        long_help: 'Create a milestone.',
       ]
 
       MILESTONE_LIST_OPTIONS = [
@@ -62,7 +62,7 @@ module Geet
         ['-o', '--open-browser',                            "Don't open the PR link in the browser after creation"],
         ['-u', '--upstream',                                'Comment on the upstream repository'],
         'comment',
-        long_help: 'Add a comment to the PR for the current branch.'
+        long_help: 'Add a comment to the PR for the current branch.',
       ]
 
       PR_CREATE_OPTIONS = [
@@ -75,7 +75,7 @@ module Geet
         ['-r', '--reviewers john,tom,adrian,kevin',         'Reviewer logins'],
         ['-s', '--summary title_and_description',           'Set the summary (title and optionally description'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
-        long_help: <<~STR
+        long_help: <<~STR,
           The default editor will be opened for editing title and description; if the PR adds one commit only, the content will be prepopulated with the commit description.
 
           The operation is aborted if the current tree is dirty.
@@ -95,21 +95,21 @@ module Geet
         ['-d', '--delete-branch',                           'Delete the branch after merging'],
         ['-s', '--squash',                                  'Squash merge'],
         ['-u', '--upstream',                                'List on the upstream repository'],
-        long_help: 'Merge the PR for the current branch'
+        long_help: 'Merge the PR for the current branch',
       ]
 
       PR_OPEN_OPTIONS = [
         ['-u', '--upstream',                                'Open on the upstream repository'],
-        long_help: 'Open in the browser the PR for the current branch'
+        long_help: 'Open in the browser the PR for the current branch',
       ]
 
       REPO_ADD_UPSTREAM_OPTIONS = [
-        long_help: 'Add the upstream repository to the current repository (configuration).'
+        long_help: 'Add the upstream repository to the current repository (configuration).',
       ]
 
       REPO_OPEN_OPTIONS = [
         ['-u', '--upstream',                                'Open the upstream repository'],
-        long_help: 'Open the current repository in the browser'
+        long_help: 'Open the current repository in the browser',
       ]
 
       # Commands decoding table

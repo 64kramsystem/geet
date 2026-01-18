@@ -50,7 +50,7 @@ module Geet
       }
       def self.create(name, color, api_interface)
         api_path = 'labels'
-        request_data = { name:, color: }
+        request_data = {name:, color:}
 
         api_interface.send_request(api_path, data: request_data)
 

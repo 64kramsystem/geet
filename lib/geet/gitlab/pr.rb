@@ -72,7 +72,7 @@ module Geet
       sig { params(comment: String).void }
       def comment(comment)
         api_path = "projects/#{@api_interface.path_with_namespace(encoded: true)}/merge_requests/#{number}/notes"
-        request_data = { body: comment }
+        request_data = {body: comment}
 
         @api_interface.send_request(api_path, data: request_data)
       end

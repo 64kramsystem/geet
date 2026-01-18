@@ -42,7 +42,7 @@ module Geet
 
       CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
 
-      sig { params(location: T.untyped ).void }
+      sig { params(location: T.untyped).void }
       def initialize(location: nil)
         @location = location
       end

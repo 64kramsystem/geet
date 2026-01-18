@@ -50,7 +50,7 @@ module Geet
       }
       def self.create(title, api_interface)
         api_path = 'milestones'
-        request_data = { title: title }
+        request_data = {title: title}
 
         response = T.cast(
           api_interface.send_request(api_path, data: request_data),
@@ -102,7 +102,7 @@ module Geet
       }
       def self.close(number, api_interface)
         api_path = "milestones/#{number}"
-        request_data = { state: STATE_CLOSED }
+        request_data = {state: STATE_CLOSED}
 
         api_interface.send_request(api_path, data: request_data)
       end

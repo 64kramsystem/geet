@@ -62,7 +62,7 @@ module Geet
         ).returns([
           T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
           T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
-          T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+          T.nilable(T::Array[T.any(Github::User, Gitlab::User)]),
         ])
       }
       def find_and_select_attributes(labels, milestone, assignees)

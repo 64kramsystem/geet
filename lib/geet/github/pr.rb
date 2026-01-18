@@ -43,7 +43,7 @@ module Geet
           head = "#{authenticated_user}:#{head}"
         end
 
-        request_data = { title:, body: description, head:, base:, draft: }
+        request_data = {title:, body: description, head:, base:, draft:}
 
         response = T.cast(api_interface.send_request(api_path, data: request_data), T::Hash[String, T.untyped])
 
@@ -102,7 +102,7 @@ module Geet
               label == "#{owner}:#{head}"
             end
           else
-            request_params = { head: "#{owner}:#{head}" }
+            request_params = {head: "#{owner}:#{head}"}
 
             T.cast(
               api_interface.send_request(api_path, params: request_params, multipage: true),
@@ -135,7 +135,7 @@ module Geet
       }
       def merge(merge_method: nil)
         api_path = "pulls/#{number}/merge"
-        request_data = { merge_method: } if merge_method
+        request_data = {merge_method:} if merge_method
 
         @api_interface.send_request(api_path, http_method: :put, data: request_data)
       end
@@ -147,7 +147,7 @@ module Geet
       }
       def request_review(reviewers)
         api_path = "pulls/#{number}/requested_reviewers"
-        request_data = { reviewers: }
+        request_data = {reviewers:}
 
         @api_interface.send_request(api_path, data: request_data)
       end
@@ -175,7 +175,7 @@ module Geet
           }
         GRAPHQL
 
-        variables = { pullRequestId: @node_id, mergeMethod: merge_method }
+        variables = {pullRequestId: @node_id, mergeMethod: merge_method}
 
         @api_interface.send_graphql_request(query, variables:)
 

@@ -70,7 +70,7 @@ module Geet
       sig { params(users: T.any(String, T::Array[String])).void }
       def assign_users(users)
         api_path = "issues/#{@number}/assignees"
-        request_data = { assignees: Array(users) }
+        request_data = {assignees: Array(users)}
 
         @api_interface.send_request(api_path, data: request_data)
       end
@@ -87,7 +87,7 @@ module Geet
       sig { params(comment: String).void }
       def comment(comment)
         api_path = "issues/#{@number}/comments"
-        request_data = { body: comment }
+        request_data = {body: comment}
 
         @api_interface.send_request(api_path, data: request_data)
       end
@@ -96,7 +96,7 @@ module Geet
       #
       sig { params(milestone: Integer).void }
       def edit(milestone:)
-        request_data = { milestone: milestone }
+        request_data = {milestone: milestone}
         api_path = "issues/#{@number}"
 
         @api_interface.send_request(api_path, data: request_data, http_method: :patch)

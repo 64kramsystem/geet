@@ -15,7 +15,7 @@ module Geet
       }
       def self.create(title, description, api_interface)
         api_path = 'issues'
-        request_data = { title:, body: description }
+        request_data = {title:, body: description}
 
         response = T.cast(
           api_interface.send_request(api_path, data: request_data),
