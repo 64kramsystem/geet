@@ -6,7 +6,7 @@ gemspec
 
 group :development do
   gem 'byebug'
-  gem 'rubocop', '~> 1.35.0', require: false
+  gem 'rubocop', '~> 1.82.1', require: false
   gem 'spoom', require: false
   gem 'tapioca', '>= 0.17.10', require: false
 end
