@@ -22,7 +22,8 @@ module Geet
       sig {
         params(
           assignee: T.nilable(String)
-        ).returns(T::Array[T.any(Github::Issue, Gitlab::Issue)])
+        )
+        .returns(T.any(T::Array[Github::AbstractIssue], T::Array[Gitlab::Issue]))
       }
       def execute(assignee: nil)
         selected_assignee = find_and_select_attributes(assignee) if assignee
