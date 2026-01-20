@@ -8,7 +8,7 @@ module Geet
 
       include Geet::Shared::Selection
 
-      sig { params(repository: T.untyped, out: T.any(IO, StringIO)).void }
+      sig { params(repository: Git::Repository, out: T.any(IO, StringIO)).void }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
@@ -25,18 +25,18 @@ module Geet
 
       private
 
-      sig { params(numbers: T.nilable(String)).returns(T::Array[T.untyped]) }
+      sig { params(numbers: T.nilable(String)).returns(T::Array[Integer]) }
       def find_and_select_milestone_numbers(numbers)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
         selection_manager.add_attribute(:milestones, 'milestone', numbers, SELECTION_MULTIPLE, name_method: :title)
 
-        milestones = selection_manager.select_attributes[0]
+        milestones = T.cast(selection_manager.select_attributes[0], T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
 
         milestones.map(&:number)
       end
 
-      sig { params(numbers: T::Array[T.untyped]).returns(T::Array[Thread]) }
+      sig { params(numbers: T::Array[Integer]).returns(T::Array[Thread]) }
       def close_milestones(numbers)
         @out.puts "Closing milestones #{numbers.join(', ')}..."
 

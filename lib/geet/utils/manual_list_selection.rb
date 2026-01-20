@@ -54,27 +54,34 @@ module Geet
 
         check_entries(entries, entry_type)
 
-        entries = create_entries_map(entries, name_method)
+        entries_map = create_entries_map(entries, name_method)
 
-        show_prompt(:multi_select, entry_type, entries)
+        T.cast(show_prompt(:multi_select, entry_type, entries_map), T::Array[T.type_parameter(:T)])
       end
 
       private
 
-      sig { params(entries: T::Array[T.untyped], entry_type: String).void }
+      sig {
+        type_parameters(:T).params(
+          entries: T::Array[T.type_parameter(:T)],
+          entry_type: String
+        )
+        .void
+      }
       def check_entries(entries, entry_type)
         raise "No #{entry_type} provided!" if entries.empty?
       end
 
       sig {
-        params(
-          entries: T::Array[T.untyped],
+        type_parameters(:T).params(
+          entries: T::Array[T.type_parameter(:T)],
           name_method: T.nilable(Symbol)
-        ).returns(T::Hash[String, T.untyped])
+        )
+        .returns(T::Hash[String, T.type_parameter(:T)])
       }
       def create_entries_map(entries, name_method)
         entries.each_with_object({}) do |entry, current_map|
-          key = name_method ? entry.send(name_method) : entry
+          key = name_method ? T.unsafe(entry).send(name_method) : entry
           current_map[key] = entry
         end
       end
@@ -101,9 +108,14 @@ module Geet
         ::TTY::Prompt.new.send(invocation_method, prompt_title, entries, filter: true, per_page: PAGER_SIZE)
       end
 
-      sig { params(entry: T.untyped).returns(T::Boolean) }
+      sig {
+        params(
+          entry: T.anything
+        )
+        .returns(T::Boolean)
+      }
       def no_selection?(entry)
-        entry == NO_SELECTION_KEY
+        T.unsafe(entry) == NO_SELECTION_KEY
       end
     end
   end

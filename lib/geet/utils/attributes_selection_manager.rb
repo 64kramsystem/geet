@@ -23,7 +23,7 @@ module Geet
 
       # Initialize the instance, and starts the background threads.
       #
-      sig { params(repository: T.untyped, out: T.any(IO, StringIO)).void }
+      sig { params(repository: Geet::Git::Repository, out: T.any(IO, StringIO)).void }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
@@ -34,13 +34,14 @@ module Geet
       #
       sig {
         params(
-          repository_call: T.untyped,
-          description: T.untyped,
-          pattern: T.untyped,
-          selection_type: T.untyped,
-          name_method: T.untyped,
-          pre_selection_hook: T.nilable(T.proc.params(all_reviewers: T::Array[T.untyped]).void)
-        ).void
+          repository_call: Symbol,
+          description: String,
+          pattern: T.nilable(String),
+          selection_type: Symbol,
+          name_method: T.nilable(Symbol),
+          pre_selection_hook: T.nilable(T.proc.params(entries: T::Array[T.anything]).returns(T::Array[T.anything]))
+        )
+        .void
       }
       def add_attribute(repository_call, description, pattern, selection_type, name_method: nil, &pre_selection_hook)
         raise "Unrecognized selection type #{selection_type.inspect}" if ![SELECTION_SINGLE, SELECTION_MULTIPLE].include?(selection_type)
@@ -52,7 +53,7 @@ module Geet
 
       # Select and return the attributes, in the same order they've been added.
       #
-      sig { returns(T.untyped) }
+      sig { returns(T::Array[T.anything]) }
       def select_attributes
         @selections_data.map do |finder_thread, description, pattern, selection_type, name_method, pre_selection_hook|
           entries = finder_thread.value

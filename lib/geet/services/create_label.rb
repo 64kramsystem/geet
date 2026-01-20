@@ -6,13 +6,19 @@ module Geet
     class CreateLabel
       extend T::Sig
 
-      sig { params(repository: T.untyped, out: T.any(IO, StringIO)).void }
+      sig { params(repository: Git::Repository, out: T.any(IO, StringIO)).void }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out
       end
 
-      sig { params(name: String, color: String).returns(T.untyped) }
+      sig {
+        params(
+          name: String,
+          color: String
+        )
+        .returns(T.any(Github::Label, Gitlab::Label))
+      }
       def execute(name, color: generate_random_color)
         label = create_label(name, color)
 
@@ -23,7 +29,13 @@ module Geet
 
       private
 
-      sig { params(name: String, color: String).returns(T.untyped) }
+      sig {
+        params(
+          name: String,
+          color: String
+        )
+        .returns(T.any(Github::Label, Gitlab::Label))
+      }
       def create_label(name, color)
         @out.puts 'Creating label...'
 

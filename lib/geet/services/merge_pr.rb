@@ -17,14 +17,20 @@ module Geet
 
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
-      sig { params(repository: T.untyped, out: T.any(IO, StringIO), git_client: T.untyped).void }
+      sig { params(repository: Git::Repository, out: T.any(IO, StringIO), git_client: Utils::GitClient).void }
       def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
         @repository = repository
         @out = out
         @git_client = git_client
       end
 
-      sig { params(delete_branch: T::Boolean, squash: T::Boolean).returns(T.untyped) }
+      sig {
+        params(
+          delete_branch: T::Boolean,
+          squash: T::Boolean
+        )
+        .returns(T.any(Github::PR, Gitlab::PR))
+      }
       def execute(delete_branch: false, squash: false)
         merge_method = 'squash' if squash
 
@@ -74,7 +80,7 @@ module Geet
         raise "Found #{missing_upstream_commits.size} missing upstream commits!" if missing_upstream_commits.any?
       end
 
-      sig { params(pr: T.untyped, merge_method: T.nilable(String)).void }
+      sig { params(pr: T.any(Github::PR, Gitlab::PR), merge_method: T.nilable(String)).void }
       def merge_pr(pr, merge_method: nil)
         @out.puts "Merging PR ##{pr.number}..."
 

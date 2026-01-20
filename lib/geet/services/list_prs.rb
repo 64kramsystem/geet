@@ -6,7 +6,7 @@ module Geet
     class ListPrs
       extend T::Sig
 
-      sig { params(repository: T.untyped, out: T.any(IO, StringIO)).void }
+      sig { params(repository: Git::Repository, out: T.any(IO, StringIO)).void }
       def initialize(repository, out: $stdout)
         @repository = repository
         @out = out

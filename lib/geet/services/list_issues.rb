@@ -47,7 +47,7 @@ module Geet
 
         selection_manager.add_attribute(:collaborators, 'assignee', assignee, SELECTION_SINGLE, name_method: :username)
 
-        selection_manager.select_attributes[0]
+        T.cast(selection_manager.select_attributes[0], T.any(Github::User, Gitlab::User))
       end
     end
   end

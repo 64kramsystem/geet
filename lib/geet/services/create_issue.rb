@@ -74,9 +74,9 @@ module Geet
 
         selected_attributes = selection_manager.select_attributes
 
-        selected_labels = selected_attributes.shift if labels
-        selected_milestone = selected_attributes.shift if milestone
-        selected_assignees = selected_attributes.shift if assignees
+        selected_labels = T.cast(selected_attributes.shift, T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)])) if labels
+        selected_milestone = T.cast(selected_attributes.shift, T.nilable(T.any(Github::Milestone, Gitlab::Milestone))) if milestone
+        selected_assignees = T.cast(selected_attributes.shift, T.nilable(T::Array[T.any(Github::User, Gitlab::User)])) if assignees
 
         [selected_labels, selected_milestone, selected_assignees]
       end

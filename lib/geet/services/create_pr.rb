@@ -107,15 +107,16 @@ module Geet
         if reviewers
           selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, SELECTION_MULTIPLE, name_method: :username) do |all_reviewers|
             authenticated_user = @repository.authenticated_user
-            all_reviewers.delete_if { |reviewer| reviewer.username == authenticated_user.username }
+            reviewers_typed = T.cast(all_reviewers, T::Array[Github::User])
+            reviewers_typed.delete_if { |reviewer| reviewer.username == authenticated_user.username }
           end
         end
 
         selected_attributes = selection_manager.select_attributes
 
-        selected_labels = selected_attributes.shift if labels
-        selected_milestone = selected_attributes.shift if milestone
-        selected_reviewers = selected_attributes.shift if reviewers
+        selected_labels = T.cast(selected_attributes.shift, T.nilable(T::Array[Github::Label])) if labels
+        selected_milestone = T.cast(selected_attributes.shift, T.nilable(Github::Milestone)) if milestone
+        selected_reviewers = T.cast(selected_attributes.shift, T.nilable(T::Array[Github::User])) if reviewers
 
         [selected_labels, selected_milestone, selected_reviewers]
       end
