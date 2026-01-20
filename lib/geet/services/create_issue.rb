@@ -72,7 +72,13 @@ module Geet
         selection_manager.add_attribute(:milestones, 'milestone', milestone, SELECTION_SINGLE, name_method: :title) if milestone
         selection_manager.add_attribute(:collaborators, 'assignee', assignees, SELECTION_MULTIPLE, name_method: :username) if assignees
 
-        selection_manager.select_attributes
+        selected_attributes = selection_manager.select_attributes
+
+        selected_labels = selected_attributes.shift if labels
+        selected_milestone = selected_attributes.shift if milestone
+        selected_assignees = selected_attributes.shift if assignees
+
+        [selected_labels, selected_milestone, selected_assignees]
       end
 
       sig {

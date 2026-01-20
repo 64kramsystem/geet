@@ -83,7 +83,13 @@ module Geet
           end
         end
 
-        selection_manager.select_attributes
+        selected_attributes = selection_manager.select_attributes
+
+        selected_labels = selected_attributes.shift if labels
+        selected_milestone = selected_attributes.shift if milestone
+        selected_reviewers = selected_attributes.shift if reviewers
+
+        [selected_labels, selected_milestone, selected_reviewers]
       end
 
       # `input` is a Sorbet workaround (error 7001).
