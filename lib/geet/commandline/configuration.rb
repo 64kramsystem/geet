@@ -1,10 +1,13 @@
 # frozen_string_literal: true
+# typed: strict
 
 require 'simple_scripting/argv'
 
 module Geet
   module Commandline
     class Configuration
+      extend T::Sig
+
       include Commands
 
       # Command options
@@ -20,15 +23,15 @@ module Geet
       # SimpleScripting 0.9.3 doesn't allow frozen arrays when hash options are present.
       #
       # rubocop:disable Style/MutableConstant
-      ISSUE_CREATE_OPTIONS = [
+      ISSUE_CREATE_OPTIONS = T.let([
         ['-o', '--open-browser',                            "Don't open the issue link in the browser after creation"],
         ['-l', '--labels "bug,help wanted"',                'Labels'],
         ['-m', '--milestone 1.5.0',                         'Milestone title pattern'],
         ['-a', '--assignees john,tom,adrian,kevin',         'Assignee logins'],
         ['-s', '--summary title_and_description',           'Set the summary (title and optionally description'],
         ['-u', '--upstream',                                'Create on the upstream repository'],
-        long_help: 'The default editor will be opened for editing title and description.',
-      ]
+        long_help: 'The default editor will be opened for editing title and description.'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
       LABEL_CREATE_OPTIONS = [
         ['-c', '--color color',                             '6-digits hex color; if not specified, a random one is created'],
@@ -45,27 +48,27 @@ module Geet
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
-      MILESTONE_CLOSE_OPTIONS = [
-        long_help: 'Close milestones.',
-      ]
+      MILESTONE_CLOSE_OPTIONS = T.let([
+        long_help: 'Close milestones.'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
-      MILESTONE_CREATE_OPTIONS = [
+      MILESTONE_CREATE_OPTIONS = T.let([
         'title',
-        long_help: 'Create a milestone.',
-      ]
+        long_help: 'Create a milestone.'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], String)])
 
       MILESTONE_LIST_OPTIONS = [
         ['-u', '--upstream',                                'List on the upstream repository'],
       ].freeze
 
-      PR_COMMENT_OPTIONS = [
+      PR_COMMENT_OPTIONS = T.let([
         ['-o', '--open-browser',                            "Don't open the PR link in the browser after creation"],
         ['-u', '--upstream',                                'Comment on the upstream repository'],
         'comment',
-        long_help: 'Add a comment to the PR for the current branch.',
-      ]
+        long_help: 'Add a comment to the PR for the current branch.'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String], String)])
 
-      PR_CREATE_OPTIONS = [
+      PR_CREATE_OPTIONS = T.let([
         ['-a', '--automerge',                               "Enable automerge (with default strategy)"],
         ['-o', '--open-browser',                            "Don't open the PR link in the browser after creation"],
         ['-b', '--base develop',                            "Specify the base branch; defaults to the main branch"],
@@ -82,7 +85,7 @@ module Geet
 
           Before creating the PR, the local branch is pushed; if the remote branch is not present, it is created.
         STR
-      ]
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
       PR_LIST_OPTIONS = [
         ['-u', '--upstream',                                'List on the upstream repository'],
@@ -91,30 +94,30 @@ module Geet
       # SimpleScripting 0.9.3 doesn't allow frozen arrays when hash options are present.
       #
       # rubocop:disable Style/MutableConstant
-      PR_MERGE_OPTIONS = [
+      PR_MERGE_OPTIONS = T.let([
         ['-d', '--delete-branch',                           'Delete the branch after merging'],
         ['-s', '--squash',                                  'Squash merge'],
         ['-u', '--upstream',                                'List on the upstream repository'],
-        long_help: 'Merge the PR for the current branch',
-      ]
+        long_help: 'Merge the PR for the current branch'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
-      PR_OPEN_OPTIONS = [
+      PR_OPEN_OPTIONS = T.let([
         ['-u', '--upstream',                                'Open on the upstream repository'],
-        long_help: 'Open in the browser the PR for the current branch',
-      ]
+        long_help: 'Open in the browser the PR for the current branch'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
-      REPO_ADD_UPSTREAM_OPTIONS = [
-        long_help: 'Add the upstream repository to the current repository (configuration).',
-      ]
+      REPO_ADD_UPSTREAM_OPTIONS = T.let([
+        long_help: 'Add the upstream repository to the current repository (configuration).'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
-      REPO_OPEN_OPTIONS = [
+      REPO_OPEN_OPTIONS = T.let([
         ['-u', '--upstream',                                'Open the upstream repository'],
-        long_help: 'Open the current repository in the browser',
-      ]
+        long_help: 'Open the current repository in the browser'
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
       # Commands decoding table
 
-      COMMANDS_DECODING_TABLE = {
+      COMMANDS_DECODING_TABLE = T.let({
         'gist' => {
           'create' => GIST_CREATE_OPTIONS,
         },
@@ -142,12 +145,13 @@ module Geet
           'add_upstream' => REPO_ADD_UPSTREAM_OPTIONS,
           'open' => REPO_OPEN_OPTIONS,
         },
-      }
+      }, T::Hash[T.untyped, T.untyped])
 
       # Public interface
 
+      sig { returns(T::Array[T.untyped]) }
       def decode_argv
-        SimpleScripting::Argv.decode(COMMANDS_DECODING_TABLE)
+        T.unsafe(SimpleScripting::Argv).decode(COMMANDS_DECODING_TABLE)
       end
     end
   end
