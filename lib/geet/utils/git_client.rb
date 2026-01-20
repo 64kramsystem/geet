@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-# typed: true
+# typed: strict
 
 require 'English'
 require 'shellwords'
@@ -42,7 +42,7 @@ module Geet
 
       CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
 
-      sig { params(location: T.untyped).void }
+      sig { params(location: T.nilable(String)).void }
       def initialize(location: nil)
         @location = location
       end
@@ -54,20 +54,25 @@ module Geet
       # Return the commit SHAs between :head and :upstream, excluding the already applied commits
       # (which start with `-`)
       #
-      # - upstream: String; pass :main_branch to use the main branch
-      # - head:     String (optional); pass :main_branch to use the main branch
-      #
+      sig {
+        params(
+          upstream: T.any(String, Symbol),       # pass :main_branch to use the main branch
+          head: T.nilable(T.any(String, Symbol)) # pass :main_branch to use the main branch
+        )
+        .returns(T::Array[String])
+      }
       def cherry(upstream, head: nil)
         upstream = main_branch if upstream == :main_branch
         head = main_branch if head == :main_branch
 
-        git_params = [upstream, head].compact.map(&:shellescape)
+        git_params = [upstream, head].compact.map { |param| param.to_s.shellescape }
 
         raw_commits = execute_git_command("cherry #{git_params.join(' ')}")
 
-        raw_commits.split("\n").grep(/^\+/).map { |line| line[3..-1] }
+        raw_commits.split("\n").grep(/^\+/).map { |line| T.must(line[3..-1]) }
       end
 
+      sig { returns(String) }
       def current_branch
         branch = execute_git_command("rev-parse --abbrev-ref HEAD")
 
@@ -78,10 +83,14 @@ module Geet
 
       # This API doesn't reveal if the remote branch is gone.
       #
-      # qualify: (false) include the remote if true, don't otherwise
-      #
       # return: nil, if the remote branch is not configured.
       #
+      sig {
+        params(
+          qualify: T::Boolean # include the remote if true, don't otherwise
+        )
+        .returns(T.nilable(String))
+      }
       def remote_branch(qualify: false)
         head_symbolic_ref = execute_git_command("symbolic-ref -q HEAD")
 
@@ -106,6 +115,7 @@ module Geet
       #     ## add_milestone_closing...origin/add_milestone_closing [gone]
       #      M spec/integration/merge_pr_spec.rb
       #
+      sig { returns(T::Boolean) }
       def remote_branch_gone?
         git_command = "status -b --porcelain"
         status_output = execute_git_command(git_command)
@@ -122,12 +132,13 @@ module Geet
 
       # See https://saveriomiroddi.github.io/Conveniently-Handling-non-master-development-default-branches-in-git-hub
       #
+      sig { returns(String) }
       def main_branch
         branch_name = execute_git_command("config --get #{MAIN_BRANCH_CONFIG_ENTRY}", allow_error: true)
 
         if branch_name.empty?
           full_branch_name = execute_git_command("rev-parse --abbrev-ref #{ORIGIN_NAME}/HEAD")
-          full_branch_name.split('/').last
+          T.must(full_branch_name.split('/').last)
         else
           branch_name
         end
@@ -135,18 +146,21 @@ module Geet
 
       # List of different commits between local and corresponding remote branch.
       #
+      sig { returns(String) }
       def remote_branch_diff_commits
-        remote_branch = remote_branch(qualify: true)
+        remote_branch = T.must(remote_branch(qualify: true))
 
         execute_git_command("rev-list #{remote_branch.shellescape}..HEAD")
       end
 
+      sig { returns(String) }
       def remote_branch_diff
-        remote_branch = remote_branch(qualify: true)
+        remote_branch = T.must(remote_branch(qualify: true))
 
         execute_git_command("diff #{remote_branch.shellescape}")
       end
 
+      sig { returns(T::Boolean) }
       def working_tree_clean?
         git_message = execute_git_command("status")
 
@@ -159,6 +173,7 @@ module Geet
 
       # Show the description ("<subject>\n\n<body>") for the given git object.
       #
+      sig { params(object: String).returns(String) }
       def show_description(object)
         execute_git_command("show --quiet --format='%s\n\n%b' #{object.shellescape}")
       end
@@ -170,26 +185,35 @@ module Geet
       # Return the components of the remote, according to REMOTE_URL_REGEX; doesn't include the full
       # match.
       #
+      sig {
+        params(
+          name: T.nilable(String) # remote name
+        )
+        .returns(T::Array[T.nilable(String)])
+      }
       def remote_components(name: nil)
-        remote.match(REMOTE_URL_REGEX)[1..]
+        T.must(remote.match(REMOTE_URL_REGEX))[1..]
       end
 
       # Example: `donaldduck/geet`
       #
+      sig { params(upstream: T::Boolean).returns(String) }
       def path(upstream: false)
         remote_name_option = upstream ? {name: UPSTREAM_NAME} : {}
 
-        remote(**remote_name_option)[REMOTE_URL_REGEX, 4]
+        T.must(remote(**remote_name_option)[REMOTE_URL_REGEX, 4])
       end
 
+      sig { returns(String) }
       def owner
-        path.split('/')[0]
+        T.must(path.split('/')[0])
       end
 
+      sig { returns(String) }
       def provider_domain
         # We assume that it's not possible to have origin and upstream on different providers.
 
-        domain = remote()[REMOTE_URL_REGEX, 2]
+        domain = T.must(remote()[REMOTE_URL_REGEX, 2])
 
         raise "Can't identify domain in the provider domain string: #{domain}" if domain !~ /\w+\.\w+/
 
@@ -201,9 +225,12 @@ module Geet
       #
       # The result is in the format `git@github.com:donaldduck/geet.git`
       #
-      # options
-      #   :name:           remote name; if unspecified, the default remote is used.
-      #
+      sig {
+        params(
+          name: T.nilable(String) # remote name; if unspecified, the default remote is used
+        )
+        .returns(String)
+      }
       def remote(name: nil)
         remote_url = execute_git_command("ls-remote --get-url #{name}")
 
@@ -219,6 +246,7 @@ module Geet
       # Doesn't sanity check for the remote url format; this action is for querying
       # purposes, any any action that needs to work with the remote, uses #remote.
       #
+      sig { params(name: T.nilable(String)).returns(T::Boolean) }
       def remote_defined?(name)
         remote_url = execute_git_command("ls-remote --get-url #{name}")
 
@@ -231,22 +259,30 @@ module Geet
       # OPERATION APIS
       ##########################################################################
 
+      sig { params(branch: String).returns(String) }
       def checkout(branch)
         execute_git_command("checkout #{branch.shellescape}")
       end
 
+      sig { params(branch: String, force: T::Boolean).returns(String) }
       def delete_branch(branch, force:)
         force_option = "--force" if force
 
         execute_git_command("branch --delete #{force_option} #{branch.shellescape}")
       end
 
+      sig { returns(String) }
       def rebase
         execute_git_command("rebase")
       end
 
-      # remote_branch: create an upstream branch.
-      #
+      sig {
+        params(
+          remote_branch: T.nilable(String), # create an upstream branch
+          force: T::Boolean
+        )
+        .returns(String)
+      }
       def push(remote_branch: nil, force: false)
         remote_branch_option = "-u #{ORIGIN_NAME} #{remote_branch.shellescape}" if remote_branch
 
@@ -255,10 +291,12 @@ module Geet
 
       # Performs pruning.
       #
+      sig { returns(String) }
       def fetch
         execute_git_command("fetch --prune")
       end
 
+      sig { params(name: String, url: String).returns(String) }
       def add_remote(name, url)
         execute_git_command("remote add #{name.shellescape} #{url}")
       end
@@ -272,14 +310,17 @@ module Geet
       # If executing a git command without calling this API, don't forget to split `gitdir_option`
       # and use it!
       #
-      # options (passed to :execute_command):
-      # - allow_error
-      # - (others)
-      #
+      sig {
+        params(
+          command: String,
+          options: T.untyped # passed to :execute_command (e.g., allow_error)
+        )
+        .returns(String)
+      }
       def execute_git_command(command, **options)
         gitdir_option = "-C #{@location.shellescape}" if @location
 
-        execute_command("git #{gitdir_option} #{command}", **options)
+        T.must(execute_command("git #{gitdir_option} #{command}", **options))
       end
     end
   end
