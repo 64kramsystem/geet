@@ -23,21 +23,19 @@ describe Geet::Services::OpenPr do
         Finding PR with head (#{owner}:#{branch})...
       STR
 
-      actual_output = StringIO.new
-      service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+      expect {
+        service_instance = described_class.new(repository, git_client: git_client)
 
-      expect(service_instance).to receive(:open_file_with_default_application).with("https://github.com/#{owner}/#{repository_name}/pull/#{expected_pr_number}") do
-        # do nothing; just don't open the browser
-      end
+        expect(service_instance).to receive(:open_file_with_default_application).with("https://github.com/#{owner}/#{repository_name}/pull/#{expected_pr_number}") do
+          # do nothing; just don't open the browser
+        end
 
-      service_result = VCR.use_cassette('github_com/open_pr') do
-        service_instance.execute
-      end
+        service_result = VCR.use_cassette('github_com/open_pr') do
+          service_instance.execute
+        end
 
-      actual_pr_number = service_result.number
-
-      expect(actual_output.string).to eql(expected_output)
-      expect(actual_pr_number).to eql(expected_pr_number)
+        expect(service_result.number).to eql(expected_pr_number)
+      }.to output(expected_output).to_stdout
     end
 
   end # context 'with github.com'

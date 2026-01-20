@@ -18,7 +18,7 @@ module Geet
       sig {
         params(
           repository: Git::Repository,
-          out: StringIO,
+          out: IO,
           git_client: Utils::GitClient
         ).void
       }
