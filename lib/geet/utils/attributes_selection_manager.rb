@@ -71,6 +71,7 @@ module Geet
 
       private
 
+      sig { params(repository_call: Symbol).returns(Thread) }
       def find_attribute_entries(repository_call)
         @out.puts "Finding #{repository_call}..."
 
@@ -87,6 +88,15 @@ module Geet
       #
       #   select_entry('milestone', all_milestones, '0.1.0', :title)
       #
+      sig {
+        params(
+          entry_type: String,
+          entries: T::Array[T.anything],
+          pattern: String,
+          name_method: T.nilable(Symbol)
+        )
+        .returns(T.nilable(T.anything))
+      }
       def select_entry(entry_type, entries, pattern, name_method)
         case pattern
         when MANUAL_LIST_SELECTION_FLAG
@@ -102,6 +112,15 @@ module Geet
       #
       #   select_entries('reviewer', all_collaborators, 'donaldduck', nil)
       #
+      sig {
+        params(
+          entry_type: String,
+          entries: T::Array[T.anything],
+          pattern: T.any(String, T::Array[String]),
+          name_method: T.nilable(Symbol)
+        )
+        .returns(T::Array[T.anything])
+      }
       def select_entries(entry_type, entries, pattern, name_method)
         # Support both formats Array and String.
         # It seems that at some point, SimpleScripting started splitting arrays automatically, so until
