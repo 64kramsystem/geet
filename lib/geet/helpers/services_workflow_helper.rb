@@ -40,7 +40,7 @@ module Geet
 
         raise "Expected to find only one PR for the current branch; found: #{prs.size}" if prs.size != 1
 
-        prs[0]
+        T.must(prs[0])
       end
     end
   end
