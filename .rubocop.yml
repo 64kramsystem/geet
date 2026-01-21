@@ -55,6 +55,13 @@ Layout/SpaceInsideStringInterpolation:
   Enabled: true
   EnforcedStyle: no_space
 
+# Enforce double quotes for strings unless interpolation or escaping makes single quotes more convenient
+# Examples: 'hello' -> "hello", 'foo #{bar}' -> "foo #{bar}", "foo \"bar\"" -> 'foo "bar"'
+Style/StringLiterals:
+  Enabled: true
+  EnforcedStyle: double_quotes
+  ConsistentQuotesInMultiline: true
+
 # Ensure exactly one newline at the end of each file
 Layout/TrailingEmptyLines:
   Enabled: true
