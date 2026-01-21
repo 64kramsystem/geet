@@ -1,9 +1,9 @@
 # typed: strict
 # frozen_string_literal: true
 
-require 'English'
-require 'open3'
-require 'shellwords'
+require "English"
+require "open3"
+require "shellwords"
 
 module Geet
   module Helpers

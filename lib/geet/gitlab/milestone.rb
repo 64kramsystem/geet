@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'date'
+require "date"
 
 module Geet
   module Gitlab
@@ -49,10 +49,10 @@ module Geet
         )
 
         response.map do |milestone_data|
-          number = T.cast(milestone_data.fetch('iid'), Integer)
-          title = T.cast(milestone_data.fetch('title'), String)
+          number = T.cast(milestone_data.fetch("iid"), Integer)
+          title = T.cast(milestone_data.fetch("title"), String)
           due_on = parse_due_date(
-            T.cast(milestone_data.fetch('due_date'), T.nilable(String))
+            T.cast(milestone_data.fetch("due_date"), T.nilable(String))
           )
 
           new(number, title, due_on, api_interface)

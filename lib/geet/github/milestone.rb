@@ -15,7 +15,7 @@ module Geet
       sig { returns(T.nilable(Date)) }
       attr_reader :due_on
 
-      STATE_CLOSED = 'closed'
+      STATE_CLOSED = "closed"
 
       class << self
         extend T::Sig
@@ -49,7 +49,7 @@ module Geet
         ).returns(Geet::Github::Milestone)
       }
       def self.create(title, api_interface)
-        api_path = 'milestones'
+        api_path = "milestones"
         request_data = {title: title}
 
         response = T.cast(
@@ -57,8 +57,8 @@ module Geet
           T::Hash[String, T.untyped]
         )
 
-        number = T.cast(response.fetch('number'), Integer)
-        title = T.cast(response.fetch('title'), String)
+        number = T.cast(response.fetch("number"), Integer)
+        title = T.cast(response.fetch("title"), String)
         due_on = nil
 
         new(number, title, due_on, api_interface)
@@ -72,7 +72,7 @@ module Geet
         ).returns(T::Array[Geet::Github::Milestone])
       }
       def self.list(api_interface)
-        api_path = 'milestones'
+        api_path = "milestones"
 
         response = T.cast(
           api_interface.send_request(api_path, multipage: true),
@@ -80,10 +80,10 @@ module Geet
         )
 
         response.map do |milestone_data|
-          number = T.cast(milestone_data.fetch('number'), Integer)
-          title = T.cast(milestone_data.fetch('title'), String)
+          number = T.cast(milestone_data.fetch("number"), Integer)
+          title = T.cast(milestone_data.fetch("title"), String)
           due_on = parse_iso_8601_timestamp(
-            T.cast(milestone_data.fetch('due_on'), T.nilable(String))
+            T.cast(milestone_data.fetch("due_on"), T.nilable(String))
           )
 
           new(number, title, due_on, api_interface)

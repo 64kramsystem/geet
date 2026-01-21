@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'stringio'
-require 'tmpdir'
+require "stringio"
+require "tmpdir"
 
 module Geet
   module Services

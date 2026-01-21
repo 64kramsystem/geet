@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-require_relative '../../lib/geet/git/repository'
-require_relative '../../lib/geet/services/list_labels'
+require_relative "../../lib/geet/git/repository"
+require_relative "../../lib/geet/services/list_labels"
 
 describe Geet::Services::ListLabels do
   let(:git_client) { Geet::Utils::GitClient.new }
   let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
   let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
-  context 'with github.com' do
-    it 'should list the labels' do
-      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/geet')
+  context "with github.com" do
+    it "should list the labels" do
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:donaldduck/geet")
 
       expected_output = <<~STR
         - bug (#ee0701)
@@ -23,7 +23,7 @@ describe Geet::Services::ListLabels do
       expected_label_names = %w[bug enhancement technical_debt top_priority]
 
       actual_output = StringIO.new
-      actual_labels = VCR.use_cassette('github.com/list_labels') do
+      actual_labels = VCR.use_cassette("github.com/list_labels") do
         described_class.new(repository, out: actual_output).execute
       end
 
@@ -33,9 +33,9 @@ describe Geet::Services::ListLabels do
       expect(actual_label_names).to eql(expected_label_names)
     end
 
-    it 'should list the upstream labels' do
-      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/geet')
-      allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donaldduck-fr/testrepo_u')
+    it "should list the upstream labels" do
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:donaldduck/geet")
+      allow(git_client).to receive(:remote).with(name: "upstream").and_return("git@github.com:donaldduck-fr/testrepo_u")
 
       expected_output = <<~STR
         - bug (#ee0701)
@@ -44,7 +44,7 @@ describe Geet::Services::ListLabels do
       expected_label_names = %w[bug enhancement]
 
       actual_output = StringIO.new
-      actual_labels = VCR.use_cassette('github.com/list_labels_upstream') do
+      actual_labels = VCR.use_cassette("github.com/list_labels_upstream") do
         described_class.new(upstream_repository, out: actual_output).execute
       end
 
@@ -55,9 +55,9 @@ describe Geet::Services::ListLabels do
     end
   end
 
-  context 'with gitlab.com' do
-    it 'should list the labels' do
-      allow(git_client).to receive(:remote).with(no_args).and_return('git@gitlab.com:donaldduck/testproject')
+  context "with gitlab.com" do
+    it "should list the labels" do
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@gitlab.com:donaldduck/testproject")
 
       expected_output = <<~STR
         - bug (#d9534f)
@@ -72,7 +72,7 @@ describe Geet::Services::ListLabels do
       expected_label_names = %w[bug confirmed critical discussion documentation enhancement suggestion support]
 
       actual_output = StringIO.new
-      actual_labels = VCR.use_cassette('gitlab.com/list_labels') do
+      actual_labels = VCR.use_cassette("gitlab.com/list_labels") do
         described_class.new(repository, out: actual_output).execute
       end
 

@@ -1,7 +1,7 @@
 # typed: strict
 # frozen_string_literal: true
 
-require 'time'
+require "time"
 
 module Geet
   module Helpers

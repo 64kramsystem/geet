@@ -41,7 +41,7 @@ module Geet
         .returns(T::Array[T.type_parameter(:T)])
       }
       def select_entries(entry_type, entries, raw_patterns, name_method: nil)
-        patterns = raw_patterns.split(',')
+        patterns = raw_patterns.split(",")
 
         patterns.map do |pattern|
           # Haha.

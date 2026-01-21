@@ -29,7 +29,7 @@ module Geet
       def find_and_select_milestone_numbers(numbers)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
-        selection_manager.add_attribute(:milestones, 'milestone', numbers, SELECTION_MULTIPLE, name_method: :title)
+        selection_manager.add_attribute(:milestones, "milestone", numbers, SELECTION_MULTIPLE, name_method: :title)
 
         milestones = T.cast(selection_manager.select_attributes[0], T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
 

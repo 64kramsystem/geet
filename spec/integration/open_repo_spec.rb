@@ -1,24 +1,24 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-require_relative '../../lib/geet/git/repository'
-require_relative '../../lib/geet/services/open_repo'
+require_relative "../../lib/geet/git/repository"
+require_relative "../../lib/geet/services/open_repo"
 
 module Geet
   describe Services::OpenRepo do
     let(:git_client) { Utils::GitClient.new }
     let(:repository) { Git::Repository.new(git_client: git_client) }
 
-    OWNER = 'donaldduck'
-    REPOSITORY_NAME = 'testrepo'
+    OWNER = "donaldduck"
+    REPOSITORY_NAME = "testrepo"
 
     REMOTE_URLS = {
-      'git' => "git@github.com:#{OWNER}/#{REPOSITORY_NAME}",
-      'https' => "https://github.com/#{OWNER}/#{REPOSITORY_NAME}",
+      "git" => "git@github.com:#{OWNER}/#{REPOSITORY_NAME}",
+      "https" => "https://github.com/#{OWNER}/#{REPOSITORY_NAME}",
     }
 
-    context 'should open the PR for the current branch' do
+    context "should open the PR for the current branch" do
       REMOTE_URLS.each do |protocol, remote_url|
         it "with #{protocol} protocol" do
           allow(git_client).to receive(:remote).with(no_args).and_return(remote_url)
@@ -33,7 +33,7 @@ module Geet
             # do nothing; just don't open the browser
           end
 
-          execution_result = VCR.use_cassette('github_com/open_repo') do
+          execution_result = VCR.use_cassette("github_com/open_repo") do
             service_instance.execute
           end
 

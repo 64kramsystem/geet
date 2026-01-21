@@ -37,7 +37,7 @@ module Geet
         .returns(T.any(Github::Label, Gitlab::Label))
       }
       def create_label(name, color)
-        @out.puts 'Creating label...'
+        @out.puts "Creating label..."
 
         @repository.create_label(name, color)
       end
@@ -47,7 +47,7 @@ module Geet
       def generate_random_color
         hex_number = T.unsafe(rand(2**24)).to_s(16)
 
-        hex_number.rjust(6, '0')
+        hex_number.rjust(6, "0")
       end
     end
   end

@@ -36,10 +36,10 @@ module Geet
         )
 
         response.map do |label_entry|
-          name = T.cast(label_entry.fetch('name'), String)
-          color = T.cast(label_entry.fetch('color'), String)
+          name = T.cast(label_entry.fetch("name"), String)
+          color = T.cast(label_entry.fetch("color"), String)
 
-          color = color.sub('#', '') # normalize
+          color = color.sub("#", "") # normalize
 
           new(name, color)
         end

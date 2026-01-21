@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 # typed: strict
 
-require_relative 'abstract_issue'
-require_relative '../github/gist'
+require_relative "abstract_issue"
+require_relative "../github/gist"
 
 module Geet
   module Github
@@ -19,13 +19,13 @@ module Geet
         ).returns(Geet::Github::Gist)
       }
       def self.create(filename, content, api_interface, description: nil, publik: false)
-        api_path = '/gists'
+        api_path = "/gists"
 
         request_data = prepare_request_data(filename, content, description, publik)
 
         response = T.cast(api_interface.send_request(api_path, data: T.unsafe(request_data)), T::Hash[String, T.untyped])
 
-        id = T.cast(response.fetch('id'), String)
+        id = T.cast(response.fetch("id"), String)
 
         new(id)
       end
@@ -55,15 +55,15 @@ module Geet
         }
         def prepare_request_data(filename, content, description, publik)
           request_data = {
-            'public' => publik,
-            'files' => {
+            "public" => publik,
+            "files" => {
               filename => {
-                'content' => content,
+                "content" => content,
               },
             },
           }
 
-          request_data['description'] = description if description
+          request_data["description"] = description if description
 
           request_data
         end

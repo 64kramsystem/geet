@@ -60,7 +60,7 @@ module Geet
         returns(T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
       }
       def find_milestones
-        @out.puts 'Finding milestones...'
+        @out.puts "Finding milestones..."
 
         @repository.milestones
       end
@@ -79,7 +79,7 @@ module Geet
         )
       }
       def find_all_milestone_entries(milestones)
-        @out.puts 'Finding issues and PRs...'
+        @out.puts "Finding issues and PRs..."
 
         all_milestone_entries = {}
         all_threads = []

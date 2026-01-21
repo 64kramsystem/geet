@@ -29,12 +29,12 @@ module Geet
         ).returns(T::Array[Geet::Github::Label])
       }
       def self.list(api_interface)
-        api_path = 'labels'
+        api_path = "labels"
         response = T.cast(api_interface.send_request(api_path, multipage: true), T::Array[T::Hash[String, T.untyped]])
 
         response.map do |label_entry|
-          name = T.cast(label_entry.fetch('name'), String)
-          color = T.cast(label_entry.fetch('color'), String)
+          name = T.cast(label_entry.fetch("name"), String)
+          color = T.cast(label_entry.fetch("color"), String)
 
           new(name, color)
         end
@@ -49,7 +49,7 @@ module Geet
         ).returns(Geet::Github::Label)
       }
       def self.create(name, color, api_interface)
-        api_path = 'labels'
+        api_path = "labels"
         request_data = {name:, color:}
 
         api_interface.send_request(api_path, data: request_data)

@@ -68,9 +68,9 @@ module Geet
       def find_and_select_attributes(labels, milestone, assignees)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
-        selection_manager.add_attribute(:labels, 'label', labels, SELECTION_MULTIPLE, name_method: :name) if labels
-        selection_manager.add_attribute(:milestones, 'milestone', milestone, SELECTION_SINGLE, name_method: :title) if milestone
-        selection_manager.add_attribute(:collaborators, 'assignee', assignees, SELECTION_MULTIPLE, name_method: :username) if assignees
+        selection_manager.add_attribute(:labels, "label", labels, SELECTION_MULTIPLE, name_method: :name) if labels
+        selection_manager.add_attribute(:milestones, "milestone", milestone, SELECTION_SINGLE, name_method: :title) if milestone
+        selection_manager.add_attribute(:collaborators, "assignee", assignees, SELECTION_MULTIPLE, name_method: :username) if assignees
 
         selected_attributes = selection_manager.select_attributes
 
@@ -88,7 +88,7 @@ module Geet
         ).returns(T.any(Github::Issue, Gitlab::Issue))
       }
       def create_issue(title, description)
-        @out.puts 'Creating the issue...'
+        @out.puts "Creating the issue..."
 
         issue = @repository.create_issue(title, description)
       end
@@ -128,7 +128,7 @@ module Geet
       def add_labels(issue, selected_labels)
         raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
 
-        labels_list = selected_labels.map(&:name).join(', ')
+        labels_list = selected_labels.map(&:name).join(", ")
 
         @out.puts "Adding labels #{labels_list}..."
 
@@ -179,7 +179,7 @@ module Geet
       def assign_authenticated_user(issue)
         raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
 
-        @out.puts 'Assigning authenticated user...'
+        @out.puts "Assigning authenticated user..."
 
         Thread.new do
           issue.assign_users(@repository.authenticated_user.username)

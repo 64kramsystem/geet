@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 # typed: true
 
-require 'English'
-require 'open3'
-require 'shellwords'
+require "English"
+require "open3"
+require "shellwords"
 
 module Geet
   module Helpers
@@ -17,7 +17,7 @@ module Geet
         open_command = case
         when ENV["WSL_DISTRO_NAME"]
           "wslview"
-        when `uname`.strip == 'Darwin'
+        when `uname`.strip == "Darwin"
           "open"
         else
           "xdg-open"
@@ -61,7 +61,7 @@ module Geet
             stdout_content = stdout.read
             stderr_content = stderr.read
 
-            puts stderr_content if stderr_content != '' && !silent_stderr
+            puts stderr_content if stderr_content != "" && !silent_stderr
 
             if !wait_thread.value.success? && !allow_error
               error_message = stderr_content.lines.first&.strip || "Error running command #{command.inspect}"

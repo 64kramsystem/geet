@@ -14,7 +14,7 @@ module Geet
         ).returns(Geet::Github::Issue)
       }
       def self.create(title, description, api_interface)
-        api_path = 'issues'
+        api_path = "issues"
         request_data = {title:, body: description}
 
         response = T.cast(
@@ -22,9 +22,9 @@ module Geet
           T::Hash[String, T.untyped]
         )
 
-        issue_number = T.cast(response.fetch('number'), Integer)
-        title = T.cast(response.fetch('title'), String)
-        link = T.cast(response.fetch('html_url'), String)
+        issue_number = T.cast(response.fetch("number"), Integer)
+        title = T.cast(response.fetch("title"), String)
+        link = T.cast(response.fetch("html_url"), String)
 
         new(issue_number, api_interface, title, link)
       end
@@ -42,7 +42,7 @@ module Geet
       }
       def self.list(api_interface, assignee: nil, milestone: nil, &type_filter)
         super do |issue_data|
-          !issue_data.key?('pull_request')
+          !issue_data.key?("pull_request")
         end
       end
     end

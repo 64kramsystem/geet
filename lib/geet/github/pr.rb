@@ -36,7 +36,7 @@ module Geet
         ).returns(Geet::Github::PR)
       }
       def self.create(title, description, head, api_interface, base, draft: false)
-        api_path = 'pulls'
+        api_path = "pulls"
 
         if api_interface.upstream?
           authenticated_user = Geet::Github::User.authenticated(api_interface).username
@@ -47,10 +47,10 @@ module Geet
 
         response = T.cast(api_interface.send_request(api_path, data: request_data), T::Hash[String, T.untyped])
 
-        number = T.cast(response.fetch('number'), Integer)
-        title = T.cast(response.fetch('title'), String)
-        link = T.cast(response.fetch('html_url'), String)
-        node_id = T.cast(response['node_id'], T.nilable(String))
+        number = T.cast(response.fetch("number"), Integer)
+        title = T.cast(response.fetch("title"), String)
+        link = T.cast(response.fetch("html_url"), String)
+        node_id = T.cast(response["node_id"], T.nilable(String))
 
         new(number, api_interface, title, link, node_id:)
       end
@@ -74,7 +74,7 @@ module Geet
         check_list_params!(milestone, assignee, head)
 
         if head
-          api_path = 'pulls'
+          api_path = "pulls"
 
           # Technically, the upstream approach could be used for both, but it's actually good to have
           # both of them as reference.
@@ -96,8 +96,8 @@ module Geet
             # For this reason, we can't use that param, and have to filter manually.
             #
             unfiltered_response.select do |pr_data|
-              pr_head = T.cast(pr_data.fetch('head'), T::Hash[String, T.untyped])
-              label = T.cast(pr_head.fetch('label'), String)
+              pr_head = T.cast(pr_data.fetch("head"), T::Hash[String, T.untyped])
+              label = T.cast(pr_head.fetch("label"), String)
 
               label == "#{owner}:#{head}"
             end
@@ -111,15 +111,15 @@ module Geet
           end
 
           response.map do |pr_data|
-            number = T.cast(pr_data.fetch('number'), Integer)
-            title = T.cast(pr_data.fetch('title'), String)
-            link = T.cast(pr_data.fetch('html_url'), String)
+            number = T.cast(pr_data.fetch("number"), Integer)
+            title = T.cast(pr_data.fetch("title"), String)
+            link = T.cast(pr_data.fetch("html_url"), String)
 
             new(number, api_interface, title, link)
           end
         else
           result = super(api_interface, milestone:, assignee:) do |issue_data|
-            issue_data.key?('pull_request')
+            issue_data.key?("pull_request")
           end
 
           T.cast(result, T::Array[Geet::Github::PR])
@@ -207,22 +207,22 @@ module Geet
           }
         GRAPHQL
 
-        owner, name = T.must(@api_interface.repository_path).split('/')
+        owner, name = T.must(@api_interface.repository_path).split("/")
 
         response = @api_interface.send_graphql_request(query, variables: {owner:, name:, number:})
-        repo_data = response['repository'].transform_keys(&:to_sym)
-        commit_count = repo_data[:pullRequest]['commits']['totalCount']
+        repo_data = response["repository"].transform_keys(&:to_sym)
+        commit_count = repo_data[:pullRequest]["commits"]["totalCount"]
 
         if commit_count == 1 && repo_data[:squashMergeAllowed]
-          'SQUASH'
+          "SQUASH"
         elsif repo_data[:mergeCommitAllowed]
-          'MERGE'
+          "MERGE"
         elsif repo_data[:squashMergeAllowed]
-          'SQUASH'
+          "SQUASH"
         elsif repo_data[:rebaseMergeAllowed]
-          'REBASE'
+          "REBASE"
         else
-          raise 'No merge methods are allowed on this repository'
+          raise "No merge methods are allowed on this repository"
         end
       end
 

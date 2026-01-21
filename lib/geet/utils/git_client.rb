@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'English'
-require 'shellwords'
+require "English"
+require "shellwords"
 
 module Geet
   module Utils
@@ -13,8 +13,8 @@ module Geet
 
       include Geet::Helpers::OsHelper
 
-      ORIGIN_NAME = 'origin'
-      UPSTREAM_NAME = 'upstream'
+      ORIGIN_NAME = "origin"
+      UPSTREAM_NAME = "upstream"
 
       # Simplified, but good enough, pattern.
       #
@@ -38,7 +38,7 @@ module Geet
 
       REMOTE_BRANCH_REGEX = %r{\A[^/]+/(.+)\Z}
 
-      MAIN_BRANCH_CONFIG_ENTRY = 'custom.development-branch'
+      MAIN_BRANCH_CONFIG_ENTRY = "custom.development-branch"
 
       CLEAN_TREE_MESSAGE_REGEX = /^nothing to commit, working tree clean$/
 
@@ -76,7 +76,7 @@ module Geet
       def current_branch
         branch = execute_git_command("rev-parse --abbrev-ref HEAD")
 
-        raise "Couldn't find current branch" if branch == 'HEAD'
+        raise "Couldn't find current branch" if branch == "HEAD"
 
         branch
       end
@@ -96,7 +96,7 @@ module Geet
 
         raw_remote_branch = execute_git_command("for-each-ref --format='%(upstream:short)' #{head_symbolic_ref.shellescape}").strip
 
-        if raw_remote_branch != ''
+        if raw_remote_branch != ""
           if qualify
             raw_remote_branch
           else
@@ -138,7 +138,7 @@ module Geet
 
         if branch_name.empty?
           full_branch_name = execute_git_command("rev-parse --abbrev-ref #{ORIGIN_NAME}/HEAD")
-          T.must(full_branch_name.split('/').last)
+          T.must(full_branch_name.split("/").last)
         else
           branch_name
         end
@@ -206,7 +206,7 @@ module Geet
 
       sig { returns(String) }
       def owner
-        T.must(path.split('/')[0])
+        T.must(path.split("/")[0])
       end
 
       sig { returns(String) }

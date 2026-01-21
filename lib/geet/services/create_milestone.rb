@@ -21,7 +21,7 @@ module Geet
 
       sig { params(title: String).returns(T.any(Github::Milestone, Gitlab::Milestone)) }
       def create_milestone(title)
-        @out.puts 'Creating milestone...'
+        @out.puts "Creating milestone..."
 
         @repository.create_milestone(title)
       end

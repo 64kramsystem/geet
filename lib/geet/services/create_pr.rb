@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'io/console' # stdlib
+require "io/console" # stdlib
 
 module Geet
   module Services
@@ -84,7 +84,7 @@ module Geet
 
       sig { void }
       def ensure_clean_tree
-        raise 'The working tree is not clean!' if !@git_client.working_tree_clean?
+        raise "The working tree is not clean!" if !@git_client.working_tree_clean?
       end
 
       sig {
@@ -95,17 +95,17 @@ module Geet
         ).returns([
           T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
           T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
-          T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+          T.nilable(T::Array[T.any(Github::User, Gitlab::User)]),
         ])
       }
       def find_and_select_attributes(labels, milestone, reviewers)
         selection_manager = Geet::Utils::AttributesSelectionManager.new(@repository, out: @out)
 
-        selection_manager.add_attribute(:labels, 'label', labels, SELECTION_MULTIPLE, name_method: :name) if labels
-        selection_manager.add_attribute(:milestones, 'milestone', milestone, SELECTION_SINGLE, name_method: :title) if milestone
+        selection_manager.add_attribute(:labels, "label", labels, SELECTION_MULTIPLE, name_method: :name) if labels
+        selection_manager.add_attribute(:milestones, "milestone", milestone, SELECTION_SINGLE, name_method: :title) if milestone
 
         if reviewers
-          selection_manager.add_attribute(:collaborators, 'reviewer', reviewers, SELECTION_MULTIPLE, name_method: :username) do |all_reviewers|
+          selection_manager.add_attribute(:collaborators, "reviewer", reviewers, SELECTION_MULTIPLE, name_method: :username) do |all_reviewers|
             authenticated_user = @repository.authenticated_user
             reviewers_typed = T.cast(all_reviewers, T::Array[Github::User])
             reviewers_typed.delete_if { |reviewer| reviewer.username == authenticated_user.username }
@@ -141,14 +141,14 @@ module Geet
               @out.puts
 
               case input.downcase
-              when 'y'
+              when "y"
                 @git_client.push(force: true)
                 break
-              when 'd'
+              when "d"
                 @out.puts "# DIFF: ########################################################################"
                 @out.puts @git_client.remote_branch_diff
                 @out.puts "################################################################################"
-              when 'q'
+              when "q"
                 exit(1)
               end
             end
@@ -170,7 +170,7 @@ module Geet
             @out.puts
 
             case input.downcase.rstrip
-            when 'n', ''
+            when "n", ""
               # exit the cycle
             else
               retry
@@ -188,7 +188,7 @@ module Geet
         ).returns(T.any(Github::PR, Gitlab::PR))
       }
       def create_pr(title, description, base:, draft:)
-        @out.puts 'Creating PR...'
+        @out.puts "Creating PR..."
 
         base ||= @git_client.main_branch
 
@@ -224,7 +224,7 @@ module Geet
       def add_labels(pr, selected_labels)
         raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
 
-        labels_list = selected_labels.map(&:name).join(', ')
+        labels_list = selected_labels.map(&:name).join(", ")
 
         @out.puts "Adding labels #{labels_list}..."
 

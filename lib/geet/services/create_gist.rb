@@ -8,7 +8,7 @@ module Geet
 
       include Geet::Helpers::OsHelper
 
-      API_TOKEN_KEY = 'GITHUB_API_TOKEN'
+      API_TOKEN_KEY = "GITHUB_API_TOKEN"
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
       sig { params(out: T.any(IO, StringIO)).void }
@@ -36,7 +36,7 @@ module Geet
       def execute(full_filename, stdin: false, description: nil, publik: false, open_browser: false)
         content = stdin ? $stdin.read : IO.read(full_filename)
 
-        gist_access = publik ? 'public' : 'private'
+        gist_access = publik ? "public" : "private"
         @out.puts "Creating a #{gist_access} gist..."
 
         filename = File.basename(full_filename)

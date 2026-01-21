@@ -32,7 +32,7 @@ module Geet
         .returns(T.any(Github::PR, Gitlab::PR))
       }
       def execute(delete_branch: false, squash: false)
-        merge_method = 'squash' if squash
+        merge_method = "squash" if squash
 
         @git_client.fetch
 
@@ -75,7 +75,7 @@ module Geet
 
       sig { void }
       def check_no_missing_upstream_commits
-        missing_upstream_commits = @git_client.cherry('HEAD', head: :main_branch)
+        missing_upstream_commits = @git_client.cherry("HEAD", head: :main_branch)
 
         raise "Found #{missing_upstream_commits.size} missing upstream commits!" if missing_upstream_commits.any?
       end

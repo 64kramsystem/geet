@@ -2,29 +2,29 @@
 
 # User-defined
 
-require 'vcr'
-require 'base64'
-require 'rspec/sorbet'
+require "vcr"
+require "base64"
+require "rspec/sorbet"
 
-require_relative '../lib/geet'
+require_relative "../lib/geet"
 
 RSpec::Sorbet.allow_doubles!
 
 VCR.configure do |config|
-  config.cassette_library_dir = 'spec/vcr_cassettes'
+  config.cassette_library_dir = "spec/vcr_cassettes"
   config.hook_into :webmock
   config.default_cassette_options = {match_requests_on: [:method, :uri, :body], allow_unused_http_interactions: false}
 
   # See https://github.com/vcr/vcr/issues/201
-  config.filter_sensitive_data('<GITHUB_CREDENTIALS>') do
-    user = ''
-    api_token = ENV.fetch('GITHUB_API_TOKEN')
+  config.filter_sensitive_data("<GITHUB_CREDENTIALS>") do
+    user = ""
+    api_token = ENV.fetch("GITHUB_API_TOKEN")
 
     Base64.strict_encode64("#{user}:#{api_token}")
   end
 
-  config.filter_sensitive_data('<GITLAB_CREDENTIALS>') do
-    ENV.fetch('GITLAB_API_TOKEN')
+  config.filter_sensitive_data("<GITLAB_CREDENTIALS>") do
+    ENV.fetch("GITLAB_API_TOKEN")
   end
 end
 

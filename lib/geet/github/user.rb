@@ -63,11 +63,11 @@ module Geet
         ).returns(Geet::Github::User)
       }
       def self.authenticated(api_interface)
-        api_path = '/user'
+        api_path = "/user"
 
         response = T.cast(api_interface.send_request(api_path), T::Hash[String, T.untyped])
 
-        login = T.cast(response.fetch('login'), String)
+        login = T.cast(response.fetch("login"), String)
 
         new(login, api_interface)
       end
@@ -78,11 +78,11 @@ module Geet
         ).returns(T::Array[Geet::Github::User])
       }
       def self.list_collaborators(api_interface)
-        api_path = 'collaborators'
+        api_path = "collaborators"
         response = T.cast(api_interface.send_request(api_path, multipage: true), T::Array[T::Hash[String, T.untyped]])
 
         response.map do |user_entry|
-          login = T.cast(user_entry.fetch('login'), String)
+          login = T.cast(user_entry.fetch("login"), String)
           new(login, api_interface)
         end
       end
@@ -100,7 +100,7 @@ module Geet
 
         response = T.cast(api_interface.send_request(api_path), T::Hash[String, T.untyped])
 
-        permission = T.cast(response.fetch('permission'), String)
+        permission = T.cast(response.fetch("permission"), String)
 
         check_permission!(permission)
 

@@ -6,10 +6,10 @@ module Geet
     module RepoPermissions
       extend T::Sig
 
-      PERMISSION_ADMIN = 'admin'
-      PERMISSION_WRITE = 'write'
-      PERMISSION_READ = 'read'
-      PERMISSION_NONE = 'none'
+      PERMISSION_ADMIN = "admin"
+      PERMISSION_WRITE = "write"
+      PERMISSION_READ = "read"
+      PERMISSION_NONE = "none"
 
       ALL_PERMISSIONS = T.let(T.unsafe(nil), T::Array[String]) if defined?(T::sig)
       ALL_PERMISSIONS = [

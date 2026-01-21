@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-require_relative '../../lib/geet/git/repository'
-require_relative '../../lib/geet/services/list_milestones'
+require_relative "../../lib/geet/git/repository"
+require_relative "../../lib/geet/services/list_milestones"
 
 describe Geet::Services::ListMilestones do
   let(:git_client) { Geet::Utils::GitClient.new }
   let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
   let(:upstream_repository) { Geet::Git::Repository.new(upstream: true, git_client: git_client) }
 
-  context 'with github.com' do
-    it 'should list the milestones' do
-      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donaldduck/geet')
+  context "with github.com" do
+    it "should list the milestones" do
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:donaldduck/geet")
 
       expected_output = <<~STR
         Finding milestones...
@@ -39,7 +39,7 @@ describe Geet::Services::ListMilestones do
 
       actual_output = StringIO.new
 
-      service_result = VCR.use_cassette('github_com/list_milestones') do
+      service_result = VCR.use_cassette("github_com/list_milestones") do
         described_class.new(repository, out: actual_output).execute
       end
 
@@ -49,9 +49,9 @@ describe Geet::Services::ListMilestones do
       expect(actual_milestone_numbers).to eql(expected_milestone_numbers)
     end
 
-    it 'should list the upstream milestones' do
-      allow(git_client).to receive(:remote).with(no_args).and_return('git@github.com:donald-fr/testrepo_downstream')
-      allow(git_client).to receive(:remote).with(name: 'upstream').and_return('git@github.com:donaldduck/testrepo_upstream')
+    it "should list the upstream milestones" do
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:donald-fr/testrepo_downstream")
+      allow(git_client).to receive(:remote).with(name: "upstream").and_return("git@github.com:donaldduck/testrepo_upstream")
 
       expected_output = <<~STR
         Finding milestones...
@@ -67,7 +67,7 @@ describe Geet::Services::ListMilestones do
 
       actual_output = StringIO.new
 
-      service_result = VCR.use_cassette('list_milestones_upstream') do
+      service_result = VCR.use_cassette("list_milestones_upstream") do
         described_class.new(upstream_repository, out: actual_output).execute
       end
 
@@ -78,9 +78,9 @@ describe Geet::Services::ListMilestones do
     end
   end # context 'with github.com'
 
-  context 'with gitlab.com' do
-    it 'should list the milestones' do
-      allow(git_client).to receive(:remote).with(no_args).and_return('git@gitlab.com:donaldduck/testproject')
+  context "with gitlab.com" do
+    it "should list the milestones" do
+      allow(git_client).to receive(:remote).with(no_args).and_return("git@gitlab.com:donaldduck/testproject")
 
       expected_output = <<~STR
         Finding milestones...
@@ -95,7 +95,7 @@ describe Geet::Services::ListMilestones do
 
       actual_output = StringIO.new
 
-      service_result = VCR.use_cassette('gitlab_com/list_milestones') do
+      service_result = VCR.use_cassette("gitlab_com/list_milestones") do
         described_class.new(repository, out: actual_output).execute
       end
 

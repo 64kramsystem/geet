@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'tempfile'
+require "tempfile"
 
 module Geet
   module Commandline
@@ -11,7 +11,7 @@ module Geet
       include Geet::Helpers::OsHelper
 
       # Git style!
-      HELP_SEPARATOR = '------------------------ >8 ------------------------'
+      HELP_SEPARATOR = "------------------------ >8 ------------------------"
 
       # Edits a content in the default editor, optionally providing help.
       #
@@ -19,7 +19,7 @@ module Geet
       # The help is stripped after the content if edited.
       #
       sig { params(content: String, help: T.nilable(String)).returns(String) }
-      def edit_content(content: '', help: nil)
+      def edit_content(content: "", help: nil)
         content += "\n\n" + HELP_SEPARATOR + "\n" + help if help
 
         edited_content = edit_content_in_default_editor(content)
@@ -39,10 +39,10 @@ module Geet
       #
       sig { params(content: String).returns(String) }
       def edit_content_in_default_editor(content)
-        tempfile = T.must(Tempfile.open(['geet_editor', '.md']) { |file| file << content }.path)
+        tempfile = T.must(Tempfile.open(["geet_editor", ".md"]) { |file| file << content }.path)
         command = "#{system_editor} #{tempfile.shellescape}"
 
-        execute_command(command, description: 'editing', interactive: true)
+        execute_command(command, description: "editing", interactive: true)
 
         content = IO.read(tempfile)
 
@@ -55,7 +55,7 @@ module Geet
 
       sig { returns(String) }
       def system_editor
-        ENV['EDITOR'] || ENV['VISUAL'] || 'vi'
+        ENV["EDITOR"] || ENV["VISUAL"] || "vi"
       end
     end
   end

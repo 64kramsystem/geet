@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-require_relative '../../lib/geet/git/repository'
-require_relative '../../lib/geet/services/open_pr'
+require_relative "../../lib/geet/git/repository"
+require_relative "../../lib/geet/services/open_pr"
 
 describe Geet::Services::OpenPr do
   let(:git_client) { Geet::Utils::GitClient.new }
   let(:repository) { Geet::Git::Repository.new(git_client: git_client) }
-  let(:owner) { 'donaldduck' }
-  let(:branch) { 'mybranch' }
+  let(:owner) { "donaldduck" }
+  let(:branch) { "mybranch" }
 
-  context 'with github.com' do
-    let(:repository_name) { 'testrepo_upstream' }
+  context "with github.com" do
+    let(:repository_name) { "testrepo_upstream" }
 
-    it 'should open the PR for the current branch' do
+    it "should open the PR for the current branch" do
       allow(git_client).to receive(:current_branch).and_return(branch)
       allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:#{owner}/#{repository_name}")
 
@@ -30,7 +30,7 @@ describe Geet::Services::OpenPr do
           # do nothing; just don't open the browser
         end
 
-        service_result = VCR.use_cassette('github_com/open_pr') do
+        service_result = VCR.use_cassette("github_com/open_pr") do
           service_instance.execute
         end
 

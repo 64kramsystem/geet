@@ -1,17 +1,17 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require 'simple_scripting/configuration'
-require 'tmpdir'
-require_relative '../lib/geet'
+require "simple_scripting/configuration"
+require "tmpdir"
+require_relative "../lib/geet"
 
 class GeetLauncher
   include Geet
   include Geet::Commandline::Commands
   include Geet::Helpers::SummaryHelper
 
-  SUMMARY_TEMPLATE = IO.read(File.expand_path('../lib/geet/resources/templates/edit_summary.md', __dir__))
-  SUMMARY_BACKUP = File.join(Dir.tmpdir, 'last_geet_edited_summary.md')
+  SUMMARY_TEMPLATE = IO.read(File.expand_path("../lib/geet/resources/templates/edit_summary.md", __dir__))
+  SUMMARY_BACKUP = File.join(Dir.tmpdir, "last_geet_edited_summary.md")
 
   def launch
     command, options = Commandline::Configuration.new.decode_argv || exit
@@ -98,7 +98,7 @@ class GeetLauncher
 
         Commandline::Editor.new.edit_content(content: prepopulated_summary, help: SUMMARY_TEMPLATE + cancel_pr_help)
       elsif pr_commits.size == 1
-        prepopulated_summary = git.show_description('HEAD')
+        prepopulated_summary = git.show_description("HEAD")
 
         Commandline::Editor.new.edit_content(content: prepopulated_summary, help: SUMMARY_TEMPLATE + cancel_pr_help)
       else
@@ -121,7 +121,7 @@ class GeetLauncher
   def protected_repositories
     configuration = SimpleScripting::Configuration.load
 
-    configuration.protected_repositories.to_s.split(':')
+    configuration.protected_repositories.to_s.split(":")
   end
 end
 

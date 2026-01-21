@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'uri'
-require 'net/http'
-require 'json'
+require "uri"
+require "net/http"
+require "json"
 
 module Geet
   module Github
     class ApiInterface
       extend T::Sig
 
-      API_AUTH_USER = T.let('', String) # We don't need the login, as the API key uniquely identifies the user
-      API_BASE_URL = T.let('https://api.github.com', String)
-      GRAPHQL_API_URL = T.let('https://api.github.com/graphql', String)
+      API_AUTH_USER = T.let("", String) # We don't need the login, as the API key uniquely identifies the user
+      API_BASE_URL = T.let("https://api.github.com", String)
+      GRAPHQL_API_URL = T.let("https://api.github.com/graphql", String)
 
       sig { returns(T.nilable(String)) }
       attr_reader :repository_path
@@ -111,7 +111,7 @@ module Geet
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           request = Net::HTTP::Post.new(uri).tap do
             it.basic_auth API_AUTH_USER, @api_token
-            it['Accept'] = 'application/vnd.github.v3+json'
+            it["Accept"] = "application/vnd.github.v3+json"
             it.body = {query:, variables:}.to_json
           end
 
@@ -127,12 +127,12 @@ module Geet
             raise Geet::Shared::HttpError.new(error_message, response.code)
           end
 
-          if parsed_response&.key?('errors')
-            error_messages = T.cast(parsed_response['errors'], T::Array[T::Hash[String, T.untyped]]).map { |err| T.cast(err['message'], String) }.join(', ')
+          if parsed_response&.key?("errors")
+            error_messages = T.cast(parsed_response["errors"], T::Array[T::Hash[String, T.untyped]]).map { |err| T.cast(err["message"], String) }.join(", ")
             raise Geet::Shared::HttpError.new("GraphQL errors: #{error_messages}", response.code)
           end
 
-          T.cast(T.must(parsed_response).fetch('data'), T::Hash[String, T.untyped])
+          T.cast(T.must(parsed_response).fetch("data"), T::Hash[String, T.untyped])
         end
       end
 
@@ -146,8 +146,8 @@ module Geet
       def api_url(api_path)
         url = API_BASE_URL
 
-        if !api_path.start_with?('/')
-          raise 'Missing repo path!' if @repository_path.nil?
+        if !api_path.start_with?("/")
+          raise "Missing repo path!" if @repository_path.nil?
           url += "/repos/#{@repository_path}/"
         end
 
@@ -171,7 +171,7 @@ module Geet
 
           request.basic_auth API_AUTH_USER, @api_token
           request.body = data.to_json if data
-          request['Accept'] = 'application/vnd.github.v3+json'
+          request["Accept"] = "application/vnd.github.v3+json"
 
           http.request(request)
         end
@@ -184,7 +184,7 @@ module Geet
         ).returns(URI::Generic)
       }
       def encode_uri(address, params)
-        address += '?' + URI.encode_www_form(params) if params
+        address += "?" + URI.encode_www_form(params) if params
 
         URI(address)
       end
@@ -195,7 +195,7 @@ module Geet
         ).returns(T::Boolean)
       }
       def error?(response)
-        !response.code.start_with?('2')
+        !response.code.start_with?("2")
       end
 
       sig {
@@ -204,22 +204,22 @@ module Geet
         ).returns(String)
       }
       def decode_and_format_error(parsed_response)
-        message = parsed_response['message']
+        message = parsed_response["message"]
 
-        if parsed_response.key?('errors')
-          message += ':'
+        if parsed_response.key?("errors")
+          message += ":"
 
-          error_details = parsed_response['errors'].map do |error_data|
-            error_code = error_data.fetch('code')
+          error_details = parsed_response["errors"].map do |error_data|
+            error_code = error_data.fetch("code")
 
-            if error_code == 'custom'
+            if error_code == "custom"
               " #{error_data.fetch('message')}"
             else
               " #{error_code} (#{error_data.fetch('field')})"
             end
           end
 
-          message += error_details.join(', ')
+          message += error_details.join(", ")
         end
 
         message
@@ -232,7 +232,7 @@ module Geet
       }
       def link_next_page(response_headers)
         # An array (or nil) is returned.
-        link_header = Array(response_headers['link'])
+        link_header = Array(response_headers["link"])
 
         return nil if link_header.empty?
 

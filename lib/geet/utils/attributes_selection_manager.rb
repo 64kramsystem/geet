@@ -127,7 +127,7 @@ module Geet
         # the code is adjusted accordingly, this accommodates both the CLI and the test suite.
         # Tracked here: https://github.com/saveriomiroddi/geet/issues/171.
         #
-        pattern = pattern.join(',') if pattern.is_a?(Array)
+        pattern = pattern.join(",") if pattern.is_a?(Array)
 
         case pattern
         when MANUAL_LIST_SELECTION_FLAG

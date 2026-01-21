@@ -41,8 +41,8 @@ module Geet
         )
 
         response.map do |user_entry|
-          id = T.cast(user_entry.fetch('id'), Integer)
-          username = T.cast(user_entry.fetch('username'), String)
+          id = T.cast(user_entry.fetch("id"), Integer)
+          username = T.cast(user_entry.fetch("username"), String)
 
           new(id, username, api_interface)
         end

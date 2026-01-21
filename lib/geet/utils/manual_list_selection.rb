@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'tty-prompt'
+require "tty-prompt"
 
 module Geet
   module Utils
     class ManualListSelection
       extend T::Sig
 
-      NO_SELECTION_KEY = '(none)'
+      NO_SELECTION_KEY = "(none)"
 
       PAGER_SIZE = 16
 

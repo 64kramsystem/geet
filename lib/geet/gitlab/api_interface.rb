@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 # typed: strict
 
-require 'cgi'
-require 'uri'
-require 'net/http'
-require 'json'
+require "cgi"
+require "uri"
+require "net/http"
+require "json"
 
 module Geet
   module Gitlab
     class ApiInterface
       extend T::Sig
 
-      API_BASE_URL = 'https://gitlab.com/api/v4'
+      API_BASE_URL = "https://gitlab.com/api/v4"
 
       sig { returns(T.nilable(String)) }
       attr_reader :repository_path
@@ -126,7 +126,7 @@ module Geet
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           request = http_class.new(uri)
 
-          request['Private-Token'] = @api_token
+          request["Private-Token"] = @api_token
           request.body = URI.encode_www_form(data) if data
 
           http.request(request)
@@ -140,7 +140,7 @@ module Geet
         ).returns(URI::Generic)
       }
       def encode_uri(address, params)
-        address += '?' + URI.encode_www_form(params) if params
+        address += "?" + URI.encode_www_form(params) if params
 
         URI(address)
       end
@@ -151,7 +151,7 @@ module Geet
         ).returns(T::Boolean)
       }
       def error?(response)
-        !response.code.start_with?('2')
+        !response.code.start_with?("2")
       end
 
       sig {
@@ -160,10 +160,10 @@ module Geet
         ).returns(String)
       }
       def decode_and_format_error(parsed_response)
-        if parsed_response.key?('error')
-          parsed_response.fetch('error')
-        elsif parsed_response.key?('message')
-          parsed_response.fetch('message')
+        if parsed_response.key?("error")
+          parsed_response.fetch("error")
+        elsif parsed_response.key?("message")
+          parsed_response.fetch("message")
         else
           "Unrecognized response: #{parsed_response}"
         end
@@ -176,7 +176,7 @@ module Geet
       }
       def link_next_page(response_headers)
         # An array (or nil) is returned.
-        link_header = Array(response_headers['link'])
+        link_header = Array(response_headers["link"])
 
         return nil if link_header.empty?
 

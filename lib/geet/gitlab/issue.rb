@@ -50,9 +50,9 @@ module Geet
         )
 
         response.map do |issue_data, result|
-          number = T.cast(issue_data.fetch('iid'), Integer)
-          title = T.cast(issue_data.fetch('title'), String)
-          link = T.cast(issue_data.fetch('web_url'), String)
+          number = T.cast(issue_data.fetch("iid"), Integer)
+          title = T.cast(issue_data.fetch("title"), String)
+          link = T.cast(issue_data.fetch("web_url"), String)
 
           new(number, title, link)
         end
