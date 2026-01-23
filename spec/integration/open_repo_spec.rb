@@ -26,19 +26,19 @@ module Geet
           expected_url = "https://github.com/#{OWNER}/#{REPOSITORY_NAME}"
           expected_output = ""
 
-          actual_output = StringIO.new
-          service_instance = described_class.new(repository, out: actual_output, git_client: git_client)
+          expect {
+            service_instance = described_class.new(repository, git_client: git_client)
 
-          expect(service_instance).to receive(:open_file_with_default_application).with(expected_url) do
-            # do nothing; just don't open the browser
-          end
+            expect(service_instance).to receive(:open_file_with_default_application).with(expected_url) do
+              # do nothing; just don't open the browser
+            end
 
-          execution_result = VCR.use_cassette("github_com/open_repo") do
-            service_instance.execute
-          end
+            execution_result = VCR.use_cassette("github_com/open_repo") do
+              service_instance.execute
+            end
 
-          expect(actual_output.string).to eql(expected_output)
-          expect(execution_result).to eql(expected_url)
+            expect(execution_result).to eql(expected_url)
+          }.to output(expected_output).to_stdout
         end
       end
     end # context 'should open the PR for the current branch'

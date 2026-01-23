@@ -12,7 +12,7 @@ module Geet
 
       DEFAULT_GIT_CLIENT = Utils::GitClient.new
 
-      sig { params(repository: Git::Repository, out: T.any(IO, StringIO), git_client: Utils::GitClient).void }
+      sig { params(repository: Git::Repository, out: IO, git_client: Utils::GitClient).void }
       def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
         @repository = repository
         @out = out
