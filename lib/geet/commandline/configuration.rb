@@ -149,7 +149,7 @@ module Geet
 
       # Public interface
 
-      sig { returns(T::Array[T.untyped]) }
+      sig { returns(T.nilable(T::Array[T.untyped])) }
       def decode_argv
         T.unsafe(SimpleScripting::Argv).decode(COMMANDS_DECODING_TABLE)
       end
