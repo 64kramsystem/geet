@@ -30,10 +30,11 @@ module Geet
 
       sig {
         params(
-          delete_branch: T::Boolean
+          delete_branch: T::Boolean,
+          _: T.untyped,
         ).returns(T.any(Github::PR, Gitlab::PR))
       }
-      def execute(delete_branch: false)
+      def execute(delete_branch: false, **_)
         pr = checked_find_branch_pr
         open_file_with_default_application(pr.link)
         pr
