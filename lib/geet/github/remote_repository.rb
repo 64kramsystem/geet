@@ -44,7 +44,7 @@ module Geet
         response = T.cast(api_interface.send_request(api_path), T::Hash[String, T.untyped])
 
         parent_hash = T.cast(response["parent"], T.nilable(T::Hash[String, T.untyped]))
-        parent_path = T.cast(parent_hash&.fetch("full_name)"), T.nilable(String))
+        parent_path = T.cast(parent_hash&.fetch("full_name"), T.nilable(String))
 
         new(api_interface, parent_path:)
       end

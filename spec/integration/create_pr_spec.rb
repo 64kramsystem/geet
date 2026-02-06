@@ -81,6 +81,43 @@ describe Geet::Services::CreatePr do
         }.to output(expected_output).to_stdout
       end
 
+      it "should add upstream remote when not defined" do
+        downstream_repo = Geet::Git::Repository.new(upstream: false, git_client:, warnings: false)
+
+        allow(git_client).to receive(:working_tree_clean?).and_return(true)
+        allow(git_client).to receive(:current_branch).and_return("mybranch")
+        allow(git_client).to receive(:main_branch).and_return("master")
+        allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:donaldduck/testrepo_f")
+        allow(git_client).to receive(:remote_defined?).with("upstream").and_return(false)
+        allow(git_client).to receive(:path).with(upstream: false).and_return("donaldduck/testrepo_f")
+        allow(git_client).to receive(:path).with(upstream: true).and_return("donald-fr/testrepo_u")
+        allow(upstream_repository).to receive(:downstream).and_return(downstream_repo)
+        expect(git_client).to receive(:add_remote).with("upstream", "git@github.com:donald-fr/testrepo_u.git")
+        allow(git_client).to receive(:remote_branch).and_return("mybranch")
+        expect(git_client).to receive(:fetch)
+        allow(git_client).to receive(:remote_branch_diff_commits).and_return([])
+        expect(git_client).to receive(:push)
+        allow(git_client).to receive(:remote_components).and_return(["git@", "github.com", ":", "donaldduck/testrepo_f", ".git"])
+
+        expected_output = <<~STR
+          Upstream not found; adding it to the repository remotes...
+          Pushing to remote branch...
+          Creating PR...
+          PR address: https://github.com/donald-fr/testrepo_u/pull/10
+        STR
+
+        expect {
+          actual_created_pr = VCR.use_cassette("github_com/create_pr_upstream_add_remote", allow_unused_http_interactions: true) do
+            service_instance = described_class.new(upstream_repository, git_client:)
+            service_instance.execute("Title", "Description")
+          end
+
+          expect(actual_created_pr.number).to eql(10)
+          expect(actual_created_pr.title).to eql("Title")
+          expect(actual_created_pr.link).to eql("https://github.com/donald-fr/testrepo_u/pull/10")
+        }.to output(expected_output).to_stdout
+      end
+
       # It would be more consistent to have this UT outside of an upstream context, however this use
       # case is actually a typical real-world one
       #
