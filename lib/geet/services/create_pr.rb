@@ -36,12 +36,14 @@ module Geet
           base: T.nilable(String),
           draft: T::Boolean,
           open_browser: T::Boolean,
-          automerge: T::Boolean
+          automerge: T::Boolean,
+          _: T.untyped,
         ).returns(T.any(Github::PR, Gitlab::PR))
       }
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
-        base: nil, draft: false, open_browser: false, automerge: false
+        base: nil, draft: false, open_browser: false, automerge: false,
+        **_
       )
         ensure_clean_tree
 
