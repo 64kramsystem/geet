@@ -145,7 +145,7 @@ module Geet
           "add_upstream" => REPO_ADD_UPSTREAM_OPTIONS,
           "open" => REPO_OPEN_OPTIONS,
         },
-      }, T::Hash[T.untyped, T.untyped])
+      }, T::Hash[String, T::Array[T.untyped]])
 
       # Public interface
 
