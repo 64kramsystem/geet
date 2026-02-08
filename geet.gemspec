@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = ">= 3.2.0"
   s.authors     = ["Saverio Miroddi"]
-  s.date        = "2026-02-06"
+  s.date        = "2026-02-08"
   s.email       = ["saverio.pub2@gmail.com"]
   s.homepage    = "https://github.com/saveriomiroddi/geet"
   s.summary     = "Commandline interface for performing SCM host operations, eg. create a PR on GitHub"
