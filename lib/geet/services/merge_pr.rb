@@ -75,7 +75,8 @@ module Geet
 
       sig { void }
       def check_no_missing_upstream_commits
-        missing_upstream_commits = @git_client.cherry("HEAD", head: :main_branch)
+        remote_main_branch = "#{Utils::GitClient::ORIGIN_NAME}/#{@git_client.main_branch}"
+        missing_upstream_commits = @git_client.cherry("HEAD", head: remote_main_branch)
 
         raise "Found #{missing_upstream_commits.size} missing upstream commits!" if missing_upstream_commits.any?
       end

@@ -20,7 +20,7 @@ describe Geet::Services::MergePr do
   before :each do
     expect(git_client).to receive(:fetch).twice
     expect(git_client).to receive(:push)
-    expect(git_client).to receive(:cherry).with("HEAD", head: :main_branch).and_return([])
+    expect(git_client).to receive(:cherry).with("HEAD", head: "origin/#{main_branch}").and_return([])
     expect(git_client).to receive(:remote_branch_gone?).and_return(true)
     expect(git_client).to receive(:checkout).with(main_branch)
     expect(git_client).to receive(:rebase)
