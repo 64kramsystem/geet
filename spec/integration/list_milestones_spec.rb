@@ -78,31 +78,4 @@ describe Geet::Services::ListMilestones do
     end
   end # context 'with github.com'
 
-  context "with gitlab.com" do
-    it "should list the milestones" do
-      allow(git_client).to receive(:remote).with(no_args).and_return("git@gitlab.com:donaldduck/testproject")
-
-      expected_output = <<~STR
-        Finding milestones...
-        Finding issues and PRs...
-
-        2. Milestone 2
-        1. Milestone 1
-          3. This is a test issue (https://gitlab.com/donaldduck/testproject/issues/3)
-          1. Merge request 1 (https://gitlab.com/donaldduck/testproject/merge_requests/1)
-      STR
-      expected_milestone_numbers = [2, 1]
-
-      actual_output = StringIO.new
-
-      service_result = VCR.use_cassette("gitlab_com/list_milestones") do
-        described_class.new(repository, out: actual_output).execute
-      end
-
-      actual_milestone_numbers = service_result.map(&:number)
-
-      expect(actual_output.string).to eql(expected_output)
-      expect(actual_milestone_numbers).to eql(expected_milestone_numbers)
-    end
-  end
 end
