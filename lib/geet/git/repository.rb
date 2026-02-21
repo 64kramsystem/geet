@@ -193,8 +193,8 @@ module Geet
 
       sig { returns(Github::ApiInterface) }
       def api_interface
-        path = @git_client.path(upstream: @upstream)
-        Github::ApiInterface.new(@api_token, repo_path: path, upstream: @upstream)
+        @api_interface = T.let(@api_interface, T.nilable(Github::ApiInterface))
+        @api_interface ||= Github::ApiInterface.new(@api_token, repo_path: @git_client.path(upstream: @upstream), upstream: @upstream)
       end
 
       sig { returns(String) }
