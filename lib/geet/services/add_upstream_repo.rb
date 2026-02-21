@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # typed: strict
 
+require "stringio"
+
 module Geet
   module Services
     # Add the upstream repository to the current repository (configuration).

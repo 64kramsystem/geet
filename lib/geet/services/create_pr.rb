@@ -2,6 +2,7 @@
 # typed: strict
 
 require "io/console" # stdlib
+require "stringio"
 
 module Geet
   module Services

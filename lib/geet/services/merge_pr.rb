@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # typed: strict
 
+require "stringio"
+
 module Geet
   module Services
     # Merges the PR for the current branch.

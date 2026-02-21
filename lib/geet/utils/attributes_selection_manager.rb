@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 # typed: true
 
+require "stringio"
+
 module Geet
   module Utils
     # Manages the retrieval and selection of attributes.
