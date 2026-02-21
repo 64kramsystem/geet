@@ -2,9 +2,9 @@
 
 # Geet
 
-Command line interface for performing Git hosting service operations.
+Command line interface for performing GitHub operations.
 
-This tool is a provider-independent version of [Hub](https://github.com/github/hub) and [Lab](https://github.com/zaquestion/lab).
+In the past, Geet supported multiple providers, including GitLab; it was originally conceived as a provider-independent version of [Hub](https://github.com/github/hub) and [Lab](https://github.com/zaquestion/lab).
 
 ## Development status/plan
 
