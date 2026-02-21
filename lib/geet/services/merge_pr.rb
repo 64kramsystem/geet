@@ -29,7 +29,7 @@ module Geet
           delete_branch: T::Boolean,
           squash: T::Boolean
         )
-        .returns(T.any(Github::PR, Gitlab::PR))
+        .returns(Github::PR)
       }
       def execute(delete_branch: false, squash: false)
         merge_method = "squash" if squash
@@ -81,7 +81,7 @@ module Geet
         raise "Found #{missing_upstream_commits.size} missing upstream commits!" if missing_upstream_commits.any?
       end
 
-      sig { params(pr: T.any(Github::PR, Gitlab::PR), merge_method: T.nilable(String)).void }
+      sig { params(pr: Github::PR, merge_method: T.nilable(String)).void }
       def merge_pr(pr, merge_method: nil)
         @out.puts "Merging PR ##{pr.number}..."
 

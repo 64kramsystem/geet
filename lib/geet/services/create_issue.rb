@@ -17,7 +17,7 @@ module Geet
           milestone: T.nilable(String), # Number or description pattern
           assignees: T.nilable(String),
           open_browser: T::Boolean
-        ).returns(T.any(Github::Issue, Gitlab::Issue))
+        ).returns(Github::Issue)
       }
       def execute(
           title, description,
@@ -60,9 +60,9 @@ module Geet
           milestone: T.nilable(String),
           assignees: T.nilable(String)
         ).returns([
-          T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
-          T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
-          T.nilable(T::Array[T.any(Github::User, Gitlab::User)]),
+          T.nilable(T::Array[Github::Label]),
+          T.nilable(Github::Milestone),
+          T.nilable(T::Array[Github::User]),
         ])
       }
       def find_and_select_attributes(labels, milestone, assignees)
@@ -74,9 +74,9 @@ module Geet
 
         selected_attributes = selection_manager.select_attributes
 
-        selected_labels = T.cast(selected_attributes.shift, T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)])) if labels
-        selected_milestone = T.cast(selected_attributes.shift, T.nilable(T.any(Github::Milestone, Gitlab::Milestone))) if milestone
-        selected_assignees = T.cast(selected_attributes.shift, T.nilable(T::Array[T.any(Github::User, Gitlab::User)])) if assignees
+        selected_labels = T.cast(selected_attributes.shift, T.nilable(T::Array[Github::Label])) if labels
+        selected_milestone = T.cast(selected_attributes.shift, T.nilable(Github::Milestone)) if milestone
+        selected_assignees = T.cast(selected_attributes.shift, T.nilable(T::Array[Github::User])) if assignees
 
         [selected_labels, selected_milestone, selected_assignees]
       end
@@ -85,7 +85,7 @@ module Geet
         params(
           title: String,
           description: String
-        ).returns(T.any(Github::Issue, Gitlab::Issue))
+        ).returns(Github::Issue)
       }
       def create_issue(title, description)
         @out.puts "Creating the issue..."
@@ -95,10 +95,10 @@ module Geet
 
       sig {
         params(
-          issue: T.any(Github::Issue, Gitlab::Issue),
-          labels: T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
-          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
-          assignees: T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+          issue: Github::Issue,
+          labels: T.nilable(T::Array[Github::Label]),
+          milestone: T.nilable(Github::Milestone),
+          assignees: T.nilable(T::Array[Github::User])
         ).void
       }
       def edit_issue(issue, labels, milestone, assignees)
@@ -121,13 +121,11 @@ module Geet
 
       sig {
         params(
-          issue: T.any(Github::Issue, Gitlab::Issue),
-          selected_labels: T::Array[T.any(Github::Label, Gitlab::Label)]
+          issue: Github::Issue,
+          selected_labels: T::Array[Github::Label]
         ).returns(Thread)
       }
       def add_labels(issue, selected_labels)
-        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
-
         labels_list = selected_labels.map(&:name).join(", ")
 
         @out.puts "Adding labels #{labels_list}..."
@@ -139,13 +137,11 @@ module Geet
 
       sig {
         params(
-          issue: T.any(Github::Issue, Gitlab::Issue),
-          milestone: T.any(Github::Milestone, Gitlab::Milestone)
+          issue: Github::Issue,
+          milestone: Github::Milestone
         ).returns(Thread)
       }
       def set_milestone(issue, milestone)
-        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
-
         @out.puts "Setting milestone #{milestone.title}..."
 
         Thread.new do
@@ -155,13 +151,11 @@ module Geet
 
       sig {
         params(
-          issue: T.any(Github::Issue, Gitlab::Issue),
-          users: T::Array[T.any(Github::User, Gitlab::User)]
+          issue: Github::Issue,
+          users: T::Array[Github::User]
         ).returns(Thread)
       }
       def assign_users(issue, users)
-        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
-
         usernames = users.map(&:username)
 
         @out.puts "Assigning users #{usernames.join(', ')}..."
@@ -173,12 +167,10 @@ module Geet
 
       sig {
         params(
-          issue: T.any(Github::Issue, Gitlab::Issue)
+          issue: Github::Issue
         ).returns(Thread)
       }
       def assign_authenticated_user(issue)
-        raise "Functionality unsupported on GitLab!" if issue.is_a?(Gitlab::Issue)
-
         @out.puts "Assigning authenticated user..."
 
         Thread.new do

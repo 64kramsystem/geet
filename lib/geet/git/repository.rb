@@ -37,12 +37,12 @@ module Geet
 
       # REMOTE FUNCTIONALITIES (REPOSITORY)
 
-      sig { returns(T.any(T::Array[Github::User], T::Array[Gitlab::User])) }
+      sig { returns(T::Array[Github::User]) }
       def collaborators
         attempt_provider_call(:User, :list_collaborators, api_interface)
       end
 
-      sig { returns(T.any(T::Array[Github::Label], T::Array[Gitlab::Label])) }
+      sig { returns(T::Array[Github::Label]) }
       def labels
         attempt_provider_call(:Label, :list, api_interface)
       end
@@ -52,7 +52,7 @@ module Geet
           title: String,
           description: String
         )
-        .returns(T.any(Github::Issue, Gitlab::Issue))
+        .returns(Github::Issue)
       }
       def create_issue(title, description)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
@@ -66,7 +66,7 @@ module Geet
           name: String,
           color: String
         )
-        .returns(T.any(Github::Label, Gitlab::Label))
+        .returns(Github::Label)
       }
       def create_label(name, color)
         attempt_provider_call(:Label, :create, name, color, api_interface)
@@ -79,10 +79,10 @@ module Geet
 
       sig {
         params(
-          assignee: T.nilable(T.any(Github::User, Gitlab::User)),
-          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone))
+          assignee: T.nilable(Github::User),
+          milestone: T.nilable(Github::Milestone)
         )
-        .returns(T.any(T::Array[Github::AbstractIssue], T::Array[Gitlab::Issue]))
+        .returns(T::Array[Github::AbstractIssue])
       }
       def issues(assignee: nil, milestone: nil)
         attempt_provider_call(:Issue, :list, api_interface, assignee:, milestone:)
@@ -92,13 +92,13 @@ module Geet
         params(
           title: String
         )
-        .returns(T.any(Github::Milestone, Gitlab::Milestone))
+        .returns(Github::Milestone)
       }
       def create_milestone(title)
         attempt_provider_call(:Milestone, :create, title, api_interface)
       end
 
-      sig { returns(T.any(T::Array[Github::Milestone], T::Array[Gitlab::Milestone])) }
+      sig { returns(T::Array[Github::Milestone]) }
       def milestones
         attempt_provider_call(:Milestone, :list, api_interface)
       end
@@ -116,7 +116,7 @@ module Geet
           base: String,                                    # target branch
           draft: T::Boolean
         )
-        .returns(T.any(Github::PR, Gitlab::PR))
+        .returns(Github::PR)
       }
       def create_pr(title, description, head, base, draft)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
@@ -129,9 +129,9 @@ module Geet
         params(
           owner: T.nilable(String),                                      # filter by repository owner
           head: T.nilable(String),                                       # filter by source branch
-          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone))
+          milestone: T.nilable(Github::Milestone)
         )
-        .returns(T.any(T::Array[Github::PR], T::Array[Gitlab::PR]))
+        .returns(T::Array[Github::PR])
       }
       def prs(owner: nil, head: nil, milestone: nil)
         attempt_provider_call(:PR, :list, api_interface, owner:, head:, milestone:)
@@ -226,7 +226,7 @@ module Geet
 
       # OTHER HELPERS
 
-      sig { returns(T.any(Github::ApiInterface, Gitlab::ApiInterface)) }
+      sig { returns(Github::ApiInterface) }
       def api_interface
         path = @git_client.path(upstream: @upstream)
         attempt_provider_call(:ApiInterface, :new, @api_token, repo_path: path, upstream: @upstream)

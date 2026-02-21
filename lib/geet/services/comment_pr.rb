@@ -25,7 +25,7 @@ module Geet
           comment: String,
           open_browser: T::Boolean
         )
-        .returns(T.any(Github::PR, Gitlab::PR))
+        .returns(Github::PR)
       }
       def execute(comment, open_browser: false)
         pr = checked_find_branch_pr

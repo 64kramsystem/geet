@@ -32,7 +32,7 @@ module Geet
         params(
           delete_branch: T::Boolean,
           _: T.untyped,
-        ).returns(T.any(Github::PR, Gitlab::PR))
+        ).returns(Github::PR)
       }
       def execute(delete_branch: false, **_)
         pr = checked_find_branch_pr

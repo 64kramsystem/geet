@@ -38,7 +38,7 @@ module Geet
           open_browser: T::Boolean,
           automerge: T::Boolean,
           _: T.untyped,
-        ).returns(T.any(Github::PR, Gitlab::PR))
+        ).returns(Github::PR)
       }
       def execute(
         title, description, labels: nil, milestone: nil, reviewers: nil,
@@ -95,9 +95,9 @@ module Geet
           milestone: T.nilable(String),
           reviewers: T.nilable(String)
         ).returns([
-          T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
-          T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
-          T.nilable(T::Array[T.any(Github::User, Gitlab::User)]),
+          T.nilable(T::Array[Github::Label]),
+          T.nilable(Github::Milestone),
+          T.nilable(T::Array[Github::User]),
         ])
       }
       def find_and_select_attributes(labels, milestone, reviewers)
@@ -187,7 +187,7 @@ module Geet
           description: String,
           base: T.nilable(String),
           draft: T::Boolean
-        ).returns(T.any(Github::PR, Gitlab::PR))
+        ).returns(Github::PR)
       }
       def create_pr(title, description, base:, draft:)
         @out.puts "Creating PR..."
@@ -199,10 +199,10 @@ module Geet
 
       sig {
         params(
-          pr: T.any(Github::PR, Gitlab::PR),
-          labels: T.nilable(T::Array[T.any(Github::Label, Gitlab::Label)]),
-          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone)),
-          reviewers: T.nilable(T::Array[T.any(Github::User, Gitlab::User)])
+          pr: Github::PR,
+          labels: T.nilable(T::Array[Github::Label]),
+          milestone: T.nilable(Github::Milestone),
+          reviewers: T.nilable(T::Array[Github::User])
         ).void
       }
       def edit_pr(pr, labels, milestone, reviewers)
@@ -219,13 +219,11 @@ module Geet
 
       sig {
         params(
-          pr: T.any(Github::PR, Gitlab::PR),
-          selected_labels: T::Array[T.any(Github::Label, Gitlab::Label)]
+          pr: Github::PR,
+          selected_labels: T::Array[Github::Label]
         ).returns(Thread)
       }
       def add_labels(pr, selected_labels)
-        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
-
         labels_list = selected_labels.map(&:name).join(", ")
 
         @out.puts "Adding labels #{labels_list}..."
@@ -237,13 +235,11 @@ module Geet
 
       sig {
         params(
-          pr: T.any(Github::PR, Gitlab::PR),
-          milestone: T.any(Github::Milestone, Gitlab::Milestone)
+          pr: Github::PR,
+          milestone: Github::Milestone
         ).returns(Thread)
       }
       def set_milestone(pr, milestone)
-        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
-
         @out.puts "Setting milestone #{milestone.title}..."
 
         Thread.new do
@@ -253,13 +249,11 @@ module Geet
 
       sig {
         params(
-          pr: T.any(Github::PR, Gitlab::PR),
-          reviewers: T::Array[T.any(Github::User, Gitlab::User)]
+          pr: Github::PR,
+          reviewers: T::Array[Github::User]
         ).returns(Thread)
       }
       def request_review(pr, reviewers)
-        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
-
         reviewer_usernames = reviewers.map(&:username)
 
         @out.puts "Requesting review from #{reviewer_usernames.join(', ')}..."
@@ -271,12 +265,10 @@ module Geet
 
       sig {
         params(
-          pr: T.any(Github::PR, Gitlab::PR)
+          pr: Github::PR
         ).void
       }
       def enable_automerge(pr)
-        raise "Functionality unsupported on GitLab!" if pr.is_a?(Gitlab::PR)
-
         if !pr.respond_to?(:enable_automerge)
           raise "Automerge is not supported for this repository provider"
         elsif !pr.respond_to?(:node_id) || pr.node_id.nil?

@@ -18,7 +18,7 @@ module Geet
       end
 
       sig {
-        returns(T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
+        returns(T::Array[Github::Milestone])
       }
       def execute
         milestones = find_milestones
@@ -47,7 +47,7 @@ module Geet
       # are considered formatters, conceptually external to the class.
       sig {
         params(
-          milestone: T.any(Github::Milestone, Gitlab::Milestone)
+          milestone: Github::Milestone
         ).returns(String)
       }
       def milestone_description(milestone)
@@ -57,7 +57,7 @@ module Geet
       end
 
       sig {
-        returns(T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
+        returns(T::Array[Github::Milestone])
       }
       def find_milestones
         @out.puts "Finding milestones..."
@@ -67,13 +67,13 @@ module Geet
 
       sig {
         params(
-          milestones: T::Array[T.any(Github::Milestone, Gitlab::Milestone)]
+          milestones: T::Array[Github::Milestone]
         ).returns(
           T::Hash[
-            T.any(Github::Milestone, Gitlab::Milestone),
+            Github::Milestone,
             {
-              issues: T::Array[T.any(Github::Issue, Gitlab::Issue)],
-              prs: T::Array[T.any(Github::PR, Gitlab::PR)],
+              issues: T::Array[Github::Issue],
+              prs: T::Array[Github::PR],
             }
           ]
         )
