@@ -5,9 +5,10 @@ require "io/console" # stdlib
 
 module Geet
   module Services
-    class CreatePr < AbstractCreateIssue
+    class CreatePr
       extend T::Sig
 
+      include Geet::Helpers::OsHelper
       include Geet::Shared::RepoPermissions
       include Geet::Shared::Selection
 
@@ -21,7 +22,7 @@ module Geet
         ).void
       }
       def initialize(repository, out: $stdout, git_client: DEFAULT_GIT_CLIENT)
-        super(repository)
+        @repository = repository
         @git_client = git_client
         @out = out
       end
