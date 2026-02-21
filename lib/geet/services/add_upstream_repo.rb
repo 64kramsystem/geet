@@ -21,7 +21,7 @@ module Geet
       def execute
         raise "Upstream remote already existing!" if @git_client.remote_defined?(Utils::GitClient::UPSTREAM_NAME)
 
-        parent_path = @repository.remote.parent_path
+        parent_path = @repository.parent_path
 
         if parent_path
           parent_url = compose_parent_url(parent_path)

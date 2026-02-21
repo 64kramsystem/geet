@@ -137,11 +137,14 @@ module Geet
         Github::PR.list(api_interface, owner:, head:, milestone:)
       end
 
-      # Returns the RemoteRepository instance.
+      # Returns the parent repository path, or nil if this is not a fork.
       #
-      sig { returns(Github::RemoteRepository) }
-      def remote
-        Github::RemoteRepository.find(api_interface)
+      sig { returns(T.nilable(String)) }
+      def parent_path
+        api_path = "/repos/#{api_interface.repository_path}"
+        response = T.cast(api_interface.send_request(api_path), T::Hash[String, T.untyped])
+        parent_hash = T.cast(response["parent"], T.nilable(T::Hash[String, T.untyped]))
+        T.cast(parent_hash&.fetch("full_name"), T.nilable(String))
       end
 
       # REMOTE FUNCTIONALITIES (ACCOUNT)
@@ -193,8 +196,8 @@ module Geet
 
       sig { returns(Github::ApiInterface) }
       def api_interface
-        path = @git_client.path(upstream: @upstream)
-        Github::ApiInterface.new(@api_token, repo_path: path, upstream: @upstream)
+        @api_interface = T.let(@api_interface, T.nilable(Github::ApiInterface))
+        @api_interface ||= Github::ApiInterface.new(@api_token, repo_path: @git_client.path(upstream: @upstream), upstream: @upstream)
       end
 
       sig { returns(String) }

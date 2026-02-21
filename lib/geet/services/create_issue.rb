@@ -3,11 +3,18 @@
 
 module Geet
   module Services
-    class CreateIssue < AbstractCreateIssue
+    class CreateIssue
       extend T::Sig
 
+      include Geet::Helpers::OsHelper
       include Geet::Shared::RepoPermissions
       include Geet::Shared::Selection
+
+      sig { params(repository: Git::Repository, out: T.any(IO, StringIO)).void }
+      def initialize(repository, out: $stdout)
+        @repository = repository
+        @out = out
+      end
 
       sig {
         params(
