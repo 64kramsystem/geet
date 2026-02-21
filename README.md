@@ -2,28 +2,20 @@
 
 # Geet
 
-Command line interface for performing Git hosting service operations.
+Command line interface for performing GitHub operations.
 
-This tool is a provider-independent version of [Hub](https://github.com/github/hub) and [Lab](https://github.com/zaquestion/lab).
+In the past, Geet supported multiple providers, including GitLab; it was originally conceived as a provider-independent version of [Hub](https://github.com/github/hub) and [Lab](https://github.com/zaquestion/lab).
 
 ## Development status/plan
 
-The current focus is implementing Gitlab functionalities (0.3.x series).
-
 Everything is tracked in detail via [issues](https://github.com/saveriomiroddi/geet/issues) and [milestones](https://github.com/saveriomiroddi/geet/milestones).
 
-## Operation/providers support
+## Supported operations
 
-The functionalities currently supported are:
-
-- Github/Gitlab:
-  - create label
-  - list issues, labels, milestones, MR/PRs
-  - merge MR/PR
-  - open repository
-- Github:
-  - comment PR
-  - create gist, issue, milestone, PR
+- create label, gist, issue, milestone, PR
+- list issues, labels, milestones, PRs
+- merge PR, comment PR
+- open repository
 
 ## Samples
 
@@ -31,8 +23,7 @@ The functionalities currently supported are:
 
 Geet requires the API token environment variable to be set, eg:
 
-    export GITHUB_API_TOKEN=0123456789abcdef0123456789abcdef    # for GitHub
-    export GITLAB_API_TOKEN=0123456789abcd-ef0-1                # for GitLab
+    export GITHUB_API_TOKEN=0123456789abcdef0123456789abcdef
 
 All the commands need to be run from the git repository.
 

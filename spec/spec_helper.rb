@@ -23,9 +23,6 @@ VCR.configure do |config|
     Base64.strict_encode64("#{user}:#{api_token}")
   end
 
-  config.filter_sensitive_data("<GITLAB_CREDENTIALS>") do
-    ENV.fetch("GITLAB_API_TOKEN")
-  end
 end
 
 Geet::Utils::AttributesSelectionManager.serialize_requests = true

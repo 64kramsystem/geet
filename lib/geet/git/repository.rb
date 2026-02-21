@@ -37,14 +37,14 @@ module Geet
 
       # REMOTE FUNCTIONALITIES (REPOSITORY)
 
-      sig { returns(T.any(T::Array[Github::User], T::Array[Gitlab::User])) }
+      sig { returns(T::Array[Github::User]) }
       def collaborators
-        attempt_provider_call(:User, :list_collaborators, api_interface)
+        Github::User.list_collaborators(api_interface)
       end
 
-      sig { returns(T.any(T::Array[Github::Label], T::Array[Gitlab::Label])) }
+      sig { returns(T::Array[Github::Label]) }
       def labels
-        attempt_provider_call(:Label, :list, api_interface)
+        Github::Label.list(api_interface)
       end
 
       sig {
@@ -52,13 +52,13 @@ module Geet
           title: String,
           description: String
         )
-        .returns(T.any(Github::Issue, Gitlab::Issue))
+        .returns(Github::Issue)
       }
       def create_issue(title, description)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
         confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings
 
-        attempt_provider_call(:Issue, :create, title, description, api_interface)
+        Github::Issue.create(title, description, api_interface)
       end
 
       sig {
@@ -66,46 +66,46 @@ module Geet
           name: String,
           color: String
         )
-        .returns(T.any(Github::Label, Gitlab::Label))
+        .returns(Github::Label)
       }
       def create_label(name, color)
-        attempt_provider_call(:Label, :create, name, color, api_interface)
+        Github::Label.create(name, color, api_interface)
       end
 
       sig { params(name: String).void }
       def delete_branch(name)
-        attempt_provider_call(:Branch, :delete, name, api_interface)
+        Github::Branch.delete(name, api_interface)
       end
 
       sig {
         params(
-          assignee: T.nilable(T.any(Github::User, Gitlab::User)),
-          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone))
+          assignee: T.nilable(Github::User),
+          milestone: T.nilable(Github::Milestone)
         )
-        .returns(T.any(T::Array[Github::AbstractIssue], T::Array[Gitlab::Issue]))
+        .returns(T::Array[Github::AbstractIssue])
       }
       def issues(assignee: nil, milestone: nil)
-        attempt_provider_call(:Issue, :list, api_interface, assignee:, milestone:)
+        Github::Issue.list(api_interface, assignee:, milestone:)
       end
 
       sig {
         params(
           title: String
         )
-        .returns(T.any(Github::Milestone, Gitlab::Milestone))
+        .returns(Github::Milestone)
       }
       def create_milestone(title)
-        attempt_provider_call(:Milestone, :create, title, api_interface)
+        Github::Milestone.create(title, api_interface)
       end
 
-      sig { returns(T.any(T::Array[Github::Milestone], T::Array[Gitlab::Milestone])) }
+      sig { returns(T::Array[Github::Milestone]) }
       def milestones
-        attempt_provider_call(:Milestone, :list, api_interface)
+        Github::Milestone.list(api_interface)
       end
 
       sig { params(number: Integer).void }
       def close_milestone(number)
-        attempt_provider_call(:Milestone, :close, number, api_interface)
+        Github::Milestone.close(number, api_interface)
       end
 
       sig {
@@ -116,39 +116,39 @@ module Geet
           base: String,                                    # target branch
           draft: T::Boolean
         )
-        .returns(T.any(Github::PR, Gitlab::PR))
+        .returns(Github::PR)
       }
       def create_pr(title, description, head, base, draft)
         confirm(LOCAL_ACTION_ON_UPSTREAM_REPOSITORY_MESSAGE) if local_action_on_upstream_repository? && @warnings
         confirm(ACTION_ON_PROTECTED_REPOSITORY_MESSAGE) if action_on_protected_repository? && @warnings
 
-        attempt_provider_call(:PR, :create, title, description, head, api_interface, base, draft: draft)
+        Github::PR.create(title, description, head, api_interface, base, draft: draft)
       end
 
       sig {
         params(
           owner: T.nilable(String),                                      # filter by repository owner
           head: T.nilable(String),                                       # filter by source branch
-          milestone: T.nilable(T.any(Github::Milestone, Gitlab::Milestone))
+          milestone: T.nilable(Github::Milestone)
         )
-        .returns(T.any(T::Array[Github::PR], T::Array[Gitlab::PR]))
+        .returns(T::Array[Github::PR])
       }
       def prs(owner: nil, head: nil, milestone: nil)
-        attempt_provider_call(:PR, :list, api_interface, owner:, head:, milestone:)
+        Github::PR.list(api_interface, owner:, head:, milestone:)
       end
 
       # Returns the RemoteRepository instance.
       #
       sig { returns(Github::RemoteRepository) }
       def remote
-        attempt_provider_call(:RemoteRepository, :find, api_interface)
+        Github::RemoteRepository.find(api_interface)
       end
 
       # REMOTE FUNCTIONALITIES (ACCOUNT)
 
       sig { returns(Github::User) }
       def authenticated_user
-        attempt_provider_call(:User, :authenticated, api_interface)
+        Github::User.authenticated(api_interface)
       end
 
       # OTHER/CONVENIENCE FUNCTIONALITIES
@@ -168,41 +168,6 @@ module Geet
       end
 
       private
-
-      # PROVIDER
-
-      sig { returns(String) }
-      def extract_env_api_token
-        env_variable_name = "#{provider_name.upcase}_API_TOKEN"
-
-        ENV[env_variable_name] || raise("#{env_variable_name} not set!")
-      end
-
-      # Attempt to find the provider class and send the specified method, returning a friendly
-      # error (functionality X [Y] is missing) when a class/method is missing.
-      sig { params(class_name: Symbol, meth: Symbol, args: T.untyped).returns(T.untyped) }
-      def attempt_provider_call(class_name, meth, *args)
-        module_name = provider_name.capitalize
-
-        full_class_name = "Geet::#{module_name}::#{class_name}"
-
-        # Use const_get directly to trigger Zeitwerk autoloading
-        begin
-          klass = Object.const_get(full_class_name)
-        rescue NameError
-          raise "The class referenced (#{full_class_name}) is not currently supported!"
-        end
-
-        if !klass.respond_to?(meth)
-          raise "The functionality invoked (#{class_name}.#{meth}) is not currently supported!"
-        end
-
-        # Can't use ruby2_keywords, because the method definitions use named keyword arguments.
-        #
-        kwargs = args.last.is_a?(Hash) ? args.pop : {}
-
-        klass.send(meth, *args, **kwargs)
-      end
 
       # WARNINGS
 
@@ -226,17 +191,15 @@ module Geet
 
       # OTHER HELPERS
 
-      sig { returns(T.any(Github::ApiInterface, Gitlab::ApiInterface)) }
+      sig { returns(Github::ApiInterface) }
       def api_interface
         path = @git_client.path(upstream: @upstream)
-        attempt_provider_call(:ApiInterface, :new, @api_token, repo_path: path, upstream: @upstream)
+        Github::ApiInterface.new(@api_token, repo_path: path, upstream: @upstream)
       end
 
-      # Bare downcase provider name, eg. `github`
-      #
       sig { returns(String) }
-      def provider_name
-        T.must(@git_client.provider_domain[/(.*)\.\w+/, 1])
+      def extract_env_api_token
+        ENV["GITHUB_API_TOKEN"] || raise("GITHUB_API_TOKEN not set!")
       end
     end
   end

@@ -12,14 +12,14 @@ module Geet
         @out = out
       end
 
-      sig { params(title: String).returns(T.any(Github::Milestone, Gitlab::Milestone)) }
+      sig { params(title: String).returns(Github::Milestone) }
       def execute(title)
         create_milestone(title)
       end
 
       private
 
-      sig { params(title: String).returns(T.any(Github::Milestone, Gitlab::Milestone)) }
+      sig { params(title: String).returns(Github::Milestone) }
       def create_milestone(title)
         @out.puts "Creating milestone..."
 

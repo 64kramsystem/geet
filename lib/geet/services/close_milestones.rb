@@ -31,7 +31,7 @@ module Geet
 
         selection_manager.add_attribute(:milestones, "milestone", numbers, SELECTION_MULTIPLE, name_method: :title)
 
-        milestones = T.cast(selection_manager.select_attributes[0], T::Array[T.any(Github::Milestone, Gitlab::Milestone)])
+        milestones = T.cast(selection_manager.select_attributes[0], T::Array[Github::Milestone])
 
         milestones.map(&:number)
       end

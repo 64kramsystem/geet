@@ -17,7 +17,7 @@ module Geet
           name: String,
           color: String
         )
-        .returns(T.any(Github::Label, Gitlab::Label))
+        .returns(Github::Label)
       }
       def execute(name, color: generate_random_color)
         label = create_label(name, color)
@@ -34,7 +34,7 @@ module Geet
           name: String,
           color: String
         )
-        .returns(T.any(Github::Label, Gitlab::Label))
+        .returns(Github::Label)
       }
       def create_label(name, color)
         @out.puts "Creating label..."

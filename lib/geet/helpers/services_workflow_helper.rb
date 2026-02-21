@@ -24,7 +24,7 @@ module Geet
       #
       # Requires: @out, @repository.
       #
-      sig { returns(T.any(Geet::Github::PR, Geet::Gitlab::PR)) }
+      sig { returns(Github::PR) }
       def checked_find_branch_pr
         owner = if @repository.upstream?
           @repository.authenticated_user.username

@@ -209,17 +209,6 @@ module Geet
         T.must(path.split("/")[0])
       end
 
-      sig { returns(String) }
-      def provider_domain
-        # We assume that it's not possible to have origin and upstream on different providers.
-
-        domain = T.must(remote()[REMOTE_URL_REGEX, 2])
-
-        raise "Can't identify domain in the provider domain string: #{domain}" if domain !~ /\w+\.\w+/
-
-        domain
-      end
-
       # Returns the URL of the remote with the given name.
       # Sanity checks are performed.
       #

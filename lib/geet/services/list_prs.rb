@@ -13,7 +13,7 @@ module Geet
       end
 
       sig {
-        returns(T::Array[T.any(Github::PR, Gitlab::PR)])
+        returns(T::Array[Github::PR])
       }
       def execute
         prs = @repository.prs

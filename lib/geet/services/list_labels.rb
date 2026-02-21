@@ -13,7 +13,7 @@ module Geet
       end
 
       sig {
-        returns(T::Array[T.any(Github::Label, Gitlab::Label)])
+        returns(T::Array[Github::Label])
       }
       def execute
         labels = @repository.labels

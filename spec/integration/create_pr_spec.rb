@@ -264,7 +264,6 @@ describe Geet::Services::CreatePr do
         allow(git_client).to receive(:push)
         allow(git_client).to receive(:remote).with(no_args).and_return("git@github.com:donaldduck/testrepo_f")
 
-        # Mock the repository and PR without enable_automerge method (simulating GitLab)
         allow(repository).to receive(:authenticated_user).and_return(
           double(is_collaborator?: true, has_permission?: true)
         )
