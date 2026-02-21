@@ -2,5 +2,5 @@
 # typed: strict
 
 module Geet
-  VERSION = "0.28.0"
+  VERSION = "0.28.1"
 end
