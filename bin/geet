@@ -105,7 +105,11 @@ class GeetLauncher
         Commandline::Editor.new.edit_content(help: SUMMARY_TEMPLATE)
       end
 
-    IO.write(SUMMARY_BACKUP, summary)
+    if summary.empty?
+      File.delete(SUMMARY_BACKUP) if File.exist?(SUMMARY_BACKUP)
+    else
+      IO.write(SUMMARY_BACKUP, summary)
+    end
 
     summary
   end
