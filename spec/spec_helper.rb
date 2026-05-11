@@ -18,7 +18,7 @@ VCR.configure do |config|
   # See https://github.com/vcr/vcr/issues/201
   config.filter_sensitive_data("<GITHUB_CREDENTIALS>") do
     user = ""
-    api_token = ENV.fetch("GITHUB_API_TOKEN")
+    api_token = ENV.fetch("GH_TOKEN")
 
     Base64.strict_encode64("#{user}:#{api_token}")
   end

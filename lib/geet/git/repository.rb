@@ -202,7 +202,7 @@ module Geet
 
       sig { returns(String) }
       def extract_env_api_token
-        ENV["GITHUB_API_TOKEN"] || raise("GITHUB_API_TOKEN not set!")
+        ENV["GH_TOKEN"] || raise("GH_TOKEN not set!")
       end
     end
   end

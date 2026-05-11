@@ -10,7 +10,7 @@ module Geet
 
       include Geet::Helpers::OsHelper
 
-      API_TOKEN_KEY = "GITHUB_API_TOKEN"
+      API_TOKEN_KEY = "GH_TOKEN"
       DEFAULT_GIT_CLIENT = Geet::Utils::GitClient.new
 
       sig { params(out: T.any(IO, StringIO)).void }

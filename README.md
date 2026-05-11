@@ -23,7 +23,7 @@ Everything is tracked in detail via [issues](https://github.com/saveriomiroddi/g
 
 Geet requires the API token environment variable to be set, eg:
 
-    export GITHUB_API_TOKEN=0123456789abcdef0123456789abcdef
+    export GH_TOKEN=0123456789abcdef0123456789abcdef
 
 All the commands need to be run from the git repository.
 
