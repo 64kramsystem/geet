@@ -29,11 +29,15 @@ module Geet
       sig {
         params(
           delete_branch: T::Boolean,
+          rebase: T::Boolean,
           squash: T::Boolean
         )
         .returns(Github::PR)
       }
-      def execute(delete_branch: false, squash: false)
+      def execute(delete_branch: false, rebase: false, squash: false)
+        raise "Can't specify both --rebase and --squash" if rebase && squash
+
+        merge_method = "rebase" if rebase
         merge_method = "squash" if squash
 
         @git_client.fetch
@@ -62,12 +66,12 @@ module Geet
           # currently, it's not important.
           #
           checkout_branch(main_branch)
-          rebase
+          rebase_main
 
-          # When squashing, we need to force delete, since Git doesn't recognize that the branch has
-          # been merged.
+          # When squashing or rebasing, we need to force delete, since Git doesn't recognize that the
+          # branch has been merged (the commits on the main branch have different SHAs).
           #
-          delete_local_branch(pr_branch, force: squash)
+          delete_local_branch(pr_branch, force: squash || rebase)
         end
 
         pr
@@ -112,7 +116,7 @@ module Geet
       end
 
       sig { void }
-      def rebase
+      def rebase_main
         @out.puts "Rebasing..."
 
         @git_client.rebase

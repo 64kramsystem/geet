@@ -96,6 +96,7 @@ module Geet
       # rubocop:disable Style/MutableConstant
       PR_MERGE_OPTIONS = T.let([
         ["-d", "--delete-branch",                           "Delete the branch after merging"],
+        ["-r", "--rebase",                                  "Rebase merge"],
         ["-s", "--squash",                                  "Squash merge"],
         ["-u", "--upstream",                                "List on the upstream repository"],
         long_help: "Merge the PR for the current branch",
