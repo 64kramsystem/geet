@@ -5,546 +5,644 @@
 # Please instead update this file by running `bin/tapioca gem tty-prompt`.
 
 
-# source://tty-prompt//lib/tty/prompt/answers_collector.rb#3
+# pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:3
 module TTY; end
 
 # A main entry for asking prompt questions.
+# A class responsible for shell prompt interactions.
+# A class responsible for shell prompt interactions.
+# A class responsible for shell prompt interactions.
+# A class responsible for terminal prompt interactions.
+# Used for initializing test cases
 #
-# source://tty-prompt//lib/tty/prompt/answers_collector.rb#4
+# pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:4
 class TTY::Prompt
   extend ::Forwardable
 
   # Initialize a Prompt
   #
-  # @api public
-  # @param :active_color [String, Proc] the color used for selected option
-  # @param :enable_color [Boolean] enable color support, true by default
-  # @param :env [Hash] the environment variables
-  # @param :error_color [String] the color used for displaying error messages
-  # @param :help_color [String, Proc] the color used for help text
-  # @param :input [IO] the input stream
-  # @param :interrupt [Symbol] handling of Ctrl+C key out of :signal, :exit, :noop
-  # @param :output [IO] the output stream
-  # @param :prefix [String] the prompt prefix, by default empty
-  # @param :symbols [Hash] the symbols displayed in prompts such as :marker, :cross
-  # @param :track_history [Boolean] disable line history tracking, true by default
+  # @param [IO] :input
+  #   the input stream
+  # @param [IO] :output
+  #   the output stream
+  # @param [Hash] :env
+  #   the environment variables
+  # @param [Hash] :symbols
+  #   the symbols displayed in prompts such as :marker, :cross
   # @param options [Boolean] :quiet
   #   enable quiet mode, don't re-echo the question
-  # @return [Prompt] a new instance of Prompt
+  # @param [String] :prefix
+  #   the prompt prefix, by default empty
+  # @param [Symbol] :interrupt
+  #   handling of Ctrl+C key out of :signal, :exit, :noop
+  # @param [Boolean] :track_history
+  #   disable line history tracking, true by default
+  # @param [Boolean] :enable_color
+  #   enable color support, true by default
+  # @param [String,Proc] :active_color
+  #   the color used for selected option
+  # @param [String,Proc] :help_color
+  #   the color used for help text
+  # @param [String] :error_color
+  #   the color used for displaying error messages
   #
-  # source://tty-prompt//lib/tty/prompt.rb#120
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:120
   def initialize(input: T.unsafe(nil), output: T.unsafe(nil), env: T.unsafe(nil), symbols: T.unsafe(nil), prefix: T.unsafe(nil), interrupt: T.unsafe(nil), track_history: T.unsafe(nil), quiet: T.unsafe(nil), enable_color: T.unsafe(nil), active_color: T.unsafe(nil), help_color: T.unsafe(nil), error_color: T.unsafe(nil)); end
 
   # Theme colors
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#55
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:55
   def active_color; end
 
   # Ask a question.
   #
-  # @api public
   # @example
   #   propmt = TTY::Prompt.new
   #   prompt.ask("What is your name?")
-  # @param message [String] the question to be asked
-  # @return [TTY::Prompt::Question]
-  # @yield [question]
-  # @yieldparam question [TTY::Prompt::Question] further configure the question
   #
-  # source://tty-prompt//lib/tty/prompt.rb#201
+  # @param [String] message
+  #   the question to be asked
+  #
+  # @yieldparam [TTY::Prompt::Question] question
+  #   further configure the question
+  #
+  # @yield [question]
+  #
+  # @return [TTY::Prompt::Question]
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:201
   def ask(message = T.unsafe(nil), **options, &block); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#74
-  def clear_line(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:74
+  def clear_line(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#74
-  def clear_lines(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:74
+  def clear_lines(*_arg0, **_arg1, &_arg2); end
 
   # Gathers more than one aswer
   #
-  # @api public
   # @example
   #   prompt.collect do
-  #   key(:name).ask("Name?")
+  #     key(:name).ask("Name?")
   #   end
-  # @return [Hash] the collection of answers
   #
-  # source://tty-prompt//lib/tty/prompt.rb#534
+  # @return [Hash]
+  #   the collection of answers
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:534
   def collect(**options, &block); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def count_screen_lines(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def count_screen_lines(*_arg0, **_arg1, &_arg2); end
 
-  # Returns the value of attribute cursor.
-  #
-  # source://tty-prompt//lib/tty/prompt.rb#40
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:40
   def cursor; end
 
   # Print debug information in terminal top right corner
   #
-  # @api public
   # @example
   #   prompt.debug "info1", "info2"
-  # @param messages [Array]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#484
+  # @param [Array] messages
+  #
+  # @retrun [nil]
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:484
   def debug(*messages); end
 
   # Decorate a string with colors
   #
-  # @api public
-  # @param :colors [Array<Proc|Symbol>] collection of color symbols or callable object
-  # @param :string [String] the string to color
+  # @param [String] :string
+  #   the string to color
+  # @param [Array<Proc|Symbol>] :colors
+  #   collection of color symbols or callable object
   #
-  # source://tty-prompt//lib/tty/prompt.rb#156
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:156
   def decorate(string, *colors); end
 
   # Theme colors
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#55
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:55
   def enabled_color; end
 
   # Ask a question with indexed list
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   editors = %w(emacs nano vim)
   #   prompt.enum_select(EnumList, "Select editor: ", editors)
-  # @param choices [Array[Object]] the choices to select from
-  # @param question [String] the question to ask
+  #
+  # @param [String] question
+  #   the question to ask
+  #
+  # @param [Array[Object]] choices
+  #   the choices to select from
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#325
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:325
   def enum_select(question, *args, &block); end
 
   # Print statement(s) out in red color.
   #
-  # @api public
   # @example
   #   prompt.error "Shutting down all systems!"
   #   prompt.error "Nothing is fine!", "All is broken!"
-  # @param messages [Array]
+  #
+  # @param [Array] messages
+  #
   # @return [Array] messages
   #
-  # source://tty-prompt//lib/tty/prompt.rb#469
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:469
   def error(*args, **options); end
 
   # Theme colors
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#55
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:55
   def error_color; end
 
   # Expand available options
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   choices = [{
-  #   key: "Y",
-  #   name: "Overwrite",
-  #   value: :yes
+  #     key: "Y",
+  #     name: "Overwrite",
+  #     value: :yes
   #   }, {
-  #   key: "n",
-  #   name: "Skip",
-  #   value: :no
+  #     key: "n",
+  #     name: "Skip",
+  #     value: :no
   #   }]
   #   prompt.expand("Overwirte Gemfile?", choices)
-  # @return [Object] the user specified value
   #
-  # source://tty-prompt//lib/tty/prompt.rb#382
+  # @return [Object]
+  #   the user specified value
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:382
   def expand(message, *args, &block); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#81
-  def flush(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:81
+  def flush(*_arg0, **_arg1, &_arg2); end
 
   # Theme colors
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#55
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:55
   def help_color; end
 
-  # source://tty-prompt//lib/tty/prompt.rb#74
-  def hide(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:74
+  def hide(*_arg0, **_arg1, &_arg2); end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#33
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:33
   def input; end
 
   # Inspect this instance public attributes
   #
-  # @api public
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#574
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:574
   def inspect; end
 
   # Invoke a question type of prompt
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   prompt.invoke_question(Question, "Your name? ")
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#178
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:178
   def invoke_question(object, message, **options, &block); end
 
   # Invoke a list type of prompt
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   editors = %w(emacs nano vim)
   #   prompt.invoke_select(EnumList, "Select editor: ", editors)
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#236
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:236
   def invoke_select(object, question, *args, &block); end
 
   # Ask a question with a keypress answer
   #
-  # @api public
   # @see #ask
   #
-  # source://tty-prompt//lib/tty/prompt.rb#210
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:210
   def keypress(message = T.unsafe(nil), **options, &block); end
 
   # Ask masked question
   #
-  # @api public
   # @example
   #   propmt = TTY::Prompt.new
   #   prompt.mask("What is your secret?")
+  #
   # @return [TTY::Prompt::MaskQuestion]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#261
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:261
   def mask(message = T.unsafe(nil), **options, &block); end
 
   # Ask a question with multiple attributes activated
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   choices = %w(Scorpion Jax Kitana Baraka Jade)
   #   prompt.multi_select("Choose your destiny?", choices)
-  # @param choices [Array[Object]] the choices to select from
-  # @param question [String] the question to ask
+  #
+  # @param [String] question
+  #   the question to ask
+  #
+  # @param [Array[Object]] choices
+  #   the choices to select from
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#305
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:305
   def multi_select(question, *args, &block); end
 
   # Ask a question with a multiline answer
   #
-  # @api public
   # @example
   #   prompt.multiline("Description?")
+  #
   # @return [Array[String]]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#222
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:222
   def multiline(message = T.unsafe(nil), **options, &block); end
 
   # A shortcut method to ask the user negative question and return
   # true for "no" reply.
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   prompt.no?("Are you alien?") # => true
   #   # => Are you human? (y/N)
+  #
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#357
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:357
   def no?(message, **options, &block); end
 
   # Print statement(s) out in red green.
   #
-  # @api public
   # @example
   #   prompt.ok "Are you sure?"
   #   prompt.ok "All is fine!", "This is fine too."
-  # @param messages [Array]
+  #
+  # @param [Array] messages
+  #
   # @return [Array] messages
   #
-  # source://tty-prompt//lib/tty/prompt.rb#437
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:437
   def ok(*args, **options); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def on(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def on(*_arg0, **_arg1, &_arg2); end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#36
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:36
   def output; end
 
   # Prompt prefix
   #
-  # @api private
   # @example
   #   prompt = TTY::Prompt.new(prefix: [?])
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#50
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:50
   def prefix; end
 
-  # source://tty-prompt//lib/tty/prompt.rb#81
-  def print(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:81
+  def print(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#81
-  def puts(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:81
+  def puts(*_arg0, **_arg1, &_arg2); end
 
   # Quiet mode
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#60
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:60
   def quiet; end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def read_char(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def read_char(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def read_keypress(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def read_keypress(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def read_line(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def read_line(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def read_multiline(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def read_multiline(*_arg0, **_arg1, &_arg2); end
 
-  # Returns the value of attribute reader.
-  #
-  # source://tty-prompt//lib/tty/prompt.rb#38
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:38
   def reader; end
 
   # Print statement out. If the supplied message ends with a space or
   # tab character, a new line will not be appended.
   #
-  # @api public
   # @example
   #   say("Simple things.", color: :red)
-  # @param message [String]
+  #
+  # @param [String] message
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#418
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:418
   def say(message = T.unsafe(nil), **options); end
 
   # Ask a question with a list of options
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   prompt.select("What size?", %w(large medium small))
+  #
   # @example
   #   prompt = TTY::Prompt.new
   #   prompt.select("What size?") do |menu|
-  #   menu.choice :large
-  #   menu.choices %w(:medium :small)
+  #     menu.choice :large
+  #     menu.choices %w(:medium :small)
   #   end
-  # @param choices [Array[Object]] the choices to select from
-  # @param question [String] the question to ask
   #
-  # source://tty-prompt//lib/tty/prompt.rb#285
+  # @param [String] question
+  #   the question to ask
+  #
+  # @param [Array[Object]] choices
+  #   the choices to select from
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:285
   def select(question, *args, &block); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#74
-  def show(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:74
+  def show(*_arg0, **_arg1, &_arg2); end
 
   # Ask a question with a range slider
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   prompt.slider("What size?", min: 32, max: 54, step: 2)
   #   prompt.slider("What size?", [ 'xs', 's', 'm', 'l', 'xl' ])
-  # @param choices [Array] the choices to display
-  # @param question [String] the question to ask
+  #
+  # @param [String] question
+  #   the question to ask
+  #
+  # @param [Array] choices
+  #   the choices to display
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#402
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:402
   def slider(question, choices = T.unsafe(nil), **options, &block); end
 
   # Return standard error
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#565
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:565
   def stderr; end
 
   # Return standard in
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#551
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:551
   def stdin; end
 
   # Return standard out
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt.rb#558
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:558
   def stdout; end
 
-  # source://tty-prompt//lib/tty/prompt.rb#72
-  def strip(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:72
+  def strip(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def subscribe(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def subscribe(*_arg0, **_arg1, &_arg2); end
 
   # Takes the string provided by the user and compare it with other possible
   # matches to suggest an unambigous string
   #
-  # @api public
   # @example
   #   prompt.suggest("sta", ["status", "stage", "commit", "branch"])
   #   # => "status, stage"
-  # @option options
-  # @option options
-  # @option options
-  # @param message [String]
-  # @param options [Hash]
-  # @param possibilities [Array]
+  #
+  # @param [String] message
+  #
+  # @param [Array] possibilities
+  #
+  # @param [Hash] options
+  # @option options [String] :indent
+  #   The number of spaces for indentation
+  # @option options [String] :single_text
+  #   The text for a single suggestion
+  # @option options [String] :plural_text
+  #   The text for multiple suggestions
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#518
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:518
   def suggest(message, possibilities, **options); end
 
   # The collection of display symbols
   #
-  # @api private
   # @example
   #   prompt = TTY::Prompt.new(symbols: {marker: ">"})
+  #
   # @return [Hash]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#70
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:70
   def symbols; end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def trigger(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def trigger(*_arg0, **_arg1, &_arg2); end
 
   # Check if outputing to terminal
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#544
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:544
   def tty?; end
 
-  # source://tty-prompt//lib/tty/prompt.rb#77
-  def unsubscribe(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:77
+  def unsubscribe(*_arg0, **_arg1, &_arg2); end
 
   # Print statement(s) out in yellow color.
   #
-  # @api public
   # @example
   #   prompt.warn "This action can have dire consequences"
   #   prompt.warn "Carefull young apprentice", "This is potentially dangerous"
-  # @param messages [Array]
+  #
+  # @param [Array] messages
+  #
   # @return [Array] messages
   #
-  # source://tty-prompt//lib/tty/prompt.rb#453
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:453
   def warn(*args, **options); end
 
   # A shortcut method to ask the user positive question and return
   # true for "yes" reply, false for "no".
   #
-  # @api public
   # @example
   #   prompt = TTY::Prompt.new
   #   prompt.yes?("Are you human?")
   #   # => Are you human? (Y/n)
+  #
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt.rb#340
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt.rb:340
   def yes?(message, **options, &block); end
 
   class << self
-    # source://tty-prompt//lib/tty/prompt.rb#83
+    # pkg:gem/tty-prompt#lib/tty/prompt.rb:83
     def messages; end
   end
 end
 
-# source://tty-prompt//lib/tty/prompt/answers_collector.rb#5
+# pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:5
 class TTY::Prompt::AnswersCollector
   # Initialize answer collector
   #
   # @api public
-  # @return [AnswersCollector] a new instance of AnswersCollector
   #
-  # source://tty-prompt//lib/tty/prompt/answers_collector.rb#9
+  # pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:9
   def initialize(prompt, **options); end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/answers_collector.rb#61
+  # pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:61
   def add_answer(answer); end
 
   # Start gathering answers
   #
-  # @api public
-  # @return [Hash] the collection of all answers
+  # @return [Hash]
+  #   the collection of all answers
   #
-  # source://tty-prompt//lib/tty/prompt/answers_collector.rb#20
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:20
   def call(&block); end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/answers_collector.rb#56
+  # pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:56
   def create_collector; end
 
   # Create answer entry
   #
-  # @api public
   # @example
   #   key(:name).ask("Name?")
   #
-  # source://tty-prompt//lib/tty/prompt/answers_collector.rb#31
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:31
   def key(name, &block); end
 
   # Change to collect all values for a key
   #
-  # @api public
   # @example
   #   key(:colors).values.ask("Color?")
   #
-  # source://tty-prompt//lib/tty/prompt/answers_collector.rb#46
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:46
   def values(&block); end
 
   private
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/answers_collector.rb#72
+  # pkg:gem/tty-prompt#lib/tty/prompt/answers_collector.rb:72
   def method_missing(method, *args, **options, &block); end
 end
 
 # Raised when the required argument is not supplied
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#17
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:17
 class TTY::Prompt::ArgumentRequired < ::TTY::Prompt::Error; end
 
 # Raised when the argument validation fails
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#20
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:20
 class TTY::Prompt::ArgumentValidation < ::TTY::Prompt::Error; end
 
-# source://tty-prompt//lib/tty/prompt/block_paginator.rb#7
+# pkg:gem/tty-prompt#lib/tty/prompt/block_paginator.rb:7
 class TTY::Prompt::BlockPaginator < ::TTY::Prompt::Paginator
   # Paginate list of choices based on current active choice.
   # Move entire pages.
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/block_paginator.rb#12
+  # pkg:gem/tty-prompt#lib/tty/prompt/block_paginator.rb:12
   def paginate(list, active, per_page = T.unsafe(nil), &block); end
 end
 
@@ -552,95 +650,115 @@ end
 #
 # @api public
 #
-# source://tty-prompt//lib/tty/prompt/choice.rb#8
+# pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:8
 class TTY::Prompt::Choice
   # Create a Choice instance
   #
   # @api public
-  # @return [Choice] a new instance of Choice
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#95
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:95
   def initialize(name, value, **options); end
 
   # Object equality comparison
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#129
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:129
   def ==(other); end
 
   # The text to display for disabled choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#90
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:90
   def disabled; end
 
   # Check if this choice is disabled
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#108
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:108
   def disabled?; end
 
   # The keyboard key to activate this choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#85
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:85
   def key; end
 
   # The label name
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#80
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:80
   def name; end
 
   # Object string representation
   #
-  # @api public
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#142
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:142
   def to_s; end
 
   # Read value and evaluate
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/choice.rb#115
+  # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:115
   def value; end
 
   class << self
     # Convert an array into choice
     #
-    # @api public
     # @param [Array<Object>]
+    #
     # @return [Choice]
     #
-    # source://tty-prompt//lib/tty/prompt/choice.rb#49
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:49
     def convert_array(val); end
 
     # Convert a hash into choice
     #
-    # @api public
     # @param [Hash<Symbol,Object>]
+    #
     # @return [Choice]
     #
-    # source://tty-prompt//lib/tty/prompt/choice.rb#67
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:67
     def convert_hash(val); end
 
     # Create choice from value
     #
-    # @api public
-    # @param val [Object] the value to be converted
+    # @examples
+    #   Choice.from(:foo)
+    #   # => <TTY::Prompt::Choice @key=nil @name="foo" @value="foo" @disabled=false>
+    #
+    #   Choice.from([:foo, 1])
+    #   # => <TTY::Prompt::Choice @key=nil @name="foo" @value=1 @disabled=false>
+    #
+    #   Choice.from({name: :foo, value: 1, key: "f"}
+    #   # => <TTY::Prompt::Choice @key="f" @name="foo" @value=1 @disabled=false>
+    #
+    # @param [Object] val
+    #   the value to be converted
+    #
     # @raise [ArgumentError]
+    #
     # @return [Choice]
     #
-    # source://tty-prompt//lib/tty/prompt/choice.rb#29
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/choice.rb:29
     def from(val); end
   end
 end
@@ -649,185 +767,196 @@ end
 #
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/choices.rb#12
+# pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:12
 class TTY::Prompt::Choices
   include ::Enumerable
   extend ::Forwardable
 
   # Create Choices collection
   #
-  # @api public
-  # @param choices [Array[Choice]] the choices to add to collection
-  # @return [Choices] a new instance of Choices
+  # @param [Array[Choice]] choices
+  #   the choices to add to collection
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#38
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:38
   def initialize(choices = T.unsafe(nil)); end
 
   # Add choice to collection
   #
-  # @api public
-  # @param choice [Object] the choice to add
+  # @param [Object] choice
+  #   the choice to add
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#75
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:75
   def <<(choice); end
 
-  # source://tty-prompt//lib/tty/prompt/choices.rb#16
-  def ==(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:16
+  def ==(*_arg0, **_arg1, &_arg2); end
 
   # Access choice by index
   #
-  # @api public
-  # @param index [Integer]
+  # @param [Integer] index
+  #
   # @return [Choice]
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#86
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:86
   def [](index); end
 
   # Iterate over all choices in the collection
   #
-  # @api public
   # @yield [Choice]
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#63
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:63
   def each(&block); end
 
-  # source://tty-prompt//lib/tty/prompt/choices.rb#16
-  def empty?(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:16
+  def empty?(*_arg0, **_arg1, &_arg2); end
 
   # Scope of choices which are not disabled
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#47
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:47
   def enabled; end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#51
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:51
   def enabled_indexes; end
 
   # Find a matching choice
   #
-  # @api public
   # @example
   #   choices.find_by(:name, "small")
-  # @param attr [Symbol] the attribute name
-  # @param value [Object]
+  #
+  # @param [Symbol] attr
+  #   the attribute name
+  # @param [Object] value
+  #
   # @return [Choice]
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#114
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:114
   def find_by(attr, value); end
 
-  # source://tty-prompt//lib/tty/prompt/choices.rb#16
-  def index(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:16
+  def index(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt/choices.rb#16
-  def length(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:16
+  def length(*_arg0, **_arg1, &_arg2); end
 
   # Pluck a choice by its name from collection
   #
-  # @api public
-  # @param name [String] the label name for the choice
+  # @param [String] name
+  #   the label name for the choice
+  #
   # @return [Choice]
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#98
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:98
   def pluck(name); end
 
-  # source://tty-prompt//lib/tty/prompt/choices.rb#16
-  def size(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:16
+  def size(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt/choices.rb#16
-  def to_ary(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:16
+  def to_ary(*_arg0, **_arg1, &_arg2); end
 
-  # source://tty-prompt//lib/tty/prompt/choices.rb#16
-  def values_at(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:16
+  def values_at(*_arg0, **_arg1, &_arg2); end
 
   protected
 
   # The actual collection choices
   #
-  # @api private
   # @return [Array[Choice]]
   #
-  # source://tty-prompt//lib/tty/prompt/choices.rb#126
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:126
   def choices; end
 
   class << self
     # Convenience for creating choices
     #
-    # @api public
-    # @param choices [Array[Object]] the choice objects
-    # @return [Choices] the choices collection
+    # @param [Array[Object]] choices
+    #   the choice objects
     #
-    # source://tty-prompt//lib/tty/prompt/choices.rb#28
+    # @return [Choices]
+    #   the choices collection
+    #
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/choices.rb:28
     def [](*choices); end
   end
 end
 
 # Raised when wrong parameter is used to configure prompt
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#8
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:8
 class TTY::Prompt::ConfigurationError < ::TTY::Prompt::Error; end
 
-# source://tty-prompt//lib/tty/prompt/confirm_question.rb#8
+# pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:8
 class TTY::Prompt::ConfirmQuestion < ::TTY::Prompt::Question
   # Create confirmation question
   #
-  # @api public
-  # @option options
-  # @option options
-  # @option options
-  # @param options [Hash]
-  # @return [ConfirmQuestion] a new instance of ConfirmQuestion
+  # @param [Hash] options
+  # @option options [String] :suffix
+  # @option options [String] :positive
+  # @option options [String] :negative
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#17
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:17
   def initialize(prompt, **options); end
 
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#63
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:63
   def call(message, &block); end
 
   # Set value for matching negative choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#57
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:57
   def negative(value = T.unsafe(nil)); end
 
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#28
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:28
   def negative?; end
 
   # Set value for matching positive choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#48
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:48
   def positive(value = T.unsafe(nil)); end
 
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#24
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:24
   def positive?; end
 
   # Render confirmation question
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#77
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:77
   def render_question; end
 
   # Set question suffix
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#39
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:39
   def suffix(value = T.unsafe(nil)); end
 
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#32
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:32
   def suffix?; end
 
   protected
@@ -836,62 +965,62 @@ class TTY::Prompt::ConfirmQuestion < ::TTY::Prompt::Question
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#148
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:148
   def conversion; end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#131
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:131
   def create_default_labels; end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#140
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:140
   def create_suffix; end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#121
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:121
   def infer_default; end
 
   # Decide how to handle input from user
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#95
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:95
   def process_input(question); end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/confirm_question.rb#104
+  # pkg:gem/tty-prompt#lib/tty/prompt/confirm_question.rb:104
   def setup_defaults; end
 end
 
-# source://tty-prompt//lib/tty/prompt/const.rb#5
+# pkg:gem/tty-prompt#lib/tty/prompt/const.rb:5
 module TTY::Prompt::Const; end
 
-# source://tty-prompt//lib/tty/prompt/const.rb#6
+# pkg:gem/tty-prompt#lib/tty/prompt/const.rb:6
 TTY::Prompt::Const::Undefined = T.let(T.unsafe(nil), Object)
 
 # Raised when overriding already defined conversion
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#26
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:26
 class TTY::Prompt::ConversionAlreadyDefined < ::TTY::Prompt::Error; end
 
 # Raised when type conversion cannot be performed
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#11
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:11
 class TTY::Prompt::ConversionError < ::TTY::Prompt::Error; end
 
-# source://tty-prompt//lib/tty/prompt/converter_dsl.rb#7
+# pkg:gem/tty-prompt#lib/tty/prompt/converter_dsl.rb:7
 module TTY::Prompt::ConverterDSL
-  # source://tty-prompt//lib/tty/prompt/converter_dsl.rb#16
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_dsl.rb:16
   def convert(name, input); end
 
-  # source://tty-prompt//lib/tty/prompt/converter_dsl.rb#12
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_dsl.rb:12
   def converter(*names, &block); end
 
-  # source://tty-prompt//lib/tty/prompt/converter_dsl.rb#8
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_dsl.rb:8
   def converter_registry; end
 end
 
@@ -899,60 +1028,58 @@ end
 #
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/converter_registry.rb#10
+# pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:10
 class TTY::Prompt::ConverterRegistry
   extend ::Forwardable
 
   # Create a registry of conversions
   #
-  # @api private
-  # @param registry [Hash]
-  # @return [ConverterRegistry] a new instance of ConverterRegistry
+  # @param [Hash] registry
   #
-  # source://tty-prompt//lib/tty/prompt/converter_registry.rb#20
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:20
   def initialize(registry = T.unsafe(nil)); end
 
   # Execute converter
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/converter_registry.rb#55
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:55
   def [](name); end
 
   # Check if conversion is available
   #
-  # @api public
-  # @param name [String]
+  # @param [String] name
+  #
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/converter_registry.rb#31
-  def contain?(name); end
-
-  # Execute converter
-  #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/converter_registry.rb#62
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:31
+  def contain?(name); end
+
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:62
   def fetch(name); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/converter_registry.rb#64
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:64
   def inspect; end
 
-  # source://tty-prompt//lib/tty/prompt/converter_registry.rb#13
-  def keys(*args, **_arg1, &block); end
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:13
+  def keys(*_arg0, **_arg1, &_arg2); end
 
   # Register a conversion
   #
-  # @api public
-  # @param name [Symbol] the converter name
+  # @param [Symbol] name
+  #   the converter name
   #
-  # source://tty-prompt//lib/tty/prompt/converter_registry.rb#42
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/converter_registry.rb:42
   def register(*names, &block); end
 end
 
-# source://tty-prompt//lib/tty/prompt/converters.rb#8
+# pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:8
 module TTY::Prompt::Converters
   extend ::TTY::Prompt::ConverterDSL
 
@@ -960,47 +1087,49 @@ module TTY::Prompt::Converters
 
   # Convert string number to integer or float
   #
-  # @api private
-  # @return [Integer, Float, Const::Undefined]
+  # @return [Integer,Float,Const::Undefined]
   #
-  # source://tty-prompt//lib/tty/prompt/converters.rb#92
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:92
   def cast_to_num(num); end
 
   class << self
     # Convert string number to integer or float
     #
-    # @api private
-    # @return [Integer, Float, Const::Undefined]
+    # @return [Integer,Float,Const::Undefined]
     #
-    # source://tty-prompt//lib/tty/prompt/converters.rb#96
+    # @api private
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:96
     def cast_to_num(num); end
   end
 end
 
-# source://tty-prompt//lib/tty/prompt/converters.rb#15
+# pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:15
 TTY::Prompt::Converters::DIGIT_MATCHER = T.let(T.unsafe(nil), Regexp)
 
-# source://tty-prompt//lib/tty/prompt/converters.rb#12
+# pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:12
 TTY::Prompt::Converters::FALSE_VALUES = T.let(T.unsafe(nil), Regexp)
 
-# source://tty-prompt//lib/tty/prompt/converters.rb#19
+# pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:19
 TTY::Prompt::Converters::LETTER_MATCHER = T.let(T.unsafe(nil), Regexp)
 
-# source://tty-prompt//lib/tty/prompt/converters.rb#14
+# pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:14
 TTY::Prompt::Converters::SINGLE_DIGIT_MATCHER = T.let(T.unsafe(nil), Regexp)
 
-# source://tty-prompt//lib/tty/prompt/converters.rb#11
+# pkg:gem/tty-prompt#lib/tty/prompt/converters.rb:11
 TTY::Prompt::Converters::TRUE_VALUES = T.let(T.unsafe(nil), Regexp)
 
 # A class responsible for string comparison
 #
-# source://tty-prompt//lib/tty/prompt/distance.rb#6
+# pkg:gem/tty-prompt#lib/tty/prompt/distance.rb:6
 class TTY::Prompt::Distance
   # Calculate the optimal string alignment distance
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/distance.rb#10
+  # pkg:gem/tty-prompt#lib/tty/prompt/distance.rb:10
   def distance(first, second); end
 end
 
@@ -1009,311 +1138,302 @@ end
 #
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/enum_list.rb#15
+# pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:15
 class TTY::Prompt::EnumList
   # Create instance of EnumList menu.
   #
   # @api public
-  # @return [EnumList] a new instance of EnumList
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#24
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:24
   def initialize(prompt, **options); end
 
   # Call the list menu by passing question and choices
   #
-  # @api public
-  # @param
-  # @param question [String]
+  # @param [String] question
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#147
+  # @param
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:147
   def call(question, possibilities, &block); end
 
   # Add a single choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#119
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:119
   def choice(*value, &block); end
 
   # Add multiple choices
   #
-  # @api public
-  # @param values [Array[Object]] the values to add as choices
+  # @param [Array[Object]] values
+  #   the values to add as choices
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#133
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:133
   def choices(values = T.unsafe(nil)); end
 
   # Set default option selected
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#62
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:62
   def default(default); end
 
   # Check if default value is set
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#71
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:71
   def default?; end
 
   # Set selecting active index using number pad
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#105
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:105
   def enum(value); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#182
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:182
   def keyenter(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#193
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:193
   def keyleft(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#157
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:157
   def keypress(event); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#169
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:169
   def keyreturn(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#184
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:184
   def keyright(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#191
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:191
   def keytab(*_arg0); end
 
+  # @param [String] text
+  #   the help text to display per page
   # @api pbulic
-  # @param text [String] the help text to display per page
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#98
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:98
   def page_help(text); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#82
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:82
   def page_size; end
 
   # Check if list is paginated
   #
-  # @api private
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#91
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:91
   def paginated?; end
 
   # Set number of items per page
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#78
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:78
   def per_page(value); end
 
   # Set quiet mode
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#112
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:112
   def quiet(value); end
 
   # Change symbols used by this prompt
   #
-  # @api public
-  # @param new_symbols [Hash] the new symbols to use
+  # @param [Hash] new_symbols
+  #   the new symbols to use
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#53
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:53
   def symbols(new_symbols = T.unsafe(nil)); end
 
   private
 
   # Find value for the choice selected
   #
-  # @api private
   # @return [nil, Object]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#307
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:307
   def answer; end
 
   # Error message when incorrect index chosen
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#341
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:341
   def error_message; end
 
   # Find active choice or set to default
   #
-  # @api private
   # @return [nil]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#208
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:208
   def mark_choice_as_active; end
 
   # Pagination help message
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#387
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:387
   def page_help_message; end
 
   # Count how many screen lines the question spans
   #
-  # @api private
   # @return [Integer]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#296
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:296
   def question_lines_count(question_lines); end
 
   # Determine area of the screen to clear
   #
-  # @api private
-  # @param lines [Integer] the lines to clear
+  # @param [Integer] lines
+  #   the lines to clear
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#319
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:319
   def refresh(lines); end
 
   # Render a selection list.
   #
   # By default the result is printed out.
   #
-  # @api private
   # @return [Object] value
   #   return the selected value
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#274
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:274
   def render; end
 
   # Render error message and return cursor to position of input
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#351
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:351
   def render_error; end
 
   # Render footer for the indexed menu
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#378
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:378
   def render_footer; end
 
   # Render chosen option
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#365
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:365
   def render_header; end
 
   # Render menu with indexed choices to select from
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#412
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:412
   def render_menu; end
 
   # Render page help
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#398
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:398
   def render_page_help; end
 
   # Render question with the menu options
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#329
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:329
   def render_question; end
 
   # Setup default option and active selection
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#255
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:255
   def setup_defaults; end
 
   # Validate default choice name
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#243
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:243
   def validate_default_name; end
 
   # Validate default indexes to be within range
   #
   # @api private
-  # @raise [ConfigurationError]
   #
-  # source://tty-prompt//lib/tty/prompt/enum_list.rb#224
+  # pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:224
   def validate_defaults; end
 end
 
 # Checks type of default parameter to be integer
 #
-# @api private
-#
-# source://tty-prompt//lib/tty/prompt/enum_list.rb#19
+# pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:19
 TTY::Prompt::EnumList::INTEGER_MATCHER = T.let(T.unsafe(nil), Regexp)
 
-# @api private
-#
-# source://tty-prompt//lib/tty/prompt/enum_list.rb#16
+# pkg:gem/tty-prompt#lib/tty/prompt/enum_list.rb:16
 TTY::Prompt::EnumList::PAGE_HELP = T.let(T.unsafe(nil), String)
 
-# source://tty-prompt//lib/tty/prompt/errors.rb#5
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:5
 class TTY::Prompt::Error < ::StandardError; end
 
 # Evaluates provided parameters and stops if any of them fails
-#
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/evaluator.rb#9
+# pkg:gem/tty-prompt#lib/tty/prompt/evaluator.rb:9
 class TTY::Prompt::Evaluator
-  # @api private
-  # @return [Evaluator] a new instance of Evaluator
-  #
-  # source://tty-prompt//lib/tty/prompt/evaluator.rb#12
+  # pkg:gem/tty-prompt#lib/tty/prompt/evaluator.rb:12
   def initialize(question, &block); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/evaluator.rb#26
+  # pkg:gem/tty-prompt#lib/tty/prompt/evaluator.rb:26
   def <<(proc = T.unsafe(nil), &block); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/evaluator.rb#18
+  # pkg:gem/tty-prompt#lib/tty/prompt/evaluator.rb:18
   def call(initial); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/evaluator.rb#23
+  # pkg:gem/tty-prompt#lib/tty/prompt/evaluator.rb:23
   def check(proc = T.unsafe(nil), &block); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/evaluator.rb#10
+  # pkg:gem/tty-prompt#lib/tty/prompt/evaluator.rb:10
   def results; end
 end
 
@@ -1322,148 +1442,136 @@ end
 #
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/expander.rb#11
+# pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:11
 class TTY::Prompt::Expander
   # Create instance of Expander
   #
   # @api public
-  # @return [Expander] a new instance of Expander
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#24
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:24
   def initialize(prompt, options = T.unsafe(nil)); end
 
   # Execute this prompt
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#142
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:142
   def call(message, possibilities, &block); end
 
   # Add a single choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#121
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:121
   def choice(value, &block); end
 
   # Add multiple choices
   #
-  # @api public
-  # @param values [Array[Object]] the values to add as choices
+  # @param [Array[Object]] values
+  #   the values to add as choices
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#135
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:135
   def choices(values); end
 
-  # @api private
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#44
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:44
   def collapsed?; end
 
   # Set default value.
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#105
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:105
   def default(value = T.unsafe(nil)); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#48
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:48
   def expand; end
 
-  # @api private
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#40
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:40
   def expanded?; end
 
   # Respond to submit event
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#55
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:55
   def keyenter(_); end
 
   # Respond to key press event
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#80
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:80
   def keypress(event); end
 
-  # Respond to submit event
-  #
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#75
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:75
   def keyreturn(_); end
 
   # Set quiet mode.
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#114
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:114
   def quiet(value); end
 
   # Select choice by given key
   #
-  # @api private
   # @return [Choice]
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#98
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:98
   def select_choice(key); end
 
   private
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#186
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:186
   def answer; end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#238
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:238
   def load_auto_hint; end
 
   # Create possible keys with current choice highlighted
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#160
-  def possible_keys; end
-
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#256
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:160
+  def possible_keys; end
+
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:256
   def read_input; end
 
   # Refresh the current input
   #
-  # @api private
-  # @param lines [Integer]
+  # @param [Integer] lines
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#267
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:267
   def refresh(lines); end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#173
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:173
   def render; end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#252
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:252
   def render_footer; end
 
   # Render message with options
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#195
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:195
   def render_header; end
 
   # Show hint for selected option key
@@ -1472,94 +1580,83 @@ class TTY::Prompt::Expander
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#213
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:213
   def render_hint; end
 
   # Render help menu
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#282
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:282
   def render_menu; end
 
   # Render question with menu
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#225
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:225
   def render_question; end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#294
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:294
   def setup_defaults; end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/expander.rb#298
+  # pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:298
   def validate_choices; end
 end
 
 # Names for delete keys
 #
-# @api private
-#
-# source://tty-prompt//lib/tty/prompt/expander.rb#19
+# pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:19
 TTY::Prompt::Expander::DELETE_KEYS = T.let(T.unsafe(nil), Array)
 
-# @api private
-#
-# source://tty-prompt//lib/tty/prompt/expander.rb#12
+# pkg:gem/tty-prompt#lib/tty/prompt/expander.rb:12
 TTY::Prompt::Expander::HELP_CHOICE = T.let(T.unsafe(nil), Hash)
 
 # Raised when the argument is not expected
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#23
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:23
 class TTY::Prompt::InvalidArgument < ::TTY::Prompt::Error; end
 
-# source://tty-prompt//lib/tty/prompt/keypress.rb#8
+# pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:8
 class TTY::Prompt::Keypress < ::TTY::Prompt::Question
   # Create keypress question
   #
-  # @api public
-  # @param options [Hash]
-  # @param prompt [Prompt]
-  # @return [Keypress] a new instance of Keypress
+  # @param [Prompt] prompt
+  # @param [Hash] options
   #
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#15
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:15
   def initialize(prompt, **options); end
 
   # Check if any specific keys are set
   #
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#38
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:38
   def any_key?; end
 
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#31
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:31
   def countdown(value = T.unsafe(nil)); end
 
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#65
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:65
   def interval_handler(time); end
 
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#47
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:47
   def keypress(event); end
 
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#76
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:76
   def process_input(question); end
 
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#93
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:93
   def refresh(lines, lines_to_clear); end
 
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#57
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:57
   def render_question; end
 
   # Check if timeout is set
   #
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/keypress.rb#43
+  # pkg:gem/tty-prompt#lib/tty/prompt/keypress.rb:43
   def timeout?; end
 end
 
@@ -1568,150 +1665,133 @@ end
 #
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/list.rb#15
+# pkg:gem/tty-prompt#lib/tty/prompt/list.rb:15
 class TTY::Prompt::List
   # Create instance of TTY::Prompt::List menu.
   #
-  # @api public
-  # @option options
-  # @option options
-  # @option options
-  # @option options
   # @param Hash options
   #   the configuration options
-  # @param options [Hash] a customizable set of options
-  # @return [List] a new instance of List
+  # @option options [Symbol] :default
+  #   the default active choice, defaults to 1
+  # @option options [Symbol] :color
+  #   the color for the selected item, defualts to :green
+  # @option options [Symbol] :marker
+  #   the marker for the selected item
+  # @option options [String] :enum
+  #   the delimiter for the item index
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#36
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:36
   def initialize(prompt, **options); end
 
   # Information about arrow keys
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#156
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:156
   def arrows_help; end
 
   # Call the list menu by passing question and choices
   #
-  # @api public
-  # @param
-  # @param question [String]
+  # @param [String] question
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#239
+  # @param
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:239
   def call(question, possibilities, &block); end
 
   # Add a single choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#201
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:201
   def choice(*value, &block); end
 
   # Add multiple choices, or return them.
   #
-  # @api public
-  # @param values [Array[Object]] the values to add as choices; if not passed, the current
+  # @param [Array[Object]] values
+  #   the values to add as choices; if not passed, the current
   #   choices are displayed.
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#217
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:217
   def choices(values = T.unsafe(nil)); end
 
   # Set default option selected
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#78
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:78
   def default(*default_values); end
 
   # Default help text
   #
   # Note that enumeration and filter are mutually exclusive
   #
-  # @api private
+  # @a public
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#171
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:171
   def default_help; end
 
   # Set selecting active index using number pad
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#187
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:187
   def enum(value); end
 
   # Check if list is enumerated
   #
-  # @api private
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#252
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:252
   def enumerate?; end
 
   # Provide help information
   #
-  # @api public
-  # @param value [String] the new help text
+  # @param [String] value
+  #   the new help text
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#136
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:136
   def help(value = T.unsafe(nil)); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#367
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:367
   def keybackspace(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#360
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:360
   def keydelete(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#293
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:293
   def keydown(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#266
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:266
   def keyenter(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#338
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:338
   def keyleft(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#256
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:256
   def keynum(event); end
 
-  # Moves all choices page by page keeping the current selected item
-  # at the same level on each page.
-  #
-  # When the choice on a page is outside of next page range then
-  # adjust it to the last item, otherwise leave unchanged.
-  #
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#336
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:336
   def keypage_down(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#349
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:349
   def keypage_up(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#351
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:351
   def keypress(event); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#269
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:269
   def keyreturn(*_arg0); end
 
   # Moves all choices page by page keeping the current selected item
@@ -1720,278 +1800,279 @@ class TTY::Prompt::List
   # When the choice on a page is outside of next page range then
   # adjust it to the last item, otherwise leave unchanged.
   #
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#315
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:315
   def keyright(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#270
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:270
   def keyspace(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#308
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:308
   def keytab(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#276
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:276
   def keyup(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#115
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:115
   def page_size; end
 
   # Check if list is paginated
   #
-  # @api private
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#124
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:124
   def paginated?; end
 
   # Select paginator based on the current navigation key
   #
-  # @api private
   # @return [Paginator]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#87
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:87
   def paginator; end
 
   # Set number of items per page
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#111
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:111
   def per_page(value); end
 
   # Set whether selected answers are echoed
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#194
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:194
   def quiet(value); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/list.rb#272
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:272
   def search_choice_in(searchable); end
 
   # Change when help is displayed
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#145
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:145
   def show_help(value = T.unsafe(nil)); end
 
   # Change symbols used by this prompt
   #
-  # @api public
-  # @param new_symbols [Hash] the new symbols to use
+  # @param [Hash] new_symbols
+  #   the new symbols to use
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#69
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:69
   def symbols(new_symbols = T.unsafe(nil)); end
 
   # Synchronize paginators start positions
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#94
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:94
   def sync_paginators; end
 
   private
 
   # Find value for the choice selected
   #
-  # @api private
   # @return [nil, Object]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#484
-  def answer; end
-
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#376
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:484
+  def answer; end
+
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:376
   def check_options_consistency(options); end
 
   # Header part showing the current filter
   #
-  # @api private
   # @return String
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#525
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:525
   def filter_help; end
 
   # Is filtering enabled?
   #
-  # @api private
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#516
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:516
   def filterable?; end
 
   # Check if help is always displayed
   #
   # @api private
-  # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#539
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:539
   def help_always?; end
 
   # Check if help is shown only on start
   #
   # @api private
-  # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#532
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:532
   def help_start?; end
 
   # Count how many screen lines the question spans
   #
-  # @api private
   # @return [Integer]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#473
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:473
   def question_lines_count(question_lines); end
 
   # Clear screen lines
   #
-  # @api private
   # @param [String]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#493
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:493
   def refresh(lines); end
 
   # Render a selection list.
   #
   # By default the result is printed out.
   #
-  # @api private
   # @return [Object] value
   #   return the selected value
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#449
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:449
   def render; end
 
   # Render initial help and selected choice
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#548
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:548
   def render_header; end
 
   # Render menu with choices to select from
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#565
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:565
   def render_menu; end
 
   # Render question with instructions and menu
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#502
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:502
   def render_question; end
 
   # Setup default option and active selection
   #
-  # @api private
   # @return [Integer]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#388
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:388
   def setup_defaults; end
 
   # Validate default choice name
   #
-  # @api private
-  # @param name [String] the name to verify
+  # @param [String] name
+  #   the name to verify
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#432
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:432
   def validate_default_name(name); end
 
   # Validate default indexes to be within range
   #
-  # @api private
-  # @raise [ConfigurationError] raised when the default index is either non-integer,
+  # @raise [ConfigurationError]
+  #   raised when the default index is either non-integer,
   #   out of range or clashes with disabled choice item.
   #
-  # source://tty-prompt//lib/tty/prompt/list.rb#408
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/list.rb:408
   def validate_defaults; end
 end
 
 # Allowed keys for filter, along with backspace and canc.
 #
-# @api private
-#
-# source://tty-prompt//lib/tty/prompt/list.rb#17
+# pkg:gem/tty-prompt#lib/tty/prompt/list.rb:17
 TTY::Prompt::List::FILTER_KEYS_MATCHER = T.let(T.unsafe(nil), Regexp)
 
 # Checks type of default parameter to be integer
 #
-# @api private
-#
-# source://tty-prompt//lib/tty/prompt/list.rb#20
+# pkg:gem/tty-prompt#lib/tty/prompt/list.rb:20
 TTY::Prompt::List::INTEGER_MATCHER = T.let(T.unsafe(nil), Regexp)
 
-# source://tty-prompt//lib/tty/prompt/mask_question.rb#7
+# pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:7
 class TTY::Prompt::MaskQuestion < ::TTY::Prompt::Question
   # Create masked question
   #
-  # @api public
-  # @option options
-  # @param options [Hash]
-  # @return [MaskQuestion] a new instance of MaskQuestion
+  # @param [Hash] options
+  # @option options [String] :mask
   #
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#17
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:17
   def initialize(prompt, **options); end
 
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#41
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:41
   def keyenter(_event); end
 
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#45
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:45
   def keypress(event); end
 
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#37
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:37
   def keyreturn(_event); end
 
   # Set character for masking the STDIN input
   #
-  # @api public
-  # @param char [String]
+  # @param [String] char
+  #
   # @return [self]
   #
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#31
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:31
   def mask(char = T.unsafe(nil)); end
 
   # Read input from user masked by character
   #
   # @private
   #
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#79
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:79
   def read_input(question); end
 
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#71
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:71
   def render_error(errors); end
 
   # Render question and input replaced with masked character
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/mask_question.rb#56
+  # pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:56
   def render_question; end
 end
 
 # Names for delete keys
 #
-# source://tty-prompt//lib/tty/prompt/mask_question.rb#9
+# pkg:gem/tty-prompt#lib/tty/prompt/mask_question.rb:9
 TTY::Prompt::MaskQuestion::DELETE_KEYS = T.let(T.unsafe(nil), Array)
 
 # A class responsible for rendering multi select list menu.
@@ -1999,121 +2080,122 @@ TTY::Prompt::MaskQuestion::DELETE_KEYS = T.let(T.unsafe(nil), Array)
 #
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/multi_list.rb#12
+# pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:12
 class TTY::Prompt::MultiList < ::TTY::Prompt::List
   # Create instance of TTY::Prompt::MultiList menu.
   #
-  # @api public
-  # @param :prompt [Prompt]
-  # @param options [Hash]
-  # @return [MultiList] a new instance of MultiList
+  # @param [Prompt] :prompt
+  # @param [Hash] options
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#19
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:19
   def initialize(prompt, **options); end
 
   # Selects all choices when Ctrl+A is pressed
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#71
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:71
   def keyctrl_a(*_arg0); end
 
   # Revert currently selected choices when Ctrl+I is pressed
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#80
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:80
   def keyctrl_r(*_arg0); end
 
   # Callback fired when enter/return key is pressed
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#45
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:45
   def keyenter(*_arg0); end
 
-  # Callback fired when enter/return key is pressed
-  #
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#52
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:52
   def keyreturn(*_arg0); end
 
   # Callback fired when space key is pressed
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#57
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:57
   def keyspace(*_arg0); end
 
   # Set a maximum number of choices
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#38
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:38
   def max(value); end
 
   # Set a minimum number of choices
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#31
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:31
   def min(value); end
 
   private
 
   # All values for the choices selected
   #
-  # @api private
   # @return [Array[nil,Object]]
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#189
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:189
   def answer; end
 
   # Build a default help text
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#144
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:144
   def default_help; end
 
   # Header part showing the minimum/maximum number of choices
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#132
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:132
   def minmax_help; end
 
   # Render initial help text and then currently selected choices
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#163
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:163
   def render_header; end
 
   # Render menu with choices to select from
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#198
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:198
   def render_menu; end
 
   # Generate selected items names
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#123
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:123
   def selected_names; end
 
   # Setup default options and active selection
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/multi_list.rb#95
+  # pkg:gem/tty-prompt#lib/tty/prompt/multi_list.rb:95
   def setup_defaults; end
 end
 
@@ -2121,184 +2203,178 @@ end
 #
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/multiline.rb#11
+# pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:11
 class TTY::Prompt::Multiline < ::TTY::Prompt::Question
-  # @api private
-  # @return [Multiline] a new instance of Multiline
-  #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#14
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:14
   def initialize(prompt, **options); end
 
   # Provide help information
   #
-  # @api public
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#26
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:26
   def help(value = T.unsafe(nil)); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#39
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:39
   def keyenter(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#36
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:36
   def keyreturn(*_arg0); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#55
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:55
   def process_input(question); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#32
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:32
   def read_input; end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#66
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:66
   def refresh(lines, lines_to_clear); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/multiline.rb#41
+  # pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:41
   def render_question; end
 end
 
-# @api private
-#
-# source://tty-prompt//lib/tty/prompt/multiline.rb#12
+# pkg:gem/tty-prompt#lib/tty/prompt/multiline.rb:12
 TTY::Prompt::Multiline::HELP = T.let(T.unsafe(nil), String)
 
-# source://tty-prompt//lib/tty/prompt/paginator.rb#5
+# pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:5
 class TTY::Prompt::Paginator
   # Create a Paginator
   #
   # @api private
-  # @return [Paginator] a new instance of Paginator
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#23
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:23
   def initialize(**options); end
 
   # Check if page size is valid
   #
-  # @api private
   # @raise [InvalidArgument]
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#42
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:42
   def check_page_size!; end
 
   # The 0-based index of the active item on this page
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#15
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:15
   def current_index; end
 
   # The 0-based index of the last item on this page
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#12
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:12
   def end_index; end
 
   # The 0-based index of the previously active item on this page
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#18
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:18
   def last_index; end
 
   # Paginate collection given an active index
   #
-  # @api public
-  # @param active [Integer] current choice active index
-  # @param list [Array[Choice]] a collection of choice items
-  # @param per_page [Integer] number of choice items per page
-  # @return [Enumerable] the list between start and end index
+  # @param [Array[Choice]] list
+  #   a collection of choice items
+  # @param [Integer] active
+  #   current choice active index
+  # @param [Integer] per_page
+  #   number of choice items per page
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#59
+  # @return [Enumerable]
+  #   the list between start and end index
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:59
   def paginate(list, active, per_page = T.unsafe(nil), &block); end
 
   # Reset current page indexes
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#32
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:32
   def reset!; end
 
   # The 0-based index of the first item on this page
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#9
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:9
   def start_index; end
 
   # The 0-based index of the first item on this page
   #
-  # source://tty-prompt//lib/tty/prompt/paginator.rb#9
+  # pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:9
   def start_index=(_arg0); end
 end
 
-# source://tty-prompt//lib/tty/prompt/paginator.rb#6
+# pkg:gem/tty-prompt#lib/tty/prompt/paginator.rb:6
 TTY::Prompt::Paginator::DEFAULT_PAGE_SIZE = T.let(T.unsafe(nil), Integer)
 
 # A class responsible for gathering user input
 #
 # @api public
 #
-# source://tty-prompt//lib/tty/prompt/question/modifier.rb#5
+# pkg:gem/tty-prompt#lib/tty/prompt/question/modifier.rb:5
 class TTY::Prompt::Question
   include ::TTY::Prompt::Question::Checks
 
   # Initialize a Question
   #
   # @api public
-  # @return [Question] a new instance of Question
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#37
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:37
   def initialize(prompt, **options); end
 
   # Call the question
   #
-  # @api public
-  # @param message [String]
+  # @param [String] message
+  #
   # @return [self]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#107
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:107
   def call(message = T.unsafe(nil), &block); end
 
   # Specify answer conversion
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#237
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:237
   def convert(value = T.unsafe(nil), message = T.unsafe(nil)); end
 
   # Check if conversion is set
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#251
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:251
   def convert?; end
 
   # Convert value to expected type
   #
-  # @api private
-  # @param value [Object]
+  # @param [Object] value
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#221
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:221
   def convert_result(value); end
 
   # Set default value.
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#258
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:258
   def default(value = T.unsafe(nil)); end
 
   # Check if default value is set
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#269
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:269
   def default?; end
 
   # Turn terminal echo on or off. This is used to secure the display so
@@ -2306,55 +2382,55 @@ class TTY::Prompt::Question
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#331
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:331
   def echo(value = T.unsafe(nil)); end
 
-  # Turn terminal echo on or off. This is used to secure the display so
-  # that the entered characters are not echoed back to the screen.
-  #
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/question.rb#336
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:336
   def echo?(value = T.unsafe(nil)); end
 
   # Set expected range of values
   #
-  # @api public
-  # @param value [String]
+  # @param [String] value
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#353
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:353
   def in(value = T.unsafe(nil), message = T.unsafe(nil)); end
 
   # Check if range is set
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#368
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:368
   def in?; end
 
   # String representation of this question
-  #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#386
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:386
   def inspect; end
 
   # Store question message
-  #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#28
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:28
   def message; end
 
   # Retrieve message based on the key
   #
-  # @api private
-  # @param name [Symbol] the name of message key
-  # @param tokens [Hash] the tokens to evaluate
+  # @param [Symbol] name
+  #   the name of message key
+  #
+  # @param [Hash] tokens
+  #   the tokens to evaluate
+  #
   # @return [Array[String]]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#91
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:91
   def message_for(name, tokens = T.unsafe(nil)); end
 
   # Stores all the error messages displayed to user
@@ -2363,435 +2439,422 @@ class TTY::Prompt::Question
   #  * :required?
   #  * :valid?
   #
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/question.rb#78
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:78
   def messages; end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/question.rb#30
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:30
   def modifier; end
 
   # Modify string according to the rule given.
   #
-  # @api public
-  # @param rule [Symbol]
+  # @param [Symbol] rule
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#323
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:323
   def modify(*rules); end
 
   # Decide how to handle input from user
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#161
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:161
   def process_input(question); end
 
   # Set quiet mode.
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#375
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:375
   def quiet(value); end
 
   # Turn raw mode on or off. This enables character-based input.
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#341
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:341
   def raw(value = T.unsafe(nil)); end
 
-  # Turn raw mode on or off. This enables character-based input.
-  #
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/question.rb#346
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:346
   def raw?(value = T.unsafe(nil)); end
 
   # Process input
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#172
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:172
   def read_input(question); end
 
   # Determine area of the screen to clear
   #
-  # @api private
-  # @param lines [Integer] number of lines to clear
+  # @param [Integer] lines
+  #   number of lines to clear
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#201
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:201
   def refresh(lines, lines_to_clear); end
 
   # Read answer and convert to type
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#118
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:118
   def render; end
 
   # Handle error condition
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#186
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:186
   def render_error(errors); end
 
   # Render question
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#142
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:142
   def render_question; end
 
   # Ensure that passed argument is present or not
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#278
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:278
   def required(value = T.unsafe(nil), message = T.unsafe(nil)); end
 
-  # Ensure that passed argument is present or not
-  #
-  # @api public
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/question.rb#284
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:284
   def required?(value = T.unsafe(nil), message = T.unsafe(nil)); end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#380
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:380
   def to_s; end
 
   # Set validation rule for an argument
   #
-  # @api public
-  # @param value [Object]
+  # @param [Object] value
+  #
   # @return [Question]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#293
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:293
   def validate(value = T.unsafe(nil), message = T.unsafe(nil), &block); end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/question.rb#32
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:32
   def validation; end
 
-  # @api public
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/question.rb#314
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:314
   def validation?; end
 
   # Prepopulate input with custom content
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#301
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:301
   def value(val); end
 
   # Check if custom value is present
   #
   # @api private
-  # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/question.rb#310
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:310
   def value?; end
 end
 
-# source://tty-prompt//lib/tty/prompt/question/checks.rb#8
+# pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:8
 module TTY::Prompt::Question::Checks; end
 
-# source://tty-prompt//lib/tty/prompt/question/checks.rb#87
+# pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:87
 class TTY::Prompt::Question::Checks::CheckConversion
   class << self
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#88
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:88
     def call(question, value); end
   end
 end
 
 # Check if default value provided
 #
-# source://tty-prompt//lib/tty/prompt/question/checks.rb#66
+# pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:66
 class TTY::Prompt::Question::Checks::CheckDefault
   class << self
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#67
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:67
     def call(question, value); end
   end
 end
 
 # Check if modifications are applicable
 #
-# source://tty-prompt//lib/tty/prompt/question/checks.rb#10
+# pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:10
 class TTY::Prompt::Question::Checks::CheckModifier
   class << self
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#11
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:11
     def call(question, value); end
   end
 end
 
 # Check if value is within range
 #
-# source://tty-prompt//lib/tty/prompt/question/checks.rb#21
+# pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:21
 class TTY::Prompt::Question::Checks::CheckRange
   class << self
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#40
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:40
     def call(question, value); end
 
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#30
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:30
     def cast(value); end
 
-    # @return [Boolean]
-    #
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#22
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:22
     def float?(value); end
 
-    # @return [Boolean]
-    #
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#26
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:26
     def int?(value); end
   end
 end
 
 # Check if input is required
 #
-# source://tty-prompt//lib/tty/prompt/question/checks.rb#77
+# pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:77
 class TTY::Prompt::Question::Checks::CheckRequired
   class << self
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#78
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:78
     def call(question, value); end
   end
 end
 
 # Check if input requires validation
 #
-# source://tty-prompt//lib/tty/prompt/question/checks.rb#52
+# pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:52
 class TTY::Prompt::Question::Checks::CheckValidation
   class << self
-    # source://tty-prompt//lib/tty/prompt/question/checks.rb#53
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/checks.rb:53
     def call(question, value); end
   end
 end
 
 # A class representing String modifications.
 #
-# source://tty-prompt//lib/tty/prompt/question/modifier.rb#7
+# pkg:gem/tty-prompt#lib/tty/prompt/question/modifier.rb:7
 class TTY::Prompt::Question::Modifier
   # Initialize a Modifier
   #
   # @api public
-  # @return [Modifier] a new instance of Modifier
   #
-  # source://tty-prompt//lib/tty/prompt/question/modifier.rb#13
+  # pkg:gem/tty-prompt#lib/tty/prompt/question/modifier.rb:13
   def initialize(modifiers); end
 
   # Change supplied value according to the given string transformation.
   # Valid settings are:
   #
-  # @api private
-  # @param value [String] the string to be modified
+  # @param [String] value
+  #   the string to be modified
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/question/modifier.rb#26
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question/modifier.rb:26
   def apply_to(value); end
 
-  # Returns the value of attribute modifiers.
-  #
-  # source://tty-prompt//lib/tty/prompt/question/modifier.rb#8
+  # pkg:gem/tty-prompt#lib/tty/prompt/question/modifier.rb:8
   def modifiers; end
 
   class << self
     # Changes letter casing in a string according to valid modifications.
     # For invalid modification option the string is preserved.
     #
-    # @api public
-    # @option mod
-    # @option mod
-    # @option mod
-    # @option mod
-    # @option mod
-    # @option mod
-    # @param mod [Symbol] the modification to change the string
+    # @param [Symbol] mod
+    #  the modification to change the string
+    #
+    # @option mod [Symbol] :up        change to upper case
+    # @option mod [Symbol] :upcase    change to upper case
+    # @option mod [Symbol] :uppercase change to upper case
+    # @option mod [Symbol] :down      change to lower case
+    # @option mod [Symbol] :downcase  change to lower case
+    # @option mod [Symbol] :capitalize change all words to start
+    #                                  with uppercase case letter
+    #
     # @return [String]
     #
-    # source://tty-prompt//lib/tty/prompt/question/modifier.rb#50
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/modifier.rb:50
     def letter_case(mod, value); end
 
     # Changes whitespace in a string according to valid modifications.
     #
-    # @api public
-    # @option mod
-    # @option mod
-    # @option mod
-    # @option mod
-    # @param mod [Symbol] the modification to change the string
+    # @param [Symbol] mod
+    #   the modification to change the string
     #
-    # source://tty-prompt//lib/tty/prompt/question/modifier.rb#77
+    # @option mod [String] :trim, :strip
+    #   remove whitespace for the start and end
+    # @option mod [String] :chomp     remove record separator from the end
+    # @option mod [String] :collapse  remove any duplicate whitespace
+    # @option mod [String] :remove    remove all whitespace
+    #
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/question/modifier.rb:77
     def whitespace(mod, value); end
   end
 end
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/question.rb#19
+# pkg:gem/tty-prompt#lib/tty/prompt/question.rb:19
 class TTY::Prompt::Question::UndefinedSetting
-  # source://tty-prompt//lib/tty/prompt/question.rb#23
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:23
   def inspect; end
 
-  # source://tty-prompt//lib/tty/prompt/question.rb#20
+  # pkg:gem/tty-prompt#lib/tty/prompt/question.rb:20
   def to_s; end
 end
 
 # A class representing question validation.
 #
-# source://tty-prompt//lib/tty/prompt/question/validation.rb#7
+# pkg:gem/tty-prompt#lib/tty/prompt/question/validation.rb:7
 class TTY::Prompt::Question::Validation
   # Initialize a Validation
   #
-  # @api private
-  # @param pattern [Object]
+  # @param [Object] pattern
+  #
   # @return [undefined]
   #
-  # source://tty-prompt//lib/tty/prompt/question/validation.rb#22
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question/validation.rb:22
   def initialize(pattern); end
 
   # Test if the input passes the validation
   #
-  # @api public
   # @example
   #   Validation.new(/pattern/)
   #   validation.call(input) # => true
-  # @param input [Object] the input to validate
+  #
+  # @param [Object] input
+  #  the input to validate
+  #
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/question/validation.rb#57
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question/validation.rb:57
   def call(input); end
 
   # Convert validation into known type.
   #
-  # @api private
-  # @param pattern [Object]
-  # @raise [TTY::ValidationCoercion] raised when failed to convert validation
+  # @param [Object] pattern
   #
-  # source://tty-prompt//lib/tty/prompt/question/validation.rb#34
+  # @raise [TTY::ValidationCoercion]
+  #   raised when failed to convert validation
+  #
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/question/validation.rb:34
   def coerce(pattern); end
 
-  # Returns the value of attribute pattern.
-  #
-  # source://tty-prompt//lib/tty/prompt/question/validation.rb#13
+  # pkg:gem/tty-prompt#lib/tty/prompt/question/validation.rb:13
   def pattern; end
 end
 
 # Available validator names
 #
-# source://tty-prompt//lib/tty/prompt/question/validation.rb#9
+# pkg:gem/tty-prompt#lib/tty/prompt/question/validation.rb:9
 TTY::Prompt::Question::Validation::VALIDATORS = T.let(T.unsafe(nil), Hash)
 
 # Accumulates errors
 #
-# source://tty-prompt//lib/tty/prompt/result.rb#6
+# pkg:gem/tty-prompt#lib/tty/prompt/result.rb:6
 class TTY::Prompt::Result
-  # @return [Result] a new instance of Result
-  #
-  # source://tty-prompt//lib/tty/prompt/result.rb#9
+  # pkg:gem/tty-prompt#lib/tty/prompt/result.rb:9
   def initialize(question, value, errors = T.unsafe(nil)); end
 
-  # Returns the value of attribute errors.
-  #
-  # source://tty-prompt//lib/tty/prompt/result.rb#7
+  # pkg:gem/tty-prompt#lib/tty/prompt/result.rb:7
   def errors; end
 
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/result.rb#31
+  # pkg:gem/tty-prompt#lib/tty/prompt/result.rb:31
   def failure?; end
 
-  # Returns the value of attribute question.
-  #
-  # source://tty-prompt//lib/tty/prompt/result.rb#7
+  # pkg:gem/tty-prompt#lib/tty/prompt/result.rb:7
   def question; end
 
-  # @return [Boolean]
-  #
-  # source://tty-prompt//lib/tty/prompt/result.rb#27
+  # pkg:gem/tty-prompt#lib/tty/prompt/result.rb:27
   def success?; end
 
-  # Returns the value of attribute value.
-  #
-  # source://tty-prompt//lib/tty/prompt/result.rb#7
+  # pkg:gem/tty-prompt#lib/tty/prompt/result.rb:7
   def value; end
 
-  # source://tty-prompt//lib/tty/prompt/result.rb#15
+  # pkg:gem/tty-prompt#lib/tty/prompt/result.rb:15
   def with(condition = T.unsafe(nil), &block); end
 end
 
-# source://tty-prompt//lib/tty/prompt/result.rb#38
+# pkg:gem/tty-prompt#lib/tty/prompt/result.rb:38
 class TTY::Prompt::Result::Failure < ::TTY::Prompt::Result; end
 
-# source://tty-prompt//lib/tty/prompt/result.rb#35
+# pkg:gem/tty-prompt#lib/tty/prompt/result.rb:35
 class TTY::Prompt::Result::Success < ::TTY::Prompt::Result; end
 
 # @api private
 #
-# source://tty-prompt//lib/tty/prompt/selected_choices.rb#6
+# pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:6
 class TTY::Prompt::SelectedChoices
   include ::Enumerable
 
   # Create selected choices
   #
-  # @api public
-  # @param indexes [Array<Integer>]
-  # @param selected [Array<Choice>]
-  # @return [SelectedChoices] a new instance of SelectedChoices
+  # @param [Array<Choice>] selected
+  # @param [Array<Integer>] indexes
   #
-  # source://tty-prompt//lib/tty/prompt/selected_choices.rb#17
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:17
   def initialize(selected = T.unsafe(nil), indexes = T.unsafe(nil)); end
 
   # Clear selected choices
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/selected_choices.rb#26
+  # pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:26
   def clear; end
 
   # Delete choice at index
   #
-  # @api public
-  # @return [Choice] the deleted choice
+  # @return [Choice]
+  #   the deleted choice
   #
-  # source://tty-prompt//lib/tty/prompt/selected_choices.rb#62
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:62
   def delete_at(index); end
 
   # Iterate over selected choices
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/selected_choices.rb#35
+  # pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:35
   def each(&block); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/selected_choices.rb#72
+  # pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:72
   def find_index_by(&search); end
 
   # Insert choice at index
   #
-  # @api public
-  # @param choice [Choice]
-  # @param index [Integer]
+  # @param [Integer] index
+  # @param [Choice] choice
   #
-  # source://tty-prompt//lib/tty/prompt/selected_choices.rb#47
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:47
   def insert(index, choice); end
 
-  # @api private
-  #
-  # source://tty-prompt//lib/tty/prompt/selected_choices.rb#9
+  # pkg:gem/tty-prompt#lib/tty/prompt/selected_choices.rb:9
   def size; end
 end
 
@@ -2799,252 +2862,254 @@ end
 #
 # @api public
 #
-# source://tty-prompt//lib/tty/prompt/slider.rb#9
+# pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:9
 class TTY::Prompt::Slider
   # Initailize a Slider
   #
-  # @api public
-  # @option options
-  # @option options
-  # @option options
-  # @option options
-  # @param options [Hash] the options to configure this slider
-  # @param prompt [Prompt] the prompt
-  # @return [Slider] a new instance of Slider
+  # @param [Prompt] prompt
+  #   the prompt
+  # @param [Hash] options
+  #   the options to configure this slider
+  # @option options [Integer] :min The minimum value
+  # @option options [Integer] :max The maximum value
+  # @option options [Integer] :step The step value
+  # @option options [String] :format The display format
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#26
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:26
   def initialize(prompt, **options); end
 
   # Call the slider by passing question
   #
-  # @api public
-  # @param question [String] the question to ask
+  # @param [String] question
+  #   the question to ask
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#166
+  # @apu public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:166
   def call(question, possibilities = T.unsafe(nil), &block); end
 
   # Add a single choice
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#126
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:126
   def choice(*value, &block); end
 
   # Add multiple choices
   #
-  # @api public
-  # @param values [Array[Object]] the values to add as choices
+  # @param [Array[Object]] values
+  #   the values to add as choices
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#140
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:140
   def choices(values = T.unsafe(nil)); end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#104
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:104
   def default(value); end
 
   # Default help text
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#78
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:78
   def default_help; end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#149
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:149
   def format(value); end
 
   # Set help text
   #
-  # @api private
-  # @param text [String]
+  # @param [String] text
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#88
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:88
   def help(text = T.unsafe(nil)); end
 
   # Setup initial active position
   #
-  # @api private
   # @return [Integer]
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#62
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:62
   def initial; end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#183
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:183
   def keydown(*_arg0); end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#194
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:194
   def keyenter(*_arg0); end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#180
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:180
   def keyleft(*_arg0); end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#190
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:190
   def keyreturn(*_arg0); end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#185
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:185
   def keyright(*_arg0); end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#193
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:193
   def keyspace(*_arg0); end
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#188
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:188
   def keyup(*_arg0); end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#114
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:114
   def max(value); end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#109
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:109
   def min(value); end
 
   # Set quiet mode.
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#156
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:156
   def quiet(value); end
 
   # Change when help is displayed
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#97
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:97
   def show_help(value = T.unsafe(nil)); end
 
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#119
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:119
   def step(value); end
 
   # Change symbols used by this prompt
   #
-  # @api public
-  # @param new_symbols [Hash] the new symbols to use
+  # @param [Hash] new_symbols
+  #   the new symbols to use
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#51
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:51
   def symbols(new_symbols = T.unsafe(nil)); end
 
   private
 
-  # @api private
   # @return [Integer, String]
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#242
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:242
   def answer; end
 
   # Check if help is always displayed
   #
   # @api private
-  # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#208
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:208
   def help_always?; end
 
   # Check if help is shown only on start
   #
   # @api private
-  # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#201
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:201
   def help_start?; end
 
   # Clear screen
   #
-  # @api private
-  # @param lines [Integer] the lines to clear
+  # @param [Integer] lines
+  #   the lines to clear
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#235
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:235
   def refresh(lines); end
 
   # Render an interactive range slider.
   #
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#215
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:215
   def render; end
 
   # Render question with the slider
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#251
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:251
   def render_question; end
 
   # Render slider representation
   #
-  # @api private
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/slider.rb#272
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:272
   def render_slider; end
 end
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/slider.rb#12
+# pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:12
 TTY::Prompt::Slider::FORMAT = T.let(T.unsafe(nil), String)
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/slider.rb#10
+# pkg:gem/tty-prompt#lib/tty/prompt/slider.rb:10
 TTY::Prompt::Slider::HELP = T.let(T.unsafe(nil), String)
 
 # A class representing a statement output to prompt.
 #
-# source://tty-prompt//lib/tty/prompt/statement.rb#7
+# pkg:gem/tty-prompt#lib/tty/prompt/statement.rb:7
 class TTY::Prompt::Statement
   # Initialize a Statement
   #
-  # @api public
-  # @option options
-  # @option options
-  # @param options [Hash]
-  # @param prompt [TTY::Prompt]
-  # @return [Statement] a new instance of Statement
+  # @param [TTY::Prompt] prompt
   #
-  # source://tty-prompt//lib/tty/prompt/statement.rb#31
+  # @param [Hash] options
+  #
+  # @option options [Symbol] :newline
+  #   force a newline break after the message
+  #
+  # @option options [Symbol] :color
+  #   change the message display to color
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/statement.rb:31
   def initialize(prompt, newline: T.unsafe(nil), color: T.unsafe(nil)); end
 
   # Output the message to the prompt
   #
-  # @api public
-  # @param message [String] the message to be printed to stdout
+  # @param [String] message
+  #   the message to be printed to stdout
   #
-  # source://tty-prompt//lib/tty/prompt/statement.rb#43
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/statement.rb:43
   def call(message); end
 
   # Color used to display statement
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/statement.rb#16
+  # pkg:gem/tty-prompt#lib/tty/prompt/statement.rb:16
   def color; end
 
   # Flag to display newline
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/statement.rb#11
+  # pkg:gem/tty-prompt#lib/tty/prompt/statement.rb:11
   def newline; end
 end
 
@@ -3052,256 +3117,251 @@ end
 #
 # @api public
 #
-# source://tty-prompt//lib/tty/prompt/suggestion.rb#11
+# pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:11
 class TTY::Prompt::Suggestion
   # Initialize a Suggestion
   #
   # @api public
-  # @return [Suggestion] a new instance of Suggestion
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#36
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:36
   def initialize(**options); end
 
   # Number of spaces
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#21
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:21
   def indent; end
 
   # Text for multiple suggestions
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#31
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:31
   def plural_text; end
 
   # Text for a single suggestion
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#26
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:26
   def single_text; end
 
   # Suggest matches out of possibile strings
   #
-  # @api public
-  # @param message [String]
-  # @param possibilities [Array[String]]
+  # @param [String] message
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#51
+  # @param [Array[String]] possibilities
+  #
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:51
   def suggest(message, possibilities); end
 
   private
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#105
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:105
   def build_multiple_suggestions; end
 
   # @api private
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#100
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:100
   def build_single_suggestion; end
 
   # Build up a suggestion string
   #
-  # @api private
-  # @param suggestions [Array[String]]
+  # @param [Array[String]] suggestions
+  #
   # @return [String]
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#89
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:89
   def evaluate; end
 
   # Measure distances between messag and possibilities
   #
-  # @api private
-  # @param message [String]
-  # @param possibilities [Array[String]]
+  # @param [String] message
+  #
+  # @param [Array[String]] possibilities
+  #
   # @return [Hash]
   #
-  # source://tty-prompt//lib/tty/prompt/suggestion.rb#73
+  # @api private
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:73
   def measure_distances(message, possibilities); end
 end
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/suggestion.rb#12
+# pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:12
 TTY::Prompt::Suggestion::DEFAULT_INDENT = T.let(T.unsafe(nil), Integer)
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/suggestion.rb#16
+# pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:16
 TTY::Prompt::Suggestion::PLURAL_TEXT = T.let(T.unsafe(nil), String)
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/suggestion.rb#14
+# pkg:gem/tty-prompt#lib/tty/prompt/suggestion.rb:14
 TTY::Prompt::Suggestion::SINGLE_TEXT = T.let(T.unsafe(nil), String)
 
 # Cross platform common Unicode symbols.
 #
 # @api public
 #
-# source://tty-prompt//lib/tty/prompt/symbols.rb#8
+# pkg:gem/tty-prompt#lib/tty/prompt/symbols.rb:8
 module TTY::Prompt::Symbols
   private
 
-  # @api public
-  #
-  # source://tty-prompt//lib/tty/prompt/symbols.rb#73
+  # pkg:gem/tty-prompt#lib/tty/prompt/symbols.rb:73
   def symbols; end
 
   # Check if Windowz
   #
-  # @api public
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/symbols.rb#83
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/symbols.rb:83
   def windows?; end
 
   class << self
-    # @api public
-    #
-    # source://tty-prompt//lib/tty/prompt/symbols.rb#76
+    # pkg:gem/tty-prompt#lib/tty/prompt/symbols.rb:76
     def symbols; end
 
     # Check if Windowz
     #
-    # @api public
     # @return [Boolean]
     #
-    # source://tty-prompt//lib/tty/prompt/symbols.rb#86
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/symbols.rb:86
     def windows?; end
   end
 end
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/symbols.rb#9
+# pkg:gem/tty-prompt#lib/tty/prompt/symbols.rb:9
 TTY::Prompt::Symbols::KEYS = T.let(T.unsafe(nil), Hash)
 
-# @api public
-#
-# source://tty-prompt//lib/tty/prompt/symbols.rb#41
+# pkg:gem/tty-prompt#lib/tty/prompt/symbols.rb:41
 TTY::Prompt::Symbols::WIN_KEYS = T.let(T.unsafe(nil), Hash)
 
-# source://tty-prompt//lib/tty/prompt/timer.rb#5
+# pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:5
 class TTY::Prompt::Timer
-  # @return [Timer] a new instance of Timer
-  #
-  # source://tty-prompt//lib/tty/prompt/timer.rb#12
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:12
   def initialize(duration, interval); end
 
-  # Returns the value of attribute duration.
-  #
-  # source://tty-prompt//lib/tty/prompt/timer.rb#6
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:6
   def duration; end
 
-  # Returns the value of attribute interval.
-  #
-  # source://tty-prompt//lib/tty/prompt/timer.rb#10
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:10
   def interval; end
 
-  # source://tty-prompt//lib/tty/prompt/timer.rb#36
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:36
   def on_tick(&block); end
 
-  # source://tty-prompt//lib/tty/prompt/timer.rb#32
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:32
   def runtime; end
 
-  # source://tty-prompt//lib/tty/prompt/timer.rb#20
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:20
   def start; end
 
-  # source://tty-prompt//lib/tty/prompt/timer.rb#26
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:26
   def stop; end
 
+  # Object representing current time
   # Object represeting current time
   #
-  # source://tty-prompt//lib/tty/prompt/timer.rb#64
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:64
   def time_now; end
 
-  # Returns the value of attribute total.
-  #
-  # source://tty-prompt//lib/tty/prompt/timer.rb#8
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:8
   def total; end
 
-  # source://tty-prompt//lib/tty/prompt/timer.rb#40
+  # pkg:gem/tty-prompt#lib/tty/prompt/timer.rb:40
   def while_remaining; end
 end
 
 # Raised when conversion type isn't registered
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#29
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:29
 class TTY::Prompt::UnsupportedConversion < ::TTY::Prompt::Error; end
 
-# source://tty-prompt//lib/tty/prompt/version.rb#5
+# pkg:gem/tty-prompt#lib/tty/prompt/version.rb:5
 TTY::Prompt::VERSION = T.let(T.unsafe(nil), String)
 
 # Raised when the passed in validation argument is of wrong type
 #
-# source://tty-prompt//lib/tty/prompt/errors.rb#14
+# pkg:gem/tty-prompt#lib/tty/prompt/errors.rb:14
 class TTY::Prompt::ValidationCoercion < ::TTY::Prompt::Error; end
 
-# source://tty-prompt//lib/tty/prompt/utils.rb#4
+# pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:4
 module TTY::Utils
   private
 
   # Check if value is nil or an empty string
   #
-  # @api public
-  # @param value [Object] the value to check
+  # @param [Object] value
+  #   the value to check
+  #
   # @return [Boolean]
   #
-  # source://tty-prompt//lib/tty/prompt/utils.rb#31
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:31
   def blank?(value); end
 
   # Deep copy object
   #
   # @api public
   #
-  # source://tty-prompt//lib/tty/prompt/utils.rb#38
+  # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:38
   def deep_copy(object); end
 
   # Extract options hash from array argument
   #
-  # @api public
-  # @param args [Array[Object]]
+  # @param [Array[Object]] args
   #
-  # source://tty-prompt//lib/tty/prompt/utils.rb#14
+  # @api public
+  #
+  # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:14
   def extract_options(args); end
 
-  # source://tty-prompt//lib/tty/prompt/utils.rb#19
+  # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:19
   def extract_options!(args); end
 
   class << self
     # Check if value is nil or an empty string
     #
-    # @api public
-    # @param value [Object] the value to check
+    # @param [Object] value
+    #   the value to check
+    #
     # @return [Boolean]
     #
-    # source://tty-prompt//lib/tty/prompt/utils.rb#31
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:31
     def blank?(value); end
 
     # Deep copy object
     #
     # @api public
     #
-    # source://tty-prompt//lib/tty/prompt/utils.rb#38
+    # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:38
     def deep_copy(object); end
 
     # Extract options hash from array argument
     #
-    # @api public
-    # @param args [Array[Object]]
+    # @param [Array[Object]] args
     #
-    # source://tty-prompt//lib/tty/prompt/utils.rb#14
+    # @api public
+    #
+    # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:14
     def extract_options(args); end
 
-    # source://tty-prompt//lib/tty/prompt/utils.rb#19
+    # pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:19
     def extract_options!(args); end
   end
 end
 
-# source://tty-prompt//lib/tty/prompt/utils.rb#7
+# pkg:gem/tty-prompt#lib/tty/prompt/utils.rb:7
 TTY::Utils::BLANK_REGEX = T.let(T.unsafe(nil), Regexp)
