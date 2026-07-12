@@ -10,7 +10,7 @@ jobs:
       GITHUB_API_TOKEN: foo
     strategy:
       matrix:
-        ruby-version: [head, 4.0, 3.4, 3.3, 3.2]
+        ruby-version: [head, 4.0, 3.4, 3.3]
       fail-fast: false
     continue-on-error: ${{ endsWith(matrix['ruby-version'], 'head') }}
     steps:

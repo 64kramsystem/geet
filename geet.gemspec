@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "geet"
   s.version     = Geet::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.required_ruby_version = ">= 3.2.0"
+  s.required_ruby_version = ">= 3.3.0"
   s.authors     = ["Saverio Miroddi"]
   s.date        = "2026-07-07"
   s.email       = ["saverio.pub2@gmail.com"]
