@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "tty-prompt", "~> 0.23.1"
   s.add_runtime_dependency "zeitwerk", "~> 2.7"
 
-  s.add_development_dependency "rake", "~> 12.3"
+  s.add_development_dependency "rake", "~> 13.3"
 
   s.files         = `git ls-files`.split("\n")
   s.executables   << "geet"
