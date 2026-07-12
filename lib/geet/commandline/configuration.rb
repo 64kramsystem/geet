@@ -111,6 +111,12 @@ module Geet
         long_help: "Add the upstream repository to the current repository (configuration).",
       ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
 
+      REPO_CREATE_OPTIONS = T.let([
+        ["-v", "--visibility private|public", "Repository visibility"],
+        ["-u", "--upstream address", "Create a fork of this repository"],
+        long_help: "Create a GitHub repository from the current directory.",
+      ], T::Array[T.any(T::Hash[T.untyped, T.untyped], T::Array[String])])
+
       REPO_OPEN_OPTIONS = T.let([
         ["-u", "--upstream",                                "Open the upstream repository"],
         long_help: "Open the current repository in the browser",
@@ -144,6 +150,7 @@ module Geet
         },
         "repo" => {
           "add_upstream" => REPO_ADD_UPSTREAM_OPTIONS,
+          "create" => REPO_CREATE_OPTIONS,
           "open" => REPO_OPEN_OPTIONS,
         },
       }, T::Hash[String, T::Array[T.untyped]])

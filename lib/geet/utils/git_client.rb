@@ -182,6 +182,11 @@ module Geet
       # REPOSITORY/REMOTE QUERYING APIS
       ##########################################################################
 
+      sig { returns(T::Boolean) }
+      def head_commit?
+        execute_git_command("rev-parse --verify HEAD", allow_error: true, silent_stderr: true) != ""
+      end
+
       # Return the components of the remote, according to REMOTE_URL_REGEX; doesn't include the full
       # match.
       #
@@ -201,7 +206,14 @@ module Geet
       def path(upstream: false)
         remote_name_option = upstream ? {name: UPSTREAM_NAME} : {}
 
-        T.must(remote(**remote_name_option)[REMOTE_URL_REGEX, 4])
+        remote_path(remote(**remote_name_option))
+      end
+
+      sig { params(remote_url: String).returns(String) }
+      def remote_path(remote_url)
+        match = remote_url.match(REMOTE_URL_REGEX)
+        raise "Unexpected remote reference format: #{remote_url.inspect}" if !match
+        T.must(match[4])
       end
 
       sig { returns(String) }
@@ -225,10 +237,9 @@ module Geet
 
         if !remote_defined?(name)
           raise "Remote #{name.inspect} not found!"
-        elsif remote_url !~ REMOTE_URL_REGEX
-          raise "Unexpected remote reference format: #{remote_url.inspect}"
         end
 
+        remote_path(remote_url)
         remote_url
       end
 
@@ -287,7 +298,7 @@ module Geet
 
       sig { params(name: String, url: String).returns(String) }
       def add_remote(name, url)
-        execute_git_command("remote add #{name.shellescape} #{url}")
+        execute_git_command("remote add #{name.shellescape} #{url.shellescape}")
       end
 
       ##########################################################################
