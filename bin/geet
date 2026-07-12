@@ -16,6 +16,11 @@ class GeetLauncher
   def launch
     command, options = Commandline::Configuration.new.decode_argv || exit
 
+    if command == REPO_CREATE_COMMAND
+      Services::CreateRepo.new.execute(**options)
+      return
+    end
+
     repository = Git::Repository.new(upstream: !!options[:upstream], protected_repositories: protected_repositories)
 
     case command
@@ -129,4 +134,4 @@ class GeetLauncher
   end
 end
 
-GeetLauncher.new.launch
+GeetLauncher.new.launch if $PROGRAM_NAME == __FILE__

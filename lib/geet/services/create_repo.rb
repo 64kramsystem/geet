@@ -12,6 +12,7 @@ module Geet
       VISIBILITIES = T.let(["private", "public"].freeze, T::Array[String])
       FORK_ATTEMPTS = 30
       FORK_RETRY_DELAY = 1
+      DEFAULT_SLEEPER = T.let(->(delay) { Kernel.sleep(delay) }, T.proc.params(delay: Integer).void)
 
       sig {
         params(
@@ -24,11 +25,14 @@ module Geet
           fork_attempts: Integer
         ).void
       }
-      def initialize(directory: Dir.pwd, out: $stdout, git_client: Utils::GitClient.new, api_interface: nil, prompt: TTY::Prompt.new, sleeper: Kernel.method(:sleep), fork_attempts: FORK_ATTEMPTS)
+      def initialize(directory: Dir.pwd, out: $stdout, git_client: Utils::GitClient.new, api_interface: nil, prompt: TTY::Prompt.new, sleeper: DEFAULT_SLEEPER, fork_attempts: FORK_ATTEMPTS)
         @directory = directory
         @out = out
         @git_client = git_client
-        @api_interface = api_interface || Github::ApiInterface.new(ENV["GH_TOKEN"] || raise("GH_TOKEN not set!"))
+        @api_interface = T.let(
+          api_interface || Github::ApiInterface.new(ENV["GH_TOKEN"] || raise("GH_TOKEN not set!")),
+          Github::ApiInterface
+        )
         @prompt = prompt
         @sleeper = sleeper
         @fork_attempts = fork_attempts
@@ -40,8 +44,9 @@ module Geet
 
         name = File.basename(@directory)
         branch = @git_client.current_branch
-        selected_visibility = visibility || @prompt.select("Visibility:", VISIBILITIES) if !upstream
-        repository = upstream ? create_fork(name, upstream) : Github::Repository.create(name, T.must(selected_visibility), @api_interface)
+        selected_visibility = T.let(nil, T.nilable(String))
+        selected_visibility = visibility || T.cast(@prompt.select("Visibility:", VISIBILITIES), String) if !upstream
+        repository = upstream ? create_fork(name, upstream) : Github::Repository.create(name, selected_visibility, @api_interface)
 
         @git_client.add_remote(Utils::GitClient::ORIGIN_NAME, repository.ssh_url)
         @git_client.add_remote(Utils::GitClient::UPSTREAM_NAME, upstream) if upstream

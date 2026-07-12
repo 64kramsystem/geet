@@ -18,6 +18,7 @@ module Geet
       PR_MERGE_COMMAND = T.let("pr.merge", String)
       PR_OPEN_COMMAND = T.let("pr.open", String)
       REPO_ADD_UPSTREAM_COMMAND = T.let("repo.add_upstream", String)
+      REPO_CREATE_COMMAND = T.let("repo.create", String)
       REPO_OPEN_COMMAND = T.let("repo.open", String)
     end
   end

@@ -12,7 +12,7 @@ Everything is tracked in detail via [issues](https://github.com/saveriomiroddi/g
 
 ## Supported operations
 
-- create label, gist, issue, milestone, PR
+- create label, gist, issue, milestone, PR, repository, repository fork
 - list issues, labels, milestones, PRs
 - merge PR, comment PR
 - open repository
@@ -26,6 +26,22 @@ Geet requires the API token environment variable to be set, eg:
     export GH_TOKEN=0123456789abcdef0123456789abcdef
 
 All the commands need to be run from the git repository.
+
+### Create a repository or fork
+
+Create a repository and select its visibility interactively:
+
+    $ geet repo create
+
+Create a private repository without a prompt:
+
+    $ geet repo create --visibility private
+
+Create a fork while preserving the source as `upstream`:
+
+    $ geet repo create --upstream git@github.com:owner/project.git
+
+Geet configures the created repository's SSH address as `origin`, preserves the source address as `upstream` when forking, pushes the current branch, and updates the GitHub default branch to match it.
 
 ### Create an issue (with label and assignees)
 
