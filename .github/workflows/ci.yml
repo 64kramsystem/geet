@@ -7,7 +7,7 @@ jobs:
     name: Test Suite
     runs-on: ubuntu-latest
     env:
-      GITHUB_API_TOKEN: foo
+      GH_TOKEN: foo
     strategy:
       matrix:
         ruby-version: [head, 4.0, 3.4, 3.3]
