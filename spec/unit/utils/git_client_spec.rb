@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
+require "tmpdir"
 
 describe Geet::Utils::GitClient do
   subject { described_class.new }
@@ -28,6 +29,22 @@ describe Geet::Utils::GitClient do
 
     it "rejects an unsupported address" do
       expect { subject.remote_path("owner/project") }.to raise_error(RuntimeError, 'Unexpected remote reference format: "owner/project"')
+    end
+  end
+
+  describe "#add_remote" do
+    it "passes a URL containing shell metacharacters as a single argument" do
+      Dir.mktmpdir do |directory|
+        marker = File.join(directory, "injected")
+        url = "https://example.com/owner/project.git; touch #{marker}"
+        git_client = described_class.new(location: directory)
+        system("git", "init", "--quiet", directory, exception: true)
+
+        git_client.add_remote("origin", url)
+
+        expect(File).not_to exist(marker)
+        expect(`git -C #{directory.shellescape} remote get-url origin`.strip).to eq(url)
+      end
     end
   end
 end

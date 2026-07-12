@@ -35,6 +35,14 @@ describe Geet::Services::CreateRepo do
       expect { service.execute(visibility: "private") }.to raise_error("The repository has no commits!")
     end
 
+    it "rejects a detached HEAD before prompting or making an API request" do
+      allow(git_client).to receive(:current_branch).and_raise("Couldn't find current branch")
+
+      expect(prompt).not_to receive(:select)
+      expect(Geet::Github::Repository).not_to receive(:create)
+      expect { service.execute }.to raise_error("Couldn't find current branch")
+    end
+
     it "rejects an existing origin before making an API request" do
       allow(git_client).to receive(:remote_defined?).with("origin").and_return(true)
 

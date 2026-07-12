@@ -298,7 +298,7 @@ module Geet
 
       sig { params(name: String, url: String).returns(String) }
       def add_remote(name, url)
-        execute_git_command("remote add #{name.shellescape} #{url}")
+        execute_git_command("remote add #{name.shellescape} #{url.shellescape}")
       end
 
       ##########################################################################
