@@ -21,6 +21,11 @@ class GeetLauncher
       return
     end
 
+    if command == REPO_OPEN_COMMAND
+      Services::OpenRepo.new.execute(**options)
+      return
+    end
+
     repository = Git::Repository.new(upstream: !!options[:upstream], protected_repositories: protected_repositories)
 
     case command
@@ -80,8 +85,6 @@ class GeetLauncher
       Services::OpenPr.new(repository).execute(**options)
     when REPO_ADD_UPSTREAM_COMMAND
       Services::AddUpstreamRepo.new(repository).execute
-    when REPO_OPEN_COMMAND
-      Services::OpenRepo.new(repository).execute(**options)
     else
       raise "Internal error - Unrecognized command #{command.inspect}"
     end

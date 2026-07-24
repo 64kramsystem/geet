@@ -18,5 +18,21 @@ describe GeetLauncher do
 
       described_class.new.launch
     end
+
+    it "dispatches repository opening without constructing an authenticated repository" do
+      service = instance_double(Geet::Services::OpenRepo)
+      allow_any_instance_of(Geet::Commandline::Configuration).to receive(:decode_argv).and_return([
+        Geet::Commandline::Commands::REPO_OPEN_COMMAND,
+        {upstream: true},
+      ])
+      expect(Geet::Services::OpenRepo).to receive(:new).and_return(service)
+      expect(service).to receive(:execute).with(upstream: true)
+      expect(Geet::Git::Repository).not_to receive(:new)
+
+      without_token = ENV.delete("GH_TOKEN")
+      described_class.new.launch
+    ensure
+      ENV["GH_TOKEN"] = without_token if without_token
+    end
   end
 end

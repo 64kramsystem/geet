@@ -8,7 +8,6 @@ require_relative "../../lib/geet/services/open_repo"
 module Geet
   describe Services::OpenRepo do
     let(:git_client) { Utils::GitClient.new }
-    let(:repository) { Git::Repository.new(git_client: git_client) }
 
     OWNER = "donaldduck"
     REPOSITORY_NAME = "testrepo"
@@ -27,7 +26,7 @@ module Geet
           expected_output = ""
 
           expect {
-            service_instance = described_class.new(repository, git_client: git_client)
+            service_instance = described_class.new(git_client: git_client)
 
             expect(service_instance).to receive(:open_file_with_default_application).with(expected_url) do
               # do nothing; just don't open the browser
