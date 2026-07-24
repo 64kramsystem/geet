@@ -13,6 +13,10 @@ class GeetLauncher
   SUMMARY_TEMPLATE = IO.read(File.expand_path("../lib/geet/resources/templates/edit_summary.md", __dir__))
   SUMMARY_BACKUP = File.join(Dir.tmpdir, "last_geet_edited_summary.md")
 
+  def self.run_as_executable?
+    File.basename($PROGRAM_NAME) == File.basename(__FILE__)
+  end
+
   def launch
     command, options = Commandline::Configuration.new.decode_argv || exit
 
@@ -137,4 +141,4 @@ class GeetLauncher
   end
 end
 
-GeetLauncher.new.launch if $PROGRAM_NAME == __FILE__
+GeetLauncher.new.launch if GeetLauncher.run_as_executable?

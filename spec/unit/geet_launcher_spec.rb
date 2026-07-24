@@ -5,6 +5,17 @@ require "spec_helper"
 load File.expand_path("../../bin/geet", __dir__)
 
 describe GeetLauncher do
+  describe "executable entry point" do
+    it "recognizes the RubyGems wrapper as the geet executable" do
+      original_program_name = $PROGRAM_NAME
+      $PROGRAM_NAME = "/path/to/rubygems/bin/geet"
+
+      expect(described_class.run_as_executable?).to be(true)
+    ensure
+      $PROGRAM_NAME = original_program_name
+    end
+  end
+
   describe "#launch" do
     it "dispatches repository creation before constructing an existing repository" do
       service = instance_double(Geet::Services::CreateRepo)
