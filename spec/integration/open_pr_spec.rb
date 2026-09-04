@@ -39,4 +39,27 @@ describe Geet::Services::OpenPr do
     end
 
   end # context 'with github.com'
+
+  context "when opening an upstream PR" do
+    let(:repository) { instance_double(Geet::Git::Repository, upstream?: true) }
+
+    it "uses the origin owner without requesting the authenticated user" do
+      pr = instance_double(
+        Geet::Github::PR,
+        link: "https://github.com/upstream/repository/pull/1"
+      )
+
+      allow(git_client).to receive(:owner).and_return(owner)
+      allow(git_client).to receive(:current_branch).and_return(branch)
+      allow(repository).to receive(:prs).with(owner:, head: branch).and_return([pr])
+      expect(repository).not_to receive(:authenticated_user)
+
+      expect {
+        service_instance = described_class.new(repository, git_client: git_client)
+        allow(service_instance).to receive(:open_file_with_default_application)
+
+        expect(service_instance.execute).to equal(pr)
+      }.to output("Finding PR with head (#{owner}:#{branch})...\n").to_stdout
+    end
+  end
 end

@@ -26,11 +26,7 @@ module Geet
       #
       sig { returns(Github::PR) }
       def checked_find_branch_pr
-        owner = if @repository.upstream?
-          @repository.authenticated_user.username
-        else
-          @git_client.owner
-        end
+        owner = @git_client.owner
 
         head = @git_client.current_branch
 

@@ -7,6 +7,32 @@ require_relative "../../../lib/geet/github/pr"
 require_relative "../../../lib/geet/github/api_interface"
 
 describe Geet::Github::PR do
+  describe ".list" do
+    it "filters upstream PRs by the supplied origin owner and branch" do
+      api_interface = instance_double(Geet::Github::ApiInterface, upstream?: true)
+      matching_pr = {
+        "number" => 1,
+        "title" => "Matching PR",
+        "html_url" => "https://github.com/upstream/repository/pull/1",
+        "head" => {"label" => "origin-owner:topic"},
+      }
+      other_pr = {
+        "number" => 2,
+        "title" => "Other PR",
+        "html_url" => "https://github.com/upstream/repository/pull/2",
+        "head" => {"label" => "other-owner:topic"},
+      }
+
+      expect(api_interface).to receive(:send_request)
+        .with("pulls", multipage: true)
+        .and_return([matching_pr, other_pr])
+
+      prs = described_class.list(api_interface, owner: "origin-owner", head: "topic")
+
+      expect(prs.map(&:number)).to eq([1])
+    end
+  end
+
   describe "#fetch_available_merge_method" do
     let(:api_interface) { instance_double(Geet::Github::ApiInterface) }
     let(:pr_number) { 123 }

@@ -23,14 +23,15 @@ module Geet
           upstream: T::Boolean,
           git_client: Utils::GitClient,
           warnings: T::Boolean,                          # disable all the warnings
-          protected_repositories: T::Array[String]       # warn when creating an issue/pr on these repos (format: `owner/repo`)
+          protected_repositories: T::Array[String],      # warn when creating an issue/pr on these repos (format: `owner/repo`)
+          api_token_required: T::Boolean
         )
         .void
       }
-      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT, warnings: true, protected_repositories: [])
+      def initialize(upstream: false, git_client: DEFAULT_GIT_CLIENT, warnings: true, protected_repositories: [], api_token_required: true)
         @upstream = upstream
         @git_client = git_client
-        @api_token = T.let(extract_env_api_token, String)
+        @api_token = T.let(extract_env_api_token(required: api_token_required), T.nilable(String))
         @warnings = warnings
         @protected_repositories = protected_repositories
       end
@@ -200,9 +201,12 @@ module Geet
         @api_interface ||= Github::ApiInterface.new(@api_token, repo_path: @git_client.path(upstream: @upstream), upstream: @upstream)
       end
 
-      sig { returns(String) }
-      def extract_env_api_token
-        ENV["GH_TOKEN"] || raise("GH_TOKEN not set!")
+      sig { params(required: T::Boolean).returns(T.nilable(String)) }
+      def extract_env_api_token(required:)
+        api_token = ENV["GH_TOKEN"]
+        raise "GH_TOKEN not set!" if required && api_token.nil?
+
+        api_token
       end
     end
   end

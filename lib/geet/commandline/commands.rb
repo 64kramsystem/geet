@@ -20,6 +20,13 @@ module Geet
       REPO_ADD_UPSTREAM_COMMAND = T.let("repo.add_upstream", String)
       REPO_CREATE_COMMAND = T.let("repo.create", String)
       REPO_OPEN_COMMAND = T.let("repo.open", String)
+
+      TOKEN_OPTIONAL_COMMANDS = T.let([
+        LABEL_LIST_COMMAND,
+        MILESTONE_LIST_COMMAND,
+        PR_LIST_COMMAND,
+        PR_OPEN_COMMAND,
+      ].freeze, T::Array[String])
     end
   end
 end

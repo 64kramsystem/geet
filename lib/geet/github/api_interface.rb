@@ -22,13 +22,13 @@ module Geet
       #
       sig {
         params(
-          api_token: String,
+          api_token: T.nilable(String),
           repo_path: T.nilable(String),
           upstream: T.nilable(T::Boolean)
         ).void
       }
       def initialize(api_token, repo_path: nil, upstream: nil)
-        @api_token = T.let(api_token, String)
+        @api_token = T.let(api_token, T.nilable(String))
         @repository_path = T.let(repo_path, T.nilable(String))
         @upstream = T.let(upstream, T.nilable(T::Boolean))
       end
@@ -110,7 +110,7 @@ module Geet
 
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           request = Net::HTTP::Post.new(uri).tap do
-            it.basic_auth API_AUTH_USER, @api_token
+            it.basic_auth API_AUTH_USER, @api_token if @api_token
             it["Accept"] = "application/vnd.github.v3+json"
             it.body = {query:, variables:}.to_json
           end
@@ -169,7 +169,7 @@ module Geet
         Net::HTTP.start(uri.host, use_ssl: true) do |http|
           request = http_class.new(uri)
 
-          request.basic_auth API_AUTH_USER, @api_token
+          request.basic_auth API_AUTH_USER, @api_token if @api_token
           request.body = data.to_json if data
           request["Accept"] = "application/vnd.github.v3+json"
 

@@ -30,7 +30,11 @@ class GeetLauncher
       return
     end
 
-    repository = Git::Repository.new(upstream: !!options[:upstream], protected_repositories: protected_repositories)
+    repository = Git::Repository.new(
+      upstream: !!options[:upstream],
+      protected_repositories: protected_repositories,
+      api_token_required: !TOKEN_OPTIONAL_COMMANDS.include?(command)
+    )
 
     case command
     when GIST_CREATE_COMMAND
