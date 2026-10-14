@@ -13,6 +13,7 @@ module Geet
       API_AUTH_USER = T.let("", String) # We don't need the login, as the API key uniquely identifies the user
       API_BASE_URL = T.let("https://api.github.com", String)
       GRAPHQL_API_URL = T.let("https://api.github.com/graphql", String)
+      UNAUTHENTICATED_NOT_FOUND_HINT = T.let("GH_TOKEN is not set; private repositories require it", String)
 
       sig { returns(T.nilable(String)) }
       attr_reader :repository_path
@@ -78,6 +79,8 @@ module Geet
 
           if error?(response)
             error_message = decode_and_format_error(T.cast(parsed_response, T::Hash[String, T.untyped]))
+            # GitHub hides private repositories from unauthenticated requests behind a 404.
+            error_message += " (#{UNAUTHENTICATED_NOT_FOUND_HINT})" if response.code == "404" && @api_token.nil?
             raise Geet::Shared::HttpError.new(error_message, response.code)
           end
 

@@ -27,5 +27,25 @@ describe Geet::Github::ApiInterface do
 
       expect(request).to have_been_requested.once
     end
+
+    context "when the response is Not Found" do
+      before do
+        stub_request(:get, request_url).to_return(status: 404, body: {message: "Not Found"}.to_json)
+      end
+
+      it "hints at the missing token when no token is available" do
+        expect {
+          described_class.new(nil, repo_path: "owner/repository").send_request("issues")
+        }.to raise_error(Geet::Shared::HttpError, "Not Found (GH_TOKEN is not set; private repositories require it)") { |error|
+          expect(error.code).to eq(404)
+        }
+      end
+
+      it "doesn't hint at the token when one is available" do
+        expect {
+          described_class.new("token", repo_path: "owner/repository").send_request("issues")
+        }.to raise_error(Geet::Shared::HttpError, "Not Found")
+      end
+    end
   end
 end
